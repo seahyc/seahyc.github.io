@@ -17,7 +17,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@seahyc/markdown": [
+        "libs/markdown/src/index.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
