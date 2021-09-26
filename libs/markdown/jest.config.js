@@ -1,14 +1,14 @@
 module.exports = {
-  displayName: 'markdown',
-  preset: '../../jest.preset.js',
+  displayName: "markdown",
+  preset: "../../jest.preset.js",
   globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    }
+    "ts-jest": {
+      tsconfig: "<rootDir>/tsconfig.spec.json",
+    },
   },
   transform: {
-    '^.+\\.[tj]sx?$':  'ts-jest' 
+    "^.+\\.[tj]sx?$": "ts-jest",
   },
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/markdown'
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  coverageDirectory: "../../coverage/libs/markdown",
 };

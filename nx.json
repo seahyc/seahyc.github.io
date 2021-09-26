@@ -14,12 +14,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "NTRmNzM3NGMtNDg5MS00Yjc3LTk0MWQtZjUzZDllMWE5ZGYxfHJlYWQtd3JpdGU="
       }
     }
@@ -41,9 +36,7 @@
     },
     "seahyc.github.io-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "seahyc.github.io"
-      ]
+      "implicitDependencies": ["seahyc.github.io"]
     }
   }
 }

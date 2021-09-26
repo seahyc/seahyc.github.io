@@ -8,20 +8,14 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "libs/markdown/**/*.ts"
-            ]
+            "lintFilePatterns": ["libs/markdown/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/markdown"
-          ],
+          "outputs": ["coverage/libs/markdown"],
           "options": {
             "jestConfig": "libs/markdown/jest.config.js",
             "passWithNoTests": true
@@ -36,9 +30,7 @@
       "targets": {
         "build": {
           "executor": "@nrwl/next:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "root": "apps/seahyc.github.io",
             "outputPath": "dist/apps/seahyc.github.io"
@@ -68,9 +60,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/seahyc.github.io"
-          ],
+          "outputs": ["coverage/apps/seahyc.github.io"],
           "options": {
             "jestConfig": "apps/seahyc.github.io/jest.config.js",
             "passWithNoTests": true
@@ -78,13 +68,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/seahyc.github.io/**/*.{ts,tsx,js,jsx}"
-            ]
+            "lintFilePatterns": ["apps/seahyc.github.io/**/*.{ts,tsx,js,jsx}"]
           }
         }
       }
@@ -109,13 +95,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/seahyc.github.io-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/seahyc.github.io-e2e/**/*.{js,ts}"]
           }
         }
       }
