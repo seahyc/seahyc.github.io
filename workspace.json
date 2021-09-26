@@ -1,0 +1,113 @@
+{
+  "version": 2,
+  "projects": {
+    "seahyc.github.io": {
+      "root": "apps/seahyc.github.io",
+      "sourceRoot": "apps/seahyc.github.io",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "root": "apps/seahyc.github.io",
+            "outputPath": "dist/apps/seahyc.github.io"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "seahyc.github.io:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "seahyc.github.io:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "seahyc.github.io:build:production"
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/seahyc.github.io"
+          ],
+          "options": {
+            "jestConfig": "apps/seahyc.github.io/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/seahyc.github.io/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        }
+      }
+    },
+    "seahyc.github.io-e2e": {
+      "root": "apps/seahyc.github.io-e2e",
+      "sourceRoot": "apps/seahyc.github.io-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/seahyc.github.io-e2e/cypress.json",
+            "devServerTarget": "seahyc.github.io:serve",
+            "tsConfig": "apps/seahyc.github.io-e2e/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "seahyc.github.io:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/seahyc.github.io-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/next"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "seahyc.github.io"
+}
