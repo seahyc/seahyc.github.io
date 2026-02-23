@@ -28,6 +28,16 @@
         {{ block "main" . }}{{ end }}
     </main>
 
+    <section class="subscribe-section">
+        <div class="subscribe-inner">
+            <p class="subscribe-label">Get new posts by email</p>
+            <form action="https://buttondown.com/api/emails/embed-subscribe/seahyc" method="post" class="subscribe-form">
+                <input type="email" name="email" placeholder="you@example.com" required />
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="footer-inner">
             <span>&copy; {{ now.Year }} Seah Ying Cong</span>
