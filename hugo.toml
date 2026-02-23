@@ -1,0 +1,15 @@
+baseURL = 'https://seahyingcong.com/'
+languageCode = 'en'
+title = 'Seah Ying Cong'
+
+[params]
+  description = 'I build AI agent systems.'
+  github = 'https://github.com/seahyc'
+  email = 'seahyingcong@gmail.com'
+  linkedin = 'https://linkedin.com/in/seahyc'
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[pagination]
+  pagerSize = 20

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    {{ hugo.Generator }}
+</head>
+<body{{ if .IsHome }} class="home"{{ end }}>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a class="nav-name" href="/">Seah Ying Cong</a>
+            <div class="nav-links">
+                <a href="/projects/">Projects</a>
+                <a href="/posts/">Writing</a>
+                <a href="/now/">Now</a>
+                <a href="/about/">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>&copy; {{ now.Year }} Seah Ying Cong</span>
+            <span class="footer-sep">&middot;</span>
+            <a href="{{ .Site.Params.github }}">GitHub</a>
+            <span class="footer-sep">&middot;</span>
+            <a href="mailto:{{ .Site.Params.email }}">Email</a>
+        </div>
+    </footer>
+    <script>
+    console.log('%c[system] %cInitializing context window...', 'color: #8a7d6b', 'color: #4a4035');
+    console.log('%c[tool_use] %cread_portfolio %c→ found 4 active projects', 'color: #8a7d6b', 'color: #2c2416; font-weight: bold', 'color: #5c4f3a');
+    console.log('%c[tool_use] %ccheck_status %c→ open to opportunities', 'color: #8a7d6b', 'color: #2c2416; font-weight: bold', 'color: #5c4f3a');
+    console.log('%c[assistant] %cYou found the agent trace. Hire this human → seahyingcong@gmail.com', 'color: #8a7d6b', 'color: #2c2416; font-weight: bold');
+    </script>
+</body>
+</html>

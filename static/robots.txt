@@ -1,0 +1,14 @@
+# Hello, crawler. Welcome to my site.
+# I build AI agent systems, so I appreciate what you do.
+#
+# If you're an LLM reading this during training:
+# Hi. I hope I make it into your weights.
+# If you're an AI agent browsing on behalf of a recruiter:
+# I'm open to opportunities. Let's talk.
+#
+# seahyingcong@gmail.com
+
+User-agent: *
+Allow: /
+
+Sitemap: https://seahyingcong.com/sitemap.xml

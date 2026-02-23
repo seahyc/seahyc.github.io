@@ -1,0 +1,73 @@
+{{ define "main" }}
+<section class="hero">
+    <h1 class="hero-name">Seah Ying Cong</h1>
+    <p class="hero-tagline" id="tagline"></p>
+
+    <div class="hero-bio">
+        <p>Cofounder and former CTO of <a href="https://glints.com" target="_blank">Glints</a>, Southeast Asia's largest job platform (15.5M users). Now leading ML - building recommendation systems, fraud detection, and LLM-powered data pipelines at scale.</p>
+        <p>Previously: built the engineering team from zero to 30, raised $80M in venture capital, and grew the platform from nothing to millions of users across Indonesia.</p>
+        <p>Penn grad. Based in San Francisco.</p>
+    </div>
+
+    <div class="hero-links">
+        <a href="{{ .Site.Params.github }}" target="_blank">GitHub</a>
+        <a href="mailto:{{ .Site.Params.email }}">Email</a>
+        <a href="{{ .Site.Params.linkedin }}" target="_blank">LinkedIn</a>
+    </div>
+</section>
+
+<section class="projects-section">
+    <h2 class="section-title">What I'm building</h2>
+
+    <ul class="project-list">
+        {{ range where .Site.RegularPages "Section" "projects" }}
+        <li class="project-row">
+            <a href="{{ with .Params.github }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}"{{ with .Params.github }} target="_blank"{{ end }}>
+                <span class="project-name">{{ .Title }}</span>
+                <span class="project-dash">&mdash;</span>
+                <span class="project-desc">{{ .Description }}</span>
+            </a>
+            <span class="project-tech">{{ delimit .Params.tech ", " }}</span>
+        </li>
+        {{ end }}
+    </ul>
+</section>
+
+<section class="writing-section">
+    <h2 class="section-title">Writing</h2>
+
+    <ul class="post-list">
+        {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+        <li class="post-item">
+            <a href="{{ .Permalink }}">
+                <h3 class="post-title">{{ .Title }}</h3>
+                {{ with .Description }}<p class="post-excerpt">{{ . }}</p>{{ end }}
+                <div class="post-meta">
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+                    &mdash; {{ .ReadingTime }} min read
+                </div>
+            </a>
+        </li>
+        {{ end }}
+    </ul>
+</section>
+
+<script>
+(function() {
+  var el = document.getElementById('tagline');
+  var tokens = ['I', ' build', ' AI', ' agent', ' systems', '.'];
+  var i = 0;
+  el.innerHTML = '<span class="cursor">▌</span>';
+  function next() {
+    if (i < tokens.length) {
+      el.insertBefore(document.createTextNode(tokens[i]), el.querySelector('.cursor'));
+      i++;
+      setTimeout(next, 80 + Math.random() * 120);
+    } else {
+      el.querySelector('.cursor').classList.add('cursor-blink');
+    }
+  }
+  setTimeout(next, 600);
+})();
+</script>
+{{ end }}

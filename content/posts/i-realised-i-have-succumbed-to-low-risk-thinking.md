@@ -1,0 +1,16 @@
+---
+title: "I realised I have succumbed to low-risk thinking"
+date: 2021-12-21
+---
+
+Was listening to an interview of Sam Bankman-Fried by Acquired.fm, and it struck me that a lot of his opinions are formed from first-principle reasoning. There was a certain conviction of tone, simplicity of logic and originality of ideas that reminded me of my early years as an entrepreneur.
+
+For instance, when asked what the differentiator of FTX was, he simply said that it just didn't have to lose 15% of the customer's capital to pay for liquidations. He also didn't really subscribe to strategy frameworks like 7 powers, and cited execution as one of their key strengths.
+
+A few reflections. Chief of which is, why am I not thinking like that anymore. 2 reasons. Firstly, I have been burned by "first-principle thinking". Air quotes because I wasn't doing it at high enough quality. There were times where a purely logical argument in my mind had too many gaps, and was far too clean to capture the messiness of reality. Secondly, I hadn't been contented by the results I'd been achieving in my life, and adopting frameworks felt like an easy way to change the results. That was partially true, but the other part of the reason is that I simply have to execute on what I already know more consistently. That was the period when I devoured business books like Good to Great and 7 Powers, in search of that external truth. Nothing wrong with that; it was all in all a net positive since it exposed me to new paths of reasoning, but I had been too uncritical in swallowing those mental frameworks, and re-read them beyond the point of maximal utility.
+
+Another reflection is that I had overcalibrated for a non-logical mode of operation. School honed my logical and analytical skills, but I quickly realised that business is primarily an emotional discipline game. Meditation practice too revealed the shortcomings of intellectual musings in realising profound spiritual truth. All that is to say, I devalued it for the past few years, causing me to fall behind on a class of worldly knowledge in which analytical intellectual horsepower is an edge - crypto, programming, data science etc. They also require more mental energy, and as a manager trained on delegation and preservation of mindspace for clear judgement, I had been very parsimonious in my intellectual exertions.
+
+An unintuitive downstream impact of this husbandry is that I hadn't grasped certain technical fields deeply enough, and that led to a subconscious stream of fear. I then compensate for that insecurity by leaning heavily on borrowed opinions of experts. This manifests in excess content consumption with minimal original thought. I also engage more thought in more obvious, emotional truths of human relations. This explains why I feel a sense of shallowness even when I drown in content, because they simply don't pierce deep enough.
+
+All this calls for is a recalibration of my weighting on my mental modes of operations. Cycles are a part of any normal system, the result of overcompensation and recalibration. At least now I'm aware of the subconscious mental patterns driving my surface-level anxieties.

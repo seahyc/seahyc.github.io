@@ -1,0 +1,24 @@
+---
+title: "Our cittas are like open mouths"
+date: 2023-04-23
+---
+
+That was the sentence that lingered in my mind, not least buttressed by Ajahn's animated enactment of how the citta gapes and accepts whatever the mind feeds it. In that sense, where we place our attention is karma - it's volitional, and thus requires mindfulness. I have just concluded a retreat with Luong Por Sucitto for advanced meditators, and his 50 years of meditation experience radiates through in his incisive wisdom. This post is my attempt to cement some of my aha moments.
+
+Overall, there was nothing surprising - the eightfold path is conceptually simple, though to thoroughly steep our lives in it is a lifelong practice. But at this point, I have learnt that it is not about seeking out drastic mental model shifts - it is about filing down the nuances in our understanding. In this regard, Luong Por was able to describe the workings of the citta in such fine details that it could only have come from extensive first-hand experience.
+
+He prefaced with a common description of citta as the "knowing" behind our 6 consciousnesses, of the mind and our 5 external-facing senses. Where the nuances came in was in how the citta interfaces with these 6 consciousnesses. During the Q&A, a retreatant, by way of a drawing, asked if the citta is the direct recipient of all the 6 senses. Luong Por chuckled, and said, "Not quite".
+
+The citta experiences the world through 2 interfaces - bodily sensations and the mind, or *mano*. I cannot remember exactly but I think bodily sensations here refers to *vedana.* If I were to venture a connection to my personal experience, this is seemingly distinct from our sense of touch - it is a sense of the energy within us, and in a localised field around us. This is the unconscious sense of tension I feel around nervous and fearful people, or ease I feel around joyful and compassionate teachers. I might be wrong, but this is the frontier of my current mental model.
+
+The second interface is the *mano.* Luong Por described this as the mind faculty, which mediates our experience of the other 5 sense doors. It perceives and cognises the raw input from the senses. In other words, it labels our raw sensory input to give it meaning. For instance, a bowl of food to our eyes is just a flood of colours, but through years of adaptation, our mind has linked that to subsequent dopamine hits and well-being, and thus first recognises that as food, and that through that, generates pleasant sensations and a sense of desire. When we were infants, we have no such conceptions, and everything is an overwhelming, confusing blur of inputs. As we grow up, we accumulate concepts about the world, which we eventually assume to be reality. Part of the journey is to unlearn the map, and understand that it's not the territory.
+
+Another highlight for the retreat was when he answered Sopisa's question about the fastest way to reach sotapanna. He prefaced that it is just a term, the important thing is to know concretely what it entails. Specifically, it is the relinquishing of 3 fetters, of personality, of rituals and of doubt. The first is our social identity that we use to interact with the world, the second is structures and habits that we anchor our minds around to give it order. The commonality about these 2 is that they are relatively superficial levels of reality for the citta to identify with, and a person with right views should penetrate through them.
+
+Other than that, he also affirmed my personal experience of the effectiveness of visual signs that express qualities we want to develop. For instance, gratitude might be a pot overflowing with water, and renunciation can be letting go of balloons. You can pick images that resonate with you. To me, it is fascinating that such visual tools work so well.
+
+The remaining takeaways are more tactical passing comments. He mentioned that we can tap into our silent core, which is where thoughts and impressions fade away and show their true nature of impermanence. That has been an effective visual metaphor for me.
+
+Sis Bita, the organiser, also shared his teaching of the continuous stream, which is maintaining awareness 24/7 as much as possible. This showed me that not only is keeping spacious awareness all the time not only desirable, it is also possible. I have always assumed it was not, especially during socialisation. Another powerful technique he taught her, one of his first lessons for her, is to focus on the out-breath and its trailing off, and not the more discernible in-breath during meditation. I assume that both trains the mindfulness on subtlety, and also more explicitly casts into relief impermanence.
+
+Lastly, we are dying every day. And when we die, we can bring nothing with us but the citta. Cast in that light, occupying ourselves with worldly pursuits is like rearranging deck chairs on the titanic of aging and death.
