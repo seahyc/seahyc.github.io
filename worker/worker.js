@@ -5,7 +5,7 @@
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
-    const allowed = env.ALLOWED_ORIGIN || "https://seahyc.github.io";
+    const allowed = env.ALLOWED_ORIGIN || "https://seahyingcong.com";
     const corsHeaders = {
       "Access-Control-Allow-Origin": allowed,
       "Access-Control-Allow-Methods": "POST, OPTIONS",

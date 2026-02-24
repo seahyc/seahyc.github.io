@@ -81,7 +81,7 @@ jobs:
           MSMTP
           chmod 600 ~/.msmtprc
 
-          POST_URL="https://seahyc.github.io/posts/${POST_SLUG}/"
+          POST_URL="https://seahyingcong.com/posts/${POST_SLUG}/"
 
           while IFS= read -r email; do
             email=$(echo "$email" | tr -d '[:space:]')
@@ -94,7 +94,7 @@ jobs:
           Subject: ${POST_TITLE}
           Content-Type: text/html; charset=utf-8
 
-          <p>New post on <a href="https://seahyc.github.io">seahyc.github.io</a>:</p>
+          <p>New post on <a href="https://seahyingcong.com">seahyingcong.com</a>:</p>
           <h2><a href="${POST_URL}">${POST_TITLE}</a></h2>
           ${POST_DESC:+<p>${POST_DESC}</p>}
           <p><a href="${POST_URL}">Read it here →</a></p>
