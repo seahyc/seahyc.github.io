@@ -41,6 +41,17 @@ jobs:
           DESC=$(sed -n 's/^description: *"\(.*\)"/\1/p' "$POST_FILE" | head -1)
           echo "desc=$DESC" >> $GITHUB_OUTPUT
 
+      - name: Fetch subscriber list
+        if: steps.detect.outputs.has_new == 'true'
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+        run: |
+          curl -sf -H "Authorization: Bearer ${GH_PAT}" \
+            "https://api.github.com/gists/${GIST_ID}" \
+            | jq -r '.files["subscribers.txt"].content' > /tmp/subscribers.txt
+          echo "Loaded $(wc -l < /tmp/subscribers.txt | tr -d ' ') subscribers"
+
       - name: Send emails
         if: steps.detect.outputs.has_new == 'true'
         env:
@@ -92,5 +103,5 @@ jobs:
           MAIL
 
             sleep 1
-          done < subscribers.txt
+          done < /tmp/subscribers.txt
           echo "Done sending to all subscribers"

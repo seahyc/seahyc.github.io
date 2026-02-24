@@ -449,6 +449,26 @@ img { max-width: 100%; height: auto; display: block; }
     opacity: 0.85;
 }
 
+.subscribe-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.subscribe-msg {
+    margin-top: 0.8rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    min-height: 2rem;
+}
+
+.subscribe-msg--success {
+    color: #4a7c59;
+}
+
+.subscribe-msg--error {
+    color: #8c4040;
+}
+
 /* Footer */
 .footer {
     border-top: 1px solid var(--border);

@@ -31,12 +31,60 @@
     <section class="subscribe-section">
         <div class="subscribe-inner">
             <p class="subscribe-label">Get new posts by email</p>
-            <form action="https://buttondown.com/api/emails/embed-subscribe/seahyc" method="post" class="subscribe-form">
+            <form id="subscribe-form" class="subscribe-form" novalidate>
                 <input type="email" name="email" placeholder="you@example.com" required />
                 <button type="submit">Subscribe</button>
             </form>
+            <p id="subscribe-msg"></p>
         </div>
     </section>
+    <script>
+    (function() {
+      var form = document.getElementById('subscribe-form');
+      var msg = document.getElementById('subscribe-msg');
+      var WORKER_URL = 'https://subscribe-worker.seahyc.workers.dev';
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var email = form.email.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          msg.textContent = 'Please enter a valid email.';
+          msg.className = 'subscribe-msg subscribe-msg--error';
+          return;
+        }
+        var btn = form.querySelector('button');
+        btn.disabled = true;
+        btn.textContent = 'Subscribing...';
+        msg.textContent = '';
+        msg.className = 'subscribe-msg';
+
+        fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.ok) {
+            msg.textContent = data.message;
+            msg.className = 'subscribe-msg subscribe-msg--success';
+            form.email.value = '';
+          } else {
+            msg.textContent = data.error || 'Something went wrong.';
+            msg.className = 'subscribe-msg subscribe-msg--error';
+          }
+        })
+        .catch(function() {
+          msg.textContent = 'Network error. Please try again.';
+          msg.className = 'subscribe-msg subscribe-msg--error';
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btn.textContent = 'Subscribe';
+        });
+      });
+    })();
+    </script>
 
     <footer class="footer">
         <div class="footer-inner">
