@@ -1,7 +1,7 @@
 ---
-title: "OmniBrowser"
-description: "Multi-profile, multi-browser MCP server for AI agents. Uses Chrome DevTools Protocol to let agents control any Chromium browser across user profiles."
-tech: ["Python", "CDP", "MCP"]
-github: "https://github.com/seahyc/omnibrowser"
-weight: 1
+title: "Browser Agent"
+description: "Fast, reliable web automation against adversarial UX. Replaces screenshot-based observation with pruned ARIA trees and structural page features, cutting per-action latency from 3-5s to 1.5s. Planner-executor architecture with a persistent skill library. 30/30 on adversarial challenge benchmark."
+tech: ["Python", "Claude API"]
+github: "https://github.com/seahyc/figure"
+weight: 2
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Spreadsheet Agent"
-description: "Side project: an AI agent for spreadsheets with 37-tool orchestration and 3-level Anthropic prompt caching to maximize cache hit rates. Hybrid search (regex, semantic, numerical), preview-approval workflow for write operations."
-tech: ["Go", "Claude API", "pgvector"]
-weight: 3
+description: "Exploring how far you can push AI agents in structured data environments. Sub-agent architecture (Explore, Plan, Verifier) with hybrid search (regex, semantic, numerical), semantic PDF parsing via DuckDB, and checkpoint-based undo. Built in Go with Claude API."
+tech: ["Go", "Claude API", "DuckDB"]
+weight: 1
 ---
