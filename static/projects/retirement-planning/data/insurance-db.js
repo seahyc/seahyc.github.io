@@ -1,0 +1,317 @@
+// @ts-nocheck
+export const INSURANCE_SOURCE_MANIFEST = [
+    {
+        id: "moh-compare",
+        provider: "MOH",
+        label: "Comparison of Integrated Shield Plans",
+        url: "https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/integrated-shield-plans/comparision-of-integrated-shield-plans/",
+        kind: "html",
+    },
+    {
+        id: "moh-medishield",
+        provider: "MOH",
+        label: "MediShield Life",
+        url: "https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/medishield-life/medishield-life",
+        kind: "html",
+    },
+    {
+        id: "aia-hsgm",
+        provider: "AIA",
+        label: "AIA HealthShield Gold Max brochure",
+        url: "https://www.aia.com.sg/content/dam/sg/en/docs/product_brochures/medical-protection/aia-health-shield-gold-max-english-brochure.pdf",
+        kind: "pdf",
+    },
+    {
+        id: "prudential-prushield",
+        provider: "Prudential",
+        label: "PRUShield brochure",
+        url: "https://www.prudential.com.sg/-/media/project/prudential/pdf/ebrochures/prushield/prushield-ebrochure-english.pdf",
+        kind: "pdf",
+    },
+    {
+        id: "income-eis",
+        provider: "Income",
+        label: "Enhanced IncomeShield brochure",
+        url: "https://www.income.com.sg/getContentAsset/68644221-6584-49bb-b76f-7af9146f416d/05c6012c-3879-4f1c-b994-00e61e65c363/Health_Enhanced-IncomeShield_Brochure_ENG.pdf?language=en",
+        kind: "pdf",
+    },
+    {
+        id: "singlife-shield",
+        provider: "Singlife",
+        label: "Singlife Shield & Health Plus brochure",
+        url: "https://singlife.com/content/dam/public/sg/documents/medical-insurance/singlife-shield/singlife-health-plus-and-singlife-shield-brochure.pdf",
+        kind: "pdf",
+    },
+    {
+        id: "raffles-shield",
+        provider: "Raffles",
+        label: "Raffles Shield overview",
+        url: "https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/integrated-shield-plans/comparision-of-integrated-shield-plans/",
+        kind: "html",
+    },
+    {
+        id: "hsbc-shield",
+        provider: "HSBC Life",
+        label: "HSBC Life Shield overview",
+        url: "https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/integrated-shield-plans/comparision-of-integrated-shield-plans/",
+        kind: "html",
+    },
+];
+const COMMON_COVERAGE = {
+    standard: { deductible: 3500, coinsurance: 0.1, annualLimit: 150000, riderCap: 6000, targetCoverage: "Public hospital B1" },
+    b1: { deductible: 2500, coinsurance: 0.1, annualLimit: 250000, riderCap: 6000, targetCoverage: "Public hospital B1" },
+    a: { deductible: 3500, coinsurance: 0.1, annualLimit: 400000, riderCap: 6000, targetCoverage: "Public hospital A" },
+    private: { deductible: 3500, coinsurance: 0.1, annualLimit: 800000, riderCap: 6000, targetCoverage: "Private hospital" },
+};
+function withSource(base, sourceId, overrides = {}) {
+    return {
+        nonPanelCoveragePenalty: 0.78,
+        preAuthorisationFailurePenalty: 0.86,
+        letterOfGuaranteeStrength: "standard",
+        panelStrength: "medium",
+        cancerDrugListMethod: "blended",
+        ...base,
+        sourceId,
+        ...overrides,
+    };
+}
+function benefits(overrides = {}) {
+    return {
+        inpatient: { coveragePct: 0.9, panelBoost: 1, annualCap: null },
+        daySurgery: { coveragePct: 0.9, panelBoost: 1, annualCap: null },
+        outpatientCancerDrug: { coveragePct: 0.75, panelBoost: 1, annualCap: 50000 },
+        outpatientCancerNonDrug: { coveragePct: 0.75, panelBoost: 1, annualCap: 30000 },
+        chronicSpecialist: { coveragePct: 0.45, panelBoost: 1, annualCap: 8000 },
+        emergencyAccident: { coveragePct: 0.78, panelBoost: 1, annualCap: 25000 },
+        rehabilitation: { coveragePct: 0.35, panelBoost: 1, annualCap: 12000 },
+        homeRecovery: { coveragePct: 0.2, panelBoost: 1, annualCap: 6000 },
+        mentalHealthInpatient: { coveragePct: 0.55, panelBoost: 1, annualCap: 15000 },
+        longTermCare: { coveragePct: 0.12, panelBoost: 1, annualCap: 10000 },
+        ...overrides,
+    };
+}
+export const UNIFIED_INSURANCE_DB = {
+    generatedAt: "2026-03-30",
+    sources: INSURANCE_SOURCE_MANIFEST,
+    publicSchemes: {
+        medishieldLife: {
+            sourceId: "moh-medishield",
+            deductible: 2500,
+            coinsurance: 0.1,
+            annualLimit: 150000,
+            note: "Baseline national scheme for large hospital bills and selected costly outpatient treatments.",
+        },
+        careShieldLife: {
+            sourceId: "moh-medishield",
+            payoutMonthly: 662,
+            note: "Base monthly payout reference for long-term care modeling.",
+        },
+    },
+    insurers: {
+        AIA: {
+            sourceId: "aia-hsgm",
+            plans: {
+                "HealthShield Gold Max A": withSource(COMMON_COVERAGE.private, "aia-hsgm", {
+                    riderCoverage: 0.8,
+                    preferredProviderFactor: 0.9,
+                    panelRequiredForBestTerms: true,
+                    preAuthorisationRequiredForBestTerms: true,
+                    deductibleWaiverEligible: true,
+                    deductibleWaiverResetYears: 3,
+                    riderCopayPct: 0.05,
+                    riderCopayCapAnnual: 3000,
+                    outpatientCancerMultiplier: 1.2,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.93, panelBoost: 1.04, annualCap: 800000 },
+                        outpatientCancerDrug: { coveragePct: 0.84, panelBoost: 1.02, annualCap: 90000 },
+                        outpatientCancerNonDrug: { coveragePct: 0.78, panelBoost: 1.02, annualCap: 50000 },
+                        chronicSpecialist: { coveragePct: 0.5, panelBoost: 1.02, annualCap: 12000 },
+                        rehabilitation: { coveragePct: 0.42, panelBoost: 1.02, annualCap: 18000 },
+                    }),
+                }),
+                "HealthShield Gold Max B": withSource(COMMON_COVERAGE.a, "aia-hsgm", {
+                    riderCoverage: 0.8,
+                    preferredProviderFactor: 0.92,
+                    panelRequiredForBestTerms: true,
+                    preAuthorisationRequiredForBestTerms: true,
+                    deductibleWaiverEligible: true,
+                    riderCopayPct: 0.05,
+                    riderCopayCapAnnual: 3000,
+                    outpatientCancerMultiplier: 1.15,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.92, panelBoost: 1.03, annualCap: 500000 },
+                        outpatientCancerDrug: { coveragePct: 0.82, panelBoost: 1.02, annualCap: 70000 },
+                        chronicSpecialist: { coveragePct: 0.48, panelBoost: 1.01, annualCap: 10000 },
+                    }),
+                }),
+                "HealthShield Gold Max B Lite": withSource(COMMON_COVERAGE.b1, "aia-hsgm", {
+                    riderCoverage: 0.75,
+                    preferredProviderFactor: 0.95,
+                    panelRequiredForBestTerms: false,
+                    preAuthorisationRequiredForBestTerms: true,
+                    riderCopayPct: 0.05,
+                    riderCopayCapAnnual: 3000,
+                    outpatientCancerMultiplier: 1.05,
+                    panelStrength: "medium",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.9, panelBoost: 1.01, annualCap: 300000 },
+                        outpatientCancerDrug: { coveragePct: 0.72, panelBoost: 1, annualCap: 45000 },
+                        chronicSpecialist: { coveragePct: 0.42, panelBoost: 1, annualCap: 8000 },
+                    }),
+                }),
+                "HealthShield Gold Max Standard": withSource(COMMON_COVERAGE.standard, "aia-hsgm", {
+                    riderCoverage: 0.7,
+                    panelRequiredForBestTerms: false,
+                    preAuthorisationRequiredForBestTerms: false,
+                    outpatientCancerMultiplier: 1,
+                    panelStrength: "medium",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 },
+                        outpatientCancerDrug: { coveragePct: 0.6, panelBoost: 1, annualCap: 25000 },
+                        chronicSpecialist: { coveragePct: 0.28, panelBoost: 1, annualCap: 4000 },
+                    }),
+                }),
+            },
+        },
+        "Great Eastern": {
+            sourceId: "moh-compare",
+            plans: {
+                "GREAT SupremeHealth P Plus": withSource(COMMON_COVERAGE.private, "moh-compare", { riderCoverage: 0.8, preferredProviderFactor: 0.9 }),
+                "GREAT SupremeHealth P Plus": withSource(COMMON_COVERAGE.private, "moh-compare", { riderCoverage: 0.8, preferredProviderFactor: 0.9, benefits: benefits({ inpatient: { coveragePct: 0.92, panelBoost: 1.03, annualCap: 750000 }, outpatientCancerDrug: { coveragePct: 0.8, panelBoost: 1.01, annualCap: 85000 } }) }),
+                "GREAT SupremeHealth A Plus": withSource(COMMON_COVERAGE.a, "moh-compare", { riderCoverage: 0.78, preferredProviderFactor: 0.92, benefits: benefits({ inpatient: { coveragePct: 0.9, panelBoost: 1.02, annualCap: 450000 }, outpatientCancerDrug: { coveragePct: 0.76, panelBoost: 1.01, annualCap: 65000 } }) }),
+                "GREAT SupremeHealth B Plus": withSource(COMMON_COVERAGE.b1, "moh-compare", { riderCoverage: 0.74, preferredProviderFactor: 0.95, benefits: benefits({ inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 280000 }, outpatientCancerDrug: { coveragePct: 0.68, panelBoost: 1, annualCap: 42000 } }) }),
+                "GREAT SupremeHealth Standard": withSource(COMMON_COVERAGE.standard, "moh-compare", { riderCoverage: 0.68, benefits: benefits({ inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 } }) }),
+            },
+        },
+        Prudential: {
+            sourceId: "prudential-prushield",
+            plans: {
+                "PRUShield Premier": withSource(COMMON_COVERAGE.private, "prudential-prushield", {
+                    riderCoverage: 0.8,
+                    preferredProviderFactor: 0.9,
+                    panelRequiredForBestTerms: true,
+                    stopLossAnnual: 3000,
+                    deductibleCoveragePct: 0.95,
+                    coinsuranceCoveragePct: 0.5,
+                    outpatientCancerMultiplier: 1.1,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.94, panelBoost: 1.04, annualCap: 2000000 },
+                        outpatientCancerDrug: { coveragePct: 0.82, panelBoost: 1.02, annualCap: 90000 },
+                        chronicSpecialist: { coveragePct: 0.52, panelBoost: 1.01, annualCap: 12000 },
+                        emergencyAccident: { coveragePct: 0.84, panelBoost: 1.02, annualCap: 35000 },
+                    }),
+                }),
+                "PRUShield Plus": withSource(COMMON_COVERAGE.a, "prudential-prushield", {
+                    riderCoverage: 0.78,
+                    preferredProviderFactor: 0.92,
+                    panelRequiredForBestTerms: true,
+                    stopLossAnnual: 3000,
+                    deductibleCoveragePct: 0.95,
+                    coinsuranceCoveragePct: 0.5,
+                    outpatientCancerMultiplier: 1.06,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.92, panelBoost: 1.03, annualCap: 450000 },
+                        outpatientCancerDrug: { coveragePct: 0.78, panelBoost: 1.01, annualCap: 70000 },
+                        chronicSpecialist: { coveragePct: 0.5, panelBoost: 1.01, annualCap: 10000 },
+                    }),
+                }),
+                "PRUShield Standard": withSource(COMMON_COVERAGE.standard, "prudential-prushield", {
+                    riderCoverage: 0.68,
+                    panelRequiredForBestTerms: false,
+                    outpatientCancerMultiplier: 1,
+                    panelStrength: "medium",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 },
+                        outpatientCancerDrug: { coveragePct: 0.6, panelBoost: 1, annualCap: 25000 },
+                    }),
+                }),
+            },
+        },
+        Income: {
+            sourceId: "income-eis",
+            plans: {
+                "Enhanced IncomeShield Preferred": withSource(COMMON_COVERAGE.private, "income-eis", {
+                    deductible: 3500,
+                    riderCoverage: 0.78,
+                    preferredProviderFactor: 0.91,
+                    riderCopayPct: 0.05,
+                    riderStopLossAnnual: 3000,
+                    outpatientCancerMultiplier: 1.23,
+                    nonCdlCancerPenalty: 0.18,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.93, panelBoost: 1.03, annualCap: 1000000 },
+                        outpatientCancerDrug: { coveragePct: 0.88, panelBoost: 1.03, annualCap: 120000 },
+                        outpatientCancerNonDrug: { coveragePct: 0.82, panelBoost: 1.02, annualCap: 70000 },
+                        chronicSpecialist: { coveragePct: 0.5, panelBoost: 1.01, annualCap: 12000 },
+                    }),
+                }),
+                "Enhanced IncomeShield Advantage": withSource(COMMON_COVERAGE.a, "income-eis", {
+                    deductible: 3500,
+                    riderCoverage: 0.76,
+                    preferredProviderFactor: 0.93,
+                    riderCopayPct: 0.05,
+                    riderStopLossAnnual: 3000,
+                    outpatientCancerMultiplier: 1.18,
+                    nonCdlCancerPenalty: 0.14,
+                    panelStrength: "high",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.91, panelBoost: 1.02, annualCap: 500000 },
+                        outpatientCancerDrug: { coveragePct: 0.84, panelBoost: 1.02, annualCap: 95000 },
+                        outpatientCancerNonDrug: { coveragePct: 0.76, panelBoost: 1.01, annualCap: 60000 },
+                    }),
+                }),
+                "Enhanced IncomeShield Basic": withSource(COMMON_COVERAGE.b1, "income-eis", {
+                    deductible: 2500,
+                    riderCoverage: 0.72,
+                    preferredProviderFactor: 0.95,
+                    riderCopayPct: 0.1,
+                    riderStopLossAnnual: 4000,
+                    outpatientCancerMultiplier: 1.08,
+                    panelStrength: "medium",
+                    benefits: benefits({
+                        inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 300000 },
+                        outpatientCancerDrug: { coveragePct: 0.72, panelBoost: 1.01, annualCap: 50000 },
+                    }),
+                }),
+                "IncomeShield Standard Plan": withSource(COMMON_COVERAGE.standard, "income-eis", {
+                    riderCoverage: 0.68,
+                    outpatientCancerMultiplier: 1,
+                    panelStrength: "medium",
+                    benefits: benefits({ inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 } }),
+                }),
+            },
+        },
+        Singlife: {
+            sourceId: "singlife-shield",
+            plans: {
+                "Singlife Shield Plan 1": withSource(COMMON_COVERAGE.private, "singlife-shield", { riderCoverage: 0.8, preferredProviderFactor: 0.9, panelStrength: "medium-high", outpatientCancerMultiplier: 1.05, benefits: benefits({ inpatient: { coveragePct: 0.92, panelBoost: 1.02, annualCap: 750000 }, outpatientCancerDrug: { coveragePct: 0.76, panelBoost: 1.01, annualCap: 70000 } }) }),
+                "Singlife Shield Plan 2": withSource(COMMON_COVERAGE.a, "singlife-shield", { riderCoverage: 0.76, preferredProviderFactor: 0.93, panelStrength: "medium-high", outpatientCancerMultiplier: 1.03, benefits: benefits({ inpatient: { coveragePct: 0.9, panelBoost: 1.01, annualCap: 420000 }, outpatientCancerDrug: { coveragePct: 0.72, panelBoost: 1.01, annualCap: 55000 } }) }),
+                "Singlife Shield Plan 3": withSource(COMMON_COVERAGE.b1, "singlife-shield", { riderCoverage: 0.72, preferredProviderFactor: 0.95, panelStrength: "medium", outpatientCancerMultiplier: 1.01, benefits: benefits({ inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 260000 }, outpatientCancerDrug: { coveragePct: 0.66, panelBoost: 1, annualCap: 42000 } }) }),
+                "Singlife Shield Standard Plan": withSource(COMMON_COVERAGE.standard, "singlife-shield", { riderCoverage: 0.68, panelStrength: "medium", outpatientCancerMultiplier: 1, benefits: benefits({ inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 } }) }),
+                "Singlife Shield Starter": withSource(COMMON_COVERAGE.private, "singlife-shield", { deductible: 4000, coinsurance: 0.1, riderCoverage: 0.65, preferredProviderFactor: 0.88, panelStrength: "medium", outpatientCancerMultiplier: 1, benefits: benefits({ inpatient: { coveragePct: 0.86, panelBoost: 1, annualCap: 500000 }, outpatientCancerDrug: { coveragePct: 0.6, panelBoost: 1, annualCap: 30000 } }) }),
+            },
+        },
+        "HSBC Life": {
+            sourceId: "hsbc-shield",
+            plans: {
+                "HSBC Life Shield Plan A": withSource(COMMON_COVERAGE.private, "hsbc-shield", { riderCoverage: 0.78, preferredProviderFactor: 0.9, panelStrength: "medium", outpatientCancerMultiplier: 1.02, benefits: benefits({ inpatient: { coveragePct: 0.9, panelBoost: 1.01, annualCap: 600000 }, outpatientCancerDrug: { coveragePct: 0.7, panelBoost: 1, annualCap: 50000 } }) }),
+                "HSBC Life Shield Plan B": withSource(COMMON_COVERAGE.a, "hsbc-shield", { riderCoverage: 0.74, preferredProviderFactor: 0.93, panelStrength: "medium", outpatientCancerMultiplier: 1.01, benefits: benefits({ inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 360000 }, outpatientCancerDrug: { coveragePct: 0.66, panelBoost: 1, annualCap: 42000 } }) }),
+                "HSBC Life Shield Standard Plan": withSource(COMMON_COVERAGE.standard, "hsbc-shield", { riderCoverage: 0.68, panelStrength: "medium", outpatientCancerMultiplier: 1, benefits: benefits({ inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 } }) }),
+            },
+        },
+        Raffles: {
+            sourceId: "raffles-shield",
+            plans: {
+                "Raffles Shield Private": withSource(COMMON_COVERAGE.private, "raffles-shield", { riderCoverage: 0.76, preferredProviderFactor: 0.91, panelStrength: "medium", outpatientCancerMultiplier: 1.01, benefits: benefits({ inpatient: { coveragePct: 0.89, panelBoost: 1.01, annualCap: 600000 }, outpatientCancerDrug: { coveragePct: 0.68, panelBoost: 1, annualCap: 50000 } }) }),
+                "Raffles Shield A": withSource(COMMON_COVERAGE.a, "raffles-shield", { riderCoverage: 0.74, preferredProviderFactor: 0.93, panelStrength: "medium", outpatientCancerMultiplier: 1.01, benefits: benefits({ inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 360000 }, outpatientCancerDrug: { coveragePct: 0.66, panelBoost: 1, annualCap: 42000 } }) }),
+                "Raffles Shield B": withSource(COMMON_COVERAGE.b1, "raffles-shield", { riderCoverage: 0.7, preferredProviderFactor: 0.95, panelStrength: "medium", outpatientCancerMultiplier: 1, benefits: benefits({ inpatient: { coveragePct: 0.86, panelBoost: 1, annualCap: 240000 }, outpatientCancerDrug: { coveragePct: 0.62, panelBoost: 1, annualCap: 35000 } }) }),
+                "Raffles Shield Standard Plan": withSource(COMMON_COVERAGE.standard, "raffles-shield", { riderCoverage: 0.66, panelStrength: "medium", outpatientCancerMultiplier: 1, benefits: benefits({ inpatient: { coveragePct: 0.84, panelBoost: 1, annualCap: 150000 } }) }),
+            },
+        },
+    },
+};

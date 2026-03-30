@@ -1,0 +1,21 @@
+{{ define "main" }}
+<link rel="stylesheet" href="/projects/retirement-planning/app.css">
+
+<section class="rp-page">
+    <header class="rp-page-header">
+        <div class="rp-page-copy">
+            <p class="rp-kicker">Private by design</p>
+            <h1 class="rp-page-title">{{ .Title }}</h1>
+            <p class="rp-page-description">{{ .Description }}</p>
+        </div>
+        <div class="rp-page-meta">
+            <p>All calculations run in your browser.</p>
+            <p>Your financial and health data stays on this device and is never sent to a server.</p>
+        </div>
+    </header>
+
+    {{ .Content }}
+</section>
+
+<script type="module" src="/projects/retirement-planning/app.js"></script>
+{{ end }}

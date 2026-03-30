@@ -12,7 +12,7 @@
     --text-secondary: #5c4f3a;
     --text-muted: #8a7d6b;
     --link-underline: #c4b8a4;
-    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
 html { font-size: 62.5%; }
@@ -75,6 +75,11 @@ img { max-width: 100%; height: auto; display: block; }
     max-width: 720px;
     margin: 0 auto;
     padding: 0 2.4rem;
+}
+
+.main-wide {
+    max-width: min(1760px, 100vw);
+    padding: 0 1.6rem;
 }
 
 /* Hero */
@@ -507,4 +512,5 @@ img { max-width: 100%; height: auto; display: block; }
     .hero-links { gap: 1.6rem; }
     .page-title { font-size: 3.2rem; }
     .post-title { font-size: 2.2rem; }
+    .main-wide { padding: 0 1rem; }
 }

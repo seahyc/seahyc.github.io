@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "scripts": {
+    "build:retirement-planning": "node projects-src/retirement-planning/build.mjs",
+    "typecheck:retirement-planning": "tsc -p projects-src/retirement-planning/tsconfig.json --noEmit",
+    "verify:retirement-planning": "node projects-src/retirement-planning/verify.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2"
+  }
+}

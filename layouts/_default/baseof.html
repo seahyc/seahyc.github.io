@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     {{ hugo.Generator }}
 </head>
-<body{{ if .IsHome }} class="home"{{ end }}>
+<body{{ if or .IsHome .Params.body_class }} class="{{ if .IsHome }}home{{ end }}{{ with .Params.body_class }}{{ if $.IsHome }} {{ end }}{{ . }}{{ end }}"{{ end }}>
     <nav class="nav">
         <div class="nav-inner">
             <a class="nav-name" href="/">Seah Ying Cong</a>
@@ -23,7 +20,7 @@
         </div>
     </nav>
 
-    <main class="main">
+    <main class="main{{ with .Params.main_class }} {{ . }}{{ end }}">
         {{ block "main" . }}{{ end }}
     </main>
 
