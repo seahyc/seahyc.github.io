@@ -289,6 +289,10 @@
     margin-top: -0.2rem;
 }
 
+.rp-controls-inline {
+    margin-top: -0.1rem;
+}
+
 .rp-manage-grid {
     display: grid;
     gap: 0.55rem;
@@ -900,6 +904,6 @@
     }
 
     .rp-chart-stage canvas {
-        max-height: 480px;
+        max-height: 420px;
     }
 }

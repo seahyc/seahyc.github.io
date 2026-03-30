@@ -118,23 +118,24 @@ function render(): void {
               ${renderPlanForm(syncedActivePlan, profile, validation)}
             </div>
           </div>
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Constraints and quick controls</div>
+          <section class="rp-controls-inline">
+            <details class="rp-inspector-details">
+              <summary>
+                <span>Constraints and quick controls</span>
+                <span class="rp-manage-summary">Policy status and shortcuts</span>
+              </summary>
+              <div class="rp-stack">
+                <details class="rp-inspector-details">
+                  <summary>Policy status</summary>
+                  ${renderPolicyStatus(activeBundle.result.constraints)}
+                </details>
+                <details class="rp-inspector-details">
+                  <summary>Quick controls</summary>
+                  ${renderConvenience()}
+                </details>
               </div>
-            </div>
-            <div class="rp-card-body rp-stack">
-              <details class="rp-inspector-details">
-                <summary>Policy status</summary>
-                ${renderPolicyStatus(activeBundle.result.constraints)}
-              </details>
-              <details class="rp-inspector-details">
-                <summary>Quick controls</summary>
-                ${renderConvenience()}
-              </details>
-            </div>
-          </div>
+            </details>
+          </section>
         </div>
       </section>
 
@@ -606,7 +607,7 @@ function renderChartCards(bundle: PlanBundle): string {
         </div>
         <div class="rp-chart-hint">Hover for values · click to pin · click again or Esc to clear</div>
       </div>
-      <div class="rp-chart-stage"><canvas id="chart-${id}" width="760" height="360"></canvas></div>
+      <div class="rp-chart-stage"><canvas id="chart-${id}" width="760" height="320"></canvas></div>
     </div>
   `).join("");
 }
