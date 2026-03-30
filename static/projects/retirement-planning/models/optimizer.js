@@ -1,6 +1,8 @@
-// @ts-nocheck
 export function computeRecommendations(profile, plan, result) {
+    void plan;
     const firstRow = result.rows[0];
+    if (!firstRow)
+        return [];
     const recommendations = [];
     const monthlyGap = Math.max(0, (firstRow.totalSpendAnnual - firstRow.grossIncomeAnnual) / 12);
     const basicGap = Math.max(0, (firstRow.basicSpendAnnual - firstRow.grossIncomeAnnual) / 12);
@@ -14,14 +16,14 @@ export function computeRecommendations(profile, plan, result) {
         liquidityImpact: -Math.min(result.constraints.remainingErsRoom, 12000),
         tag: "CPF / annuity",
     });
-    if (result.familyTopups.some((row) => row.allowedTopup > 0)) {
+    if (result.familyTopups.some((row) => (row.allowedTopup || 0) > 0)) {
         recommendations.push({
             title: "Use child top-ups for tax-efficient income support",
             why: "The family can improve payout while harvesting tax relief.",
             risk: "Low",
             confidence: "High",
-            shortfallReduction: result.familyTopups.reduce((sum, row) => sum + row.allowedTopup, 0) / 180,
-            estateImpact: -result.familyTopups.reduce((sum, row) => sum + row.allowedTopup, 0),
+            shortfallReduction: result.familyTopups.reduce((sum, row) => sum + (row.allowedTopup || 0), 0) / 180,
+            estateImpact: -result.familyTopups.reduce((sum, row) => sum + (row.allowedTopup || 0), 0),
             liquidityImpact: 0,
             tag: "Family / tax",
         });
@@ -33,7 +35,7 @@ export function computeRecommendations(profile, plan, result) {
         confidence: "Medium",
         shortfallReduction: Math.max(0, basicGap * 0.4),
         estateImpact: 0,
-        liquidityImpact: -Math.max(0, result.rows[0].emergencyBalanced - result.rows[0].liquidAssets),
+        liquidityImpact: -Math.max(0, (result.rows[0]?.emergencyBalanced || 0) - (result.rows[0]?.liquidAssets || 0)),
         tag: "Liquidity",
     });
     recommendations.push({
@@ -75,7 +77,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Longevity tail",
             impact: Math.max(0, result.p90Age - result.medianAge),
             unit: "years",
-            signal: result.p90Age - result.medianAge > 8 ? "High" : "Medium",
+            signal: (result.p90Age - result.medianAge > 8 ? "High" : "Medium"),
             why: `The p90 life extends about ${(result.p90Age - result.medianAge).toFixed(1)} years beyond median, so plan fragility in late life still matters.`,
         },
         {
@@ -83,7 +85,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Medical cash burden",
             impact: firstRow.medicalCash || 0,
             unit: "currency",
-            signal: medicalPressure > 0.18 ? "High" : medicalPressure > 0.1 ? "Medium" : "Low",
+            signal: (medicalPressure > 0.18 ? "High" : medicalPressure > 0.1 ? "Medium" : "Low"),
             why: `Modeled out-of-pocket medical cash is about ${Math.round(medicalPressure * 100)}% of annual spend in the opening years.`,
         },
         {
@@ -91,7 +93,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Payout deferral",
             impact: payoutDelayYears,
             unit: "years",
-            signal: payoutDelayYears >= 4 ? "High" : payoutDelayYears >= 2 ? "Medium" : "Low",
+            signal: (payoutDelayYears >= 4 ? "High" : payoutDelayYears >= 2 ? "Medium" : "Low"),
             why: `CPF LIFE is scheduled to start ${payoutDelayYears.toFixed(0)} years from now, which changes near-term liquidity pressure.`,
         },
         {
@@ -99,7 +101,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Remaining ERS room",
             impact: ersRoom,
             unit: "currency",
-            signal: ersRoom > 20000 ? "High" : ersRoom > 5000 ? "Medium" : "Low",
+            signal: (ersRoom > 20000 ? "High" : ersRoom > 5000 ? "Medium" : "Low"),
             why: `There is ${formatCurrency(ersRoom)} of top-up room still available before the modeled ERS hard stop.`,
         },
         {
@@ -107,7 +109,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Discretionary spend sensitivity",
             impact: discretionaryMonthly,
             unit: "monthly-currency",
-            signal: discretionaryMonthly > 1200 ? "High" : discretionaryMonthly > 500 ? "Medium" : "Low",
+            signal: (discretionaryMonthly > 1200 ? "High" : discretionaryMonthly > 500 ? "Medium" : "Low"),
             why: `Discretionary spending is about ${formatCurrency(discretionaryMonthly)}/month, which is one of the cleanest knobs for shortfall control.`,
         },
         {
@@ -115,7 +117,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Emergency reserve gap",
             impact: emergencyGap,
             unit: "currency",
-            signal: emergencyGap > 10000 ? "High" : emergencyGap > 0 ? "Medium" : "Low",
+            signal: (emergencyGap > 10000 ? "High" : emergencyGap > 0 ? "Medium" : "Low"),
             why: emergencyGap > 0
                 ? `Liquid assets are short of the balanced emergency buffer by ${formatCurrency(emergencyGap)}.`
                 : "Liquid assets currently cover the balanced emergency buffer.",
@@ -125,7 +127,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Survival to annuity crossover",
             impact: survivalToCrossover,
             unit: "percent",
-            signal: survivalToCrossover >= 0.65 ? "High" : survivalToCrossover >= 0.4 ? "Medium" : "Low",
+            signal: (survivalToCrossover >= 0.65 ? "High" : survivalToCrossover >= 0.4 ? "Medium" : "Low"),
             why: result.principalCrossoverAge
                 ? `Modeled survival to the principal crossover age is about ${(survivalToCrossover * 100).toFixed(0)}%.`
                 : "The modeled annuity does not cross principal within the visible horizon.",
@@ -135,7 +137,7 @@ export function buildSensitivityDiagnostics(profile, plan, result) {
             label: "Estate cushion at median life",
             impact: estateAtMedian,
             unit: "currency",
-            signal: estateAtMedian < 50000 ? "High" : estateAtMedian < 150000 ? "Medium" : "Low",
+            signal: (estateAtMedian < 50000 ? "High" : estateAtMedian < 150000 ? "Medium" : "Low"),
             why: `Estate-equivalent balance near median life is about ${formatCurrency(estateAtMedian)}.`,
         },
     ];

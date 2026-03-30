@@ -206,6 +206,7 @@ export interface LifestyleEquivalent {
 }
 
 export interface FamilyTopupModel {
+  allowedTopup?: number;
   modeledTaxSaved: number;
 }
 

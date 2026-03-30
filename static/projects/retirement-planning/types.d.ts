@@ -186,6 +186,7 @@ export interface LifestyleEquivalent {
     trips: number;
 }
 export interface FamilyTopupModel {
+    allowedTopup?: number;
     modeledTaxSaved: number;
 }
 export interface InterventionSummary {
