@@ -68,25 +68,23 @@ function render() {
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
 
-      <section class="rp-card rp-manage-card">
-        <div class="rp-card-body">
-          <details class="rp-inspector-details">
-            <summary>
-              <span>Manage profiles and plans</span>
-              <span class="rp-manage-summary">${escapeHtml(syncedProfileRecord.name)} · ${escapeHtml(syncedActivePlan.name)} · ${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
-            </summary>
-            <div class="rp-flex rp-manage-actions">
-              <button class="rp-btn accent" data-action="new-profile">New profile</button>
-              <button class="rp-btn soft" data-action="duplicate-profile">Duplicate profile</button>
-              <button class="rp-btn soft" data-action="new-plan">New plan</button>
-              <button class="rp-btn soft" data-action="duplicate-plan">Duplicate plan</button>
-            </div>
-            <div class="rp-manage-grid">
-              <div class="rp-profile-list">${renderProfiles(syncedProfileRecord.id)}</div>
-              <div class="rp-plan-list">${renderPlans(plansForProfile, syncedActivePlan.id)}</div>
-            </div>
-          </details>
-        </div>
+      <section class="rp-manage-inline">
+        <details class="rp-inspector-details">
+          <summary>
+            <span>Manage profiles and plans</span>
+            <span class="rp-manage-summary">${escapeHtml(syncedProfileRecord.name)} · ${escapeHtml(syncedActivePlan.name)} · ${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
+          </summary>
+          <div class="rp-flex rp-manage-actions">
+            <button class="rp-btn accent" data-action="new-profile">New profile</button>
+            <button class="rp-btn soft" data-action="duplicate-profile">Duplicate profile</button>
+            <button class="rp-btn soft" data-action="new-plan">New plan</button>
+            <button class="rp-btn soft" data-action="duplicate-plan">Duplicate plan</button>
+          </div>
+          <div class="rp-manage-grid">
+            <div class="rp-profile-list">${renderProfiles(syncedProfileRecord.id)}</div>
+            <div class="rp-plan-list">${renderPlans(plansForProfile, syncedActivePlan.id)}</div>
+          </div>
+        </details>
       </section>
 
       <section class="rp-panel-grid rp-setup-grid">
@@ -118,8 +116,14 @@ function render() {
               </div>
             </div>
             <div class="rp-card-body rp-stack">
-              ${renderPolicyStatus(activeBundle.result.constraints)}
-              ${renderConvenience()}
+              <details class="rp-inspector-details">
+                <summary>Policy status</summary>
+                ${renderPolicyStatus(activeBundle.result.constraints)}
+              </details>
+              <details class="rp-inspector-details">
+                <summary>Quick controls</summary>
+                ${renderConvenience()}
+              </details>
             </div>
           </div>
         </div>
@@ -248,18 +252,17 @@ function renderExpertInspector(expertReview, sensitivities, diffSummary, compari
       <div class="rp-card-header">
         <div>
           <div class="rp-card-title">Expert inspector</div>
-          <div class="rp-card-subtitle">Assumptions, plan findings, sensitivities, and direct plan deltas for professional review.</div>
         </div>
       </div>
       <div class="rp-card-body rp-stack">
-        <div class="rp-inspector-card">
-          <div class="rp-card-title">Assumptions and findings</div>
+        <details class="rp-inspector-details">
+          <summary>Assumptions and findings</summary>
           <div class="rp-insights-list">
             ${expertReview.assumptions.map((item) => `<div class="rp-insight"><strong>Assumption</strong><div>${escapeHtml(item)}</div></div>`).join("")}
             ${expertReview.findings.map((item) => `<div class="rp-insight"><strong>Finding</strong><div>${escapeHtml(item)}</div></div>`).join("")}
           </div>
-        </div>
-        <details class="rp-inspector-details" open>
+        </details>
+        <details class="rp-inspector-details">
           <summary>Top sensitivities</summary>
           <div class="rp-diff-list">
             ${sensitivities.slice(0, 6).map((item) => `
@@ -271,7 +274,7 @@ function renderExpertInspector(expertReview, sensitivities, diffSummary, compari
             `).join("")}
           </div>
         </details>
-        <details class="rp-inspector-details" ${comparisonBundle ? "open" : ""}>
+        <details class="rp-inspector-details">
           <summary>Plan diff ${comparisonBundle ? `vs ${escapeHtml(comparisonBundle.plan.name)}` : "(add another plan to compare)"}</summary>
           <div class="rp-diff-list">
             ${comparisonBundle
@@ -319,7 +322,7 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
       <button class="rp-btn soft" data-copy-payload="true">Copy structured JSON</button>
       ${comparisonBundle ? `<button class="rp-btn soft" data-copy-diff="true">Copy plan diff brief</button>` : ""}
     </div>
-    <details class="rp-inspector-details" open>
+    <details class="rp-inspector-details">
       <summary>Expert prompt preview</summary>
       <div class="rp-codebox">${escapeHtml(prompt)}</div>
     </details>

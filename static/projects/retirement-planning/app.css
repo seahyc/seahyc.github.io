@@ -261,7 +261,7 @@
 }
 
 .rp-form-grid.three {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .rp-summary-grid {
@@ -285,8 +285,8 @@
     align-items: start;
 }
 
-.rp-manage-card .rp-card-body {
-    padding-top: 0.8rem;
+.rp-manage-inline {
+    margin-top: -0.2rem;
 }
 
 .rp-manage-grid {
@@ -553,13 +553,6 @@
     gap: 0.8rem;
 }
 
-.rp-inspector-card {
-    padding: 1.2rem;
-    background: var(--rp-card-strong);
-    border: 1px solid var(--rp-border);
-    border-radius: 1.4rem;
-}
-
 .rp-insights-list,
 .rp-action-list,
 .rp-diff-list,
@@ -794,6 +787,10 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .rp-form-grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .rp-chart-grid {
         grid-template-columns: 1fr;
     }
@@ -803,12 +800,15 @@
     .rp-page-header,
     .rp-status-strip,
     .rp-form-grid.two,
-    .rp-form-grid.three,
     .rp-inspector-grid,
     .rp-action-metrics,
     .rp-manage-grid,
     .rp-medical-grid {
         grid-template-columns: 1fr;
+    }
+
+    .rp-form-grid.three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .rp-summary-grid {
@@ -823,8 +823,7 @@
         padding-right: 1.4rem;
     }
 
-    .rp-chart-toolbar,
-    .rp-chart-note {
+    .rp-chart-toolbar {
         padding-left: 1.4rem;
         padding-right: 1.4rem;
     }
@@ -874,6 +873,10 @@
 
     .rp-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rp-form-grid.three {
+        grid-template-columns: 1fr;
     }
 }
 
