@@ -81,6 +81,7 @@ export function runPlan(profile, plan) {
         p75Age,
         p90Age,
         cpfInitialPayout: cpfLedger.initialPayout,
+        policyTrace: cpfLedger.policyTrace,
         principalCrossoverAge,
         rows,
         lifestyle,

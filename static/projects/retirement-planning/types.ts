@@ -218,7 +218,7 @@ export interface CashflowRow {
   yearOffset: number;
   policyYear?: number;
   policySourceIds?: string[];
-  policyNote?: string;
+  policyNote?: string | undefined;
   survival: number;
   mortalityState: string;
   bank: number;
@@ -266,7 +266,7 @@ export interface CashflowRow {
   bhs?: number;
   basicCoverage: boolean;
   totalCoverage: boolean;
-  [key: string]: string | number | boolean | null | undefined;
+  [key: string]: unknown;
 }
 
 export interface FrailtySummary {

@@ -8,6 +8,8 @@ export function getCpfConstraints(profile, plan, year = profile.cpfCohortYear ||
     const maOverflow = Math.max(0, normalizedMa - policy.bhs);
     return {
         year,
+        policySourceIds: (policy.sources ?? []).map((source) => source.id),
+        policyNote: policy.note ?? `Resolved CPF policy for ${year}.`,
         remainingErsRoom: totalTopupRoom,
         totalTopupRoom,
         topupCashCap,
@@ -41,6 +43,8 @@ export function validatePlan(profile, plan, year = profile.cpfCohortYear || getC
         issues.push("Observed CPF payout anchor does not match the selected CPF LIFE plan.");
     if (constraints.maOverflow > 0)
         issues.push("MA exceeds BHS and will be normalized through overflow routing.");
+    if (profile.propertyPledge && oneOffRequested > 0)
+        issues.push("Property pledge is present; CPF top-up room should be reviewed against the pledged-property rules for this cohort year.");
     return { constraints, issues };
 }
 export function normalizePlanToConstraints(profile, plan, year = profile.cpfCohortYear || getCurrentPolicyYear()) {

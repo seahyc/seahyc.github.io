@@ -24,5 +24,9 @@ export declare function estimateMedicalCosts({ age, profile, frailty }: {
         panelPenalty: number;
         preAuthorisationPenalty: number;
         cancerDrugPenalty: number;
+        deductibleWaiverGain: number;
+        riderCopayPenalty: number;
+        scheduledTreatmentAdjustment: number;
     };
+    diseaseBreakdown: any[];
 };

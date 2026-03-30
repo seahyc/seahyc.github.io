@@ -1,4 +1,3 @@
-// @ts-nocheck
 export function estimateEmergencyBuffer({ profile, medical }) {
     const monthlyBasic = profile.basicSpendMonthly;
     const reserveMonths = monthlyBasic < 2200 ? 9 : monthlyBasic < 3500 ? 8 : 6;

@@ -1,6 +1,6 @@
 ---
 title: "Retirement Planning OS"
-description: "A private, browser-only retirement planning system for modeling CPF LIFE, mortality, medical costs, emergency buffers, family top-ups, tax savings, and investment tradeoffs across multiple profiles and plans."
+description: "Private browser-only planner for CPF LIFE, longevity, medical costs, buffers, family top-ups, and plan comparisons."
 tech: ["JavaScript", "IndexedDB", "Local AI", "Hugo"]
 weight: 0
 layout: "retirement-planning"

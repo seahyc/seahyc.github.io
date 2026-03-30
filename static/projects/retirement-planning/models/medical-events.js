@@ -13,9 +13,33 @@ export function estimateMedicalEventMix(age, profile, frailtyState) {
         endOfLife: age >= 85 ? 0.05 : 0.015,
     };
     parseDiseaseList([...(profile.chronicConditions || []), ...priorSerious]).forEach(({ profile: disease }) => {
-        eventMix.chronic += disease.emergencyMedicalWeight * 0.5;
-        eventMix.hospitalization += disease.emergencyMedicalWeight * 0.35;
-        eventMix.acute += disease.emergencyMedicalWeight * 0.15;
+        const claimsPath = disease.claimsPathway || {};
+        const recurrencePeak = Array.isArray(disease.recurrenceWeightByYears) && disease.recurrenceWeightByYears.length
+            ? disease.recurrenceWeightByYears[0].recurrenceWeight || disease.emergencyMedicalWeight
+            : disease.emergencyMedicalWeight;
+        const agePressure = age >= 80 ? 1.2 : age >= 75 ? 1.08 : age >= 70 ? 1.02 : 0.96;
+        const diseasePressure = recurrencePeak * agePressure;
+        const pathBias = claimsPath.pathBias || {};
+        eventMix.routine += diseasePressure * 0.03;
+        eventMix.chronic += diseasePressure * (0.42 + (pathBias.chronicSpecialist || 0) * 0.22);
+        eventMix.hospitalization += diseasePressure * (0.28 + (pathBias.inpatient || 0) * 0.2);
+        eventMix.acute += diseasePressure * (0.1 + (pathBias.emergencyAccident || 0) * 0.18);
+        eventMix.frailty += diseasePressure * ((pathBias.homeRecovery || 0) * 0.18 + (pathBias.rehabilitation || 0) * 0.12);
+        eventMix.ltc += diseasePressure * ((pathBias.longTermCare || 0) * 0.22 + (claimsPath.recurrenceIntensity || 0) * 0.08);
+        eventMix.endOfLife += diseasePressure * ((pathBias.palliative || 0) * 0.22 + (disease.hospitalizationMultiplier > 1.2 ? 0.03 : 0));
+        if (disease.category === "cancer") {
+            eventMix.hospitalization += diseasePressure * 0.04;
+            eventMix.acute += diseasePressure * 0.03;
+            eventMix.endOfLife += diseasePressure * 0.04;
+        }
+        if (disease.category === "neurologic") {
+            eventMix.frailty += diseasePressure * 0.06;
+            eventMix.ltc += diseasePressure * 0.05;
+        }
+        if (disease.category === "renal") {
+            eventMix.ltc += diseasePressure * 0.06;
+            eventMix.hospitalization += diseasePressure * 0.05;
+        }
     });
     const total = Object.values(eventMix).reduce((sum, value) => sum + value, 0);
     return Object.fromEntries(Object.entries(eventMix).map(([key, value]) => [key, value / total]));

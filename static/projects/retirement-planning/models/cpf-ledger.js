@@ -12,11 +12,19 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
     let cpfInvestments = profile.cpfInvestments;
     const initialPayout = computeCpfLifeInitial(profile, plan);
     const rows = [];
+    const policyTrace = [];
     let cumulativePayouts = 0;
     let premiumEquivalent = Math.max(0, profile.ra + Math.min(plan.oneOffTopup || 0, Math.max(0, initialPolicy.ers - profile.ra)));
     for (let i = 0; i <= mortalityYears; i += 1) {
         const year = baseYear + i;
         const policyForYear = resolveCpfYear(year);
+        if (!policyTrace.length || policyTrace[policyTrace.length - 1]?.year !== policyForYear.year) {
+            policyTrace.push({
+                year: policyForYear.year ?? year,
+                sourceIds: (policyForYear.sources ?? []).map((source) => source.id),
+                note: policyForYear.note ?? `Resolved CPF policy for ${year}.`,
+            });
+        }
         const age = getAge(profile.birthDate) + i;
         const remainingRoom = Math.max(0, policyForYear.ers - ra);
         const familyTopup = familyRows.reduce((sum, row) => sum + (i < (row.activeYears || 0) ? (row.allowedTopup || 0) : 0), 0);
@@ -26,6 +34,7 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
         const extra = computeExtraInterest({ oa, ra, ma });
         const payoutMonthly = payoutForYear(initialPayout, plan.cpfPlan, age - plan.payoutStartAge);
         const payoutAnnual = payoutMonthly * 12;
+        const payoutDeductionAnnual = age >= plan.payoutStartAge ? payoutAnnual : 0;
         const oaInterest = oa * CPF_INTEREST.oa + extra.allocations.oa;
         const saInterest = sa * CPF_INTEREST.ra;
         const raInterest = ra * CPF_INTEREST.ra + extra.allocations.ra;
@@ -35,18 +44,23 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
         sa += saInterest;
         ra += raInterest + cashTopup;
         ma += maInterest;
+        let maOverflow = 0;
+        let maOverflowToRa = 0;
+        let maOverflowToSa = 0;
+        let maOverflowToOa = 0;
         if (ma > policyForYear.bhs) {
-            const overflow = ma - policyForYear.bhs;
-            if (ra < policyForYear.frs)
-                ra += overflow;
-            else if (sa > 0)
-                sa += overflow;
-            else
-                oa += overflow;
+            maOverflow = ma - policyForYear.bhs;
+            ma = policyForYear.bhs;
+            const raRoom = Math.max(0, policyForYear.frs - ra);
+            maOverflowToRa = Math.min(maOverflow, raRoom);
+            ra += maOverflowToRa;
+            const residualAfterRa = maOverflow - maOverflowToRa;
+            maOverflowToOa = Math.max(0, residualAfterRa);
+            oa += maOverflowToOa;
             ma = policyForYear.bhs;
         }
         if (age >= plan.payoutStartAge) {
-            premiumEquivalent = Math.max(0, premiumEquivalent - payoutAnnual + cashTopup + raInterest);
+            premiumEquivalent = Math.max(0, premiumEquivalent - payoutDeductionAnnual + cashTopup + raInterest);
             cumulativePayouts += payoutAnnual;
         }
         cpfInvestments += cpfInvestmentGrowth;
@@ -68,14 +82,23 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
             ers: policyForYear.ers,
             frs: policyForYear.frs,
             bhs: policyForYear.bhs,
+            policyYear: policyForYear.year ?? year,
+            policySourceIds: (policyForYear.sources ?? []).map((source) => source.id),
+            policyNote: policyForYear.note,
             extraInterestTotal: extra.totalExtra,
             oaInterest,
             saInterest,
             raInterest,
             maInterest,
+            maOverflow,
+            maOverflowToRa,
+            maOverflowToSa,
+            maOverflowToOa,
+            payoutDeductionAnnual,
+            raPayoutDeduction: age >= plan.payoutStartAge ? payoutAnnual : 0,
         });
     }
-    return { initialPayout, rows };
+    return { initialPayout, rows, policyTrace };
 }
 function getAge(birthDate) {
     const now = new Date();

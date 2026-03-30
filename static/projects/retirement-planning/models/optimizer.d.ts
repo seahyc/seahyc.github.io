@@ -8,3 +8,11 @@ export declare function computeRecommendations(profile: any, plan: any, result: 
     liquidityImpact: number;
     tag: string;
 }[];
+export declare function buildSensitivityDiagnostics(profile: any, plan: any, result: any): {
+    id: string;
+    label: string;
+    impact: any;
+    unit: string;
+    signal: string;
+    why: string;
+}[];

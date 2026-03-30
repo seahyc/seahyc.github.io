@@ -1,4 +1,3 @@
-// @ts-nocheck
 export function inferFrailty(profile) {
     const conditions = profile.chronicConditions?.length || 0;
     const priorSerious = profile.priorSeriousConditions?.length || 0;

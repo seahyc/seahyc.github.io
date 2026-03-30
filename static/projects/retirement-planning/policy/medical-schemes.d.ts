@@ -35,6 +35,8 @@ export interface ClaimPathAdjustments {
     preAuthorisationFactor: number;
     cancerDrugListFactor: number;
     deductibleWaiverFactor: number;
+    riderCopayFactor: number;
+    scheduledTreatmentFactor: number;
 }
 export interface TreatmentClassSchedule {
     publicCost: number;

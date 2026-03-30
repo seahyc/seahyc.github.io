@@ -1,5 +1,2 @@
-export declare function summarizeInterventions(plan: any): {
-    label: string;
-    longevityDelta: number;
-    costDelta: number;
-}[];
+import type { InterventionSummary, PlanData } from "../types.js";
+export declare function summarizeInterventions(plan: Pick<PlanData, "interventions">): InterventionSummary[];

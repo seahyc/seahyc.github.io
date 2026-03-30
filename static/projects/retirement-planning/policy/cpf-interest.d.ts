@@ -11,6 +11,12 @@ export interface ExtraInterestInput {
 export interface ExtraInterestResult {
     totalExtra: number;
     allocations: ExtraInterestAllocations;
+    basis: {
+        oaEligible: number;
+        combinedEligible: number;
+        first30k: number;
+        next30k: number;
+    };
 }
 export declare const CPF_INTEREST: {
     readonly oa: 0.025;

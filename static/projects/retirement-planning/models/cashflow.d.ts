@@ -1,33 +1,16 @@
 export declare function runPlan(profile: any, plan: any): {
     currentAge: number;
-    frailty: {
-        state: any;
-        annualMedicalLoadMultiplier: number;
-        annualMortalityMultiplier: number;
-    };
+    frailty: import("./frailty.js").FrailtySummary;
     constraints: import("../types.js").ConstraintSet;
-    familyTopups: {
-        allowedTopup: number;
-        modeledTaxSaved: number;
-        eligible: number;
-        taxSaved: number;
-        name: string;
-        marginalTaxRate: number;
-        amount: number;
-        cadence: string;
-        activeYears: number;
-    }[];
-    interventions: {
-        label: string;
-        longevityDelta: number;
-        costDelta: number;
-    }[];
+    familyTopups: import("./family-topups.js").NormalizedFamilyTopup[];
+    interventions: import("../types.js").InterventionSummary[];
     remainingYears: number;
     modalAge: number;
     medianAge: number;
     p75Age: number;
     p90Age: number;
     cpfInitialPayout: number;
+    policyTrace: import("../types.js").CpfPolicyResolution[];
     principalCrossoverAge: number | null;
     rows: {
         cpfPayoutAnnual: number;
@@ -65,21 +48,25 @@ export declare function runPlan(profile: any, plan: any): {
         ers: number;
         frs: number;
         bhs: number;
+        policyYear: number;
+        policySourceIds: string[];
+        policyNote: string | undefined;
         extraInterestTotal: number;
         oaInterest: number;
         saInterest: number;
         raInterest: number;
         maInterest: number;
+        maOverflow: number;
+        maOverflowToRa: number;
+        maOverflowToSa: number;
+        maOverflowToOa: number;
+        payoutDeductionAnnual: number;
+        raPayoutDeduction: number;
         yearOffset: number;
         survival: number;
-        mortalityState: any;
+        mortalityState: import("../types.js").FrailtyState;
     }[];
-    lifestyle: {
-        key: string;
-        label: string;
-        perTrip: number;
-        trips: number;
-    }[];
+    lifestyle: import("./lifestyle-equivalents.js").LifestyleEquivalentRow[];
     emergencyGap: number;
     confidence: string;
 };

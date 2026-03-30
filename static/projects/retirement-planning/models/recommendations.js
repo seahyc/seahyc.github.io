@@ -24,6 +24,79 @@ export function summarizePanel(profile, plan, result, recommendations) {
         },
     ];
 }
+export function buildExpertReview(profile, plan, result, recommendations, sensitivities) {
+    const first = result.rows[0];
+    const assumptionList = [
+        `CPF cohort year anchored to ${profile.profile.cpfCohortYear}.`,
+        `Medical scenario is ${plan.medicalScenario} with ${profile.profile.insurance.carePreference} care preference and ${profile.profile.insurance.shieldProvider || "no selected"} shield profile.`,
+        `Observed CPF payout anchor is ${formatMoney(profile.profile.observedCpfPayout || 0)} on ${profile.profile.observedCpfPlan || "n/a"}.`,
+        `Emergency reserve style is ${plan.emergencyStyle}, with a balanced reserve target of ${formatMoney(first?.emergencyBalanced || 0)}.`,
+    ];
+    const findings = [
+        `Median modeled death age is ${result.medianAge.toFixed(1)} with a modal age of ${result.modalAge.toFixed(1)} and p90 of ${result.p90Age.toFixed(1)}.`,
+        `Opening annual medical cash burden is ${formatMoney(first?.medicalCash || 0)} after ${formatMoney(first?.insurerPaid || 0)} insurer support and ${formatMoney(first?.medisavePaid || 0)} Medisave support.`,
+        `CPF LIFE starts near ${formatMoney(result.cpfInitialPayout)}/month under the ${plan.cpfPlan} plan, ${result.principalCrossoverAge ? `crossing principal around age ${result.principalCrossoverAge}.` : "without a principal crossover in the visible horizon."}`,
+        `Top recommendation: ${recommendations[0]?.title || "No recommendation generated"} because ${recommendations[0]?.why || "no rationale was generated."}`,
+    ];
+    const rationale = sensitivities.slice(0, 4).map((item) => `${item.label}: ${item.why}`);
+    return {
+        assumptions: assumptionList,
+        findings,
+        rationale,
+    };
+}
+export function buildPlanDiffSummary(currentBundle, comparisonBundle) {
+    if (!comparisonBundle)
+        return [];
+    const currentFirst = currentBundle.result.rows[0];
+    const comparisonFirst = comparisonBundle.result.rows[0];
+    const currentMedianEstate = currentBundle.result.rows.find((row) => row.age >= currentBundle.result.medianAge)?.estateEquivalent ?? currentFirst?.estateEquivalent ?? 0;
+    const comparisonMedianEstate = comparisonBundle.result.rows.find((row) => row.age >= comparisonBundle.result.medianAge)?.estateEquivalent ?? comparisonFirst?.estateEquivalent ?? 0;
+    return [
+        {
+            label: "CPF LIFE start payout",
+            current: currentBundle.result.cpfInitialPayout,
+            comparison: comparisonBundle.result.cpfInitialPayout,
+            delta: currentBundle.result.cpfInitialPayout - comparisonBundle.result.cpfInitialPayout,
+            unit: "currency-monthly",
+        },
+        {
+            label: "Median death age",
+            current: currentBundle.result.medianAge,
+            comparison: comparisonBundle.result.medianAge,
+            delta: currentBundle.result.medianAge - comparisonBundle.result.medianAge,
+            unit: "years",
+        },
+        {
+            label: "Medical cash / year",
+            current: currentFirst?.medicalCash || 0,
+            comparison: comparisonFirst?.medicalCash || 0,
+            delta: (currentFirst?.medicalCash || 0) - (comparisonFirst?.medicalCash || 0),
+            unit: "currency",
+        },
+        {
+            label: "Balanced emergency buffer",
+            current: currentFirst?.emergencyBalanced || 0,
+            comparison: comparisonFirst?.emergencyBalanced || 0,
+            delta: (currentFirst?.emergencyBalanced || 0) - (comparisonFirst?.emergencyBalanced || 0),
+            unit: "currency",
+        },
+        {
+            label: "Net annual cashflow",
+            current: currentFirst?.netAnnual || 0,
+            comparison: comparisonFirst?.netAnnual || 0,
+            delta: (currentFirst?.netAnnual || 0) - (comparisonFirst?.netAnnual || 0),
+            unit: "currency",
+        },
+        {
+            label: "Estate at median life",
+            current: currentMedianEstate,
+            comparison: comparisonMedianEstate,
+            delta: currentMedianEstate - comparisonMedianEstate,
+            unit: "currency",
+        },
+    ];
+}
 function formatMoney(value) {
     return new Intl.NumberFormat("en-SG", { style: "currency", currency: "SGD", maximumFractionDigits: 0 }).format(value || 0);
 }

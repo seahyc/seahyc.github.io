@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DEFAULT_DESTINATION_COSTS } from "../constants.js";
 export function buildLifestyleEquivalents(discretionaryAnnual, assumptions = DEFAULT_DESTINATION_COSTS) {
     return Object.entries(assumptions).map(([key, item]) => {

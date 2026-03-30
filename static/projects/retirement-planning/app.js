@@ -5,11 +5,11 @@ import { createPlan, duplicatePlan, deletePlan } from "./plan-manager.js";
 import { getActiveProfile, getActivePlan, getPlansForProfile } from "./state.js";
 import { validatePlan, getCpfConstraints, normalizePlanToConstraints } from "./policy/cpf-validation.js";
 import { runPlan } from "./models/cashflow.js";
-import { computeRecommendations } from "./models/optimizer.js";
-import { summarizePanel } from "./models/recommendations.js";
+import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
+import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
 import { buildAppendixRows } from "./models/appendix-ledger.js";
 import { renderChart } from "./ui/charts.js";
-import { detectAiCapabilities, buildHandoffPrompt, openHandoff } from "./ai/provider.js";
+import { buildAudienceBrief, buildDiffPrompt, buildHandoffPrompt, buildStructuredPayload, detectAiCapabilities, openHandoff } from "./ai/provider.js";
 import { UNIFIED_INSURANCE_DB } from "./data/insurance-db.js";
 const currency = new Intl.NumberFormat("en-SG", { style: "currency", currency: "SGD", maximumFractionDigits: 0 });
 const percent = new Intl.NumberFormat("en-SG", { style: "percent", maximumFractionDigits: 0 });
@@ -60,9 +60,32 @@ function render() {
         app.innerHTML = `<div class="rp-card"><div class="rp-card-body">No plans found for this profile.</div></div>`;
         return;
     }
+    const comparisonBundle = planResults.find((item) => item.plan.id !== activeBundle.plan.id) || null;
+    const sensitivities = buildSensitivityDiagnostics(profile, activeBundle.plan, activeBundle.result);
+    const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities);
+    const diffSummary = buildPlanDiffSummary(activeBundle, comparisonBundle);
     app.innerHTML = `
     <div class="rp-app">
-      ${renderBanner(syncedProfileRecord, syncedActivePlan, activeBundle, validation)}
+      <section class="rp-card rp-topline-stack">
+        <div class="rp-card-header">
+          <div>
+            <div class="rp-card-title">Topline decision stack</div>
+            <div class="rp-card-subtitle">Lead with the decisions first. Controls and appendix come after.</div>
+          </div>
+        </div>
+        <div class="rp-card-body">
+          <div class="rp-summary-grid">
+            ${renderSummary(activeBundle)}
+          </div>
+          <div class="rp-details">
+            <div class="rp-card-title">Panel notes</div>
+            <div class="rp-insights-list">${activeBundle.panel.map((item) => `<div class="rp-insight"><strong>${item.title}</strong><div>${item.summary}</div></div>`).join("")}</div>
+          </div>
+        </div>
+      </section>
+
+      ${renderBanner(syncedProfileRecord, syncedActivePlan)}
+
       <section class="rp-toolbar">
         <div class="rp-card">
           <div class="rp-card-header">
@@ -103,20 +126,17 @@ function render() {
         </div>
       </section>
 
-      <section class="rp-card">
-        <div class="rp-card-header">
-          <div>
-            <div class="rp-card-title">Topline decision stack</div>
-            <div class="rp-card-subtitle">Lead with the conclusions, the confidence, and the tradeoffs before the heavy input surfaces.</div>
+      <section class="rp-inspector-grid">
+        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle)}
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">AI workflow</div>
+              <div class="rp-card-subtitle">Audience-specific briefs, structured payloads, and plan-diff handoff prompts.</div>
+            </div>
           </div>
-        </div>
-        <div class="rp-card-body">
-          <div class="rp-summary-grid">
-            ${renderSummary(activeBundle)}
-          </div>
-          <div class="rp-details">
-            <div class="rp-card-title">Panel notes</div>
-            <div class="rp-insights-list">${activeBundle.panel.map((item) => `<div class="rp-insight"><strong>${item.title}</strong><div>${item.summary}</div></div>`).join("")}</div>
+          <div class="rp-card-body">
+            ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle, comparisonBundle)}
           </div>
         </div>
       </section>
@@ -190,18 +210,6 @@ function render() {
           <div class="rp-card">
             <div class="rp-card-header">
               <div>
-                <div class="rp-card-title">AI assist</div>
-                <div class="rp-card-subtitle">Browser AI first, then handoff or BYO API. Explanations only, never silent model changes.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">
-              ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle)}
-            </div>
-          </div>
-
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
                 <div class="rp-card-title">Convenience controls</div>
                 <div class="rp-card-subtitle">Max, min, balanced, and expert helpers around hard rules.</div>
               </div>
@@ -233,29 +241,18 @@ function render() {
       </section>
     </div>
   `;
-    bindActions(planResults, activeBundle);
+    bindActions(planResults, activeBundle, comparisonBundle);
     paintCharts(activeBundle);
 }
-function renderBanner(profileRecord, plan, activeBundle, validation) {
-    void activeBundle;
-    void validation;
+function renderBanner(profileRecord, plan) {
     const currentState = requireState();
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     return `
-    <div class="rp-banner-grid">
-      <div class="rp-banner privacy">
-        <strong>Private by design</strong>
-        <span>All calculations run in your browser. Data is stored locally on this device only.</span>
-      </div>
-      <div class="rp-banner storage">
-        <strong>Autosaved locally</strong>
-        <span>${profileRecord.name} / ${plan.name} · last refreshed ${now}</span>
-      </div>
-      <div class="rp-banner ai">
-        <strong>AI mode</strong>
-        <span>${AI_MODES.find((item) => item.id === currentState.ui.aiMode)?.label || "Local Browser AI"} · deterministic model remains source of truth.</span>
-      </div>
-    </div>
+    <section class="rp-status-strip" aria-label="Planner status">
+      <div class="rp-status-pill privacy"><strong>Local only</strong><span>Runs in-browser</span></div>
+      <div class="rp-status-pill storage"><strong>${escapeHtml(profileRecord.name)} / ${escapeHtml(plan.name)}</strong><span>Autosaved ${now}</span></div>
+      <div class="rp-status-pill ai"><strong>${escapeHtml(AI_MODES.find((item) => item.id === currentState.ui.aiMode)?.label || "Local Browser AI")}</strong><span>Deterministic model is source of truth</span></div>
+    </section>
   `;
 }
 function renderProfiles(activeProfileId) {
@@ -290,8 +287,64 @@ function renderPlans(plans, activePlanId) {
     </div>
   `).join("");
 }
-function renderAiPanel(profileRecord, plan, bundle) {
+function renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle) {
+    return `
+    <div class="rp-card">
+      <div class="rp-card-header">
+        <div>
+          <div class="rp-card-title">Expert inspector</div>
+          <div class="rp-card-subtitle">Assumptions, plan findings, sensitivities, and direct plan deltas for professional review.</div>
+        </div>
+      </div>
+      <div class="rp-card-body rp-stack">
+        <div class="rp-inspector-card">
+          <div class="rp-card-title">Assumptions and findings</div>
+          <div class="rp-insights-list">
+            ${expertReview.assumptions.map((item) => `<div class="rp-insight"><strong>Assumption</strong><div>${escapeHtml(item)}</div></div>`).join("")}
+            ${expertReview.findings.map((item) => `<div class="rp-insight"><strong>Finding</strong><div>${escapeHtml(item)}</div></div>`).join("")}
+          </div>
+        </div>
+        <details class="rp-inspector-details" open>
+          <summary>Top sensitivities</summary>
+          <div class="rp-diff-list">
+            ${sensitivities.slice(0, 6).map((item) => `
+              <div class="rp-insight">
+                <strong>${escapeHtml(item.label)} <span class="rp-chip">${escapeHtml(item.signal)}</span></strong>
+                <div>${escapeHtml(item.why)}</div>
+                <div class="rp-card-subtitle">Impact: ${formatInspectorDelta(item.impact, item.unit)}</div>
+              </div>
+            `).join("")}
+          </div>
+        </details>
+        <details class="rp-inspector-details" ${comparisonBundle ? "open" : ""}>
+          <summary>Plan diff ${comparisonBundle ? `vs ${escapeHtml(comparisonBundle.plan.name)}` : "(add another plan to compare)"}</summary>
+          <div class="rp-diff-list">
+            ${comparisonBundle
+        ? diffSummary.map((item) => `
+                  <div class="rp-mini-item">
+                    <span>${escapeHtml(item.label)}</span>
+                    <strong>${formatInspectorDelta(item.delta, item.unit)}</strong>
+                  </div>
+                `).join("")
+        : `<div class="rp-help">Create or duplicate another plan for this profile to see direct metric deltas here.</div>`}
+          </div>
+        </details>
+        <details class="rp-inspector-details">
+          <summary>Rationale notes</summary>
+          <div class="rp-insights-list">${expertReview.rationale.map((item) => `<div class="rp-insight">${escapeHtml(item)}</div>`).join("")}</div>
+        </details>
+      </div>
+    </div>
+  `;
+}
+function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
     const prompt = buildHandoffPrompt(profileRecord, plan, bundle.result);
+    const actuaryBrief = buildAudienceBrief("actuary", profileRecord, plan, bundle.result);
+    const doctorBrief = buildAudienceBrief("doctor", profileRecord, plan, bundle.result);
+    const plannerBrief = buildAudienceBrief("planner", profileRecord, plan, bundle.result);
+    const familyBrief = buildAudienceBrief("family", profileRecord, plan, bundle.result);
+    const payload = buildStructuredPayload(profileRecord, plan, bundle.result);
+    const diffPrompt = comparisonBundle ? buildDiffPrompt(profileRecord, plan, bundle.result, comparisonBundle.plan, comparisonBundle.result) : "";
     return `
     <div class="rp-field">
       <label>AI mode</label>
@@ -304,11 +357,43 @@ function renderAiPanel(profileRecord, plan, bundle) {
       <button class="rp-btn soft" data-ai-open="chatgpt">Open in ChatGPT</button>
       <button class="rp-btn soft" data-ai-open="claude">Open in Claude</button>
       <button class="rp-btn soft" data-copy-prompt="true">Copy expert prompt</button>
+      <button class="rp-btn soft" data-copy-brief="actuary">Copy actuary brief</button>
+      <button class="rp-btn soft" data-copy-brief="doctor">Copy doctor brief</button>
+      <button class="rp-btn soft" data-copy-brief="planner">Copy planner brief</button>
+      <button class="rp-btn soft" data-copy-brief="family">Copy family brief</button>
+      <button class="rp-btn soft" data-copy-payload="true">Copy structured JSON</button>
+      ${comparisonBundle ? `<button class="rp-btn soft" data-copy-diff="true">Copy plan diff brief</button>` : ""}
     </div>
-    <div class="rp-details">
-      <div class="rp-card-subtitle">Prompt preview</div>
+    <details class="rp-inspector-details" open>
+      <summary>Expert prompt preview</summary>
       <div class="rp-codebox">${escapeHtml(prompt)}</div>
-    </div>
+    </details>
+    <details class="rp-inspector-details">
+      <summary>Actuary brief preview</summary>
+      <div class="rp-codebox">${escapeHtml(actuaryBrief)}</div>
+    </details>
+    <details class="rp-inspector-details">
+      <summary>Doctor brief preview</summary>
+      <div class="rp-codebox">${escapeHtml(doctorBrief)}</div>
+    </details>
+    <details class="rp-inspector-details">
+      <summary>Planner brief preview</summary>
+      <div class="rp-codebox">${escapeHtml(plannerBrief)}</div>
+    </details>
+    <details class="rp-inspector-details">
+      <summary>Family brief preview</summary>
+      <div class="rp-codebox">${escapeHtml(familyBrief)}</div>
+    </details>
+    <details class="rp-inspector-details">
+      <summary>Structured payload preview</summary>
+      <div class="rp-codebox">${escapeHtml(payload)}</div>
+    </details>
+    ${comparisonBundle ? `
+      <details class="rp-inspector-details">
+        <summary>Plan diff prompt preview</summary>
+        <div class="rp-codebox">${escapeHtml(diffPrompt)}</div>
+      </details>
+    ` : ""}
   `;
 }
 function renderConvenience() {
@@ -480,9 +565,9 @@ function renderChartCards(bundle) {
 }
 function renderAppendix(rows, preset) {
     const columns = {
-        full: ["age", "yearOffset", "mortalityState", "survival", "grossIncomeAnnual", "basicSpendAnnual", "discretionaryAnnual", "medicalGross", "insurerPaid", "medisavePaid", "medicalCash", "emergencyExpected", "emergencyBalanced", "netAnnual", "oa", "sa", "ra", "ma", "bank", "familyTopup", "ownTopup", "extraInterestTotal", "ers", "frs", "bhs", "cumulativePayouts", "premiumEquivalent", "taxSavingsAnnual", "estateEquivalent", "liquidAssets"],
+        full: ["age", "yearOffset", "mortalityState", "survival", "grossIncomeAnnual", "basicSpendAnnual", "discretionaryAnnual", "medicalGross", "insurerPaid", "medisavePaid", "medicalCash", "emergencyExpected", "emergencyBalanced", "liquidityCoverageMonths", "emergencyCoverageRatio", "medicalShareOfSpend", "cpfShareOfIncome", "netAnnual", "oa", "sa", "ra", "ma", "bank", "familyTopup", "ownTopup", "extraInterestTotal", "ers", "frs", "bhs", "cumulativePayouts", "premiumEquivalent", "taxSavingsAnnual", "estateEquivalent", "estateMinusEmergency", "liquidAssets"],
         cpf: ["age", "cpfPayoutAnnual", "oa", "sa", "ra", "ma", "familyTopup", "ownTopup", "extraInterestTotal", "ers", "frs", "bhs", "cumulativePayouts", "premiumEquivalent"],
-        medical: ["age", "medicalGross", "insurerPaid", "medisavePaid", "medicalCash", "emergencyExpected", "emergencyBalanced", "emergencyConservative"],
+        medical: ["age", "medicalGross", "insurerPaid", "medisavePaid", "medicalCash", "medicalShareOfSpend", "emergencyExpected", "emergencyBalanced", "emergencyCoverageRatio", "emergencyConservative"],
         family: ["age", "supportAnnual", "familyTopup", "ownTopup", "taxSavingsAnnual", "cpfPayoutAnnual", "netAnnual"],
     }[preset];
     return `
@@ -502,7 +587,7 @@ function renderAppendix(rows, preset) {
     </div>
   `;
 }
-function bindActions(planResults, activeBundle) {
+function bindActions(planResults, activeBundle, comparisonBundle) {
     void planResults;
     if (!state)
         return;
@@ -565,6 +650,24 @@ function bindActions(planResults, activeBundle) {
         if (!state)
             return;
         await navigator.clipboard.writeText(buildHandoffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result));
+    });
+    app.querySelectorAll("[data-copy-brief]").forEach((button) => button.addEventListener("click", async () => {
+        if (!state)
+            return;
+        const audience = button.dataset.copyBrief;
+        if (!audience)
+            return;
+        await navigator.clipboard.writeText(buildAudienceBrief(audience, getActiveProfile(state), getActivePlan(state), activeBundle.result));
+    }));
+    app.querySelector("[data-copy-payload='true']")?.addEventListener("click", async () => {
+        if (!state)
+            return;
+        await navigator.clipboard.writeText(buildStructuredPayload(getActiveProfile(state), getActivePlan(state), activeBundle.result));
+    });
+    app.querySelector("[data-copy-diff='true']")?.addEventListener("click", async () => {
+        if (!state || !comparisonBundle)
+            return;
+        await navigator.clipboard.writeText(buildDiffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result, comparisonBundle.plan, comparisonBundle.result));
     });
     app.querySelectorAll("[data-field='ui.aiMode']").forEach((select) => select.addEventListener("change", async () => {
         if (!state)
@@ -777,6 +880,21 @@ function select(path, current, entries) {
 }
 function metric(label, value) {
     return `<div class="rp-metric-pill"><span>${label}</span><strong>${value}</strong></div>`;
+}
+function formatInspectorDelta(value, unit) {
+    if (!Number.isFinite(value))
+        return "n/a";
+    if (unit === "years")
+        return `${value >= 0 ? "+" : ""}${value.toFixed(1)} years`;
+    if (unit === "percent")
+        return `${(value * 100).toFixed(0)}%`;
+    if (unit === "currency")
+        return currency.format(value);
+    if (unit === "currency-monthly")
+        return `${currency.format(value)}/m`;
+    if (unit === "monthly-currency")
+        return `${currency.format(value)}/m`;
+    return String(value);
 }
 function lookupByAge(rows, age) {
     return rows.reduce((closest, row) => {

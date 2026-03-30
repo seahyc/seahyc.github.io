@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { estimateTopupTaxSavings } from "../policy/tax-relief.js";
 export function normalizeFamilyTopups(profile, plan, remainingErsRoom) {
     const contributors = estimateTopupTaxSavings(profile.familyContributors || []);

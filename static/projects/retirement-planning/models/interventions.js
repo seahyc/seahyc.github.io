@@ -1,4 +1,3 @@
-// @ts-nocheck
 export function summarizeInterventions(plan) {
     const interventions = [];
     if (plan.interventions?.exerciseUpgrade)

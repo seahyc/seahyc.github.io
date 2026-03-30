@@ -1,6 +1,6 @@
-export declare function buildLifestyleEquivalents(discretionaryAnnual: any, assumptions?: Record<string, import("../types.js").DestinationCost>): {
+import type { DestinationCost, LifestyleEquivalent } from "../types.js";
+export interface LifestyleEquivalentRow extends LifestyleEquivalent {
     key: string;
-    label: string;
     perTrip: number;
-    trips: number;
-}[];
+}
+export declare function buildLifestyleEquivalents(discretionaryAnnual: number, assumptions?: Record<string, DestinationCost>): LifestyleEquivalentRow[];

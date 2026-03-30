@@ -11,6 +11,16 @@ export type MedicalScenario = "insurance-default" | "conservative-downside" | "p
 export type EmergencyStyle = "minimum" | "balanced" | "conservative";
 export type AiMode = "browser" | "api" | "chatgpt" | "claude" | "off";
 export type AppendixPreset = "full" | "cpf" | "medical" | "family";
+export interface CpfPolicySource {
+    id: string;
+    label: string;
+    url: string;
+}
+export interface CpfPolicyResolution {
+    year: number;
+    sourceIds: string[];
+    note?: string;
+}
 export interface DestinationCost {
     label: string;
     airfare: number;
@@ -124,6 +134,8 @@ export interface AppState {
 }
 export interface ConstraintSet {
     year: number;
+    policySourceIds?: string[];
+    policyNote?: string;
     remainingErsRoom: number;
     bhs: number;
     frs: number;
@@ -182,6 +194,9 @@ export interface InterventionSummary {
 export interface CashflowRow {
     age: number;
     yearOffset: number;
+    policyYear?: number;
+    policySourceIds?: string[];
+    policyNote?: string | undefined;
     survival: number;
     mortalityState: string;
     bank: number;
@@ -218,12 +233,18 @@ export interface CashflowRow {
     saInterest?: number;
     raInterest?: number;
     maInterest?: number;
+    maOverflow?: number;
+    maOverflowToRa?: number;
+    maOverflowToSa?: number;
+    maOverflowToOa?: number;
+    payoutDeductionAnnual?: number;
+    raPayoutDeduction?: number;
     ers?: number;
     frs?: number;
     bhs?: number;
     basicCoverage: boolean;
     totalCoverage: boolean;
-    [key: string]: string | number | boolean | null | undefined;
+    [key: string]: unknown;
 }
 export interface FrailtySummary {
     state: string;
@@ -231,6 +252,7 @@ export interface FrailtySummary {
 }
 export interface PlanRunResult {
     currentAge: number;
+    policyTrace?: CpfPolicyResolution[];
     frailty: FrailtySummary;
     constraints: ConstraintSet;
     familyTopups: FamilyTopupModel[];

@@ -32,5 +32,10 @@ export function buildAppendixRows(result) {
         liquidAssets: row.liquidAssets,
         basicCoverage: row.basicCoverage,
         totalCoverage: row.totalCoverage,
+        liquidityCoverageMonths: (row.liquidAssets || 0) / Math.max(1, (row.basicSpendAnnual || 0) / 12),
+        emergencyCoverageRatio: (row.liquidAssets || 0) / Math.max(1, row.emergencyBalanced || 0),
+        medicalShareOfSpend: (row.medicalCash || 0) / Math.max(1, row.totalSpendAnnual || 0),
+        cpfShareOfIncome: (row.payoutAnnual || row.cpfPayoutAnnual || 0) / Math.max(1, row.grossIncomeAnnual || 0),
+        estateMinusEmergency: (row.estateEquivalent || 0) - (row.emergencyBalanced || 0),
     }));
 }

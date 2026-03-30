@@ -6,4 +6,7 @@ export declare function listSupportedDiseases(): {
     key: any;
     label: any;
     category: any;
+    surveillanceCadenceMonths: any;
+    recurrenceWindowYears: any;
 }[];
+export declare function getDiseaseClaimPath(key: any): any;

@@ -24,6 +24,12 @@ export function computeExtraInterest({ oa, ra, ma }) {
     return {
         totalExtra,
         allocations,
+        basis: {
+            oaEligible,
+            combinedEligible: combined,
+            first30k: first30,
+            next30k: next30,
+        },
     };
 }
 function allocateExtraInterest(balances, totalExtra) {

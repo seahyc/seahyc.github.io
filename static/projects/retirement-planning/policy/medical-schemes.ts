@@ -50,6 +50,8 @@ export interface ClaimPathAdjustments {
   preAuthorisationFactor: number;
   cancerDrugListFactor: number;
   deductibleWaiverFactor: number;
+  riderCopayFactor: number;
+  scheduledTreatmentFactor: number;
 }
 
 export interface TreatmentClassSchedule {
@@ -181,7 +183,18 @@ export function getCoverageRule(insurancePlan: InsurancePlanLike | undefined, tr
 }
 
 export function getClaimPathAdjustments(insurancePlan: InsurancePlanLike | undefined, carePreference: CarePreference = "public", treatmentClass: TreatmentClass = "chronicSpecialist"): ClaimPathAdjustments {
+  const claimPathRules = (insurancePlan?.claimPathRules || {}) as {
+    specialistPanelWindowDays?: number;
+    outpatientCancerDrugCoverage?: string;
+    preAdmissionWindowDays?: number;
+    postDischargeWindowDays?: number;
+    extendedPanelAnnualCap?: number | null;
+    deductibleWaiverAppliesTo?: string[];
+    riderCoPayAppliesTo?: string[];
+    useExtendedPanelNetwork?: boolean;
+  };
   const prefersPrivate = carePreference === "private";
+  const scheduledTreatment = treatmentClass !== "emergencyAccident";
   const panelWeight = prefersPrivate
     ? (insurancePlan?.panelStrength === "high" ? 0.82 : insurancePlan?.panelStrength === "medium" ? 0.68 : 0.55)
     : carePreference === "mixed"
@@ -191,17 +204,31 @@ export function getClaimPathAdjustments(insurancePlan: InsurancePlanLike | undef
     ? panelWeight * (insurancePlan?.preferredProviderFactor || 1) + (1 - panelWeight) * (insurancePlan?.nonPanelCoveragePenalty || 0.78)
     : 1;
   const preAuthorisationFactor = insurancePlan?.preAuthorisationRequiredForBestTerms
-    ? insurancePlan?.preAuthorisationFailurePenalty || (0.9 + (prefersPrivate ? 0.03 : 0.06))
+    ? (scheduledTreatment || !insurancePlan?.emergencyPreAuthExempt)
+      ? insurancePlan?.preAuthorisationFailurePenalty || (0.9 + (prefersPrivate ? 0.03 : 0.06))
+      : 1
     : 1;
   const cancerDrugListFactor = treatmentClass === "outpatientCancerDrug"
-    ? 1 - (insurancePlan?.nonCdlCancerPenalty || 0)
+    ? (claimPathRules.outpatientCancerDrugCoverage?.includes("cdl-and-non-cdl")
+      ? 1
+      : 1 - (insurancePlan?.nonCdlCancerPenalty || 0))
     : 1;
-  const deductibleWaiverFactor = insurancePlan?.deductibleWaiverEligible ? 1.03 : 1;
+  const deductibleWaiverApplies = claimPathRules.deductibleWaiverAppliesTo?.includes(treatmentClass) ?? (treatmentClass === "inpatient" || treatmentClass === "daySurgery");
+  const deductibleWaiverFactor = insurancePlan?.deductibleWaiverEligible && deductibleWaiverApplies ? 1.03 : 1;
+  const riderCopayApplies = claimPathRules.riderCoPayAppliesTo?.includes(treatmentClass) ?? scheduledTreatment;
+  const riderCopayFactor = insurancePlan?.riderCopayPct && riderCopayApplies ? Math.max(0.82, 1 - insurancePlan.riderCopayPct) : 1;
+  const scheduledTreatmentFactor = scheduledTreatment
+    ? 1
+    : insurancePlan?.emergencyPreAuthExempt
+      ? 1.02
+      : 0.96;
   return {
     panelWeight,
     panelFactor,
     preAuthorisationFactor,
     cancerDrugListFactor,
     deductibleWaiverFactor,
+    riderCopayFactor,
+    scheduledTreatmentFactor,
   };
 }

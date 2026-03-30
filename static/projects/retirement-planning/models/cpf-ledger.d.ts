@@ -1,4 +1,4 @@
-import type { FamilyTopupModel, PlanData, ProfileData } from "../types.js";
+import type { CpfPolicyResolution, FamilyTopupModel, PlanData, ProfileData } from "../types.js";
 export declare function buildCpfLedger(profile: ProfileData, plan: PlanData, mortalityYears?: number, familyRows?: Array<FamilyTopupModel & {
     activeYears?: number;
     allowedTopup?: number;
@@ -21,10 +21,20 @@ export declare function buildCpfLedger(profile: ProfileData, plan: PlanData, mor
         ers: number;
         frs: number;
         bhs: number;
+        policyYear: number;
+        policySourceIds: string[];
+        policyNote: string | undefined;
         extraInterestTotal: number;
         oaInterest: number;
         saInterest: number;
         raInterest: number;
         maInterest: number;
+        maOverflow: number;
+        maOverflowToRa: number;
+        maOverflowToSa: number;
+        maOverflowToOa: number;
+        payoutDeductionAnnual: number;
+        raPayoutDeduction: number;
     }[];
+    policyTrace: CpfPolicyResolution[];
 };

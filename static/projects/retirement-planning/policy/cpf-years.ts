@@ -42,8 +42,8 @@ export const CPF_POLICY_SOURCES: Record<number, CpfPolicySource[]> = {
 };
 
 export const CPF_POLICY_BY_YEAR: Record<number, CpfPolicyYear> = {
-  2025: { brs: 106500, frs: 213000, ers: 426000, bhs: 75500, year: 2025, sources: CPF_POLICY_SOURCES[2025], note: "Published CPF retirement sum anchors used for current planning." },
-  2026: { brs: 110200, frs: 220400, ers: 440800, bhs: 79000, year: 2026, sources: CPF_POLICY_SOURCES[2026], note: "Current browser/runtime year anchor for this planner session." },
+  2025: { brs: 106500, frs: 213000, ers: 426000, bhs: 75500, year: 2025, sources: [...(CPF_POLICY_SOURCES[2025] ?? [])], note: "Published CPF retirement sum anchors used for current planning." },
+  2026: { brs: 110200, frs: 220400, ers: 440800, bhs: 79000, year: 2026, sources: [...(CPF_POLICY_SOURCES[2026] ?? [])], note: "Current browser/runtime year anchor for this planner session." },
 };
 
 const GROWTH_ASSUMPTIONS = {
@@ -55,7 +55,10 @@ const GROWTH_ASSUMPTIONS = {
 
 export function resolveCpfYear(year: number): CpfPolicyYear {
   const exactPolicy = CPF_POLICY_BY_YEAR[year];
-  if (exactPolicy) return { ...exactPolicy, year, sources: exactPolicy.sources ?? CPF_POLICY_SOURCES[year] ?? [] };
+  if (exactPolicy) {
+    const sources = exactPolicy.sources ?? CPF_POLICY_SOURCES[year] ?? [];
+    return { ...exactPolicy, year, sources: [...sources] };
+  }
   const knownYears = Object.keys(CPF_POLICY_BY_YEAR).map(Number).sort((a, b) => a - b);
   const baseYear = knownYears.at(-1) ?? getCurrentPolicyYear();
   const basePolicy = CPF_POLICY_BY_YEAR[baseYear] ?? CPF_POLICY_BY_YEAR[getCurrentPolicyYear()] ?? Object.values(CPF_POLICY_BY_YEAR)[0];
@@ -63,10 +66,11 @@ export function resolveCpfYear(year: number): CpfPolicyYear {
     return { brs: 0, frs: 0, ers: 0, bhs: 0, year, sources: [], note: "No CPF policy anchors available." };
   }
   if (year <= baseYear) {
+    const sources = basePolicy.sources ?? CPF_POLICY_SOURCES[baseYear] ?? [];
     return {
       ...basePolicy,
       year: baseYear,
-      sources: basePolicy.sources ?? CPF_POLICY_SOURCES[baseYear] ?? [],
+      sources: [...sources],
       note: basePolicy.note ?? "Resolved from nearest available CPF policy year.",
     };
   }
@@ -82,9 +86,20 @@ export function resolveCpfYear(year: number): CpfPolicyYear {
   return {
     ...current,
     year,
-    sources: basePolicy.sources ?? CPF_POLICY_SOURCES[baseYear] ?? [],
+    sources: [...(basePolicy.sources ?? CPF_POLICY_SOURCES[baseYear] ?? [])],
     note: `Derived from ${baseYear} policy anchors using rounded annual growth assumptions.`,
   };
+}
+
+export function resolveCpfPolicyTrace(year: number): CpfPolicyResolution[] {
+  const resolved = resolveCpfYear(year);
+  return [
+    {
+      year: resolved.year ?? year,
+      sourceIds: (resolved.sources ?? []).map((source) => source.id),
+      note: resolved.note ?? "Resolved from CPF policy anchors.",
+    },
+  ];
 }
 
 function roundCpf(value: number): number {

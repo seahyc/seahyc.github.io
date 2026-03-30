@@ -10,6 +10,7 @@ function makeDisease({
   surveillanceCostAnnual = 0,
   recurrenceWeightByYears = [],
   treatmentMix = null,
+  claimsPathway = null,
   aliases = [],
 }) {
   return {
@@ -23,6 +24,7 @@ function makeDisease({
     surveillanceCostAnnual,
     recurrenceWeightByYears,
     treatmentMix: treatmentMix || defaultTreatmentMixForCategory(category),
+    claimsPathway: claimsPathway || defaultClaimsPathForCategory(category),
     aliases,
   };
 }
@@ -105,7 +107,209 @@ function defaultTreatmentMixForCategory(category) {
   return defaults[category] || { chronicSpecialist: 0.6, inpatient: 0.2, rehabilitation: 0.1, homeRecovery: 0.1 };
 }
 
+function defaultClaimsPathForCategory(category) {
+  const defaults = {
+    cancer: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        outpatientCancerDrug: 0.34,
+        outpatientCancerNonDrug: 0.22,
+        inpatient: 0.18,
+        chronicSpecialist: 0.1,
+        rehabilitation: 0.06,
+        homeRecovery: 0.04,
+        palliative: 0.06,
+      },
+      claimSensitivity: { panel: 0.74, preAuth: 0.82, cancerDrugList: 0.95, deductibleWaiver: 0.9 },
+    },
+    cardiovascular: {
+      surveillanceCadenceMonths: 12,
+      recurrenceWindowYears: 6,
+      recurrenceIntensity: 0.16,
+      pathBias: {
+        inpatient: 0.22,
+        emergencyAccident: 0.16,
+        chronicSpecialist: 0.2,
+        rehabilitation: 0.16,
+        homeRecovery: 0.1,
+        longTermCare: 0.08,
+      },
+      claimSensitivity: { panel: 0.8, preAuth: 0.78, cancerDrugList: 1, deductibleWaiver: 0.96 },
+    },
+    cardiometabolic: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 8,
+      recurrenceIntensity: 0.1,
+      pathBias: {
+        chronicSpecialist: 0.3,
+        daySurgery: 0.12,
+        inpatient: 0.12,
+        rehabilitation: 0.1,
+        homeRecovery: 0.1,
+        longTermCare: 0.1,
+      },
+      claimSensitivity: { panel: 0.76, preAuth: 0.72, cancerDrugList: 1, deductibleWaiver: 0.94 },
+    },
+    renal: {
+      surveillanceCadenceMonths: 4,
+      recurrenceWindowYears: 12,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        chronicSpecialist: 0.24,
+        inpatient: 0.16,
+        rehabilitation: 0.08,
+        homeRecovery: 0.08,
+        longTermCare: 0.24,
+        emergencyAccident: 0.08,
+      },
+      claimSensitivity: { panel: 0.72, preAuth: 0.76, cancerDrugList: 1, deductibleWaiver: 0.92 },
+    },
+    respiratory: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 8,
+      recurrenceIntensity: 0.1,
+      pathBias: {
+        inpatient: 0.18,
+        chronicSpecialist: 0.28,
+        emergencyAccident: 0.14,
+        rehabilitation: 0.14,
+        homeRecovery: 0.12,
+        longTermCare: 0.08,
+      },
+      claimSensitivity: { panel: 0.76, preAuth: 0.74, cancerDrugList: 1, deductibleWaiver: 0.94 },
+    },
+    neurologic: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.18,
+      pathBias: {
+        inpatient: 0.16,
+        chronicSpecialist: 0.16,
+        rehabilitation: 0.18,
+        homeRecovery: 0.16,
+        longTermCare: 0.2,
+        mentalHealthInpatient: 0.08,
+      },
+      claimSensitivity: { panel: 0.7, preAuth: 0.72, cancerDrugList: 1, deductibleWaiver: 0.9 },
+    },
+    musculoskeletal: {
+      surveillanceCadenceMonths: 12,
+      recurrenceWindowYears: 6,
+      recurrenceIntensity: 0.08,
+      pathBias: {
+        rehabilitation: 0.28,
+        homeRecovery: 0.22,
+        chronicSpecialist: 0.16,
+        inpatient: 0.12,
+        daySurgery: 0.12,
+        emergencyAccident: 0.04,
+      },
+      claimSensitivity: { panel: 0.78, preAuth: 0.74, cancerDrugList: 1, deductibleWaiver: 0.96 },
+    },
+    autoimmune: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.14,
+      pathBias: {
+        chronicSpecialist: 0.24,
+        inpatient: 0.14,
+        rehabilitation: 0.14,
+        homeRecovery: 0.1,
+        daySurgery: 0.1,
+        longTermCare: 0.08,
+      },
+      claimSensitivity: { panel: 0.74, preAuth: 0.76, cancerDrugList: 1, deductibleWaiver: 0.94 },
+    },
+    hepatic: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.16,
+      pathBias: {
+        inpatient: 0.2,
+        chronicSpecialist: 0.18,
+        emergencyAccident: 0.08,
+        rehabilitation: 0.1,
+        homeRecovery: 0.08,
+        longTermCare: 0.16,
+        endOfLife: 0.08,
+      },
+      claimSensitivity: { panel: 0.7, preAuth: 0.74, cancerDrugList: 1, deductibleWaiver: 0.9 },
+    },
+  };
+  return defaults[category] || {
+    surveillanceCadenceMonths: 12,
+    recurrenceWindowYears: 6,
+    recurrenceIntensity: 0.08,
+    pathBias: { chronicSpecialist: 0.5, inpatient: 0.2, rehabilitation: 0.15, homeRecovery: 0.15 },
+    claimSensitivity: { panel: 0.75, preAuth: 0.75, cancerDrugList: 1, deductibleWaiver: 0.95 },
+  };
+}
+
 function cancerDisease(key, label, overrides = {}) {
+  const cancerPathways = {
+    "breast-cancer": {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.24,
+      pathBias: {
+        outpatientCancerDrug: 0.42,
+        outpatientCancerNonDrug: 0.2,
+        inpatient: 0.16,
+        chronicSpecialist: 0.08,
+        rehabilitation: 0.04,
+        homeRecovery: 0.04,
+        palliative: 0.04,
+      },
+      claimSensitivity: { panel: 0.72, preAuth: 0.82, cancerDrugList: 0.96, deductibleWaiver: 0.9 },
+    },
+    "colorectal-cancer": {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        inpatient: 0.2,
+        outpatientCancerDrug: 0.24,
+        outpatientCancerNonDrug: 0.18,
+        chronicSpecialist: 0.14,
+        rehabilitation: 0.1,
+        homeRecovery: 0.08,
+        palliative: 0.06,
+      },
+      claimSensitivity: { panel: 0.74, preAuth: 0.8, cancerDrugList: 0.94, deductibleWaiver: 0.9 },
+    },
+    "lung-cancer": {
+      surveillanceCadenceMonths: 4,
+      recurrenceWindowYears: 8,
+      recurrenceIntensity: 0.28,
+      pathBias: {
+        inpatient: 0.18,
+        outpatientCancerDrug: 0.3,
+        outpatientCancerNonDrug: 0.16,
+        chronicSpecialist: 0.12,
+        rehabilitation: 0.06,
+        homeRecovery: 0.04,
+        palliative: 0.1,
+      },
+      claimSensitivity: { panel: 0.7, preAuth: 0.84, cancerDrugList: 0.9, deductibleWaiver: 0.88 },
+    },
+    "prostate-cancer": {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.18,
+      pathBias: {
+        outpatientCancerDrug: 0.18,
+        outpatientCancerNonDrug: 0.18,
+        chronicSpecialist: 0.2,
+        inpatient: 0.14,
+        rehabilitation: 0.08,
+        homeRecovery: 0.08,
+        palliative: 0.04,
+      },
+      claimSensitivity: { panel: 0.76, preAuth: 0.78, cancerDrugList: 0.92, deductibleWaiver: 0.92 },
+    },
+  };
   return makeDisease({
     key,
     label,
@@ -121,6 +325,21 @@ function cancerDisease(key, label, overrides = {}) {
       { yearsSince: 5, recurrenceWeight: 0.1 },
       { yearsSince: 10, recurrenceWeight: 0.06 },
     ],
+    claimsPathway: cancerPathways[key] || {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 10,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        outpatientCancerDrug: 0.34,
+        outpatientCancerNonDrug: 0.22,
+        inpatient: 0.18,
+        chronicSpecialist: 0.1,
+        rehabilitation: 0.06,
+        homeRecovery: 0.04,
+        palliative: 0.06,
+      },
+      claimSensitivity: { panel: 0.74, preAuth: 0.82, cancerDrugList: 0.95, deductibleWaiver: 0.9 },
+    },
     treatmentMix: {
       inpatient: 0.24,
       outpatientCancerDrug: 0.38,
@@ -197,6 +416,20 @@ const DISEASE_LIST = [
     hospitalizationMultiplier: 1.22,
     emergencyMedicalWeight: 0.16,
     surveillanceCostAnnual: 900,
+    claimsPathway: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 8,
+      recurrenceIntensity: 0.2,
+      pathBias: {
+        inpatient: 0.2,
+        chronicSpecialist: 0.22,
+        rehabilitation: 0.16,
+        homeRecovery: 0.1,
+        longTermCare: 0.14,
+        emergencyAccident: 0.08,
+      },
+      claimSensitivity: { panel: 0.78, preAuth: 0.76, cancerDrugList: 1, deductibleWaiver: 0.94 },
+    },
   }),
   makeDisease({
     key: "atrial-fibrillation",
@@ -229,6 +462,20 @@ const DISEASE_LIST = [
     hospitalizationMultiplier: 1.2,
     emergencyMedicalWeight: 0.13,
     surveillanceCostAnnual: 900,
+    claimsPathway: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 8,
+      recurrenceIntensity: 0.24,
+      pathBias: {
+        inpatient: 0.14,
+        rehabilitation: 0.22,
+        homeRecovery: 0.18,
+        chronicSpecialist: 0.14,
+        longTermCare: 0.2,
+        mentalHealthInpatient: 0.06,
+      },
+      claimSensitivity: { panel: 0.68, preAuth: 0.7, cancerDrugList: 1, deductibleWaiver: 0.88 },
+    },
   }),
   makeDisease({
     key: "tia",
@@ -260,6 +507,20 @@ const DISEASE_LIST = [
     hospitalizationMultiplier: 1.2,
     emergencyMedicalWeight: 0.1,
     surveillanceCostAnnual: 1400,
+    claimsPathway: {
+      surveillanceCadenceMonths: 4,
+      recurrenceWindowYears: 12,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        chronicSpecialist: 0.28,
+        inpatient: 0.16,
+        rehabilitation: 0.08,
+        homeRecovery: 0.08,
+        longTermCare: 0.24,
+        emergencyAccident: 0.08,
+      },
+      claimSensitivity: { panel: 0.72, preAuth: 0.76, cancerDrugList: 1, deductibleWaiver: 0.92 },
+    },
     aliases: ["ckd"],
   }),
   makeDisease({
@@ -323,6 +584,20 @@ const DISEASE_LIST = [
     hospitalizationMultiplier: 1.14,
     emergencyMedicalWeight: 0.12,
     surveillanceCostAnnual: 900,
+    claimsPathway: {
+      surveillanceCadenceMonths: 6,
+      recurrenceWindowYears: 12,
+      recurrenceIntensity: 0.22,
+      pathBias: {
+        chronicSpecialist: 0.12,
+        rehabilitation: 0.16,
+        homeRecovery: 0.14,
+        longTermCare: 0.32,
+        mentalHealthInpatient: 0.08,
+        inpatient: 0.1,
+      },
+      claimSensitivity: { panel: 0.66, preAuth: 0.72, cancerDrugList: 1, deductibleWaiver: 0.9 },
+    },
     aliases: ["alzheimers", "alzheimer's disease"],
   }),
   makeDisease({
@@ -598,5 +873,16 @@ export function parseDiseaseList(rawList) {
 }
 
 export function listSupportedDiseases() {
-  return DISEASE_LIST.map((item) => ({ key: item.key, label: item.label, category: item.category }));
+  return DISEASE_LIST.map((item) => ({
+    key: item.key,
+    label: item.label,
+    category: item.category,
+    surveillanceCadenceMonths: item.claimsPathway?.surveillanceCadenceMonths ?? null,
+    recurrenceWindowYears: item.claimsPathway?.recurrenceWindowYears ?? null,
+  }));
+}
+
+export function getDiseaseClaimPath(key) {
+  const disease = getDiseaseProfile(key);
+  return disease?.claimsPathway || null;
 }

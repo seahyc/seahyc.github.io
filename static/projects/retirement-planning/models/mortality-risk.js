@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { parseDiseaseList } from "../data/disease-db.js";
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 export function computeRiskMultiplier(profile, plan) {
@@ -21,7 +20,8 @@ export function computeRiskMultiplier(profile, plan) {
         multiplier *= 1.15;
     if (profile.cognition !== "normal")
         multiplier *= 1.18;
-    parseDiseaseList([...(profile.chronicConditions || []), ...(profile.priorSeriousConditions || [])]).forEach(({ profile: disease }) => {
+    parseDiseaseList([...(profile.chronicConditions || []), ...(profile.priorSeriousConditions || [])]).forEach((item) => {
+        const disease = item.profile;
         multiplier *= disease.mortalityMultiplier;
     });
     if (plan?.interventions?.exerciseUpgrade)
