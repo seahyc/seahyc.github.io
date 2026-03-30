@@ -54,6 +54,8 @@ jobs:
             --gc \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Prune non-runtime planner sources from public
+        run: node projects-src/retirement-planning/prune-public.mjs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
