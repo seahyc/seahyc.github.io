@@ -68,11 +68,13 @@ function render() {
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
 
-      <section class="rp-panel-grid rp-setup-grid">
-        <div class="rp-card">
-          <div class="rp-card-header">
-            <div>
-              <div class="rp-card-title">Profiles and plans</div>
+      <section class="rp-card rp-manage-card">
+        <div class="rp-card-body">
+          <div class="rp-manage-bar">
+            <div class="rp-manage-meta">
+              <span class="rp-chip">${escapeHtml(syncedProfileRecord.name)}</span>
+              <span class="rp-chip">${escapeHtml(syncedActivePlan.name)}</span>
+              <span class="rp-chip">${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
             </div>
             <div class="rp-flex">
               <button class="rp-btn accent" data-action="new-profile">New profile</button>
@@ -81,30 +83,17 @@ function render() {
               <button class="rp-btn soft" data-action="duplicate-plan">Duplicate plan</button>
             </div>
           </div>
-          <div class="rp-card-body rp-profile-grid">
-            <div class="rp-section-stack">
+          <details class="rp-inspector-details">
+            <summary>Manage profiles and plans</summary>
+            <div class="rp-manage-grid">
               <div class="rp-profile-list">${renderProfiles(syncedProfileRecord.id)}</div>
               <div class="rp-plan-list">${renderPlans(plansForProfile, syncedActivePlan.id)}</div>
             </div>
-            <div class="rp-section-stack">
-              <div class="rp-card" style="box-shadow:none">
-                <div class="rp-card-header">
-                  <div>
-                    <div class="rp-card-title">Plan controls</div>
-                    <div class="rp-card-subtitle">Keep setup compact here. The detailed controls live below the charts.</div>
-                  </div>
-                </div>
-                <div class="rp-card-body">
-                  <div class="rp-mini-list">
-                    <div class="rp-mini-item"><span>Active profile</span><strong>${escapeHtml(syncedProfileRecord.name)}</strong></div>
-                    <div class="rp-mini-item"><span>Active plan</span><strong>${escapeHtml(syncedActivePlan.name)}</strong></div>
-                    <div class="rp-mini-item"><span>Stored locally</span><strong>${plansForProfile.length} plans for this profile</strong></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </details>
         </div>
+      </section>
+
+      <section class="rp-panel-grid rp-setup-grid">
         <div class="rp-card">
           <div class="rp-card-header">
             <div>
@@ -115,28 +104,27 @@ function render() {
             ${renderProfileForm(syncedProfileRecord, syncedActivePlan, validation.constraints)}
           </div>
         </div>
-      </section>
-
-      <section class="rp-panel-grid">
-        <div class="rp-card">
-          <div class="rp-card-header">
-            <div>
-              <div class="rp-card-title">Plan settings</div>
+        <div class="rp-section-stack">
+          <div class="rp-card">
+            <div class="rp-card-header">
+              <div>
+                <div class="rp-card-title">Plan settings</div>
+              </div>
+            </div>
+            <div class="rp-card-body">
+              ${renderPlanForm(syncedActivePlan, profile, validation)}
             </div>
           </div>
-          <div class="rp-card-body">
-            ${renderPlanForm(syncedActivePlan, profile, validation)}
-          </div>
-        </div>
-        <div class="rp-card">
-          <div class="rp-card-header">
-            <div>
-              <div class="rp-card-title">Constraints and quick controls</div>
+          <div class="rp-card">
+            <div class="rp-card-header">
+              <div>
+                <div class="rp-card-title">Constraints and quick controls</div>
+              </div>
             </div>
-          </div>
-          <div class="rp-card-body rp-stack">
-            ${renderPolicyStatus(activeBundle.result.constraints)}
-            ${renderConvenience()}
+            <div class="rp-card-body rp-stack">
+              ${renderPolicyStatus(activeBundle.result.constraints)}
+              ${renderConvenience()}
+            </div>
           </div>
         </div>
       </section>
@@ -229,10 +217,10 @@ function renderBanner(profileRecord, plan) {
 function renderProfiles(activeProfileId) {
     return requireState().profiles.map((profile) => `
     <div class="rp-profile-row">
-      <div class="rp-action-top">
-        <div>
+      <div class="rp-action-top rp-compact-top">
+        <div class="rp-compact-copy">
           <strong>${profile.name}</strong>
-          <div class="rp-card-subtitle">Profile · ${profile.profile.sex} · ${profile.profile.birthDate}</div>
+          <div class="rp-card-subtitle">${profile.profile.sex} · ${profile.profile.birthDate}</div>
         </div>
         <div class="rp-flex">
           <button class="rp-btn ${profile.id === activeProfileId ? "primary" : "soft"}" data-profile-switch="${profile.id}">${profile.id === activeProfileId ? "Active" : "Open"}</button>
@@ -245,10 +233,10 @@ function renderProfiles(activeProfileId) {
 function renderPlans(plans, activePlanId) {
     return plans.map((plan) => `
     <div class="rp-plan-row">
-      <div class="rp-action-top">
-        <div>
+      <div class="rp-action-top rp-compact-top">
+        <div class="rp-compact-copy">
           <strong>${plan.name}</strong>
-          <div class="rp-card-subtitle">${plan.cpfPlan} · payout from ${plan.payoutStartAge} · objective ${plan.objective}</div>
+          <div class="rp-card-subtitle">${plan.cpfPlan} · age ${plan.payoutStartAge} · ${plan.objective}</div>
         </div>
         <div class="rp-flex">
           <button class="rp-btn ${plan.id === activePlanId ? "primary" : "soft"}" data-plan-switch="${plan.id}">${plan.id === activePlanId ? "Active" : "Open"}</button>
@@ -461,7 +449,7 @@ function renderMedicalLifestyle(bundle) {
     const sourcesCount = UNIFIED_INSURANCE_DB.sources.length;
     const providerCount = Object.keys(UNIFIED_INSURANCE_DB.insurers).length;
     return `
-    <div class="rp-panel-grid">
+    <div class="rp-medical-grid">
       <div class="rp-section-stack">
         <div class="rp-mini-list">
           <div class="rp-mini-item"><span>Expected medical gross</span><strong>${currency.format(first.medicalGross)}</strong></div>

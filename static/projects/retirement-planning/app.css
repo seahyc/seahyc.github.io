@@ -274,6 +274,7 @@
 
 .rp-inspector-grid {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    align-items: start;
 }
 
 .rp-panel-grid {
@@ -281,6 +282,44 @@
     width: 100%;
     max-width: 100%;
     overflow-x: clip;
+    align-items: start;
+}
+
+.rp-manage-card .rp-card-body {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.rp-manage-bar {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.rp-manage-meta {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.rp-manage-grid {
+    display: grid;
+    gap: 0.55rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rp-setup-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+}
+
+.rp-medical-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 0.7rem;
+    align-items: start;
 }
 
 .rp-field {
@@ -506,6 +545,20 @@
     align-items: start;
 }
 
+.rp-compact-top {
+    align-items: center;
+}
+
+.rp-compact-copy {
+    min-width: 0;
+}
+
+.rp-compact-copy strong {
+    display: block;
+    font-size: var(--rp-text-lg);
+    line-height: 1.1;
+}
+
 .rp-action-metrics {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -676,10 +729,14 @@
 }
 
 @media (max-width: 1280px) {
-    .rp-toolbar,
     .rp-profile-grid,
     .rp-inspector-grid,
     .rp-panel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rp-manage-grid,
+    .rp-medical-grid {
         grid-template-columns: 1fr;
     }
 
@@ -698,7 +755,9 @@
     .rp-form-grid.two,
     .rp-form-grid.three,
     .rp-inspector-grid,
-    .rp-action-metrics {
+    .rp-action-metrics,
+    .rp-manage-grid,
+    .rp-medical-grid {
         grid-template-columns: 1fr;
     }
 
@@ -757,6 +816,10 @@
     .rp-status-line {
         width: 100%;
         border-radius: 0.85rem;
+    }
+
+    .rp-manage-bar {
+        align-items: stretch;
     }
 
     .rp-summary-grid {
