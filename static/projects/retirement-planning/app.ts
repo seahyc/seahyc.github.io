@@ -75,22 +75,13 @@ function render(): void {
 
   app.innerHTML = `
     <div class="rp-app">
-      <section class="rp-card rp-topline-stack">
-        <div class="rp-card-body">
-          <div class="rp-summary-grid">
-            ${renderSummary(activeBundle)}
-          </div>
-        </div>
-      </section>
-
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
 
-      <section class="rp-toolbar">
+      <section class="rp-panel-grid rp-setup-grid">
         <div class="rp-card">
           <div class="rp-card-header">
             <div>
               <div class="rp-card-title">Profiles and plans</div>
-              <div class="rp-card-subtitle">One person can have many plans. Everything is stored locally in this browser.</div>
             </div>
             <div class="rp-flex">
               <button class="rp-btn accent" data-action="new-profile">New profile</button>
@@ -123,19 +114,46 @@ function render(): void {
             </div>
           </div>
         </div>
-      </section>
-
-      <section class="rp-inspector-grid">
-        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle)}
         <div class="rp-card">
           <div class="rp-card-header">
             <div>
-              <div class="rp-card-title">AI workflow</div>
-              <div class="rp-card-subtitle">Audience-specific briefs, structured payloads, and plan-diff handoff prompts.</div>
+              <div class="rp-card-title">Profile baseline</div>
             </div>
           </div>
           <div class="rp-card-body">
-            ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle, comparisonBundle)}
+            ${renderProfileForm(syncedProfileRecord, syncedActivePlan, validation.constraints)}
+          </div>
+        </div>
+      </section>
+
+      <section class="rp-panel-grid">
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">Plan settings</div>
+            </div>
+          </div>
+          <div class="rp-card-body">
+            ${renderPlanForm(syncedActivePlan, profile, validation)}
+          </div>
+        </div>
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">Constraints and quick controls</div>
+            </div>
+          </div>
+          <div class="rp-card-body rp-stack">
+            ${renderPolicyStatus(activeBundle.result.constraints)}
+            ${renderConvenience()}
+          </div>
+        </div>
+      </section>
+
+      <section class="rp-card rp-topline-stack">
+        <div class="rp-card-body">
+          <div class="rp-summary-grid">
+            ${renderSummary(activeBundle)}
           </div>
         </div>
       </section>
@@ -145,75 +163,24 @@ function render(): void {
       </section>
 
       <section class="rp-panel-grid">
-        <div class="rp-section-stack">
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Profile baseline</div>
-                <div class="rp-card-subtitle">Health, insurance, finances, and observed CPF anchors.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">
-              ${renderProfileForm(syncedProfileRecord, syncedActivePlan, validation.constraints)}
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">Recommended next moves</div>
             </div>
           </div>
-
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Plan settings</div>
-                <div class="rp-card-subtitle">Plan-specific scenario settings for one profile.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">
-              ${renderPlanForm(syncedActivePlan, profile, validation)}
-            </div>
-          </div>
-
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Insurance, medical, emergency, and lifestyle</div>
-                <div class="rp-card-subtitle">Medical burden, emergency buffer sizing, and concrete discretionary equivalents.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">
-              ${renderMedicalLifestyle(activeBundle)}
-            </div>
+          <div class="rp-card-body">
+            <div class="rp-action-list">${renderActions(activeBundle.recommendations)}</div>
           </div>
         </div>
-
-        <div class="rp-section-stack">
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Recommended next moves</div>
-                <div class="rp-card-subtitle">Ordered from low-risk certainty toward higher-risk upside.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">
-              <div class="rp-action-list">${renderActions(activeBundle.recommendations)}</div>
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">Medical, buffers, and lifestyle</div>
             </div>
           </div>
-
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Constraints and policy status</div>
-                <div class="rp-card-subtitle">Hard rule checks, current policy anchors, and remaining room.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">${renderPolicyStatus(activeBundle.result.constraints)}</div>
-          </div>
-
-          <div class="rp-card">
-            <div class="rp-card-header">
-              <div>
-                <div class="rp-card-title">Convenience controls</div>
-                <div class="rp-card-subtitle">Max, min, balanced, and expert helpers around hard rules.</div>
-              </div>
-            </div>
-            <div class="rp-card-body">${renderConvenience()}</div>
+          <div class="rp-card-body">
+            ${renderMedicalLifestyle(activeBundle)}
           </div>
         </div>
       </section>
@@ -222,7 +189,6 @@ function render(): void {
         <div class="rp-card-header">
           <div>
             <div class="rp-card-title">Appendix 损益表</div>
-            <div class="rp-card-subtitle">Everything time-based that can be modeled lives here as the expert appendix ledger.</div>
           </div>
           <div class="rp-appendix-toolbar">
             <div class="rp-tabs">
@@ -238,6 +204,20 @@ function render(): void {
           ${renderAppendix(activeBundle.appendix, currentState.ui.appendixPreset)}
         </div>
       </section>
+
+      <section class="rp-inspector-grid">
+        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle)}
+        <div class="rp-card">
+          <div class="rp-card-header">
+            <div>
+              <div class="rp-card-title">AI workflow</div>
+            </div>
+          </div>
+          <div class="rp-card-body">
+            ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle, comparisonBundle)}
+          </div>
+        </div>
+      </section>
     </div>
   `;
 
@@ -246,13 +226,14 @@ function render(): void {
 }
 
 function renderBanner(profileRecord: ProfileRecord, plan: PlanData): string {
-  const currentState = requireState();
   const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   return `
     <section class="rp-status-strip" aria-label="Planner status">
-      <div class="rp-status-pill privacy"><strong>Local only</strong><span>Runs in-browser</span></div>
-      <div class="rp-status-pill storage"><strong>${escapeHtml(profileRecord.name)} / ${escapeHtml(plan.name)}</strong><span>Autosaved ${now}</span></div>
-      <div class="rp-status-pill ai"><strong>${escapeHtml(AI_MODES.find((item) => item.id === currentState.ui.aiMode)?.label || "Local Browser AI")}</strong><span>Deterministic model is source of truth</span></div>
+      <div class="rp-status-line">
+        <strong>${escapeHtml(profileRecord.name)} / ${escapeHtml(plan.name)}</strong>
+        <span>Local only</span>
+        <span>Autosaved ${now}</span>
+      </div>
     </section>
   `;
 }
