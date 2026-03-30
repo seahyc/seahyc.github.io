@@ -20,7 +20,7 @@ function recurrenceWeightForAge(age: number, disease: DiseaseProfile): number {
   const approximateYearsSinceDiagnosis = Math.max(0, age - 60);
   const weights = disease.recurrenceWeightByYears || [];
   if (!weights.length) return disease.claimsPathway?.recurrenceIntensity || disease.emergencyMedicalWeight || 0;
-  const match = weights.find((item) => approximateYearsSinceDiagnosis <= item.year);
+  const match = weights.find((item) => approximateYearsSinceDiagnosis <= (item.year ?? item.yearsSince ?? 0));
   return match?.recurrenceWeight ?? weights.at(-1)?.recurrenceWeight ?? 0;
 }
 

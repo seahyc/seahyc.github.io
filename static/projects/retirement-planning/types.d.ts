@@ -282,18 +282,26 @@ export interface PlanBundle {
 }
 export interface InsuranceDbSource {
     id: string;
+    provider?: string;
     title?: string;
+    label?: string;
     url: string;
+    kind?: string;
     localPath?: string;
 }
+export interface InsurancePlanRecord {
+    sourceId?: string;
+    plans: Record<string, unknown>;
+}
 export interface InsuranceDb {
+    generatedAt?: string;
     sources: InsuranceDbSource[];
-    insurers: Record<string, {
-        plans: Record<string, unknown>;
-    }>;
+    publicSchemes?: Record<string, unknown>;
+    insurers: Record<string, InsurancePlanRecord>;
 }
 export interface DiseaseRecurrencePoint {
-    year: number;
+    year?: number;
+    yearsSince?: number;
     recurrenceWeight: number;
 }
 export interface DiseaseClaimSensitivity {

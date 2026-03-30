@@ -14,7 +14,7 @@ function recurrenceWeightForAge(age, disease) {
     const weights = disease.recurrenceWeightByYears || [];
     if (!weights.length)
         return disease.claimsPathway?.recurrenceIntensity || disease.emergencyMedicalWeight || 0;
-    const match = weights.find((item) => approximateYearsSinceDiagnosis <= item.year);
+    const match = weights.find((item) => approximateYearsSinceDiagnosis <= (item.year ?? item.yearsSince ?? 0));
     return match?.recurrenceWeight ?? weights.at(-1)?.recurrenceWeight ?? 0;
 }
 export function estimateMedicalCosts({ age, profile, frailty }) {

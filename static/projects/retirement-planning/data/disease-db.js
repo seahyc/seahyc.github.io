@@ -846,7 +846,7 @@ export function getDiseaseProfile(key) {
 export function parseDiseaseList(rawList) {
     return (rawList || [])
         .map((item) => normalizeDiseaseInput(item))
-        .filter(Boolean)
+        .filter((item) => Boolean(item))
         .map((key) => ({ key, profile: getDiseaseProfile(key) }))
         .filter((item) => Boolean(item.key && item.profile));
 }

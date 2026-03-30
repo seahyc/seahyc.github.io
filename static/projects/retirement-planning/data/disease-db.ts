@@ -1,7 +1,7 @@
-// @ts-nocheck
 import type { DiseaseClaimsPathway, DiseaseProfile, ParsedDisease } from "../types.js";
 
-interface DiseaseSeed extends Omit<DiseaseProfile, "treatmentMix" | "claimsPathway" | "aliases"> {
+interface DiseaseSeed extends Omit<DiseaseProfile, "treatmentMix" | "claimsPathway" | "aliases" | "recurrenceWeightByYears"> {
+  recurrenceWeightByYears?: DiseaseProfile["recurrenceWeightByYears"];
   treatmentMix?: Record<string, number> | null;
   claimsPathway?: DiseaseClaimsPathway | null;
   aliases?: string[];
@@ -38,7 +38,7 @@ function makeDisease({
 }
 
 function defaultTreatmentMixForCategory(category: string): Record<string, number> {
-  const defaults = {
+  const defaults: Record<string, Record<string, number>> = {
     cancer: {
       inpatient: 0.26,
       outpatientCancerDrug: 0.34,
@@ -116,7 +116,7 @@ function defaultTreatmentMixForCategory(category: string): Record<string, number
 }
 
 function defaultClaimsPathForCategory(category: string): DiseaseClaimsPathway {
-  const defaults = {
+  const defaults: Record<string, DiseaseClaimsPathway> = {
     cancer: {
       surveillanceCadenceMonths: 6,
       recurrenceWindowYears: 10,
@@ -256,7 +256,7 @@ function defaultClaimsPathForCategory(category: string): DiseaseClaimsPathway {
 }
 
 function cancerDisease(key: string, label: string, overrides: Partial<DiseaseSeed> = {}): DiseaseProfile {
-  const cancerPathways = {
+  const cancerPathways: Record<string, DiseaseClaimsPathway> = {
     "breast-cancer": {
       surveillanceCadenceMonths: 6,
       recurrenceWindowYears: 10,
@@ -876,7 +876,7 @@ export function getDiseaseProfile(key: string): DiseaseProfile | null {
 export function parseDiseaseList(rawList: string[]): ParsedDisease[] {
   return (rawList || [])
     .map((item) => normalizeDiseaseInput(item))
-    .filter(Boolean)
+    .filter((item): item is string => Boolean(item))
     .map((key) => ({ key, profile: getDiseaseProfile(key) }))
     .filter((item): item is ParsedDisease => Boolean(item.key && item.profile));
 }

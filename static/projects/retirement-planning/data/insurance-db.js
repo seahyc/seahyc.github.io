@@ -1,4 +1,3 @@
-// @ts-nocheck
 export const INSURANCE_SOURCE_MANIFEST = [
     {
         id: "moh-compare",
@@ -239,19 +238,6 @@ export const UNIFIED_INSURANCE_DB = {
         "Great Eastern": {
             sourceId: "moh-compare",
             plans: {
-                "GREAT SupremeHealth P Plus": withSource(COMMON_COVERAGE.private, "moh-compare", {
-                    riderCoverage: 0.8,
-                    preferredProviderFactor: 0.9,
-                    panelRequiredForBestTerms: true,
-                    preAuthorisationRequiredForBestTerms: true,
-                    claimPathRules: {
-                        specialistPanelWindowDays: 3,
-                        outpatientCancerDrugCoverage: "cdl-and-non-cdl",
-                        preAdmissionWindowDays: 30,
-                        postDischargeWindowDays: 90,
-                        extendedPanelAnnualCap: null,
-                    },
-                }),
                 "GREAT SupremeHealth P Plus": withSource(COMMON_COVERAGE.private, "moh-compare", { riderCoverage: 0.8, preferredProviderFactor: 0.9, panelRequiredForBestTerms: true, preAuthorisationRequiredForBestTerms: true, benefits: benefits({ inpatient: { coveragePct: 0.92, panelBoost: 1.03, annualCap: 750000 }, outpatientCancerDrug: { coveragePct: 0.8, panelBoost: 1.01, annualCap: 85000 } }), claimPathRules: { specialistPanelWindowDays: 3, outpatientCancerDrugCoverage: "cdl-and-non-cdl", preAdmissionWindowDays: 30, postDischargeWindowDays: 90, extendedPanelAnnualCap: null } }),
                 "GREAT SupremeHealth A Plus": withSource(COMMON_COVERAGE.a, "moh-compare", { riderCoverage: 0.78, preferredProviderFactor: 0.92, panelRequiredForBestTerms: true, preAuthorisationRequiredForBestTerms: true, benefits: benefits({ inpatient: { coveragePct: 0.9, panelBoost: 1.02, annualCap: 450000 }, outpatientCancerDrug: { coveragePct: 0.76, panelBoost: 1.01, annualCap: 65000 } }), claimPathRules: { specialistPanelWindowDays: 3, outpatientCancerDrugCoverage: "cdl-and-non-cdl", preAdmissionWindowDays: 30, postDischargeWindowDays: 90, extendedPanelAnnualCap: 18000 } }),
                 "GREAT SupremeHealth B Plus": withSource(COMMON_COVERAGE.b1, "moh-compare", { riderCoverage: 0.74, preferredProviderFactor: 0.95, panelRequiredForBestTerms: false, preAuthorisationRequiredForBestTerms: true, benefits: benefits({ inpatient: { coveragePct: 0.88, panelBoost: 1.01, annualCap: 280000 }, outpatientCancerDrug: { coveragePct: 0.68, panelBoost: 1, annualCap: 42000 } }), claimPathRules: { specialistPanelWindowDays: 5, outpatientCancerDrugCoverage: "cdl-and-non-cdl", preAdmissionWindowDays: 21, postDischargeWindowDays: 60, extendedPanelAnnualCap: 12000 } }),

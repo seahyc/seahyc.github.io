@@ -49,6 +49,7 @@ export interface InsurancePlanLike {
     deductibleWaiverAppliesTo?: string[];
     riderCoPayAppliesTo?: string[];
     useExtendedPanelNetwork?: boolean;
+    emergencyTransportIncluded?: boolean;
   };
   benefits?: Partial<Record<TreatmentClass, CoverageBenefit>>;
   [key: string]: unknown;
