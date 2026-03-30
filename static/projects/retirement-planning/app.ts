@@ -417,11 +417,11 @@ function renderProfileForm(profileRecord: ProfileRecord, plan: PlanData, constra
       ${field("Bank / cash", numberInput("profile.bankCash", p.bankCash))}
       ${field("OA", numberInput("profile.oa", p.oa))}
       ${field("SA", numberInput("profile.sa", p.sa))}
-      ${field("RA", numberInput("profile.ra", p.ra, `ERS room ${currency.format(constraints.remainingErsRoom)}`))}
-      ${field("MA", numberInput("profile.ma", p.ma, `BHS ${currency.format(constraints.bhs)}`))}
-      ${field("Policy year", numberInput("profile.cpfCohortYear", p.cpfCohortYear, "Defaults to the current browser year unless explicitly overridden."))}
+      ${field("RA", numberInput("profile.ra", p.ra), `ERS room ${currency.format(constraints.remainingErsRoom)}`)}
+      ${field("MA", numberInput("profile.ma", p.ma), `BHS ${currency.format(constraints.bhs)}`)}
+      ${field("Policy year", numberInput("profile.cpfCohortYear", p.cpfCohortYear), "Defaults to the current browser year unless explicitly overridden.")}
       ${field("CPF investments", numberInput("profile.cpfInvestments", p.cpfInvestments))}
-      ${field("Observed CPF payout", numberInput("profile.observedCpfPayout", p.observedCpfPayout, "Used as a calibration anchor when plan matches."))}
+      ${field("Observed CPF payout", numberInput("profile.observedCpfPayout", p.observedCpfPayout), "Used as a calibration anchor when plan matches.")}
       ${field("Basic spend / month", numberInput("profile.basicSpendMonthly", p.basicSpendMonthly))}
       ${field("Discretionary spend / year", numberInput("profile.discretionarySpendAnnual", p.discretionarySpendAnnual))}
       ${field("Market income / year", numberInput("profile.marketIncomeAnnual", p.marketIncomeAnnual))}
@@ -896,11 +896,19 @@ function exportJson(): void {
 }
 
 function field(label: string, control: string, help = ""): string {
-  return `<div class="rp-field"><label>${label}</label>${control}${help ? `<div class="rp-help">${help}</div>` : ""}</div>`;
+  return `
+    <div class="rp-field">
+      <label class="rp-field-label">
+        <span>${label}</span>
+        ${help ? `<button class="rp-field-hint" type="button" aria-label="${escapeAttr(help)}" title="${escapeAttr(help)}">?</button>` : ""}
+      </label>
+      ${control}
+    </div>
+  `;
 }
 
-function numberInput(path: string, value: number, help = ""): string {
-  return `<input class="rp-input" type="number" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${value ?? 0}">${help ? `<div class="rp-help">${help}</div>` : ""}`;
+function numberInput(path: string, value: number): string {
+  return `<input class="rp-input" type="number" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${value ?? 0}">`;
 }
 
 function select(path: string, current: string | number | boolean, entries: Array<[string, string]>): string {

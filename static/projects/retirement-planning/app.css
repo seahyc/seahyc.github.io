@@ -309,6 +309,14 @@
 .rp-field {
     display: grid;
     gap: 0.35rem;
+    align-content: start;
+}
+
+.rp-field-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
 }
 
 .rp-field label {
@@ -316,6 +324,25 @@
     color: var(--rp-muted);
     letter-spacing: 0.04em;
     text-transform: uppercase;
+}
+
+.rp-field-hint {
+    appearance: none;
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--rp-border);
+    background: var(--rp-card-strong);
+    color: var(--rp-muted);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    padding: 0;
+    flex: 0 0 auto;
 }
 
 .rp-input,
