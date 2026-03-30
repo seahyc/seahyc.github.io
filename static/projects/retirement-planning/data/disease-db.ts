@@ -1,4 +1,12 @@
 // @ts-nocheck
+import type { DiseaseClaimsPathway, DiseaseProfile, ParsedDisease } from "../types.js";
+
+interface DiseaseSeed extends Omit<DiseaseProfile, "treatmentMix" | "claimsPathway" | "aliases"> {
+  treatmentMix?: Record<string, number> | null;
+  claimsPathway?: DiseaseClaimsPathway | null;
+  aliases?: string[];
+}
+
 function makeDisease({
   key,
   label,
@@ -12,7 +20,7 @@ function makeDisease({
   treatmentMix = null,
   claimsPathway = null,
   aliases = [],
-}) {
+}: DiseaseSeed): DiseaseProfile {
   return {
     key,
     label,
@@ -29,7 +37,7 @@ function makeDisease({
   };
 }
 
-function defaultTreatmentMixForCategory(category) {
+function defaultTreatmentMixForCategory(category: string): Record<string, number> {
   const defaults = {
     cancer: {
       inpatient: 0.26,
@@ -107,7 +115,7 @@ function defaultTreatmentMixForCategory(category) {
   return defaults[category] || { chronicSpecialist: 0.6, inpatient: 0.2, rehabilitation: 0.1, homeRecovery: 0.1 };
 }
 
-function defaultClaimsPathForCategory(category) {
+function defaultClaimsPathForCategory(category: string): DiseaseClaimsPathway {
   const defaults = {
     cancer: {
       surveillanceCadenceMonths: 6,
@@ -247,7 +255,7 @@ function defaultClaimsPathForCategory(category) {
   };
 }
 
-function cancerDisease(key, label, overrides = {}) {
+function cancerDisease(key: string, label: string, overrides: Partial<DiseaseSeed> = {}): DiseaseProfile {
   const cancerPathways = {
     "breast-cancer": {
       surveillanceCadenceMonths: 6,
@@ -352,7 +360,7 @@ function cancerDisease(key, label, overrides = {}) {
   });
 }
 
-const DISEASE_LIST = [
+const DISEASE_LIST: DiseaseProfile[] = [
   makeDisease({
     key: "hypertension",
     label: "Hypertension",
@@ -844,9 +852,9 @@ const DISEASE_LIST = [
   }),
 ];
 
-export const DISEASE_DB = Object.fromEntries(DISEASE_LIST.map((item) => [item.key, item]));
+export const DISEASE_DB: Record<string, DiseaseProfile> = Object.fromEntries(DISEASE_LIST.map((item) => [item.key, item]));
 
-const ALIAS_MAP = DISEASE_LIST.reduce((map, item) => {
+const ALIAS_MAP = DISEASE_LIST.reduce<Record<string, string>>((map, item) => {
   map[item.key] = item.key;
   item.aliases.forEach((alias) => {
     map[alias.toLowerCase()] = item.key;
@@ -854,22 +862,23 @@ const ALIAS_MAP = DISEASE_LIST.reduce((map, item) => {
   return map;
 }, {});
 
-export function normalizeDiseaseInput(input) {
+export function normalizeDiseaseInput(input: string): string | null {
   const trimmed = String(input || "").trim().toLowerCase();
   if (!trimmed) return null;
   return ALIAS_MAP[trimmed] || trimmed.replace(/\s+/g, "-");
 }
 
-export function getDiseaseProfile(key) {
-  return DISEASE_DB[normalizeDiseaseInput(key)] || null;
+export function getDiseaseProfile(key: string): DiseaseProfile | null {
+  const normalized = normalizeDiseaseInput(key);
+  return normalized ? DISEASE_DB[normalized] || null : null;
 }
 
-export function parseDiseaseList(rawList) {
+export function parseDiseaseList(rawList: string[]): ParsedDisease[] {
   return (rawList || [])
     .map((item) => normalizeDiseaseInput(item))
     .filter(Boolean)
     .map((key) => ({ key, profile: getDiseaseProfile(key) }))
-    .filter((item) => item.profile);
+    .filter((item): item is ParsedDisease => Boolean(item.key && item.profile));
 }
 
 export function listSupportedDiseases() {
@@ -882,7 +891,7 @@ export function listSupportedDiseases() {
   }));
 }
 
-export function getDiseaseClaimPath(key) {
+export function getDiseaseClaimPath(key: string): DiseaseClaimsPathway | null {
   const disease = getDiseaseProfile(key);
   return disease?.claimsPathway || null;
 }

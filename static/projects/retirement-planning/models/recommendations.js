@@ -1,5 +1,5 @@
-// @ts-nocheck
 export function summarizePanel(profile, plan, result, recommendations) {
+    void profile;
     const first = result.rows[0];
     return [
         {
@@ -8,7 +8,7 @@ export function summarizePanel(profile, plan, result, recommendations) {
         },
         {
             title: "Medical",
-            summary: `Expected annual medical out-of-pocket is about ${formatMoney(first.medicalCash)}, with a recommended balanced emergency buffer of ${formatMoney(first.emergencyBalanced)}.`,
+            summary: `Expected annual medical out-of-pocket is about ${formatMoney(first?.medicalCash || 0)}, with a recommended balanced emergency buffer of ${formatMoney(first?.emergencyBalanced || 0)}.`,
         },
         {
             title: "CPF",
@@ -16,7 +16,7 @@ export function summarizePanel(profile, plan, result, recommendations) {
         },
         {
             title: "Family & tax",
-            summary: `Modeled family top-ups create about ${formatMoney(first.taxSavingsAnnual)} of annual tax savings while improving payout headroom.`,
+            summary: `Modeled family top-ups create about ${formatMoney(first?.taxSavingsAnnual || 0)} of annual tax savings while improving payout headroom.`,
         },
         {
             title: "Investments",

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { resolveInsurancePlan, LOCAL_INSURANCE_DB, getBlendedTreatmentCost, getClaimPathAdjustments, getCoverageRule } from "../policy/medical-schemes.js";
 import { estimateMedicalEventMix } from "./medical-events.js";
 import { parseDiseaseList } from "../data/disease-db.js";
@@ -9,6 +8,14 @@ function blendWeightMaps(baseMix = {}, overrideMix = {}) {
     });
     const total = Object.values(blended).reduce((sum, value) => sum + value, 0) || 1;
     return Object.fromEntries(Object.entries(blended).map(([key, value]) => [key, value / total]));
+}
+function recurrenceWeightForAge(age, disease) {
+    const approximateYearsSinceDiagnosis = Math.max(0, age - 60);
+    const weights = disease.recurrenceWeightByYears || [];
+    if (!weights.length)
+        return disease.claimsPathway?.recurrenceIntensity || disease.emergencyMedicalWeight || 0;
+    const match = weights.find((item) => approximateYearsSinceDiagnosis <= item.year);
+    return match?.recurrenceWeight ?? weights.at(-1)?.recurrenceWeight ?? 0;
 }
 export function estimateMedicalCosts({ age, profile, frailty }) {
     const eventMix = estimateMedicalEventMix(age, profile, frailty.state);
@@ -35,15 +42,19 @@ export function estimateMedicalCosts({ age, profile, frailty }) {
         const cadenceMonths = claimsPath.surveillanceCadenceMonths || 12;
         const followUpMultiplier = Math.max(1, 12 / cadenceMonths);
         const pathwayMix = blendWeightMaps(disease.treatmentMix || {}, claimsPath.pathBias || {});
-        const recurrenceIntensity = claimsPath.recurrenceIntensity || disease.emergencyMedicalWeight || 0.1;
+        const recurrenceIntensity = Math.max(claimsPath.recurrenceIntensity || 0, recurrenceWeightForAge(age, disease));
         const diseaseGrossStart = diseaseOverhead;
-        diseaseOverhead += disease.chronicCostAnnual + disease.surveillanceCostAnnual * followUpMultiplier;
+        const surveillanceCost = disease.surveillanceCostAnnual * followUpMultiplier;
+        const recurrenceCost = disease.chronicCostAnnual * recurrenceIntensity;
+        diseaseOverhead += disease.chronicCostAnnual + surveillanceCost + recurrenceCost;
         expectedEmergency += disease.emergencyMedicalWeight * 6000 * followUpMultiplier;
         expectedEmergency += recurrenceIntensity * 4200;
+        let pathwayTreatmentCost = 0;
         Object.entries(pathwayMix).forEach(([treatmentClass, treatmentWeight]) => {
             const schedule = getBlendedTreatmentCost(treatmentClass, carePreference);
-            const weightedCost = schedule.gross * treatmentWeight * disease.hospitalizationMultiplier;
+            const weightedCost = schedule.gross * treatmentWeight * disease.hospitalizationMultiplier * (1 + recurrenceIntensity * 0.35);
             treatmentTotals[treatmentClass] = (treatmentTotals[treatmentClass] || 0) + weightedCost;
+            pathwayTreatmentCost += weightedCost;
             expectedEmergency += weightedCost * schedule.emergencyWeight * 0.5;
         });
         if (key === "breast-cancer") {
@@ -57,13 +68,16 @@ export function estimateMedicalCosts({ age, profile, frailty }) {
             gross: diseaseOverhead - diseaseGrossStart,
             surveillanceCadenceMonths: cadenceMonths,
             recurrenceIntensity,
+            surveillanceCost,
+            recurrenceCost,
+            pathwayTreatmentCost,
             claimsPathway: claimsPath,
         });
     });
     gross += diseaseOverhead;
     const riderFactor = profile.insurance?.rider ? (insurancePlan.riderCoverage || 0.75) : 0;
     const deductible = insurancePlan.deductible || 2500;
-    const claimPathRules = insurancePlan.claimPathRules || {};
+    const claimPathRules = (insurancePlan.claimPathRules || {});
     const annualLimit = insurancePlan.annualLimit || gross;
     const claimPathTotals = {
         panelPenalty: 0,
@@ -76,9 +90,10 @@ export function estimateMedicalCosts({ age, profile, frailty }) {
     let insurerPaid = 0;
     let remainingDeductible = deductible;
     Object.entries(treatmentTotals).forEach(([treatmentClass, classGrossRaw]) => {
+        const treatmentKey = treatmentClass;
         const classGross = classGrossRaw * frailty.annualMedicalLoadMultiplier;
-        const coverage = getCoverageRule(insurancePlan, treatmentClass);
-        const claimPath = getClaimPathAdjustments(insurancePlan, carePreference, treatmentClass);
+        const coverage = getCoverageRule(insurancePlan, treatmentKey);
+        const claimPath = getClaimPathAdjustments(insurancePlan, carePreference, treatmentKey);
         const planBoost = treatmentClass.startsWith("outpatientCancer")
             ? (insurancePlan.outpatientCancerMultiplier || 1)
             : 1;

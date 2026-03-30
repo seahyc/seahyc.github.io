@@ -1,5 +1,20 @@
-// @ts-nocheck
-export function summarizePanel(profile, plan, result, recommendations) {
+import type { PanelInsight, PlanBundle, PlanData, PlanRunResult, ProfileRecord, Recommendation } from "../types.js";
+
+interface SensitivityNote {
+  label: string;
+  why: string;
+}
+
+interface DiffSummaryItem {
+  label: string;
+  current: number;
+  comparison: number;
+  delta: number;
+  unit: "currency-monthly" | "years" | "currency";
+}
+
+export function summarizePanel(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[]): PanelInsight[] {
+  void profile;
   const first = result.rows[0];
   return [
     {
@@ -8,7 +23,7 @@ export function summarizePanel(profile, plan, result, recommendations) {
     },
     {
       title: "Medical",
-      summary: `Expected annual medical out-of-pocket is about ${formatMoney(first.medicalCash)}, with a recommended balanced emergency buffer of ${formatMoney(first.emergencyBalanced)}.`,
+      summary: `Expected annual medical out-of-pocket is about ${formatMoney(first?.medicalCash || 0)}, with a recommended balanced emergency buffer of ${formatMoney(first?.emergencyBalanced || 0)}.`,
     },
     {
       title: "CPF",
@@ -16,7 +31,7 @@ export function summarizePanel(profile, plan, result, recommendations) {
     },
     {
       title: "Family & tax",
-      summary: `Modeled family top-ups create about ${formatMoney(first.taxSavingsAnnual)} of annual tax savings while improving payout headroom.`,
+      summary: `Modeled family top-ups create about ${formatMoney(first?.taxSavingsAnnual || 0)} of annual tax savings while improving payout headroom.`,
     },
     {
       title: "Investments",
@@ -25,7 +40,7 @@ export function summarizePanel(profile, plan, result, recommendations) {
   ];
 }
 
-export function buildExpertReview(profile, plan, result, recommendations, sensitivities) {
+export function buildExpertReview(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[], sensitivities: SensitivityNote[]) {
   const first = result.rows[0];
   const assumptionList = [
     `CPF cohort year anchored to ${profile.profile.cpfCohortYear}.`,
@@ -50,7 +65,7 @@ export function buildExpertReview(profile, plan, result, recommendations, sensit
   };
 }
 
-export function buildPlanDiffSummary(currentBundle, comparisonBundle) {
+export function buildPlanDiffSummary(currentBundle: PlanBundle, comparisonBundle: PlanBundle | null): DiffSummaryItem[] {
   if (!comparisonBundle) return [];
   const currentFirst = currentBundle.result.rows[0];
   const comparisonFirst = comparisonBundle.result.rows[0];
@@ -103,6 +118,6 @@ export function buildPlanDiffSummary(currentBundle, comparisonBundle) {
   ];
 }
 
-function formatMoney(value) {
+function formatMoney(value: number) {
   return new Intl.NumberFormat("en-SG", { style: "currency", currency: "SGD", maximumFractionDigits: 0 }).format(value || 0);
 }

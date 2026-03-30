@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { parseDiseaseList } from "../data/disease-db.js";
 export function estimateMedicalEventMix(age, profile, frailtyState) {
     const priorSerious = profile.priorSeriousConditions || [];
@@ -15,7 +14,7 @@ export function estimateMedicalEventMix(age, profile, frailtyState) {
     parseDiseaseList([...(profile.chronicConditions || []), ...priorSerious]).forEach(({ profile: disease }) => {
         const claimsPath = disease.claimsPathway || {};
         const recurrencePeak = Array.isArray(disease.recurrenceWeightByYears) && disease.recurrenceWeightByYears.length
-            ? disease.recurrenceWeightByYears[0].recurrenceWeight || disease.emergencyMedicalWeight
+            ? disease.recurrenceWeightByYears[0]?.recurrenceWeight || disease.emergencyMedicalWeight
             : disease.emergencyMedicalWeight;
         const agePressure = age >= 80 ? 1.2 : age >= 75 ? 1.08 : age >= 70 ? 1.02 : 0.96;
         const diseasePressure = recurrencePeak * agePressure;

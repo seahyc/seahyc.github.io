@@ -1,4 +1,3 @@
-// @ts-nocheck
 function makeDisease({ key, label, category, mortalityMultiplier, chronicCostAnnual, hospitalizationMultiplier, emergencyMedicalWeight, surveillanceCostAnnual = 0, recurrenceWeightByYears = [], treatmentMix = null, claimsPathway = null, aliases = [], }) {
     return {
         key,
@@ -841,14 +840,15 @@ export function normalizeDiseaseInput(input) {
     return ALIAS_MAP[trimmed] || trimmed.replace(/\s+/g, "-");
 }
 export function getDiseaseProfile(key) {
-    return DISEASE_DB[normalizeDiseaseInput(key)] || null;
+    const normalized = normalizeDiseaseInput(key);
+    return normalized ? DISEASE_DB[normalized] || null : null;
 }
 export function parseDiseaseList(rawList) {
     return (rawList || [])
         .map((item) => normalizeDiseaseInput(item))
         .filter(Boolean)
         .map((key) => ({ key, profile: getDiseaseProfile(key) }))
-        .filter((item) => item.profile);
+        .filter((item) => Boolean(item.key && item.profile));
 }
 export function listSupportedDiseases() {
     return DISEASE_LIST.map((item) => ({

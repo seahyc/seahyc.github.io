@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { buildBaselineSurvival, getBaseRemainingYears } from "./mortality-baseline.js";
 import { computeRiskMultiplier } from "./mortality-risk.js";
 import { inferFrailty } from "./frailty.js";
@@ -39,9 +38,8 @@ export function runPlan(profile, plan) {
         const liquidAssets = cpfRow.bank + profile.marketAssets + cpfRow.cpfInvestments;
         const estateEquivalent = liquidAssets + cpfRow.oa + cpfRow.ra + cpfRow.ma;
         return {
-            age,
             yearOffset: index,
-            survival: survivalPoint.survival ** riskMultiplier,
+            survival: (survivalPoint?.survival ?? 0) ** riskMultiplier,
             mortalityState: frailty.state,
             ...cpfRow,
             cpfPayoutAnnual: cpfRow.payoutAnnual,
@@ -67,7 +65,7 @@ export function runPlan(profile, plan) {
     });
     const lifestyle = buildLifestyleEquivalents(profile.discretionarySpendAnnual);
     const latestEmergency = rows[0]?.emergencyBalanced || 0;
-    const emergencyGap = latestEmergency - rows[0]?.liquidAssets;
+    const emergencyGap = latestEmergency - (rows[0]?.liquidAssets || 0);
     const principalCrossoverAge = rows.find((row) => row.cumulativePayouts >= row.premiumEquivalent)?.age || null;
     return {
         currentAge,

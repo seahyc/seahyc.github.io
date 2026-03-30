@@ -249,7 +249,8 @@ export interface CashflowRow {
     [key: string]: unknown;
 }
 export interface FrailtySummary {
-    state: string;
+    state: FrailtyState;
+    annualMedicalLoadMultiplier: number;
     annualMortalityMultiplier: number;
 }
 export interface PlanRunResult {
@@ -289,4 +290,39 @@ export interface InsuranceDb {
     insurers: Record<string, {
         plans: Record<string, unknown>;
     }>;
+}
+export interface DiseaseRecurrencePoint {
+    year: number;
+    recurrenceWeight: number;
+}
+export interface DiseaseClaimSensitivity {
+    panel: number;
+    preAuth: number;
+    cancerDrugList: number;
+    deductibleWaiver: number;
+}
+export interface DiseaseClaimsPathway {
+    surveillanceCadenceMonths?: number;
+    recurrenceWindowYears?: number;
+    recurrenceIntensity?: number;
+    pathBias?: Record<string, number>;
+    claimSensitivity?: DiseaseClaimSensitivity;
+}
+export interface DiseaseProfile {
+    key: string;
+    label: string;
+    category: string;
+    mortalityMultiplier: number;
+    chronicCostAnnual: number;
+    hospitalizationMultiplier: number;
+    emergencyMedicalWeight: number;
+    surveillanceCostAnnual: number;
+    recurrenceWeightByYears: DiseaseRecurrencePoint[];
+    treatmentMix: Record<string, number>;
+    claimsPathway: DiseaseClaimsPathway;
+    aliases: string[];
+}
+export interface ParsedDisease {
+    key: string;
+    profile: DiseaseProfile;
 }

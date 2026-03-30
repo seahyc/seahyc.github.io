@@ -1,18 +1,18 @@
+import type { FrailtySummary, ProfileData } from "../types.js";
+import type { TreatmentClass } from "../policy/medical-schemes.js";
 export declare function estimateMedicalCosts({ age, profile, frailty }: {
-    age: any;
-    profile: any;
-    frailty: any;
+    age: number;
+    profile: ProfileData;
+    frailty: FrailtySummary;
 }): {
-    eventMix: {
-        [k: string]: number;
-    };
+    eventMix: import("./medical-events.js").MedicalEventMix;
     gross: number;
     insurerPaid: number;
     medisavePaid: number;
     cashOutOfPocket: number;
     expectedEmergency: number;
     diseaseOverhead: number;
-    treatmentTotals: {};
+    treatmentTotals: Partial<Record<TreatmentClass, number>>;
     insuranceFeatures: {
         panelRequiredForBestTerms: boolean;
         preAuthorisationRequiredForBestTerms: boolean;
@@ -28,5 +28,15 @@ export declare function estimateMedicalCosts({ age, profile, frailty }: {
         riderCopayPenalty: number;
         scheduledTreatmentAdjustment: number;
     };
-    diseaseBreakdown: any[];
+    diseaseBreakdown: {
+        key: string;
+        category: string;
+        gross: number;
+        surveillanceCadenceMonths: number;
+        recurrenceIntensity: number;
+        surveillanceCost: number;
+        recurrenceCost: number;
+        pathwayTreatmentCost: number;
+        claimsPathway: unknown;
+    }[];
 };

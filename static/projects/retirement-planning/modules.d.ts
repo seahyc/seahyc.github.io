@@ -40,3 +40,11 @@ declare module "./data/insurance-db.js" {
   import type { InsuranceDb } from "./types.js";
   export const UNIFIED_INSURANCE_DB: InsuranceDb;
 }
+
+declare module "./data/disease-db.js" {
+  import type { DiseaseClaimsPathway, DiseaseProfile, ParsedDisease } from "./types.js";
+  export function getDiseaseProfile(key: string): DiseaseProfile | null;
+  export function parseDiseaseList(rawList: string[]): ParsedDisease[];
+  export function listSupportedDiseases(): Array<{ key: string; label: string; category: string; surveillanceCadenceMonths: number | null; recurrenceWindowYears: number | null }>;
+  export function getDiseaseClaimPath(key: string): DiseaseClaimsPathway | null;
+}

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { buildBaselineSurvival, getBaseRemainingYears } from "./mortality-baseline.js";
 import { computeRiskMultiplier } from "./mortality-risk.js";
 import { inferFrailty } from "./frailty.js";
@@ -9,8 +8,9 @@ import { buildLifestyleEquivalents } from "./lifestyle-equivalents.js";
 import { buildCpfLedger } from "./cpf-ledger.js";
 import { getCpfConstraints } from "../policy/cpf-validation.js";
 import { normalizeFamilyTopups } from "./family-topups.js";
+import type { PlanData, PlanRunResult, ProfileData } from "../types.js";
 
-export function runPlan(profile, plan) {
+export function runPlan(profile: ProfileData, plan: PlanData): PlanRunResult {
   const currentAge = getAge(profile.birthDate);
   const frailty = inferFrailty(profile);
   const baseSurvival = buildBaselineSurvival(currentAge, profile.sex);
@@ -41,9 +41,8 @@ export function runPlan(profile, plan) {
     const liquidAssets = cpfRow.bank + profile.marketAssets + cpfRow.cpfInvestments;
     const estateEquivalent = liquidAssets + cpfRow.oa + cpfRow.ra + cpfRow.ma;
     return {
-      age,
       yearOffset: index,
-      survival: survivalPoint.survival ** riskMultiplier,
+      survival: (survivalPoint?.survival ?? 0) ** riskMultiplier,
       mortalityState: frailty.state,
       ...cpfRow,
       cpfPayoutAnnual: cpfRow.payoutAnnual,
@@ -70,7 +69,7 @@ export function runPlan(profile, plan) {
 
   const lifestyle = buildLifestyleEquivalents(profile.discretionarySpendAnnual);
   const latestEmergency = rows[0]?.emergencyBalanced || 0;
-  const emergencyGap = latestEmergency - rows[0]?.liquidAssets;
+  const emergencyGap = latestEmergency - (rows[0]?.liquidAssets || 0);
   const principalCrossoverAge = rows.find((row) => row.cumulativePayouts >= row.premiumEquivalent)?.age || null;
 
   return {
@@ -94,7 +93,7 @@ export function runPlan(profile, plan) {
   };
 }
 
-function getAge(birthDate) {
+function getAge(birthDate: string): number {
   const now = new Date();
   const birth = new Date(birthDate);
   let age = now.getFullYear() - birth.getFullYear();
@@ -103,7 +102,7 @@ function getAge(birthDate) {
   return age;
 }
 
-function computeConfidence(profile) {
+function computeConfidence(profile: ProfileData): string {
   const fields = [
     profile.heightCm,
     profile.weightKg,

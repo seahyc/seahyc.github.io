@@ -1,16 +1,20 @@
-export declare function summarizePanel(profile: any, plan: any, result: any, recommendations: any): {
-    title: string;
-    summary: any;
-}[];
-export declare function buildExpertReview(profile: any, plan: any, result: any, recommendations: any, sensitivities: any): {
+import type { PanelInsight, PlanBundle, PlanData, PlanRunResult, ProfileRecord, Recommendation } from "../types.js";
+interface SensitivityNote {
+    label: string;
+    why: string;
+}
+interface DiffSummaryItem {
+    label: string;
+    current: number;
+    comparison: number;
+    delta: number;
+    unit: "currency-monthly" | "years" | "currency";
+}
+export declare function summarizePanel(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[]): PanelInsight[];
+export declare function buildExpertReview(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[], sensitivities: SensitivityNote[]): {
     assumptions: string[];
     findings: string[];
-    rationale: any;
+    rationale: string[];
 };
-export declare function buildPlanDiffSummary(currentBundle: any, comparisonBundle: any): {
-    label: string;
-    current: any;
-    comparison: any;
-    delta: number;
-    unit: string;
-}[];
+export declare function buildPlanDiffSummary(currentBundle: PlanBundle, comparisonBundle: PlanBundle | null): DiffSummaryItem[];
+export {};

@@ -40,6 +40,16 @@ export interface InsurancePlanLike {
   stopLossAnnual?: number;
   outpatientCancerMultiplier?: number;
   nonCdlCancerPenalty?: number;
+  claimPathRules?: {
+    specialistPanelWindowDays?: number;
+    outpatientCancerDrugCoverage?: string;
+    preAdmissionWindowDays?: number;
+    postDischargeWindowDays?: number;
+    extendedPanelAnnualCap?: number | null;
+    deductibleWaiverAppliesTo?: string[];
+    riderCoPayAppliesTo?: string[];
+    useExtendedPanelNetwork?: boolean;
+  };
   benefits?: Partial<Record<TreatmentClass, CoverageBenefit>>;
   [key: string]: unknown;
 }
