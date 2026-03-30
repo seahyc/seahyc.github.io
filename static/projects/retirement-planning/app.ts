@@ -763,36 +763,36 @@ function paintCharts(bundle: PlanBundle): void {
   renderChart(document.getElementById("chart-incomeSpend"), {
     labels,
     series: [
-      { color: "#0f6a67", data: rows.map((row) => row.grossIncomeAnnual / 12) },
-      { color: "#1c5d95", data: rows.map((row) => row.basicSpendAnnual / 12), dashed: true },
-      { color: "#8c661a", data: rows.map((row) => row.totalSpendAnnual / 12) },
-      { color: "#a53b2f", data: rows.map((row) => row.netAnnual / 12) },
+      { label: "Income / month", color: "#0f6a67", data: rows.map((row) => row.grossIncomeAnnual / 12) },
+      { label: "Basic spend / month", color: "#1c5d95", data: rows.map((row) => row.basicSpendAnnual / 12), dashed: true },
+      { label: "Total spend / month", color: "#8c661a", data: rows.map((row) => row.totalSpendAnnual / 12) },
+      { label: "Net / month", color: "#a53b2f", data: rows.map((row) => row.netAnnual / 12) },
     ],
   });
   renderChart(document.getElementById("chart-assetCpf"), {
     labels,
     series: [
-      { color: "#245c31", data: rows.map((row) => row.bank) },
-      { color: "#1c5d95", data: rows.map((row) => row.oa) },
-      { color: "#8c661a", data: rows.map((row) => row.ra) },
-      { color: "#a53b2f", data: rows.map((row) => row.ma) },
-      { color: "#0f6a67", data: rows.map((row) => row.estateEquivalent) },
+      { label: "Bank", color: "#245c31", data: rows.map((row) => row.bank) },
+      { label: "OA", color: "#1c5d95", data: rows.map((row) => row.oa) },
+      { label: "RA", color: "#8c661a", data: rows.map((row) => row.ra) },
+      { label: "MA", color: "#a53b2f", data: rows.map((row) => row.ma) },
+      { label: "Estate equivalent", color: "#0f6a67", data: rows.map((row) => row.estateEquivalent) },
     ],
   });
   renderChart(document.getElementById("chart-survivalFit"), {
     labels,
     series: [
-      { color: "#241d12", data: rows.map((row) => row.survival * 100) },
-      { color: "#0f6a67", data: rows.map((row) => row.cumulativePayouts / 1000) },
-      { color: "#8c661a", data: rows.map((row) => row.premiumEquivalent / 1000), dashed: true },
+      { label: "Survival %", color: "#241d12", data: rows.map((row) => row.survival * 100) },
+      { label: "Cumulative payouts (k)", color: "#0f6a67", data: rows.map((row) => row.cumulativePayouts / 1000) },
+      { label: "Premium equivalent (k)", color: "#8c661a", data: rows.map((row) => row.premiumEquivalent / 1000), dashed: true },
     ],
   });
   renderChart(document.getElementById("chart-actionImpact"), {
     labels: bundle.recommendations.map((item) => item.title.split(" ").slice(0, 2).join(" ")),
     series: [
-      { color: "#0f6a67", data: bundle.recommendations.map((item) => item.shortfallReduction) },
-      { color: "#a53b2f", data: bundle.recommendations.map((item) => item.liquidityImpact) },
-      { color: "#1c5d95", data: bundle.recommendations.map((item) => item.estateImpact) },
+      { label: "Shortfall reduction", color: "#0f6a67", data: bundle.recommendations.map((item) => item.shortfallReduction) },
+      { label: "Liquidity impact", color: "#a53b2f", data: bundle.recommendations.map((item) => item.liquidityImpact) },
+      { label: "Estate impact", color: "#1c5d95", data: bundle.recommendations.map((item) => item.estateImpact) },
     ],
   });
 }

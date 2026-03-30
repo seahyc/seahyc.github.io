@@ -157,6 +157,7 @@ export interface AiCapabilities {
     claude: boolean;
 }
 export interface ChartSeries {
+    label: string;
     color: string;
     data: number[];
     dashed?: boolean;

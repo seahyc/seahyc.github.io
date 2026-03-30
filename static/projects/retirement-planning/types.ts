@@ -172,6 +172,7 @@ export interface AiCapabilities {
 }
 
 export interface ChartSeries {
+  label: string;
   color: string;
   data: number[];
   dashed?: boolean;
