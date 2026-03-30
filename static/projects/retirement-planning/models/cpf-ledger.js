@@ -8,7 +8,7 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
     let oa = profile.oa;
     let sa = profile.sa;
     let ra = profile.ra;
-    let ma = Math.min(profile.ma, initialPolicy.bhs);
+    let ma = profile.ma;
     let cpfInvestments = profile.cpfInvestments;
     const initialPayout = computeCpfLifeInitial(profile, plan);
     const rows = [];
@@ -51,12 +51,17 @@ export function buildCpfLedger(profile, plan, mortalityYears = 35, familyRows = 
         if (ma > policyForYear.bhs) {
             maOverflow = ma - policyForYear.bhs;
             ma = policyForYear.bhs;
-            const raRoom = Math.max(0, policyForYear.frs - ra);
-            maOverflowToRa = Math.min(maOverflow, raRoom);
-            ra += maOverflowToRa;
-            const residualAfterRa = maOverflow - maOverflowToRa;
-            maOverflowToOa = Math.max(0, residualAfterRa);
-            oa += maOverflowToOa;
+            if (age < 55) {
+                const saRoom = Math.max(0, policyForYear.frs - sa);
+                maOverflowToSa = Math.min(maOverflow, saRoom);
+                sa += maOverflowToSa;
+                maOverflowToOa = Math.max(0, maOverflow - maOverflowToSa);
+                oa += maOverflowToOa;
+            }
+            else {
+                maOverflowToOa = maOverflow;
+                oa += maOverflowToOa;
+            }
             ma = policyForYear.bhs;
         }
         if (age >= plan.payoutStartAge) {

@@ -4,8 +4,10 @@ export interface CpfLifePlanConfig {
   label: string;
   type: "level" | "growth" | "basic";
   baseMultiplier: number;
+  deferralRatePerYear: number;
   growth?: number;
   residualFactor?: number;
+  sourceIds: string[];
 }
 
 export interface StandardAnchor {
@@ -14,9 +16,29 @@ export interface StandardAnchor {
 }
 
 export const CPF_LIFE_PLANS: Record<CpfPlanType, CpfLifePlanConfig> = {
-  standard: { label: "Standard", type: "level", baseMultiplier: 1 },
-  escalating: { label: "Escalating", type: "growth", growth: 0.02, baseMultiplier: 0.53 },
-  basic: { label: "Basic", type: "basic", baseMultiplier: 0.82, residualFactor: 0.38 },
+  standard: {
+    label: "Standard",
+    type: "level",
+    baseMultiplier: 1,
+    deferralRatePerYear: 0.07,
+    sourceIds: ["cpf-life-2025", "cpf-life-2026"],
+  },
+  escalating: {
+    label: "Escalating",
+    type: "growth",
+    growth: 0.02,
+    baseMultiplier: 0.53,
+    deferralRatePerYear: 0.07,
+    sourceIds: ["cpf-life-2025", "cpf-life-2026"],
+  },
+  basic: {
+    label: "Basic",
+    type: "basic",
+    baseMultiplier: 0.82,
+    residualFactor: 0.38,
+    deferralRatePerYear: 0.065,
+    sourceIds: ["cpf-life-2025", "cpf-life-2026"],
+  },
 };
 
 export const STANDARD_ANCHORS: StandardAnchor[] = [
@@ -43,4 +65,11 @@ export function interpolateStandardPayout(balance: number): number {
   const last = STANDARD_ANCHORS[STANDARD_ANCHORS.length - 1];
   if (!last) return 0;
   return last.payout + ((balance - last.balance) / last.balance) * 0.72 * last.payout;
+}
+
+export function interpolatePlanPayout(planType: CpfPlanType, balance: number): number {
+  const standard = interpolateStandardPayout(balance);
+  const plan = CPF_LIFE_PLANS[planType];
+  if (!plan) return standard;
+  return standard * plan.baseMultiplier;
 }
