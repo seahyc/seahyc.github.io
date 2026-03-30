@@ -70,21 +70,17 @@ function render() {
 
       <section class="rp-card rp-manage-card">
         <div class="rp-card-body">
-          <div class="rp-manage-bar">
-            <div class="rp-manage-meta">
-              <span class="rp-chip">${escapeHtml(syncedProfileRecord.name)}</span>
-              <span class="rp-chip">${escapeHtml(syncedActivePlan.name)}</span>
-              <span class="rp-chip">${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
-            </div>
-            <div class="rp-flex">
+          <details class="rp-inspector-details">
+            <summary>
+              <span>Manage profiles and plans</span>
+              <span class="rp-manage-summary">${escapeHtml(syncedProfileRecord.name)} · ${escapeHtml(syncedActivePlan.name)} · ${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
+            </summary>
+            <div class="rp-flex rp-manage-actions">
               <button class="rp-btn accent" data-action="new-profile">New profile</button>
               <button class="rp-btn soft" data-action="duplicate-profile">Duplicate profile</button>
               <button class="rp-btn soft" data-action="new-plan">New plan</button>
               <button class="rp-btn soft" data-action="duplicate-plan">Duplicate plan</button>
             </div>
-          </div>
-          <details class="rp-inspector-details">
-            <summary>Manage profiles and plans</summary>
             <div class="rp-manage-grid">
               <div class="rp-profile-list">${renderProfiles(syncedProfileRecord.id)}</div>
               <div class="rp-plan-list">${renderPlans(plansForProfile, syncedActivePlan.id)}</div>
@@ -449,8 +445,9 @@ function renderMedicalLifestyle(bundle) {
     const sourcesCount = UNIFIED_INSURANCE_DB.sources.length;
     const providerCount = Object.keys(UNIFIED_INSURANCE_DB.insurers).length;
     return `
-    <div class="rp-medical-grid">
-      <div class="rp-section-stack">
+    <details class="rp-inspector-details">
+      <summary>Medical, buffers, and lifestyle</summary>
+      <div class="rp-medical-grid">
         <div class="rp-mini-list">
           <div class="rp-mini-item"><span>Expected medical gross</span><strong>${currency.format(first.medicalGross)}</strong></div>
           <div class="rp-mini-item"><span>Insurer paid</span><strong>${currency.format(first.insurerPaid)}</strong></div>
@@ -459,14 +456,14 @@ function renderMedicalLifestyle(bundle) {
           <div class="rp-mini-item"><span>Recommended balanced emergency buffer</span><strong>${currency.format(first.emergencyBalanced)}</strong></div>
           <div class="rp-mini-item"><span>Local insurance DB coverage</span><strong>${providerCount} insurers · ${sourcesCount} source links</strong></div>
         </div>
-      </div>
-      <div class="rp-section-stack">
-        <div class="rp-card-title">Discretionary spend equivalents</div>
+        <div class="rp-section-stack">
+          <div class="rp-card-title">Discretionary spend equivalents</div>
         <div class="rp-mini-list">
           ${bundle.result.lifestyle.map((item) => `<div class="rp-mini-item"><span>${item.label}</span><strong>${item.trips.toFixed(1)}x / year</strong></div>`).join("")}
         </div>
       </div>
-    </div>
+      </div>
+    </details>
   `;
 }
 function renderActions(actions) {
@@ -501,15 +498,62 @@ function renderPolicyStatus(constraints) {
     </div>
   `;
 }
-function renderChartCards(bundle) {
-    void bundle;
-    const cards = [
-        ["incomeSpend", "Income vs spend", "Will she have enough every month?"],
-        ["assetCpf", "Asset + CPF trajectory", "What runs down, what stays protected, and what remains?"],
-        ["survivalFit", "Survival + CPF LIFE fit", "Is this annuity worth it for her likely lifespan?"],
-        ["actionImpact", "Action ladder impact", "What should we do next, in what order?"],
+function getChartDefinitions(bundle) {
+    const rows = bundle.result.rows.slice(0, 20);
+    const labels = rows.map((row) => row.age);
+    return [
+        {
+            id: "incomeSpend",
+            title: "Income vs spend",
+            takeaway: "Will she have enough every month?",
+            labels,
+            series: [
+                { label: "Income / month", color: "#0f6a67", data: rows.map((row) => row.grossIncomeAnnual / 12) },
+                { label: "Basic spend / month", color: "#1c5d95", data: rows.map((row) => row.basicSpendAnnual / 12), dashed: true },
+                { label: "Total spend / month", color: "#8c661a", data: rows.map((row) => row.totalSpendAnnual / 12) },
+                { label: "Net / month", color: "#a53b2f", data: rows.map((row) => row.netAnnual / 12) },
+            ],
+        },
+        {
+            id: "assetCpf",
+            title: "Asset + CPF trajectory",
+            takeaway: "What runs down, what stays protected, and what remains?",
+            labels,
+            series: [
+                { label: "Bank", color: "#245c31", data: rows.map((row) => row.bank) },
+                { label: "OA", color: "#1c5d95", data: rows.map((row) => row.oa) },
+                { label: "RA", color: "#8c661a", data: rows.map((row) => row.ra) },
+                { label: "MA", color: "#a53b2f", data: rows.map((row) => row.ma) },
+                { label: "Estate equivalent", color: "#0f6a67", data: rows.map((row) => row.estateEquivalent) },
+            ],
+        },
+        {
+            id: "survivalFit",
+            title: "Survival + CPF LIFE fit",
+            takeaway: "Is this annuity worth it for her likely lifespan?",
+            labels,
+            series: [
+                { label: "Survival %", color: "#241d12", data: rows.map((row) => row.survival * 100) },
+                { label: "Cumulative payouts (k)", color: "#0f6a67", data: rows.map((row) => row.cumulativePayouts / 1000) },
+                { label: "Premium equivalent (k)", color: "#8c661a", data: rows.map((row) => row.premiumEquivalent / 1000), dashed: true },
+            ],
+        },
+        {
+            id: "actionImpact",
+            title: "Action ladder impact",
+            takeaway: "What should we do next, in what order?",
+            labels: bundle.recommendations.map((item) => item.title.split(" ").slice(0, 2).join(" ")),
+            series: [
+                { label: "Shortfall reduction", color: "#0f6a67", data: bundle.recommendations.map((item) => item.shortfallReduction) },
+                { label: "Liquidity impact", color: "#a53b2f", data: bundle.recommendations.map((item) => item.liquidityImpact) },
+                { label: "Estate impact", color: "#1c5d95", data: bundle.recommendations.map((item) => item.estateImpact) },
+            ],
+        },
     ];
-    return cards.map(([id, title, takeaway]) => `
+}
+function renderChartCards(bundle) {
+    const hidden = requireState().ui.chartHiddenSeries;
+    return getChartDefinitions(bundle).map(({ id, title, takeaway, series }) => `
     <div class="rp-card rp-chart-card">
       <div class="rp-card-header">
         <div>
@@ -517,8 +561,16 @@ function renderChartCards(bundle) {
           <div class="rp-card-subtitle">${takeaway}</div>
         </div>
       </div>
+      <div class="rp-chart-toolbar">
+        <div class="rp-series-toggles">
+          ${series.map((item) => {
+        const off = (hidden[id] || []).includes(item.label);
+        return `<button class="rp-series-toggle ${off ? "off" : "on"}" data-chart-toggle="${id}" data-chart-series="${escapeAttr(item.label)}"><span class="rp-chart-tooltip-dot" style="background:${item.color}"></span>${escapeHtml(item.label)}</button>`;
+    }).join("")}
+        </div>
+        <div class="rp-chart-hint">Hover for values · click to pin · click again or Esc to clear</div>
+      </div>
       <div class="rp-chart-stage"><canvas id="chart-${id}" width="760" height="360"></canvas></div>
-      <div class="rp-chart-note">${takeaway}</div>
     </div>
   `).join("");
 }
@@ -655,6 +707,19 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
         syncActivePlanConstraints(state);
         await persist();
     }));
+    app.querySelectorAll("[data-chart-toggle]").forEach((button) => button.addEventListener("click", async () => {
+        if (!state)
+            return;
+        const chartId = button.dataset.chartToggle;
+        const seriesLabel = button.dataset.chartSeries;
+        if (!chartId || !seriesLabel)
+            return;
+        const hidden = state.ui.chartHiddenSeries[chartId] || [];
+        state.ui.chartHiddenSeries[chartId] = hidden.includes(seriesLabel)
+            ? hidden.filter((item) => item !== seriesLabel)
+            : [...hidden, seriesLabel];
+        await persist();
+    }));
 }
 function applyConvenience(id) {
     if (!state)
@@ -725,42 +790,13 @@ function applyConvenience(id) {
     }
 }
 function paintCharts(bundle) {
-    const rows = bundle.result.rows.slice(0, 20);
-    const labels = rows.map((row) => row.age);
-    renderChart(document.getElementById("chart-incomeSpend"), {
-        labels,
-        series: [
-            { label: "Income / month", color: "#0f6a67", data: rows.map((row) => row.grossIncomeAnnual / 12) },
-            { label: "Basic spend / month", color: "#1c5d95", data: rows.map((row) => row.basicSpendAnnual / 12), dashed: true },
-            { label: "Total spend / month", color: "#8c661a", data: rows.map((row) => row.totalSpendAnnual / 12) },
-            { label: "Net / month", color: "#a53b2f", data: rows.map((row) => row.netAnnual / 12) },
-        ],
-    });
-    renderChart(document.getElementById("chart-assetCpf"), {
-        labels,
-        series: [
-            { label: "Bank", color: "#245c31", data: rows.map((row) => row.bank) },
-            { label: "OA", color: "#1c5d95", data: rows.map((row) => row.oa) },
-            { label: "RA", color: "#8c661a", data: rows.map((row) => row.ra) },
-            { label: "MA", color: "#a53b2f", data: rows.map((row) => row.ma) },
-            { label: "Estate equivalent", color: "#0f6a67", data: rows.map((row) => row.estateEquivalent) },
-        ],
-    });
-    renderChart(document.getElementById("chart-survivalFit"), {
-        labels,
-        series: [
-            { label: "Survival %", color: "#241d12", data: rows.map((row) => row.survival * 100) },
-            { label: "Cumulative payouts (k)", color: "#0f6a67", data: rows.map((row) => row.cumulativePayouts / 1000) },
-            { label: "Premium equivalent (k)", color: "#8c661a", data: rows.map((row) => row.premiumEquivalent / 1000), dashed: true },
-        ],
-    });
-    renderChart(document.getElementById("chart-actionImpact"), {
-        labels: bundle.recommendations.map((item) => item.title.split(" ").slice(0, 2).join(" ")),
-        series: [
-            { label: "Shortfall reduction", color: "#0f6a67", data: bundle.recommendations.map((item) => item.shortfallReduction) },
-            { label: "Liquidity impact", color: "#a53b2f", data: bundle.recommendations.map((item) => item.liquidityImpact) },
-            { label: "Estate impact", color: "#1c5d95", data: bundle.recommendations.map((item) => item.estateImpact) },
-        ],
+    const hidden = requireState().ui.chartHiddenSeries;
+    getChartDefinitions(bundle).forEach((chart) => {
+        const visibleSeries = chart.series.filter((item) => !(hidden[chart.id] || []).includes(item.label));
+        renderChart(document.getElementById(`chart-${chart.id}`), {
+            labels: chart.labels,
+            series: visibleSeries.length ? visibleSeries : chart.series,
+        });
     });
 }
 function updateProfileField(profileRecord, path, rawValue) {

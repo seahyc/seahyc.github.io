@@ -51,6 +51,7 @@ function seedState() {
             aiMode: "browser",
             selectedGraphPlanIds: [planId],
             inspectorOpen: false,
+            chartHiddenSeries: {},
         },
         profiles: [profile],
         plans: [plan],
@@ -96,10 +97,13 @@ function migrateLocalStorageState() {
 export async function loadState() {
     try {
         const indexed = await getStateFromIndexedDb();
-        if (indexed?.version)
+        if (indexed?.version) {
+            indexed.ui.chartHiddenSeries ||= {};
             return indexed;
+        }
         const migrated = migrateLocalStorageState();
         if (migrated?.version) {
+            migrated.ui.chartHiddenSeries ||= {};
             await putStateToIndexedDb(migrated);
             return migrated;
         }

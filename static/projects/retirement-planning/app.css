@@ -286,23 +286,7 @@
 }
 
 .rp-manage-card .rp-card-body {
-    display: grid;
-    gap: 0.7rem;
-}
-
-.rp-manage-bar {
-    display: flex;
-    gap: 0.8rem;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.rp-manage-meta {
-    display: flex;
-    gap: 0.45rem;
-    flex-wrap: wrap;
-    align-items: center;
+    padding-top: 0.8rem;
 }
 
 .rp-manage-grid {
@@ -410,6 +394,42 @@
     padding: 0.7rem 1.2rem 0;
 }
 
+.rp-chart-hint,
+.rp-manage-summary {
+    color: var(--rp-muted);
+    font-size: var(--rp-text-sm);
+    font-weight: 500;
+}
+
+.rp-manage-actions {
+    padding: 0 0 0.75rem;
+}
+
+.rp-series-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.rp-series-toggle {
+    appearance: none;
+    border: 1px solid var(--rp-border);
+    background: #fff;
+    color: var(--rp-body);
+    border-radius: 999px;
+    padding: 0.4rem 0.7rem;
+    font-size: var(--rp-text-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+}
+
+.rp-series-toggle.off {
+    opacity: 0.52;
+    background: var(--rp-card-strong);
+}
+
 .rp-chart-stage {
     position: relative;
     padding: 0.5rem 0.8rem 0.8rem;
@@ -424,12 +444,6 @@
     border-radius: 1rem;
 }
 
-.rp-chart-note {
-    padding: 0 1.2rem 1rem;
-    color: var(--rp-body);
-    font-size: var(--rp-text-sm);
-}
-
 .rp-chart-tooltip {
     position: absolute;
     z-index: 3;
@@ -442,6 +456,11 @@
     box-shadow: 0 10px 24px rgba(36, 29, 18, 0.12);
     padding: 0.65rem 0.75rem;
     pointer-events: none;
+}
+
+.rp-chart-tooltip[data-pinned="true"] {
+    border-color: var(--rp-ink);
+    box-shadow: 0 14px 28px rgba(36, 29, 18, 0.16);
 }
 
 .rp-chart-tooltip[hidden] {
@@ -707,6 +726,10 @@
     color: var(--rp-ink);
     font-weight: 700;
     padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
 }
 
 .rp-inspector-details summary::-webkit-details-marker {

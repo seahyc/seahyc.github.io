@@ -122,6 +122,7 @@ export interface UiState {
     aiMode: AiMode;
     selectedGraphPlanIds: string[];
     inspectorOpen: boolean;
+    chartHiddenSeries: Record<string, string[]>;
 }
 export interface AppState {
     version: number;

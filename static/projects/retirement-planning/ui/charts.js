@@ -136,6 +136,7 @@ export function renderChart(canvas, config) {
     const yMax = Math.max(1, ...flatValues);
     const yMin = Math.min(0, ...flatValues);
     const tooltip = ensureTooltip(canvas);
+    let pinnedIndex = null;
     const paint = (hoverIndex = null) => {
         ctx.clearRect(0, 0, width, height);
         drawAxes(ctx, width, height, padding, yMax, yMin);
@@ -144,32 +145,73 @@ export function renderChart(canvas, config) {
             drawHoverState(ctx, width, height, padding, config, yMax, yMin, hoverIndex);
         }
     };
-    const updateHover = (event) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width) * width;
-        const plotWidth = width - padding.left - padding.right;
-        const clampedRatio = Math.min(1, Math.max(0, (x - padding.left) / plotWidth));
-        const hoverIndex = Math.round(clampedRatio * Math.max(0, config.labels.length - 1));
-        paint(hoverIndex);
+    const tooltipHtml = (hoverIndex) => {
         const rows = config.series
             .map((series) => {
             const value = series.data[hoverIndex];
             return `<div class="rp-chart-tooltip-row"><span class="rp-chart-tooltip-dot" style="background:${series.color}"></span><strong>${series.label}</strong><span>${formatTooltipValue(value ?? 0)}</span></div>`;
         })
             .join("");
-        tooltip.innerHTML = `
+        return `
       <div class="rp-chart-tooltip-label">${String(config.labels[hoverIndex] ?? hoverIndex)}</div>
       ${rows}
     `;
-        tooltip.hidden = false;
+    };
+    const setTooltipPosition = (event) => {
+        const rect = canvas.getBoundingClientRect();
         tooltip.style.left = `${Math.min(rect.width - 12, Math.max(12, event.clientX - rect.left))}px`;
         tooltip.style.top = `${Math.max(12, event.clientY - rect.top - 12)}px`;
     };
-    canvas.onmousemove = updateHover;
-    canvas.onmouseenter = updateHover;
+    const updateHover = (event, pin = false) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * width;
+        const plotWidth = width - padding.left - padding.right;
+        const clampedRatio = Math.min(1, Math.max(0, (x - padding.left) / plotWidth));
+        const hoverIndex = Math.round(clampedRatio * Math.max(0, config.labels.length - 1));
+        if (pin)
+            pinnedIndex = hoverIndex;
+        paint(hoverIndex);
+        tooltip.innerHTML = tooltipHtml(hoverIndex);
+        tooltip.hidden = false;
+        tooltip.dataset.pinned = pinnedIndex !== null ? "true" : "false";
+        setTooltipPosition(event);
+    };
+    canvas.onmousemove = (event) => {
+        if (pinnedIndex !== null) {
+            setTooltipPosition(event);
+            return;
+        }
+        updateHover(event);
+    };
+    canvas.onmouseenter = (event) => {
+        if (pinnedIndex !== null)
+            return;
+        updateHover(event);
+    };
+    canvas.onclick = (event) => {
+        if (pinnedIndex !== null) {
+            pinnedIndex = null;
+            tooltip.hidden = true;
+            tooltip.dataset.pinned = "false";
+            paint();
+            return;
+        }
+        updateHover(event, true);
+    };
     canvas.onmouseleave = () => {
+        if (pinnedIndex !== null)
+            return;
         tooltip.hidden = true;
         paint();
     };
+    canvas.onkeydown = (event) => {
+        if (event.key === "Escape" && pinnedIndex !== null) {
+            pinnedIndex = null;
+            tooltip.hidden = true;
+            tooltip.dataset.pinned = "false";
+            paint();
+        }
+    };
+    canvas.tabIndex = 0;
     paint();
 }
