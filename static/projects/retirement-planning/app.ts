@@ -76,19 +76,9 @@ function render(): void {
   app.innerHTML = `
     <div class="rp-app">
       <section class="rp-card rp-topline-stack">
-        <div class="rp-card-header">
-          <div>
-            <div class="rp-card-title">Topline decision stack</div>
-            <div class="rp-card-subtitle">Lead with the decisions first. Controls and appendix come after.</div>
-          </div>
-        </div>
         <div class="rp-card-body">
           <div class="rp-summary-grid">
             ${renderSummary(activeBundle)}
-          </div>
-          <div class="rp-details">
-            <div class="rp-card-title">Panel notes</div>
-            <div class="rp-insights-list">${activeBundle.panel.map((item) => `<div class="rp-insight"><strong>${item.title}</strong><div>${item.summary}</div></div>`).join("")}</div>
           </div>
         </div>
       </section>
