@@ -2,11 +2,11 @@
 title: "About"
 ---
 
-I'm YC. I cofounded [Glints](https://glints.com/id) in 2013 - at the time, the youngest team to raise institutional VC in Southeast Asia. Over the next decade I wore most of the hats: built the engineering org from zero to 30, raised $80M across Series A-D at a $200M valuation, led our Indonesia expansion (relocated for three years to find PMF), and ran a cross-functional team of 15 to launch Vietnam.
+I'm YC. I cofounded [Glints](https://glints.com/id) in 2013. Over the years I've worked across product, engineering, and market expansion, and supported fundraising. I also spent several years in Indonesia and Vietnam focused on product-market fit.
 
-After recruiting a successor CTO, I moved into ML and data. I now work on fraud detection (reduced fraudulent connections from 25% to under 4%), ML models for job categorization and skills inference across 16M monthly applications, and LLM-powered data pipelines - all on a platform serving 15.5M users.
+These days I work more on ML and data. My work has included fraud detection, job categorization and skills inference, and LLM-based data pipelines and internal tools.
 
-I also build AI products on nights and weekends: a voice-guided cooking app that won the n8n Track Prize at the ElevenLabs Hackathon, a browser automation agent, a spreadsheet AI agent, living Harry Potter portraits, a voice-first multi-agent command center, and MCP servers for production databases. I like going from idea to working product quickly.
+Outside of work, I spend time experimenting with AI tools, automation, and developer workflows.
 
 Penn CS and Wharton Economics.
 
