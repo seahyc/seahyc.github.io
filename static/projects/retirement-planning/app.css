@@ -845,6 +845,13 @@
     margin-top: 0.15rem;
 }
 
+.rp-token-option mark {
+    background: var(--rp-warn-soft);
+    color: var(--rp-ink);
+    border-radius: 0.25rem;
+    padding: 0 0.08rem;
+}
+
 .rp-disclosure {
     border-top: 1px dashed var(--rp-border);
     margin-top: 1rem;

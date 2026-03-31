@@ -80,6 +80,28 @@ function drawSeries(ctx, width, height, padding, labels, data, color, yMax, yMin
         }
     });
 }
+function drawBarSeries(ctx, width, height, padding, labels, seriesIndex, seriesCount, data, color, yMax, yMin = 0) {
+    const plotWidth = width - padding.left - padding.right;
+    const plotHeight = height - padding.top - padding.bottom;
+    const groupWidth = plotWidth / Math.max(1, data.length);
+    const barWidth = Math.min(28, (groupWidth * 0.72) / Math.max(1, seriesCount));
+    const zeroY = padding.top + (1 - (0 - yMin) / Math.max(1, yMax - yMin)) * plotHeight;
+    ctx.fillStyle = color;
+    data.forEach((value, index) => {
+        const groupX = padding.left + index * groupWidth;
+        const x = groupX + groupWidth * 0.14 + seriesIndex * barWidth;
+        const y = padding.top + (1 - (value - yMin) / Math.max(1, yMax - yMin)) * plotHeight;
+        const top = Math.min(y, zeroY);
+        const barHeight = Math.max(2, Math.abs(zeroY - y));
+        ctx.fillRect(x, top, barWidth - 2, barHeight);
+        if (index % Math.ceil(data.length / 6) === 0) {
+            ctx.fillStyle = "#7d705d";
+            ctx.font = "11px system-ui";
+            ctx.fillText(String(labels[index]), groupX + 4, height - padding.bottom + 18);
+            ctx.fillStyle = color;
+        }
+    });
+}
 function drawHoverState(ctx, width, height, padding, config, yMax, yMin, hoverIndex) {
     const firstSeries = config.series[0];
     if (!firstSeries)
@@ -140,7 +162,12 @@ export function renderChart(canvas, config) {
     const paint = (hoverIndex = null) => {
         ctx.clearRect(0, 0, width, height);
         drawAxes(ctx, width, height, padding, yMax, yMin);
-        config.series.forEach((series) => drawSeries(ctx, width, height, padding, config.labels, series.data, series.color, yMax, yMin, series.dashed));
+        if (config.kind === "bar") {
+            config.series.forEach((series, index) => drawBarSeries(ctx, width, height, padding, config.labels, index, config.series.length, series.data, series.color, yMax, yMin));
+        }
+        else {
+            config.series.forEach((series) => drawSeries(ctx, width, height, padding, config.labels, series.data, series.color, yMax, yMin, series.dashed));
+        }
         if (hoverIndex !== null) {
             drawHoverState(ctx, width, height, padding, config, yMax, yMin, hoverIndex);
         }

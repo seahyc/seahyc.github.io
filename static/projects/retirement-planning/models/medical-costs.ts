@@ -92,7 +92,7 @@ export function estimateMedicalCosts({ age, profile, frailty }: { age: number; p
     });
   });
   gross += diseaseOverhead;
-  const riderFactor = profile.insurance?.rider ? (insurancePlan.riderCoverage || 0.75) : 0;
+  const riderFactor = insurancePlan.riderCoverage || 0;
   const deductible = insurancePlan.deductible || 2500;
   const claimPathRules: ClaimPathRules = (insurancePlan.claimPathRules || {}) as ClaimPathRules;
   const annualLimit = insurancePlan.annualLimit || gross;

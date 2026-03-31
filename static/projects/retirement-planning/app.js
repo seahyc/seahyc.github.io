@@ -4,7 +4,7 @@ import { createProfile, duplicateProfile, deleteProfile } from "./profile-manage
 import { createPlan, duplicatePlan, deletePlan } from "./plan-manager.js";
 import { getActiveProfile, getActivePlan, getPlansForProfile } from "./state.js";
 import { validatePlan, getCpfConstraints, normalizePlanToConstraints } from "./policy/cpf-validation.js";
-import { resolveInsurancePlan } from "./policy/medical-schemes.js";
+import { getRiderOptions, resolveInsurancePlan } from "./policy/medical-schemes.js";
 import { runPlan } from "./models/cashflow.js";
 import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
 import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
@@ -396,11 +396,19 @@ function renderProfileForm(profileRecord, plan, constraints) {
     void plan;
     const p = profileRecord.profile;
     const insurerMap = UNIFIED_INSURANCE_DB.insurers;
-    const providerOptions = Object.keys(insurerMap).map((provider) => [provider, provider]);
-    const selectedProvider = insurerMap[p.insurance.shieldProvider] ? p.insurance.shieldProvider : (providerOptions[0]?.[0] ?? "");
+    const providerOptions = [["public", "Public baseline"], ...Object.keys(insurerMap).map((provider) => [provider, provider])];
+    const selectedProvider = (selectedProviderValue => providerOptions.some(([value]) => value === selectedProviderValue) ? selectedProviderValue : (providerOptions[0]?.[0] ?? ""))(p.insurance.shieldProvider);
     const planOptions = Object.keys(insurerMap[selectedProvider]?.plans ?? {}).map((label) => [label, label]);
-    const selectedPlan = planOptions.some(([value]) => value === p.insurance.shieldPlan) ? p.insurance.shieldPlan : (planOptions[0]?.[0] ?? "");
-    const insurancePlan = resolveInsurancePlan({ shieldProvider: selectedProvider, shieldPlan: selectedPlan });
+    const defaultPlanForProvider = selectedProvider === "public" ? "medishield" : (planOptions[0]?.[0] ?? "");
+    const selectedPlan = selectedProvider === "public"
+        ? "medishield"
+        : (planOptions.some(([value]) => value === p.insurance.shieldPlan) ? p.insurance.shieldPlan : defaultPlanForProvider);
+    const riderOptions = getRiderOptions({ shieldProvider: selectedProvider, shieldPlan: selectedPlan }).map((item) => [item.id, item.label]);
+    const fallbackRider = p.insurance.rider === "default"
+        ? (riderOptions.find(([value]) => value !== "none")?.[0] ?? "none")
+        : (riderOptions[0]?.[0] ?? "none");
+    const selectedRider = riderOptions.some(([value]) => value === p.insurance.rider) ? p.insurance.rider : fallbackRider;
+    const insurancePlan = resolveInsurancePlan({ shieldProvider: selectedProvider, shieldPlan: selectedPlan, rider: selectedRider });
     return `
     <div class="rp-form-grid three">
       ${field("Name", `<input class="rp-input" data-profile-field="name" value="${escapeAttr(profileRecord.name)}">`)}
@@ -431,10 +439,10 @@ function renderProfileForm(profileRecord, plan, constraints) {
         <div class="rp-inline-section-title">Insurance coverage</div>
         <div class="rp-form-grid three">
           ${field("Shield provider", select("profile.insurance.shieldProvider", selectedProvider, providerOptions))}
-          ${field("Shield plan", select("profile.insurance.shieldPlan", selectedPlan, planOptions))}
           ${selectedProvider === "public"
-        ? field("Rider", `<div class="rp-readonly-row">Not applicable for public baseline</div>`)
-        : field("Rider", select("profile.insurance.rider", String(p.insurance.rider), [["true", "Yes"], ["false", "No"]]))}
+        ? field("Shield plan", `<div class="rp-readonly-row">MediShield Life baseline</div>`)
+        : field("Shield plan", select("profile.insurance.shieldPlan", selectedPlan, planOptions))}
+          ${field("Rider", select("profile.insurance.rider", selectedRider, riderOptions))}
           ${field("Care preference", select("profile.insurance.carePreference", p.insurance.carePreference, [["public", "Public"], ["mixed", "Mixed"], ["private", "Private"]]))}
           ${field("MediShield Life", select("profile.insurance.medishield", String(p.insurance.medishield), [["true", "Yes"], ["false", "No"]]))}
           ${field("Accident policy", select("profile.insurance.accidentPolicy", String(p.insurance.accidentPolicy), [["true", "Yes"], ["false", "No"]]))}
@@ -442,6 +450,7 @@ function renderProfileForm(profileRecord, plan, constraints) {
           ${field("Exclusions", `<input class="rp-input" data-profile-field="profile.insurance.exclusions" value="${escapeAttr(p.insurance.exclusions || "")}">`)}
         </div>
         <div class="rp-mini-list">
+          <div class="rp-mini-item"><span>Selected rider</span><strong>${escapeHtml(insurancePlan.selectedRiderLabel || "No rider")}</strong></div>
           <div class="rp-mini-item"><span>Target coverage</span><strong>${escapeHtml(insurancePlan.targetCoverage || "n/a")}</strong></div>
           <div class="rp-mini-item"><span>Deductible</span><strong>${currency.format(insurancePlan.deductible || 0)}</strong></div>
           <div class="rp-mini-item"><span>Co-insurance</span><strong>${((insurancePlan.coinsurance || 0) * 100).toFixed(0)}%</strong></div>
@@ -581,6 +590,7 @@ function getChartDefinitions(bundle) {
             id: "actionImpact",
             title: "Action ladder impact",
             takeaway: "What should we do next, in what order?",
+            kind: "bar",
             labels: bundle.recommendations.map((item) => item.title.split(" ").slice(0, 2).join(" ")),
             series: [
                 { label: "Shortfall reduction", color: "#0f6a67", data: bundle.recommendations.map((item) => item.shortfallReduction) },
@@ -765,8 +775,15 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
             return;
         const query = input.value.trim().toLowerCase();
         root.querySelectorAll("[data-token-option]").forEach((option) => {
-            const matches = !query || option.textContent?.toLowerCase().includes(query);
+            const labelNode = option.querySelector("[data-token-label]");
+            const rawLabel = labelNode?.dataset.rawLabel || option.textContent || "";
+            const matches = !query || rawLabel.toLowerCase().includes(query);
             option.hidden = !matches;
+            if (labelNode) {
+                labelNode.innerHTML = matches && query
+                    ? highlightSubstring(rawLabel, query)
+                    : escapeHtml(rawLabel);
+            }
         });
     }));
     app.querySelectorAll("[data-token-remove]").forEach((button) => button.addEventListener("click", async () => {
@@ -880,9 +897,11 @@ function updateProfileField(profileRecord, path, rawValue) {
         const insurerMap = UNIFIED_INSURANCE_DB.insurers;
         const selectedProvider = String(normalizeValue(path, rawValue));
         const nextPlans = Object.keys(insurerMap[selectedProvider]?.plans ?? {});
-        target.insurance.shieldPlan = nextPlans[0] ?? "";
-        if (selectedProvider === "public")
-            target.insurance.rider = false;
+        target.insurance.shieldPlan = selectedProvider === "public" ? "medishield" : (nextPlans[0] ?? "");
+        target.insurance.rider = getRiderOptions({ shieldProvider: selectedProvider, shieldPlan: target.insurance.shieldPlan })[0]?.id ?? "none";
+    }
+    if (path === "profile.insurance.shieldPlan") {
+        target.insurance.rider = getRiderOptions({ shieldProvider: target.insurance.shieldProvider, shieldPlan: String(normalizeValue(path, rawValue)) })[0]?.id ?? "none";
     }
 }
 function updatePlanField(plan, path, rawValue) {
@@ -943,8 +962,14 @@ function normalizeValue(path, value) {
             ? value.map((item) => String(item).trim()).filter(Boolean)
             : String(value).split(",").map((item) => item.trim()).filter(Boolean);
     }
-    if (["profile.insurance.rider", "profile.insurance.medishield", "profile.insurance.accidentPolicy"].includes(path))
+    if (["profile.insurance.medishield", "profile.insurance.accidentPolicy"].includes(path))
         return String(value) === "true";
+    if (path === "profile.insurance.rider") {
+        if (typeof value === "boolean")
+            return value ? "default" : "none";
+        const normalized = Array.isArray(value) ? value[0] || "none" : String(value || "none");
+        return normalized === "true" ? "default" : normalized === "false" ? "none" : normalized;
+    }
     if (/Cash|oa|ra|ma|Spend|Annual|Pct|Age|Support|Topup|payout|weight|height|Income|amount/i.test(path)) {
         return Number(Array.isArray(value) ? value[0] || 0 : value || 0);
     }
@@ -998,12 +1023,22 @@ function searchableMultiSelect(path, current, entries, help = "") {
         ${entries.map(([value, label]) => `
           <label class="rp-token-option" data-token-option>
             <input type="checkbox" value="${escapeAttr(value)}" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" ${current.includes(value) ? "checked" : ""}>
-            <span>${escapeHtml(label)}</span>
+            <span data-token-label data-raw-label="${escapeAttr(label)}">${escapeHtml(label)}</span>
           </label>
         `).join("")}
       </div>
     </div>
   `;
+}
+function highlightSubstring(label, query) {
+    const lower = label.toLowerCase();
+    const index = lower.indexOf(query.toLowerCase());
+    if (index === -1)
+        return escapeHtml(label);
+    const before = escapeHtml(label.slice(0, index));
+    const match = escapeHtml(label.slice(index, index + query.length));
+    const after = escapeHtml(label.slice(index + query.length));
+    return `${before}<mark>${match}</mark>${after}`;
 }
 function getFieldValue(input) {
     if (input instanceof HTMLInputElement && input.type === "checkbox") {

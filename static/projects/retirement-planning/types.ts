@@ -46,7 +46,7 @@ export interface InsuranceProfile {
   medishield: boolean;
   shieldProvider: string;
   shieldPlan: string;
-  rider: boolean;
+  rider: string;
   accidentPolicy: boolean;
   longTermCareCover: string;
   exclusions: string;
@@ -180,6 +180,7 @@ export interface ChartSeries {
 }
 
 export interface ChartConfig {
+  kind?: "line" | "bar";
   labels: Array<number | string>;
   series: ChartSeries[];
 }

@@ -40,6 +40,16 @@ export interface InsurancePlanLike {
     benefits?: Partial<Record<TreatmentClass, CoverageBenefit>>;
     [key: string]: unknown;
 }
+export interface InsuranceRiderOption {
+    id: string;
+    label: string;
+    stopLossAnnual?: number;
+    riderCoverage?: number;
+    riderCopayPct?: number;
+    riderCopayCapAnnual?: number;
+    preferredProviderFactor?: number;
+    outpatientCancerMultiplier?: number;
+}
 export interface ClaimPathAdjustments {
     panelWeight: number;
     panelFactor: number;
@@ -79,9 +89,14 @@ export declare const LOCAL_INSURANCE_DB: {
     treatmentClasses: Record<TreatmentClass, TreatmentClassSchedule>;
     eventTreatmentMix: Record<string, Partial<Record<TreatmentClass, number>>>;
 };
+export declare function getRiderOptions(insurance: {
+    shieldProvider?: string;
+    shieldPlan?: string;
+}): Array<InsuranceRiderOption>;
 export declare function resolveInsurancePlan(insurance: {
     shieldProvider?: string;
     shieldPlan?: string;
+    rider?: string;
 }): InsurancePlanLike;
 export declare function getBlendedTreatmentCost(treatmentClass: TreatmentClass, carePreference?: CarePreference): TreatmentCostSchedule;
 export declare function getCoverageRule(insurancePlan: InsurancePlanLike | undefined, treatmentClass: TreatmentClass): CoverageRule;

@@ -78,7 +78,7 @@ export const DEFAULT_PROFILE = {
             medishield: true,
             shieldProvider: "Great Eastern",
             shieldPlan: "GREAT SupremeHealth P Plus",
-            rider: false,
+            rider: "totalcare-classic",
             accidentPolicy: false,
             longTermCareCover: "careshield",
             exclusions: "",

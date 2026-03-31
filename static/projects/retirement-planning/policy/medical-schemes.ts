@@ -55,6 +55,17 @@ export interface InsurancePlanLike {
   [key: string]: unknown;
 }
 
+export interface InsuranceRiderOption {
+  id: string;
+  label: string;
+  stopLossAnnual?: number;
+  riderCoverage?: number;
+  riderCopayPct?: number;
+  riderCopayCapAnnual?: number;
+  preferredProviderFactor?: number;
+  outpatientCancerMultiplier?: number;
+}
+
 export interface ClaimPathAdjustments {
   panelWeight: number;
   panelFactor: number;
@@ -92,6 +103,45 @@ export interface CoverageRule {
 type ProviderEntry = {
   plans: Record<string, InsurancePlanLike>;
   sourceId?: string;
+};
+
+const RIDER_OPTIONS: Record<string, Array<InsuranceRiderOption>> = {
+  AIA: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "max-vitalhealth-a", label: "MAX VitalHealth A", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.24 },
+    { id: "max-vitalhealth-b", label: "MAX VitalHealth B", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.18 },
+  ],
+  "Great Eastern": [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "totalcare-classic", label: "GREAT TotalCare Classic", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
+    { id: "totalcare-elite", label: "GREAT TotalCare Elite", riderCoverage: 0.84, riderCopayPct: 0.05, riderCopayCapAnnual: 2500, stopLossAnnual: 2500, preferredProviderFactor: 0.93, outpatientCancerMultiplier: 1.16 },
+  ],
+  Prudential: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "pruextra-premier-copay", label: "PRUExtra Premier CoPay", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
+    { id: "pruextra-plus-copay", label: "PRUExtra Plus CoPay", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
+  ],
+  Income: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "deluxe-care", label: "Deluxe Care Rider", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.22 },
+    { id: "classic-care", label: "Classic Care Rider", riderCoverage: 0.75, riderCopayPct: 0.1, riderCopayCapAnnual: 4000, stopLossAnnual: 4000, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.12 },
+  ],
+  Singlife: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "health-plus-public", label: "Health Plus Public", riderCoverage: 0.74, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
+    { id: "health-plus-private", label: "Health Plus Private", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
+  ],
+  "HSBC Life": [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "life-enhancer", label: "Life Enhancer Rider", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
+  ],
+  Raffles: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+    { id: "raffles-rider", label: "Raffles Shield Rider", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
+  ],
+  public: [
+    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
+  ],
 };
 
 const sourceDb = UNIFIED_INSURANCE_DB as {
@@ -166,12 +216,38 @@ export const LOCAL_INSURANCE_DB: {
   },
 };
 
+export function getRiderOptions(insurance: {
+  shieldProvider?: string;
+  shieldPlan?: string;
+}): Array<InsuranceRiderOption> {
+  const providerName = insurance.shieldProvider || "public";
+  const options = RIDER_OPTIONS[providerName] ?? RIDER_OPTIONS.public ?? [];
+  const planName = insurance.shieldPlan || "";
+  if (/standard/i.test(planName)) return options.filter((item) => item.id === "none" || !/private|elite|premier/i.test(item.id));
+  if (/\bB\b|Lite|Basic/i.test(planName)) return options.filter((item) => item.id === "none" || !/elite|private|premier/i.test(item.id));
+  return options;
+}
+
 export function resolveInsurancePlan(insurance: {
   shieldProvider?: string;
   shieldPlan?: string;
+  rider?: string;
 }): InsurancePlanLike {
   const provider: ProviderEntry = LOCAL_INSURANCE_DB.providers[insurance.shieldProvider || "public"] ?? { plans: {} };
-  return provider.plans[insurance.shieldPlan || "medishield"] ?? provider.plans.medishield ?? Object.values(provider.plans)[0] ?? {};
+  const basePlan = provider.plans[insurance.shieldPlan || "medishield"] ?? provider.plans.medishield ?? Object.values(provider.plans)[0] ?? {};
+  const rider = getRiderOptions(insurance).find((item) => item.id === insurance.rider) || getRiderOptions(insurance)[0];
+  if (!rider || rider.id === "none") return { ...basePlan, selectedRiderId: "none", selectedRiderLabel: "No rider" };
+  return {
+    ...basePlan,
+    selectedRiderId: rider.id,
+    selectedRiderLabel: rider.label,
+    ...(rider.riderCoverage !== undefined ? { riderCoverage: rider.riderCoverage } : {}),
+    ...(rider.riderCopayPct !== undefined ? { riderCopayPct: rider.riderCopayPct } : {}),
+    ...(rider.riderCopayCapAnnual !== undefined ? { riderCopayCapAnnual: rider.riderCopayCapAnnual } : {}),
+    ...(rider.stopLossAnnual !== undefined ? { riderStopLossAnnual: rider.stopLossAnnual, stopLossAnnual: rider.stopLossAnnual } : {}),
+    ...(rider.preferredProviderFactor !== undefined ? { preferredProviderFactor: rider.preferredProviderFactor } : {}),
+    ...(rider.outpatientCancerMultiplier !== undefined ? { outpatientCancerMultiplier: rider.outpatientCancerMultiplier } : {}),
+  };
 }
 
 export function getBlendedTreatmentCost(treatmentClass: TreatmentClass, carePreference: CarePreference = "public"): TreatmentCostSchedule {
