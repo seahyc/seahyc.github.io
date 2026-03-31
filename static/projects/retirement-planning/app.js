@@ -77,6 +77,13 @@ function render() {
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
 
+      <section class="rp-page-section rp-page-section-inputs">
+        <div class="rp-page-section-header">
+          <div class="rp-page-section-kicker">Inputs</div>
+          <div class="rp-page-section-note">Baseline profile, insurance coverage, plan settings, and quick controls.</div>
+        </div>
+      </section>
+
       <section class="rp-manage-inline">
         <details class="rp-inspector-details">
           <summary>
@@ -140,6 +147,10 @@ function render() {
       </section>
 
       <section class="rp-card rp-topline-stack">
+        <div class="rp-page-section-header rp-page-section-inline">
+          <div class="rp-page-section-kicker">Outputs</div>
+          <div class="rp-page-section-note">Decision metrics, charts, recommendations, and concrete consequences.</div>
+        </div>
         <div class="rp-card-body">
           <div class="rp-summary-grid">
             ${renderSummary(activeBundle)}
@@ -174,38 +185,49 @@ function render() {
         </div>
       </section>
 
-      <section class="rp-card">
-        <div class="rp-card-header">
-          <div>
-            <div class="rp-card-title">Appendix 损益表</div>
-          </div>
-          <div class="rp-appendix-toolbar">
-            <div class="rp-tabs">
-              ${APPENDIX_PRESETS.map((preset) => `<button class="rp-tab ${currentState.ui.appendixPreset === preset.id ? "active" : ""}" data-appendix="${preset.id}">${preset.label}</button>`).join("")}
-            </div>
-            <div class="rp-flex">
-              <button class="rp-btn soft" data-action="export-json">Export JSON</button>
-              <button class="rp-btn soft" data-action="wipe-all">Wipe local data</button>
-            </div>
-          </div>
+      <section class="rp-page-section rp-page-section-appendix">
+        <div class="rp-page-section-header rp-page-section-inline">
+          <div class="rp-page-section-kicker">Appendix</div>
+          <div class="rp-page-section-note">Full ledger, audit trail, source trace, and AI workspace.</div>
         </div>
-        <div class="rp-card-body">
-          ${renderAppendix(activeBundle.appendix, currentState.ui.appendixPreset)}
-        </div>
-      </section>
-
-      <section class="rp-inspector-grid">
-        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle, insuranceCatalog)}
-        <div class="rp-card">
-          <div class="rp-card-header">
-            <div>
-              <div class="rp-card-title">AI workflow</div>
+        <details class="rp-inspector-details rp-appendix-shell">
+          <summary>
+            <span>Appendix, expert inspector, and AI</span>
+            <span class="rp-manage-summary">Open the ledger, audit trace, exports, and assistant tools</span>
+          </summary>
+          <div class="rp-card rp-appendix-card">
+            <div class="rp-card-header">
+              <div>
+                <div class="rp-card-title">Appendix 损益表</div>
+              </div>
+              <div class="rp-appendix-toolbar">
+                <div class="rp-tabs">
+                  ${APPENDIX_PRESETS.map((preset) => `<button class="rp-tab ${currentState.ui.appendixPreset === preset.id ? "active" : ""}" data-appendix="${preset.id}">${preset.label}</button>`).join("")}
+                </div>
+                <div class="rp-flex">
+                  <button class="rp-btn soft" data-action="export-json">Export JSON</button>
+                  <button class="rp-btn soft" data-action="wipe-all">Wipe local data</button>
+                </div>
+              </div>
+            </div>
+            <div class="rp-card-body">
+              ${renderAppendix(activeBundle.appendix, currentState.ui.appendixPreset)}
             </div>
           </div>
-          <div class="rp-card-body">
-            ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle, comparisonBundle)}
-          </div>
-        </div>
+          <section class="rp-inspector-grid rp-appendix-audit-grid">
+            ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle, insuranceCatalog)}
+            <div class="rp-card">
+              <div class="rp-card-header">
+                <div>
+                  <div class="rp-card-title">AI workflow</div>
+                </div>
+              </div>
+              <div class="rp-card-body">
+                ${renderAiPanel(syncedProfileRecord, syncedActivePlan, activeBundle, comparisonBundle)}
+              </div>
+            </div>
+          </section>
+        </details>
       </section>
     </div>
   `;
@@ -264,12 +286,12 @@ function renderExpertInspector(expertReview, sensitivities, diffSummary, compari
           <div class="rp-card-title">Expert inspector</div>
         </div>
       </div>
-      <div class="rp-card-body rp-stack">
+      <div class="rp-card-body rp-stack rp-expert-body">
         <details class="rp-inspector-details">
           <summary>Assumptions and findings</summary>
-          <div class="rp-insights-list">
-            ${expertReview.assumptions.map((item) => `<div class="rp-insight"><strong>Assumption</strong><div>${escapeHtml(item)}</div></div>`).join("")}
-            ${expertReview.findings.map((item) => `<div class="rp-insight"><strong>Finding</strong><div>${escapeHtml(item)}</div></div>`).join("")}
+          <div class="rp-insights-list rp-expert-list">
+            ${expertReview.assumptions.map((item) => `<div class="rp-insight rp-expert-insight"><strong>Assumption</strong><div>${escapeHtml(item)}</div></div>`).join("")}
+            ${expertReview.findings.map((item) => `<div class="rp-insight rp-expert-insight"><strong>Finding</strong><div>${escapeHtml(item)}</div></div>`).join("")}
           </div>
         </details>
         <details class="rp-inspector-details">

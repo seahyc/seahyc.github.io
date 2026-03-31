@@ -120,6 +120,39 @@
     color: var(--rp-ink);
 }
 
+.rp-page-section {
+    margin-bottom: -0.2rem;
+}
+
+.rp-page-section-appendix {
+    margin-top: 0.2rem;
+}
+
+.rp-page-section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: baseline;
+    color: var(--rp-body);
+}
+
+.rp-page-section-inline {
+    padding: 1rem 1.2rem 0;
+}
+
+.rp-page-section-kicker {
+    color: var(--rp-ink);
+    font-size: var(--rp-text-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.rp-page-section-note {
+    color: var(--rp-muted);
+    font-size: var(--rp-text-sm);
+}
+
 .rp-card-subtitle {
     margin-top: 0.25rem;
     color: var(--rp-muted);
@@ -625,6 +658,35 @@
     padding: 0.85rem 0.95rem;
 }
 
+.rp-expert-body {
+    gap: 0.6rem;
+}
+
+.rp-expert-list {
+    gap: 0.45rem;
+}
+
+.rp-expert-insight {
+    padding: 0.65rem 0.8rem;
+    border-radius: 0.8rem;
+}
+
+.rp-expert-insight strong {
+    display: block;
+    margin-bottom: 0.28rem;
+    color: var(--rp-muted);
+    font-size: var(--rp-text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.rp-expert-insight div {
+    color: var(--rp-body);
+    font-size: var(--rp-text-sm);
+    line-height: 1.45;
+}
+
 .rp-action {
     display: grid;
     gap: 0.55rem;
@@ -890,12 +952,25 @@
     padding: 0.2rem 1rem 1rem;
 }
 
+.rp-appendix-shell {
+    padding-bottom: 0.9rem;
+}
+
+.rp-appendix-card {
+    margin-top: 0.35rem;
+}
+
+.rp-appendix-audit-grid {
+    margin-top: 0.8rem;
+}
+
 .rp-inspector-details summary {
     cursor: pointer;
     list-style: none;
     color: var(--rp-ink);
-    font-weight: 700;
-    padding: 1rem 0;
+    font-weight: 600;
+    font-size: var(--rp-text-md);
+    padding: 0.82rem 0;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -926,6 +1001,11 @@
     .rp-inspector-grid,
     .rp-panel-grid {
         grid-template-columns: 1fr;
+    }
+
+    .rp-page-section-header {
+        display: grid;
+        gap: 0.2rem;
     }
 
     .rp-manage-grid,
