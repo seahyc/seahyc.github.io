@@ -173,6 +173,15 @@ export function renderChart(canvas: HTMLElement | null, config: ChartConfig): vo
     tooltip.style.top = `${Math.max(12, event.clientY - rect.top - 12)}px`;
   };
 
+  const setTooltipPositionForIndex = (hoverIndex: number) => {
+    const rect = canvas.getBoundingClientRect();
+    const firstSeries = config.series[0];
+    if (!firstSeries) return;
+    const point = getPointCoordinates(width, height, padding, firstSeries.data.length, hoverIndex, firstSeries.data[hoverIndex] ?? 0, yMax, yMin);
+    tooltip.style.left = `${Math.min(rect.width - 20, Math.max(20, (point.x / width) * rect.width))}px`;
+    tooltip.style.top = `${Math.max(20, (point.y / height) * rect.height - 18)}px`;
+  };
+
   const updateHover = (event: MouseEvent, pin = false) => {
     const rect = canvas.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * width;
@@ -184,14 +193,12 @@ export function renderChart(canvas: HTMLElement | null, config: ChartConfig): vo
     tooltip.innerHTML = tooltipHtml(hoverIndex);
     tooltip.hidden = false;
     tooltip.dataset.pinned = pinnedIndex !== null ? "true" : "false";
-    setTooltipPosition(event);
+    if (pin) setTooltipPositionForIndex(hoverIndex);
+    else setTooltipPosition(event);
   };
 
   canvas.onmousemove = (event) => {
-    if (pinnedIndex !== null) {
-      setTooltipPosition(event);
-      return;
-    }
+    if (pinnedIndex !== null) return;
     updateHover(event);
   };
   canvas.onmouseenter = (event) => {

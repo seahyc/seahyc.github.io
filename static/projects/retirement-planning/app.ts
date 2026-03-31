@@ -11,10 +11,16 @@ import { buildAppendixRows } from "./models/appendix-ledger.js";
 import { renderChart } from "./ui/charts.js";
 import { buildAudienceBrief, buildDiffPrompt, buildHandoffPrompt, buildStructuredPayload, detectAiCapabilities, openHandoff } from "./ai/provider.js";
 import { UNIFIED_INSURANCE_DB } from "./data/insurance-db.js";
+import { listSupportedDiseases } from "./data/disease-db.js";
 import type { AiCapabilities, AppState, AppendixPreset, CashflowRow, ConstraintSet, PlanBundle, PlanData, ProfileData, ProfileRecord, Recommendation, ValidationResult } from "./types.js";
 
 const currency = new Intl.NumberFormat("en-SG", { style: "currency", currency: "SGD", maximumFractionDigits: 0 });
 const percent = new Intl.NumberFormat("en-SG", { style: "percent", maximumFractionDigits: 0 });
+const SUPPORTED_DISEASES = listSupportedDiseases();
+const ALCOHOL_OPTIONS: Array<[string, string]> = [["none", "None"], ["light", "Light"], ["moderate", "Moderate"], ["heavy", "Heavy"]];
+const COGNITION_OPTIONS: Array<[string, string]> = [["normal", "Normal"], ["mild-issues", "Mild issues"], ["impaired", "Impaired"]];
+const MOBILITY_OPTIONS: Array<[string, string]> = [["independent", "Independent"], ["some-help", "Some help"], ["limited", "Limited"]];
+const FAMILY_LONGEVITY_OPTIONS: Array<[string, string]> = [["short-lived", "Short-lived"], ["average", "Average"], ["long-lived", "Long-lived"]];
 
 let state: AppState | null = null;
 let aiCaps: AiCapabilities = { browser: false, api: true, chatgpt: true, claude: true };
@@ -430,15 +436,19 @@ function renderProfileForm(profileRecord: ProfileRecord, plan: PlanData, constra
       ${field("Discretionary spend / year", numberInput("profile.discretionarySpendAnnual", p.discretionarySpendAnnual))}
       ${field("Market income / year", numberInput("profile.marketIncomeAnnual", p.marketIncomeAnnual))}
       ${field("Smoking", select("profile.smoking", p.smoking, [["never", "Never"], ["former", "Former"], ["current", "Current"]]))}
+      ${field("Alcohol", select("profile.alcohol", p.alcohol, ALCOHOL_OPTIONS))}
       ${field("Exercise", select("profile.exerciseLevel", p.exerciseLevel, [["low", "Low"], ["moderate", "Moderate"], ["high", "High"]]))}
       ${field("Self-rated health", select("profile.selfRatedHealth", p.selfRatedHealth, [["poor", "Poor"], ["fair", "Fair"], ["good", "Good"]]))}
       ${field("Frailty", select("profile.frailty", p.frailty, [["robust", "Robust"], ["prefrail", "Prefrail"], ["frail", "Frail"]]))}
+      ${field("Mobility", select("profile.mobility", p.mobility, MOBILITY_OPTIONS))}
+      ${field("Cognition", select("profile.cognition", p.cognition, COGNITION_OPTIONS))}
+      ${field("Family longevity", select("profile.familyLongevity", p.familyLongevity, FAMILY_LONGEVITY_OPTIONS))}
       ${field("Care preference", select("profile.insurance.carePreference", p.insurance.carePreference, [["public", "Public"], ["mixed", "Mixed"], ["private", "Private"]]))}
       ${field("Shield provider", select("profile.insurance.shieldProvider", selectedProvider, providerOptions))}
       ${field("Shield plan", select("profile.insurance.shieldPlan", p.insurance.shieldPlan, planOptions))}
       ${field("Rider", select("profile.insurance.rider", String(p.insurance.rider), [["true", "Yes"], ["false", "No"]]))}
-      ${field("Chronic conditions", `<textarea class="rp-textarea" data-profile-field="chronicConditions">${escapeHtml((p.chronicConditions || []).join(", "))}</textarea>`, "Comma-separated. This drives actuarial and medical event priors.")}
-      ${field("Prior serious conditions", `<textarea class="rp-textarea" data-profile-field="priorSeriousConditions">${escapeHtml((p.priorSeriousConditions || []).join(", "))}</textarea>`, "E.g. breast-cancer, stroke. Forward-looking risk input, not just history.")}
+      ${field("Chronic conditions", multiSelect("profile.chronicConditions", p.chronicConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Normalized disease list used by mortality and medical models.")}
+      ${field("Prior serious conditions", multiSelect("profile.priorSeriousConditions", p.priorSeriousConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Forward-looking disease history. Use canonical entries instead of free text.")}
     </div>
   `;
 }
@@ -722,14 +732,14 @@ function bindActions(planResults: PlanBundle[], activeBundle: PlanBundle, compar
 
   app.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-profile-field]").forEach((input) => input.addEventListener("change", async () => {
     if (!state) return;
-    updateProfileField(getActiveProfile(state), input.dataset.profileField ?? "", input.value);
+    updateProfileField(getActiveProfile(state), input.dataset.profileField ?? "", getFieldValue(input));
     syncActivePlanConstraints(state);
     await persist();
   }));
 
   app.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-plan-field]").forEach((input) => input.addEventListener("change", async () => {
     if (!state) return;
-    updatePlanField(getActivePlan(state), input.dataset.planField ?? "", input.value);
+    updatePlanField(getActivePlan(state), input.dataset.planField ?? "", getFieldValue(input));
     syncActivePlanConstraints(state);
     await persist();
   }));
@@ -831,16 +841,16 @@ function paintCharts(bundle: PlanBundle): void {
   });
 }
 
-function updateProfileField(profileRecord: ProfileRecord, path: string, rawValue: string): void {
+function updateProfileField(profileRecord: ProfileRecord, path: string, rawValue: string | string[]): void {
   if (path === "name") {
-    profileRecord.name = rawValue;
+    profileRecord.name = Array.isArray(rawValue) ? rawValue.join(", ") : rawValue;
     return;
   }
   const target = profileRecord.profile;
   assignPath(target as unknown as Record<string, unknown>, path.replace(/^profile\./, ""), normalizeValue(path, rawValue));
 }
 
-function updatePlanField(plan: PlanData, path: string, rawValue: string): void {
+function updatePlanField(plan: PlanData, path: string, rawValue: string | string[]): void {
   assignPath(plan as unknown as Record<string, unknown>, path.replace(/^plan\./, ""), normalizeValue(path, rawValue));
 }
 
@@ -871,15 +881,17 @@ function assignPath(target: Record<string, unknown>, path: string, value: unknow
   }
 }
 
-function normalizeValue(path: string, value: string): string | number | boolean | string[] {
+function normalizeValue(path: string, value: string | string[]): string | number | boolean | string[] {
   if (["profile.chronicConditions", "profile.priorSeriousConditions"].includes(path)) {
-    return String(value).split(",").map((item) => item.trim()).filter(Boolean);
+    return Array.isArray(value)
+      ? value.map((item) => String(item).trim()).filter(Boolean)
+      : String(value).split(",").map((item) => item.trim()).filter(Boolean);
   }
-  if (["profile.insurance.rider"].includes(path)) return value === "true";
+  if (["profile.insurance.rider"].includes(path)) return String(value) === "true";
   if (/Cash|oa|ra|ma|Spend|Annual|Pct|Age|Support|Topup|payout|weight|height|Income|amount/i.test(path)) {
-    return Number(value || 0);
+    return Number(Array.isArray(value) ? value[0] || 0 : value || 0);
   }
-  return value;
+  return Array.isArray(value) ? value.join(", ") : value;
 }
 
 async function persist(): Promise<void> {
@@ -917,6 +929,22 @@ function numberInput(path: string, value: number): string {
 
 function select(path: string, current: string | number | boolean, entries: Array<[string, string]>): string {
   return `<select class="rp-select" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}">${entries.map(([value, label]) => `<option value="${value}" ${String(current) === String(value) ? "selected" : ""}>${label}</option>`).join("")}</select>`;
+}
+
+function multiSelect(path: string, current: string[], entries: Array<[string, string]>, help = ""): string {
+  const hint = help ? ` title="${escapeAttr(help)}"` : "";
+  return `
+    <select class="rp-select rp-multi-select" multiple size="7" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}"${hint}>
+      ${entries.map(([value, label]) => `<option value="${value}" ${current.includes(value) ? "selected" : ""}>${escapeHtml(label)}</option>`).join("")}
+    </select>
+  `;
+}
+
+function getFieldValue(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): string | string[] {
+  if (input instanceof HTMLSelectElement && input.multiple) {
+    return Array.from(input.selectedOptions).map((option) => option.value);
+  }
+  return input.value;
 }
 
 function metric(label: string, value: string): string {

@@ -180,6 +180,17 @@
     font: inherit;
 }
 
+.rp-multi-select {
+    min-height: 10rem;
+    padding: 0.35rem;
+    font-size: var(--rp-text-md);
+}
+
+.rp-multi-select option {
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.45rem;
+}
+
 .rp-btn {
     appearance: none;
     border: 1px solid var(--rp-border);
