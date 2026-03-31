@@ -4,6 +4,7 @@ import { createProfile, duplicateProfile, deleteProfile } from "./profile-manage
 import { createPlan, duplicatePlan, deletePlan } from "./plan-manager.js";
 import { getActiveProfile, getActivePlan, getPlansForProfile } from "./state.js";
 import { validatePlan, getCpfConstraints, normalizePlanToConstraints } from "./policy/cpf-validation.js";
+import { resolveInsurancePlan } from "./policy/medical-schemes.js";
 import { runPlan } from "./models/cashflow.js";
 import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
 import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
@@ -19,6 +20,7 @@ const ALCOHOL_OPTIONS = [["none", "None"], ["light", "Light"], ["moderate", "Mod
 const COGNITION_OPTIONS = [["normal", "Normal"], ["mild-issues", "Mild issues"], ["impaired", "Impaired"]];
 const MOBILITY_OPTIONS = [["independent", "Independent"], ["some-help", "Some help"], ["limited", "Limited"]];
 const FAMILY_LONGEVITY_OPTIONS = [["short-lived", "Short-lived"], ["average", "Average"], ["long-lived", "Long-lived"]];
+const LTC_COVER_OPTIONS = [["none", "None"], ["careshield", "CareShield base"], ["supplement", "CareShield supplement"], ["other", "Other / legacy"]];
 let state = null;
 let aiCaps = { browser: false, api: true, chatgpt: true, claude: true };
 const app = document.getElementById("retirement-planning-app");
@@ -397,6 +399,8 @@ function renderProfileForm(profileRecord, plan, constraints) {
     const providerOptions = Object.keys(insurerMap).map((provider) => [provider, provider]);
     const selectedProvider = insurerMap[p.insurance.shieldProvider] ? p.insurance.shieldProvider : (providerOptions[0]?.[0] ?? "");
     const planOptions = Object.keys(insurerMap[selectedProvider]?.plans ?? {}).map((label) => [label, label]);
+    const selectedPlan = planOptions.some(([value]) => value === p.insurance.shieldPlan) ? p.insurance.shieldPlan : (planOptions[0]?.[0] ?? "");
+    const insurancePlan = resolveInsurancePlan({ shieldProvider: selectedProvider, shieldPlan: selectedPlan });
     return `
     <div class="rp-form-grid three">
       ${field("Name", `<input class="rp-input" data-profile-field="name" value="${escapeAttr(profileRecord.name)}">`)}
@@ -421,12 +425,33 @@ function renderProfileForm(profileRecord, plan, constraints) {
       ${field("Mobility", select("profile.mobility", p.mobility, MOBILITY_OPTIONS))}
       ${field("Cognition", select("profile.cognition", p.cognition, COGNITION_OPTIONS))}
       ${field("Family longevity", select("profile.familyLongevity", p.familyLongevity, FAMILY_LONGEVITY_OPTIONS))}
-      ${field("Care preference", select("profile.insurance.carePreference", p.insurance.carePreference, [["public", "Public"], ["mixed", "Mixed"], ["private", "Private"]]))}
-      ${field("Shield provider", select("profile.insurance.shieldProvider", selectedProvider, providerOptions))}
-      ${field("Shield plan", select("profile.insurance.shieldPlan", p.insurance.shieldPlan, planOptions))}
-      ${field("Rider", select("profile.insurance.rider", String(p.insurance.rider), [["true", "Yes"], ["false", "No"]]))}
-      ${field("Chronic conditions", multiSelect("profile.chronicConditions", p.chronicConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Normalized disease list used by mortality and medical models.")}
-      ${field("Prior serious conditions", multiSelect("profile.priorSeriousConditions", p.priorSeriousConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Forward-looking disease history. Use canonical entries instead of free text.")}
+      ${field("Chronic conditions", searchableMultiSelect("profile.chronicConditions", p.chronicConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Normalized disease list used by mortality and medical models.")}
+      ${field("Prior serious conditions", searchableMultiSelect("profile.priorSeriousConditions", p.priorSeriousConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Forward-looking disease history. Use canonical entries instead of free text.")}
+      <div class="rp-form-section rp-form-span">
+        <div class="rp-inline-section-title">Insurance coverage</div>
+        <div class="rp-form-grid three">
+          ${field("Shield provider", select("profile.insurance.shieldProvider", selectedProvider, providerOptions))}
+          ${field("Shield plan", select("profile.insurance.shieldPlan", selectedPlan, planOptions))}
+          ${selectedProvider === "public"
+        ? field("Rider", `<div class="rp-readonly-row">Not applicable for public baseline</div>`)
+        : field("Rider", select("profile.insurance.rider", String(p.insurance.rider), [["true", "Yes"], ["false", "No"]]))}
+          ${field("Care preference", select("profile.insurance.carePreference", p.insurance.carePreference, [["public", "Public"], ["mixed", "Mixed"], ["private", "Private"]]))}
+          ${field("MediShield Life", select("profile.insurance.medishield", String(p.insurance.medishield), [["true", "Yes"], ["false", "No"]]))}
+          ${field("Accident policy", select("profile.insurance.accidentPolicy", String(p.insurance.accidentPolicy), [["true", "Yes"], ["false", "No"]]))}
+          ${field("Long-term care", select("profile.insurance.longTermCareCover", p.insurance.longTermCareCover, LTC_COVER_OPTIONS))}
+          ${field("Exclusions", `<input class="rp-input" data-profile-field="profile.insurance.exclusions" value="${escapeAttr(p.insurance.exclusions || "")}">`)}
+        </div>
+        <div class="rp-mini-list">
+          <div class="rp-mini-item"><span>Target coverage</span><strong>${escapeHtml(insurancePlan.targetCoverage || "n/a")}</strong></div>
+          <div class="rp-mini-item"><span>Deductible</span><strong>${currency.format(insurancePlan.deductible || 0)}</strong></div>
+          <div class="rp-mini-item"><span>Co-insurance</span><strong>${((insurancePlan.coinsurance || 0) * 100).toFixed(0)}%</strong></div>
+          <div class="rp-mini-item"><span>Annual limit</span><strong>${currency.format(insurancePlan.annualLimit || 0)}</strong></div>
+          <div class="rp-mini-item"><span>Panel strength</span><strong>${escapeHtml(insurancePlan.panelStrength || "n/a")}</strong></div>
+          <div class="rp-mini-item"><span>Pre-authorisation</span><strong>${insurancePlan.preAuthorisationRequiredForBestTerms ? "Required for best terms" : "Not required"}</strong></div>
+          <div class="rp-mini-item"><span>Outpatient cancer factor</span><strong>${(insurancePlan.outpatientCancerMultiplier || 1).toFixed(2)}x</strong></div>
+          <div class="rp-mini-item"><span>Stop-loss / rider cap</span><strong>${currency.format(insurancePlan.stopLossAnnual || insurancePlan.riderStopLossAnnual || 0)}</strong></div>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -734,6 +759,37 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
             : [...hidden, seriesLabel];
         await persist();
     }));
+    app.querySelectorAll("[data-multiselect-search]").forEach((input) => input.addEventListener("input", () => {
+        const root = input.closest("[data-multiselect-root]");
+        if (!root)
+            return;
+        const query = input.value.trim().toLowerCase();
+        root.querySelectorAll("[data-token-option]").forEach((option) => {
+            const matches = !query || option.textContent?.toLowerCase().includes(query);
+            option.hidden = !matches;
+        });
+    }));
+    app.querySelectorAll("[data-token-remove]").forEach((button) => button.addEventListener("click", async () => {
+        if (!state)
+            return;
+        const path = button.dataset.tokenRemove;
+        const value = button.dataset.tokenValue;
+        if (!path || !value)
+            return;
+        const profile = getActiveProfile(state);
+        const targetPath = path.replace(/^profile\./, "");
+        const source = profile.profile;
+        const currentValue = source[targetPath.split(".")[0]];
+        if (Array.isArray(currentValue) && targetPath.indexOf(".") === -1) {
+            source[targetPath] = currentValue.filter((item) => item !== value);
+        }
+        else {
+            const existing = getNestedArrayValue(source, targetPath);
+            setNestedArrayValue(source, targetPath, existing.filter((item) => item !== value));
+        }
+        syncActivePlanConstraints(state);
+        await persist();
+    }));
 }
 function applyConvenience(id) {
     if (!state)
@@ -820,6 +876,14 @@ function updateProfileField(profileRecord, path, rawValue) {
     }
     const target = profileRecord.profile;
     assignPath(target, path.replace(/^profile\./, ""), normalizeValue(path, rawValue));
+    if (path === "profile.insurance.shieldProvider") {
+        const insurerMap = UNIFIED_INSURANCE_DB.insurers;
+        const selectedProvider = String(normalizeValue(path, rawValue));
+        const nextPlans = Object.keys(insurerMap[selectedProvider]?.plans ?? {});
+        target.insurance.shieldPlan = nextPlans[0] ?? "";
+        if (selectedProvider === "public")
+            target.insurance.rider = false;
+    }
 }
 function updatePlanField(plan, path, rawValue) {
     assignPath(plan, path.replace(/^plan\./, ""), normalizeValue(path, rawValue));
@@ -850,13 +914,36 @@ function assignPath(target, path, value) {
         pointer[last] = value;
     }
 }
+function getNestedArrayValue(target, path) {
+    const parts = path.split(".");
+    let pointer = target;
+    for (const key of parts) {
+        if (!pointer || typeof pointer !== "object" || Array.isArray(pointer))
+            return [];
+        pointer = pointer[key];
+    }
+    return Array.isArray(pointer) ? pointer.map((item) => String(item)) : [];
+}
+function setNestedArrayValue(target, path, value) {
+    const parts = path.split(".");
+    let pointer = target;
+    for (let i = 0; i < parts.length - 1; i += 1) {
+        const key = parts[i];
+        const next = pointer[key];
+        if (!next || typeof next !== "object" || Array.isArray(next)) {
+            pointer[key] = {};
+        }
+        pointer = pointer[key];
+    }
+    pointer[parts[parts.length - 1]] = value;
+}
 function normalizeValue(path, value) {
     if (["profile.chronicConditions", "profile.priorSeriousConditions"].includes(path)) {
         return Array.isArray(value)
             ? value.map((item) => String(item).trim()).filter(Boolean)
             : String(value).split(",").map((item) => item.trim()).filter(Boolean);
     }
-    if (["profile.insurance.rider"].includes(path))
+    if (["profile.insurance.rider", "profile.insurance.medishield", "profile.insurance.accidentPolicy"].includes(path))
         return String(value) === "true";
     if (/Cash|oa|ra|ma|Spend|Annual|Pct|Age|Support|Topup|payout|weight|height|Income|amount/i.test(path)) {
         return Number(Array.isArray(value) ? value[0] || 0 : value || 0);
@@ -897,15 +984,35 @@ function numberInput(path, value) {
 function select(path, current, entries) {
     return `<select class="rp-select" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}">${entries.map(([value, label]) => `<option value="${value}" ${String(current) === String(value) ? "selected" : ""}>${label}</option>`).join("")}</select>`;
 }
-function multiSelect(path, current, entries, help = "") {
+function searchableMultiSelect(path, current, entries, help = "") {
     const hint = help ? ` title="${escapeAttr(help)}"` : "";
+    const selected = entries.filter(([value]) => current.includes(value));
+    const chips = selected.length
+        ? selected.map(([value, label]) => `<span class="rp-token-chip">${escapeHtml(label)}<button type="button" class="rp-token-remove" data-token-remove="${path}" data-token-value="${escapeAttr(value)}" aria-label="Remove ${escapeAttr(label)}">×</button></span>`).join("")
+        : `<span class="rp-token-empty">No conditions selected</span>`;
     return `
-    <select class="rp-select rp-multi-select" multiple size="7" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}"${hint}>
-      ${entries.map(([value, label]) => `<option value="${value}" ${current.includes(value) ? "selected" : ""}>${escapeHtml(label)}</option>`).join("")}
-    </select>
+    <div class="rp-token-picker" data-multiselect-root="${path}"${hint}>
+      <div class="rp-token-list">${chips}</div>
+      <input class="rp-input rp-token-search" type="search" placeholder="Search conditions" data-multiselect-search="${path}">
+      <div class="rp-token-options">
+        ${entries.map(([value, label]) => `
+          <label class="rp-token-option" data-token-option>
+            <input type="checkbox" value="${escapeAttr(value)}" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" ${current.includes(value) ? "checked" : ""}>
+            <span>${escapeHtml(label)}</span>
+          </label>
+        `).join("")}
+      </div>
+    </div>
   `;
 }
 function getFieldValue(input) {
+    if (input instanceof HTMLInputElement && input.type === "checkbox") {
+        const field = input.dataset.profileField ?? input.dataset.planField;
+        const root = field ? input.closest(`[data-multiselect-root="${field}"]`) : null;
+        if (root && field) {
+            return Array.from(root.querySelectorAll(`input[type="checkbox"][data-${field.startsWith("plan.") ? "plan" : "profile"}-field="${field}"]:checked`)).map((item) => item.value);
+        }
+    }
     if (input instanceof HTMLSelectElement && input.multiple) {
         return Array.from(input.selectedOptions).map((option) => option.value);
     }

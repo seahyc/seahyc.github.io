@@ -191,6 +191,27 @@
     border-radius: 0.45rem;
 }
 
+.rp-form-section {
+    border: 1px solid var(--rp-border);
+    border-radius: 1rem;
+    background: rgba(255, 250, 242, 0.72);
+    padding: 0.9rem;
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+}
+
+.rp-form-span {
+    grid-column: 1 / -1;
+}
+
+.rp-inline-section-title {
+    color: var(--rp-ink);
+    font-size: var(--rp-text-md);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
 .rp-btn {
     appearance: none;
     border: 1px solid var(--rp-border);
@@ -371,6 +392,16 @@
     padding: 0.75rem 0.9rem;
     font-size: var(--rp-text-lg);
     outline: none;
+}
+
+.rp-readonly-row {
+    width: 100%;
+    border: 1px solid var(--rp-border);
+    background: var(--rp-card-strong);
+    color: var(--rp-muted);
+    border-radius: 0.9rem;
+    padding: 0.82rem 0.9rem;
+    font-size: var(--rp-text-md);
 }
 
 .rp-textarea {
@@ -734,6 +765,86 @@
     font-size: var(--rp-text-sm);
 }
 
+.rp-token-picker {
+    display: grid;
+    gap: 0.55rem;
+    border: 1px solid var(--rp-border);
+    border-radius: 0.95rem;
+    background: #fff;
+    padding: 0.7rem;
+}
+
+.rp-token-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-height: 2rem;
+}
+
+.rp-token-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    max-width: 100%;
+    padding: 0.38rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 106, 103, 0.18);
+    background: var(--rp-accent-soft);
+    color: var(--rp-ink);
+    font-size: var(--rp-text-sm);
+    line-height: 1.2;
+}
+
+.rp-token-empty {
+    color: var(--rp-muted);
+    font-size: var(--rp-text-sm);
+}
+
+.rp-token-remove {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--rp-body);
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.rp-token-search {
+    padding-top: 0.62rem;
+    padding-bottom: 0.62rem;
+    font-size: var(--rp-text-md);
+}
+
+.rp-token-options {
+    display: grid;
+    gap: 0.25rem;
+    max-height: 14rem;
+    overflow: auto;
+    padding-right: 0.2rem;
+}
+
+.rp-token-option {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.55rem;
+    align-items: start;
+    padding: 0.42rem 0.3rem;
+    border-radius: 0.55rem;
+    color: var(--rp-body);
+    font-size: var(--rp-text-sm);
+    cursor: pointer;
+}
+
+.rp-token-option:hover {
+    background: var(--rp-card-strong);
+}
+
+.rp-token-option input {
+    margin-top: 0.15rem;
+}
+
 .rp-disclosure {
     border-top: 1px dashed var(--rp-border);
     margin-top: 1rem;
@@ -892,6 +1003,10 @@
 
     .rp-form-grid.three {
         grid-template-columns: 1fr;
+    }
+
+    .rp-token-options {
+        max-height: 11rem;
     }
 }
 
