@@ -1,9 +1,9 @@
 {{ define "main" }}
 <section class="writing-section">
-    <h2 class="section-title">Writing</h2>
+    <h2 class="section-title">Recent writing</h2>
 
     <ul class="post-list">
-        {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+        {{ range first 8 (where .Site.RegularPages "Section" "posts") }}
         <li class="post-item">
             <a href="{{ .Permalink }}">
                 <h3 class="post-title">{{ .Title }}</h3>
@@ -13,6 +13,23 @@
                     &mdash; {{ .ReadingTime }} min read
                 </div>
             </a>
+        </li>
+        {{ end }}
+    </ul>
+</section>
+
+<section class="projects-section">
+    <h2 class="section-title">Recent projects</h2>
+
+    <ul class="project-list">
+        {{ range first 6 (where .Site.RegularPages "Section" "projects") }}
+        <li class="project-row">
+            <a href="{{ with .Params.github }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}"{{ with .Params.github }} target="_blank"{{ end }}>
+                <span class="project-name">{{ .Title }}</span>
+                <span class="project-dash">&mdash;</span>
+                <span class="project-desc">{{ .Description }}</span>
+            </a>
+            <span class="project-tech">{{ delimit .Params.tech ", " }}</span>
         </li>
         {{ end }}
     </ul>
