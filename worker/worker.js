@@ -5,9 +5,10 @@
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
-    const allowed = env.ALLOWED_ORIGIN || "https://seahyingcong.com";
+    const allowedOrigins = parseAllowedOrigins(env.ALLOWED_ORIGIN);
+    const allowOrigin = allowedOrigins.has(origin) ? origin : "https://seahyingcong.com";
     const corsHeaders = {
-      "Access-Control-Allow-Origin": allowed,
+      "Access-Control-Allow-Origin": allowOrigin,
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
@@ -22,7 +23,7 @@ export default {
     }
 
     // Reject requests from other origins
-    if (origin && !origin.startsWith(allowed)) {
+    if (origin && !allowedOrigins.has(origin)) {
       return json({ error: "Forbidden" }, 403, corsHeaders);
     }
 
@@ -86,4 +87,12 @@ function json(data, status, headers) {
     status,
     headers: { ...headers, "Content-Type": "application/json" },
   });
+}
+
+function parseAllowedOrigins(value) {
+  const configured = (value || "https://seahyingcong.com")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  return new Set(configured);
 }
