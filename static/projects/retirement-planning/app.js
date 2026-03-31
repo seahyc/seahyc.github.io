@@ -21,8 +21,74 @@ const COGNITION_OPTIONS = [["normal", "Normal"], ["mild-issues", "Mild issues"],
 const MOBILITY_OPTIONS = [["independent", "Independent"], ["some-help", "Some help"], ["limited", "Limited"]];
 const FAMILY_LONGEVITY_OPTIONS = [["short-lived", "Short-lived"], ["average", "Average"], ["long-lived", "Long-lived"]];
 const LTC_COVER_OPTIONS = [["none", "None"], ["careshield", "CareShield base"], ["supplement", "CareShield supplement"], ["other", "Other / legacy"]];
+const FIELD_HELP = {
+    oa: "OA (Ordinary Account) is the CPF bucket for housing and approved investments. Check My CPF > Account balances.",
+    sa: "SA (Special Account) usually earns higher interest and may be mostly transferred into RA after age 55. Check My CPF > Account balances.",
+    ra: "RA (Retirement Account) is created at age 55 to fund CPF LIFE. Check My CPF > Account balances.",
+    ma: "MA (MediSave Account) is your CPF medical savings bucket. Check My CPF > Account balances.",
+    policyYear: "Leave this as 2026 unless your planner tells you to model a different CPF policy year.",
+    observedCpfPayout: "Enter your actual CPF LIFE monthly payout if you already have it. Find it in My CPF > CPF LIFE > Payout details.",
+    chronicConditions: "Search by everyday language. Examples: knee pain, sugar, memory, stroke, heart attack.",
+    priorSeriousConditions: "Include previous major illnesses or events such as stroke, heart attack, cancer, or surgery-related long-term issues.",
+    remainingErsRoom: "ERS is the Enhanced Retirement Sum, the maximum RA target used to maximize CPF LIFE payouts in the selected policy year.",
+    bhs: "BHS is the Basic Healthcare Sum, the maximum amount allowed in MediSave before overflow rules apply.",
+    frs: "FRS is the Full Retirement Sum, the standard CPF retirement target for the selected policy year.",
+};
+const CONDITION_SYNONYMS = {
+    "osteoarthritis": ["knee", "knee pain", "joint pain", "arthritis"],
+    "dementia": ["memory", "memory loss", "forgetful", "confusion"],
+    "coronary-artery-disease": ["heart attack", "heart disease", "blocked artery", "chest pain"],
+    "stroke": ["stroke", "mini stroke", "weakness", "slurred speech"],
+    "diabetes": ["sugar", "high sugar", "blood sugar"],
+};
+const APPENDIX_COLUMN_LABELS = {
+    age: "Age",
+    yearOffset: "Years from now",
+    mortalityState: "Mortality state",
+    survival: "Survival %",
+    grossIncomeAnnual: "Income / year",
+    basicSpendAnnual: "Basic spend / year",
+    discretionaryAnnual: "Discretionary spend / year",
+    medicalGross: "Medical gross / year",
+    insurerPaid: "Insurer paid / year",
+    medisavePaid: "MediSave paid / year",
+    medicalCash: "Cash medical / year",
+    emergencyExpected: "Expected reserve",
+    emergencyBalanced: "Balanced reserve",
+    liquidityCoverageMonths: "Liquidity months",
+    emergencyCoverageRatio: "Reserve coverage ratio",
+    medicalShareOfSpend: "Medical share of spend",
+    cpfShareOfIncome: "CPF share of income",
+    netAnnual: "Net / year",
+    oa: "OA",
+    sa: "SA",
+    ra: "RA",
+    ma: "MA",
+    bank: "Bank / cash",
+    familyTopup: "Family top-up",
+    ownTopup: "Own top-up",
+    extraInterestTotal: "Extra CPF interest",
+    ers: "ERS",
+    frs: "FRS",
+    bhs: "BHS",
+    cumulativePayouts: "Cumulative CPF payouts",
+    premiumEquivalent: "Premium equivalent",
+    taxSavingsAnnual: "Tax savings / year",
+    estateEquivalent: "Estate equivalent",
+    estateMinusEmergency: "Estate after reserve",
+    liquidAssets: "Liquid assets",
+    cpfPayoutAnnual: "CPF payout / year",
+    supportAnnual: "Support / year",
+    emergencyConservative: "Conservative reserve",
+};
 let state = null;
 let aiCaps = { browser: false, api: true, chatgpt: true, claude: true };
+let activeToast = null;
+let toastTimer = null;
+let highlightedFieldPaths = new Set();
+let highlightTimer = null;
+let inlineQuestionState = { question: "", answer: "", loading: false, error: null };
+let apiConfig = { endpoint: "https://api.openai.com/v1/responses", model: "gpt-4.1-mini", apiKey: "" };
 const app = document.getElementById("retirement-planning-app");
 boot();
 function requireState() {
@@ -34,6 +100,7 @@ function requireState() {
 async function boot() {
     state = await loadState();
     aiCaps = await detectAiCapabilities();
+    apiConfig = loadApiConfig();
     render();
 }
 function render() {
@@ -73,9 +140,12 @@ function render() {
     const sensitivities = buildSensitivityDiagnostics(profile, activeBundle.plan, activeBundle.result);
     const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities, insuranceCatalog);
     const diffSummary = buildPlanDiffSummary(activeBundle, comparisonBundle);
+    const topRecommendation = activeBundle.recommendations[0] ?? null;
     app.innerHTML = `
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
+      ${renderStickyMiniBar(syncedProfileRecord, syncedActivePlan, activeBundle)}
+      ${renderToast()}
 
       <section class="rp-page-section rp-page-section-inputs">
         <div class="rp-page-section-header">
@@ -134,9 +204,9 @@ function render() {
               <div class="rp-stack">
                 <details class="rp-inspector-details">
                   <summary>Policy status</summary>
-                  ${renderPolicyStatus(activeBundle.result.constraints)}
+              ${renderPolicyStatus(activeBundle.result.constraints)}
                 </details>
-                <details class="rp-inspector-details">
+                <details class="rp-inspector-details" open>
                   <summary>Quick controls</summary>
                   ${renderConvenience()}
                 </details>
@@ -146,15 +216,18 @@ function render() {
         </div>
       </section>
 
-      <section class="rp-card rp-topline-stack">
+      <section class="rp-card rp-topline-stack" id="rp-outputs">
         <div class="rp-page-section-header rp-page-section-inline">
           <div class="rp-page-section-kicker">Outputs</div>
           <div class="rp-page-section-note">Decision metrics, charts, recommendations, and concrete consequences.</div>
         </div>
         <div class="rp-card-body">
+          ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
+          ${renderIncomeGapAlert(activeBundle, topRecommendation)}
           <div class="rp-summary-grid">
             ${renderSummary(activeBundle)}
           </div>
+          ${renderAiQuickActions(syncedProfileRecord, syncedActivePlan, activeBundle)}
         </div>
       </section>
 
@@ -233,6 +306,7 @@ function render() {
   `;
     bindActions(planResults, activeBundle, comparisonBundle);
     paintCharts(activeBundle);
+    paintTransientUi();
 }
 function renderBanner(profileRecord, plan) {
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -240,11 +314,29 @@ function renderBanner(profileRecord, plan) {
     <section class="rp-status-strip" aria-label="Planner status">
       <div class="rp-status-line">
         <strong>${escapeHtml(profileRecord.name)} / ${escapeHtml(plan.name)}</strong>
-        <span>Local only</span>
+        <span>Local only: saved in this browser. Export JSON if you want a backup.</span>
         <span>Autosaved ${now}</span>
       </div>
     </section>
   `;
+}
+function renderStickyMiniBar(profileRecord, plan, bundle) {
+    const first = bundle.result.rows[0];
+    const monthlyGap = Math.round(((first?.grossIncomeAnnual || 0) - (first?.basicSpendAnnual || 0)) / 12);
+    const topAction = bundle.recommendations[0]?.title || "Review recommendations";
+    return `
+    <section class="rp-mini-bar" aria-label="Current plan summary">
+      <div class="rp-mini-pill">${escapeHtml(profileRecord.name)} · ${escapeHtml(plan.name)}</div>
+      <div class="rp-mini-pill ${monthlyGap < 0 ? "warning" : "success"}">Income gap: ${currency.format(monthlyGap)}/m</div>
+      <div class="rp-mini-pill">Top action: ${escapeHtml(topAction)}</div>
+      <a class="rp-btn soft" href="#rp-outputs">Jump to results</a>
+    </section>
+  `;
+}
+function renderToast() {
+    if (!activeToast)
+        return "";
+    return `<div class="rp-toast rp-toast-${activeToast.kind}" role="status" aria-live="polite">${escapeHtml(activeToast.message)}</div>`;
 }
 function renderProfiles(activeProfileId) {
     return requireState().profiles.map((profile) => `
@@ -361,6 +453,7 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
     const doctorBrief = buildAudienceBrief("doctor", profileRecord, plan, bundle.result);
     const plannerBrief = buildAudienceBrief("planner", profileRecord, plan, bundle.result);
     const familyBrief = buildAudienceBrief("family", profileRecord, plan, bundle.result);
+    const insuranceBrief = buildAudienceBrief("insurance", profileRecord, plan, bundle.result);
     const payload = buildStructuredPayload(profileRecord, plan, bundle.result);
     const diffPrompt = comparisonBundle ? buildDiffPrompt(profileRecord, plan, bundle.result, comparisonBundle.plan, comparisonBundle.result) : "";
     return `
@@ -369,7 +462,21 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
       <select class="rp-select" data-field="ui.aiMode">
         ${AI_MODES.map((mode) => `<option value="${mode.id}" ${requireState().ui.aiMode === mode.id ? "selected" : ""}>${mode.label}</option>`).join("")}
       </select>
-      <div class="rp-help">Browser AI available: ${aiCaps.browser ? "Yes" : "No"} · API mode is user-supplied · ChatGPT/Claude work as handoff flows.</div>
+      <div class="rp-help">
+        Browser AI available: ${aiCaps.browser ? "Yes" : "No"}.
+        ${aiCaps.browser ? "You can ask directly in this page when Local Browser AI is selected." : "To enable Local Browser AI in supported Chromium builds, turn on on-device model support in browser flags or use Claude/ChatGPT handoff."}
+      </div>
+    </div>
+    ${requireState().ui.aiMode === "api" ? renderApiConfigPanel() : ""}
+    <div class="rp-field">
+      <label>Ask about this plan</label>
+      <textarea class="rp-textarea" rows="4" data-inline-ai-question placeholder="Example: What do I need to do in the next 6 months to close the income gap?">${escapeHtml(inlineQuestionState.question)}</textarea>
+      <div class="rp-flex">
+        <button class="rp-btn accent" data-inline-ai-run="true">${inlineQuestionState.loading ? "Thinking…" : "Ask AI about my plan"}</button>
+        <button class="rp-btn soft" data-inline-ai-suggest="retiree">Explain this for the retiree</button>
+        <button class="rp-btn soft" data-inline-ai-suggest="family">What should the family do next?</button>
+      </div>
+      ${renderInlineAiResponse()}
     </div>
     <div class="rp-flex">
       <button class="rp-btn soft" data-ai-open="chatgpt">Open in ChatGPT</button>
@@ -378,6 +485,7 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
       <button class="rp-btn soft" data-copy-brief="actuary">Copy actuary brief</button>
       <button class="rp-btn soft" data-copy-brief="doctor">Copy doctor brief</button>
       <button class="rp-btn soft" data-copy-brief="planner">Copy planner brief</button>
+      <button class="rp-btn soft" data-copy-brief="insurance">Copy insurance brief</button>
       <button class="rp-btn soft" data-copy-brief="family">Copy family brief</button>
       <button class="rp-btn soft" data-copy-payload="true">Copy structured JSON</button>
       ${comparisonBundle ? `<button class="rp-btn soft" data-copy-diff="true">Copy plan diff brief</button>` : ""}
@@ -399,6 +507,10 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
       <div class="rp-codebox">${escapeHtml(plannerBrief)}</div>
     </details>
     <details class="rp-inspector-details">
+      <summary>Insurance brief preview</summary>
+      <div class="rp-codebox">${escapeHtml(insuranceBrief)}</div>
+    </details>
+    <details class="rp-inspector-details">
       <summary>Family brief preview</summary>
       <div class="rp-codebox">${escapeHtml(familyBrief)}</div>
     </details>
@@ -412,6 +524,26 @@ function renderAiPanel(profileRecord, plan, bundle, comparisonBundle) {
         <div class="rp-codebox">${escapeHtml(diffPrompt)}</div>
       </details>
     ` : ""}
+  `;
+}
+function renderInlineAiResponse() {
+    if (inlineQuestionState.loading) {
+        return `<div class="rp-help">Generating an answer for this plan…</div>`;
+    }
+    if (inlineQuestionState.error) {
+        return `<div class="rp-alert rp-alert-warning">${escapeHtml(inlineQuestionState.error)}</div>`;
+    }
+    if (!inlineQuestionState.answer)
+        return "";
+    return `<div class="rp-codebox rp-inline-ai-answer">${escapeHtml(inlineQuestionState.answer)}</div>`;
+}
+function renderApiConfigPanel() {
+    return `
+    <div class="rp-form-grid three rp-api-config-grid">
+      ${field("API endpoint", `<input class="rp-input" data-api-config="endpoint" value="${escapeAttr(apiConfig.endpoint)}">`, "OpenAI-compatible Responses API endpoint.")}
+      ${field("Model", `<input class="rp-input" data-api-config="model" value="${escapeAttr(apiConfig.model)}">`, "Model name sent to the API endpoint.")}
+      ${field("API key", `<input class="rp-input" type="password" data-api-config="apiKey" value="${escapeAttr(apiConfig.apiKey)}" autocomplete="off">`, "Stored in this browser only.")}
+    </div>
   `;
 }
 function renderConvenience() {
@@ -443,6 +575,64 @@ function renderSummary(bundle) {
     </div>
   `).join("");
 }
+function renderPlainEnglishSummary(profileRecord, plan, bundle) {
+    const first = bundle.result.rows[0];
+    if (!first)
+        return "";
+    const monthlyIncome = Math.round(first.grossIncomeAnnual / 12);
+    const monthlyBasicSpend = Math.round(first.basicSpendAnnual / 12);
+    const monthlyGap = monthlyIncome - monthlyBasicSpend;
+    const actions = bundle.recommendations.slice(0, 3).map((item, index) => `${index + 1}. ${item.title}`).join(" ");
+    const healthContext = profileRecord.profile.chronicConditions.length
+        ? `Health planning matters because of ${profileRecord.profile.chronicConditions.join(", ")}.`
+        : "Health planning still matters even without major recorded chronic conditions.";
+    return `
+    <div class="rp-alert rp-alert-info rp-plain-english-card">
+      <strong>Your plan in plain English</strong>
+      <div>
+        ${monthlyGap < 0
+        ? `${escapeHtml(profileRecord.name)} is currently short by about ${currency.format(Math.abs(monthlyGap))}/month against basic spending.`
+        : `${escapeHtml(profileRecord.name)} currently covers basic spending with a buffer of about ${currency.format(monthlyGap)}/month.`}
+        The current ${escapeHtml(plan.cpfPlan)} CPF LIFE setup starts around ${currency.format(bundle.result.cpfInitialPayout)}/month.
+        ${healthContext}
+      </div>
+      <div><strong>Top 3 actions:</strong> ${escapeHtml(actions)}</div>
+    </div>
+  `;
+}
+function renderIncomeGapAlert(bundle, topRecommendation) {
+    const first = bundle.result.rows[0];
+    if (!first)
+        return "";
+    const monthlyIncome = Math.round(first.grossIncomeAnnual / 12);
+    const monthlyBasicSpend = Math.round(first.basicSpendAnnual / 12);
+    const monthlyGap = monthlyIncome - monthlyBasicSpend;
+    if (first.netAnnual >= 0 && monthlyGap >= 0)
+        return "";
+    return `
+    <div class="rp-alert rp-alert-warning">
+      <strong>Income gap detected</strong>
+      <div>Your monthly income (${currency.format(monthlyIncome)}/m) does not cover basic needs (${currency.format(monthlyBasicSpend)}/m). Shortfall: ${currency.format(Math.abs(monthlyGap))}/m.</div>
+      ${topRecommendation ? `<div>Top action: ${escapeHtml(topRecommendation.title)}</div>` : ""}
+    </div>
+  `;
+}
+function renderAiQuickActions(profileRecord, plan, bundle) {
+    const familyPrompt = buildAudienceBrief("family", profileRecord, plan, bundle.result);
+    return `
+    <div class="rp-ai-cta-strip">
+      <div class="rp-ai-cta-copy">
+        <strong>Ask AI about this plan</strong>
+        <div class="rp-card-subtitle">Open the current plan in Claude or ChatGPT, or copy the family-friendly brief.</div>
+      </div>
+      <div class="rp-flex">
+        <button class="rp-btn accent" data-ai-open="claude">Ask AI about my plan</button>
+        <button class="rp-btn soft" data-ai-open="chatgpt">Open in ChatGPT</button>
+        <button class="rp-btn soft" data-copy-text="${escapeAttr(familyPrompt)}">Copy family brief</button>
+      </div>
+    </div>
+  `;
+}
 function renderProfileForm(profileRecord, plan, constraints) {
     void plan;
     const p = profileRecord.profile;
@@ -461,32 +651,39 @@ function renderProfileForm(profileRecord, plan, constraints) {
     const selectedRider = riderOptions.some(([value]) => value === p.insurance.rider) ? p.insurance.rider : fallbackRider;
     const insurancePlan = resolveInsurancePlan({ shieldProvider: selectedProvider, shieldPlan: selectedPlan, rider: selectedRider });
     const insuranceCatalog = getInsuranceCatalogSummary(p);
+    const diseaseEntries = SUPPORTED_DISEASES.map((item) => ({
+        value: item.key,
+        label: `${item.label} · ${item.category}`,
+        searchText: [item.label, item.category, item.key, ...(item.aliases || []), ...(CONDITION_SYNONYMS[item.key] || [])].join(" ").toLowerCase(),
+    }));
     return `
-    <div class="rp-form-grid three">
-      ${field("Name", `<input class="rp-input" data-profile-field="name" value="${escapeAttr(profileRecord.name)}">`)}
-      ${field("Birth date", `<input class="rp-input" type="date" data-profile-field="birthDate" value="${escapeAttr(p.birthDate)}">`)}
-      ${field("Sex", select("profile.sex", p.sex, [["female", "Female"], ["male", "Male"]]))}
-      ${field("Bank / cash", numberInput("profile.bankCash", p.bankCash))}
-      ${field("OA", numberInput("profile.oa", p.oa))}
-      ${field("SA", numberInput("profile.sa", p.sa))}
-      ${field("RA", numberInput("profile.ra", p.ra), `ERS room ${currency.format(constraints.remainingErsRoom)}`)}
-      ${field("MA", numberInput("profile.ma", p.ma), `BHS ${currency.format(constraints.bhs)}`)}
-      ${field("Policy year", numberInput("profile.cpfCohortYear", p.cpfCohortYear), "Defaults to the current browser year unless explicitly overridden.")}
-      ${field("CPF investments", numberInput("profile.cpfInvestments", p.cpfInvestments))}
-      ${field("Observed CPF payout", numberInput("profile.observedCpfPayout", p.observedCpfPayout), "Used as a calibration anchor when plan matches.")}
-      ${field("Basic spend / month", numberInput("profile.basicSpendMonthly", p.basicSpendMonthly))}
-      ${field("Discretionary spend / year", numberInput("profile.discretionarySpendAnnual", p.discretionarySpendAnnual))}
-      ${field("Market income / year", numberInput("profile.marketIncomeAnnual", p.marketIncomeAnnual))}
-      ${field("Smoking", select("profile.smoking", p.smoking, [["never", "Never"], ["former", "Former"], ["current", "Current"]]))}
-      ${field("Alcohol", select("profile.alcohol", p.alcohol, ALCOHOL_OPTIONS))}
-      ${field("Exercise", select("profile.exerciseLevel", p.exerciseLevel, [["low", "Low"], ["moderate", "Moderate"], ["high", "High"]]))}
-      ${field("Self-rated health", select("profile.selfRatedHealth", p.selfRatedHealth, [["poor", "Poor"], ["fair", "Fair"], ["good", "Good"]]))}
-      ${field("Frailty", select("profile.frailty", p.frailty, [["robust", "Robust"], ["prefrail", "Prefrail"], ["frail", "Frail"]]))}
-      ${field("Mobility", select("profile.mobility", p.mobility, MOBILITY_OPTIONS))}
-      ${field("Cognition", select("profile.cognition", p.cognition, COGNITION_OPTIONS))}
-      ${field("Family longevity", select("profile.familyLongevity", p.familyLongevity, FAMILY_LONGEVITY_OPTIONS))}
-      ${field("Chronic conditions", searchableMultiSelect("profile.chronicConditions", p.chronicConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Normalized disease list used by mortality and medical models.")}
-      ${field("Prior serious conditions", searchableMultiSelect("profile.priorSeriousConditions", p.priorSeriousConditions || [], SUPPORTED_DISEASES.map((item) => [item.key, `${item.label} · ${item.category}`])), "Forward-looking disease history. Use canonical entries instead of free text.")}
+    <div class="rp-section-stack">
+      <div class="rp-inline-section-title">Essentials</div>
+      <div class="rp-form-grid three">
+        ${field("Name", `<input class="rp-input" data-profile-field="name" value="${escapeAttr(profileRecord.name)}">`)}
+        ${field("Birth date", `<input class="rp-input" type="date" data-profile-field="birthDate" value="${escapeAttr(p.birthDate)}">`)}
+        ${field("Sex", select("profile.sex", p.sex, [["female", "Female"], ["male", "Male"]]))}
+        ${field("Bank / cash", numberInput("profile.bankCash", p.bankCash))}
+        ${field("OA", numberInput("profile.oa", p.oa), FIELD_HELP.oa)}
+        ${field("SA", numberInput("profile.sa", p.sa), FIELD_HELP.sa)}
+        ${field("RA", numberInput("profile.ra", p.ra), `ERS room ${currency.format(constraints.remainingErsRoom)}. ${FIELD_HELP.ra}`)}
+        ${field("MA", numberInput("profile.ma", p.ma), `BHS ${currency.format(constraints.bhs)}. ${FIELD_HELP.ma}`)}
+        ${field("Policy year", numberInput("profile.cpfCohortYear", p.cpfCohortYear), FIELD_HELP.policyYear)}
+        ${field("Observed CPF payout", numberInput("profile.observedCpfPayout", p.observedCpfPayout), FIELD_HELP.observedCpfPayout)}
+        ${field("Basic spend / month", numberInput("profile.basicSpendMonthly", p.basicSpendMonthly))}
+        ${field("Discretionary spend / year", numberInput("profile.discretionarySpendAnnual", p.discretionarySpendAnnual))}
+        ${field("Market income / year", numberInput("profile.marketIncomeAnnual", p.marketIncomeAnnual))}
+        ${field("Smoking", select("profile.smoking", p.smoking, [["never", "Never"], ["former", "Former"], ["current", "Current"]]))}
+        ${field("Alcohol", select("profile.alcohol", p.alcohol, ALCOHOL_OPTIONS))}
+        ${field("Exercise", select("profile.exerciseLevel", p.exerciseLevel, [["low", "Low"], ["moderate", "Moderate"], ["high", "High"]]))}
+        ${field("Self-rated health", select("profile.selfRatedHealth", p.selfRatedHealth, [["poor", "Poor"], ["fair", "Fair"], ["good", "Good"]]))}
+        ${field("Frailty", select("profile.frailty", p.frailty, [["robust", "Robust"], ["prefrail", "Prefrail"], ["frail", "Frail"]]))}
+        ${field("Mobility", select("profile.mobility", p.mobility, MOBILITY_OPTIONS))}
+        ${field("Cognition", select("profile.cognition", p.cognition, COGNITION_OPTIONS))}
+        ${field("Family longevity", select("profile.familyLongevity", p.familyLongevity, FAMILY_LONGEVITY_OPTIONS))}
+        ${field("Chronic conditions", searchableMultiSelect("profile.chronicConditions", p.chronicConditions || [], diseaseEntries), FIELD_HELP.chronicConditions)}
+        ${field("Prior serious conditions", searchableMultiSelect("profile.priorSeriousConditions", p.priorSeriousConditions || [], diseaseEntries), FIELD_HELP.priorSeriousConditions)}
+      </div>
       <div class="rp-form-section rp-form-span">
         <div class="rp-inline-section-title">Insurance coverage</div>
         <div class="rp-form-grid three">
@@ -501,6 +698,7 @@ function renderProfileForm(profileRecord, plan, constraints) {
           ${field("Long-term care", select("profile.insurance.longTermCareCover", p.insurance.longTermCareCover, LTC_COVER_OPTIONS))}
           ${field("Exclusions", `<input class="rp-input" data-profile-field="profile.insurance.exclusions" value="${escapeAttr(p.insurance.exclusions || "")}">`)}
         </div>
+        ${renderInsuranceEstimateWarning(p)}
         <div class="rp-mini-list">
           <div class="rp-mini-item"><span>Selected rider</span><strong>${escapeHtml(insurancePlan.selectedRiderLabel || "No rider")}</strong></div>
           <div class="rp-mini-item"><span>Plan SKU</span><strong>${escapeHtml(insuranceCatalog.planSku)}</strong></div>
@@ -515,6 +713,12 @@ function renderProfileForm(profileRecord, plan, constraints) {
           <div class="rp-mini-item"><span>Stop-loss / rider cap</span><strong>${currency.format(insurancePlan.stopLossAnnual || insurancePlan.riderStopLossAnnual || 0)}</strong></div>
         </div>
       </div>
+      <details class="rp-inspector-details">
+        <summary>Advanced profile inputs</summary>
+        <div class="rp-form-grid three rp-advanced-grid">
+          ${field("CPF investments", numberInput("profile.cpfInvestments", p.cpfInvestments))}
+        </div>
+      </details>
     </div>
   `;
 }
@@ -531,10 +735,15 @@ function renderPlanForm(plan, profile, validation) {
       ${field("Care setting", select("plan.careSetting", plan.careSetting, [["public", "Public"], ["mixed", "Mixed"], ["private", "Private"]]))}
       ${field("Medical scenario", select("plan.medicalScenario", plan.medicalScenario, [["insurance-default", "Insurance default"], ["conservative-downside", "Conservative downside"], ["private-stress", "Private stress"]]))}
       ${field("Objective", select("plan.objective", plan.objective, [["basic-certainty", "Basic certainty"], ["total-spend", "Total spend certainty"], ["bequest", "Bequest"], ["tax-efficient", "After-tax family utility"]]))}
-      ${field("Equity allocation %", numberInput("plan.equityAllocationPct", plan.equityAllocationPct))}
-      ${field("Fixed income %", numberInput("plan.fixedIncomeAllocationPct", plan.fixedIncomeAllocationPct))}
-      ${field("Child support strategy", select("plan.childSupportStrategy", plan.childSupportStrategy, [["tax-efficient", "Tax-efficient"], ["payout-efficient", "Payout-efficient"], ["split-evenly", "Split evenly"]]))}
     </div>
+    <details class="rp-inspector-details">
+      <summary>Advanced planner settings</summary>
+      <div class="rp-form-grid three">
+        ${field("Equity allocation %", numberInput("plan.equityAllocationPct", plan.equityAllocationPct))}
+        ${field("Fixed income %", numberInput("plan.fixedIncomeAllocationPct", plan.fixedIncomeAllocationPct))}
+        ${field("Child support strategy", select("plan.childSupportStrategy", plan.childSupportStrategy, [["tax-efficient", "Tax-efficient"], ["payout-efficient", "Payout-efficient"], ["split-evenly", "Split evenly"]]))}
+      </div>
+    </details>
     <div class="rp-details">
       ${validation.issues.length ? validation.issues.map((item) => `<div class="rp-constraint">${item}</div>`).join("") : `<div class="rp-help">Hard CPF constraints are currently satisfied.</div>`}
     </div>
@@ -550,6 +759,7 @@ function renderMedicalLifestyle(bundle) {
     return `
     <details class="rp-inspector-details">
       <summary>Medical, buffers, and lifestyle</summary>
+      ${renderInsuranceEstimateWarning(getActiveProfile(requireState()).profile)}
       <div class="rp-medical-grid">
         <div class="rp-mini-list">
           <div class="rp-mini-item"><span>Coverage selection</span><strong>${escapeHtml(`${insuranceCatalog.providerLabel} · ${insuranceCatalog.planLabel}`)}</strong></div>
@@ -614,32 +824,36 @@ function getInsuranceCatalogSummary(profile) {
 }
 function renderActions(actions) {
     return actions.map((item) => `
-    <div class="rp-action">
-      <div class="rp-action-top">
+    <details class="rp-action">
+      <summary class="rp-action-top">
         <div>
           <strong>${item.title}</strong>
           <div class="rp-card-subtitle">${item.tag} · ${item.risk} risk · ${item.confidence} confidence</div>
         </div>
         <span class="rp-chip">${item.tag}</span>
+      </summary>
+      <div class="rp-action-body">
+        <div>${item.why}</div>
+        <div class="rp-action-explainer"><strong>What this means:</strong> ${escapeHtml(explainRecommendation(item))}</div>
+        <div class="rp-action-next-step"><strong>What to do Monday morning:</strong> ${escapeHtml(nextStepForRecommendation(item))}</div>
+        <div class="rp-action-metrics">
+          ${metric("Shortfall reduction", currency.format(item.shortfallReduction || 0))}
+          ${metric("Liquidity impact", currency.format(item.liquidityImpact || 0))}
+          ${metric("Estate impact", currency.format(item.estateImpact || 0))}
+          ${metric("Confidence", item.confidence)}
+        </div>
       </div>
-      <div>${item.why}</div>
-      <div class="rp-action-metrics">
-        ${metric("Shortfall reduction", currency.format(item.shortfallReduction || 0))}
-        ${metric("Liquidity impact", currency.format(item.liquidityImpact || 0))}
-        ${metric("Estate impact", currency.format(item.estateImpact || 0))}
-        ${metric("Confidence", item.confidence)}
-      </div>
-    </div>
+    </details>
   `).join("");
 }
 function renderPolicyStatus(constraints) {
     return `
     <div class="rp-mini-list">
       <div class="rp-mini-item"><span>Policy year</span><strong>${constraints.year}</strong></div>
-      <div class="rp-mini-item"><span>Remaining ERS room</span><strong>${currency.format(constraints.remainingErsRoom)}</strong></div>
-      <div class="rp-mini-item"><span>BHS</span><strong>${currency.format(constraints.bhs)}</strong></div>
-      <div class="rp-mini-item"><span>FRS</span><strong>${currency.format(constraints.frs)}</strong></div>
-      <div class="rp-mini-item"><span>ERS</span><strong>${currency.format(constraints.ers)}</strong></div>
+      <div class="rp-mini-item"><span>Remaining ERS room</span><strong>${currency.format(constraints.remainingErsRoom)}</strong><button class="rp-inline-help" type="button" data-tooltip="${escapeAttr(FIELD_HELP.remainingErsRoom)}">?</button></div>
+      <div class="rp-mini-item"><span>BHS</span><strong>${currency.format(constraints.bhs)}</strong><button class="rp-inline-help" type="button" data-tooltip="${escapeAttr(FIELD_HELP.bhs)}">?</button></div>
+      <div class="rp-mini-item"><span>FRS</span><strong>${currency.format(constraints.frs)}</strong><button class="rp-inline-help" type="button" data-tooltip="${escapeAttr(FIELD_HELP.frs)}">?</button></div>
+      <div class="rp-mini-item"><span>ERS</span><strong>${currency.format(constraints.ers)}</strong><button class="rp-inline-help" type="button" data-tooltip="${escapeAttr(FIELD_HELP.remainingErsRoom)}">?</button></div>
       <div class="rp-mini-item"><span>Current MA overflow</span><strong>${currency.format(constraints.maOverflow)}</strong></div>
     </div>
   `;
@@ -732,7 +946,7 @@ function renderAppendix(rows, preset) {
     <div class="rp-table-wrap">
       <table class="rp-table">
         <thead>
-          <tr>${columns.map((column) => `<th>${column}</th>`).join("")}</tr>
+          <tr>${columns.map((column) => `<th>${escapeHtml(APPENDIX_COLUMN_LABELS[column] || column)}</th>`).join("")}</tr>
         </thead>
         <tbody>
           ${rows.map((row) => `
@@ -792,7 +1006,10 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
             render();
         }
     });
-    app.querySelector("[data-action='export-json']")?.addEventListener("click", () => exportJson());
+    app.querySelector("[data-action='export-json']")?.addEventListener("click", () => {
+        exportJson();
+        showToast("success", "Plan data exported to JSON.");
+    });
     app.querySelectorAll("[data-appendix]").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
             return;
@@ -804,34 +1021,48 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
             return;
         openHandoff(button.dataset.aiOpen, buildHandoffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result));
     }));
-    app.querySelector("[data-copy-prompt='true']")?.addEventListener("click", async () => {
+    app.querySelectorAll("[data-copy-prompt='true']").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
             return;
-        await navigator.clipboard.writeText(buildHandoffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result));
-    });
+        await copyTextWithFeedback(buildHandoffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result), "Expert prompt copied.");
+    }));
     app.querySelectorAll("[data-copy-brief]").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
             return;
         const audience = button.dataset.copyBrief;
         if (!audience)
             return;
-        await navigator.clipboard.writeText(buildAudienceBrief(audience, getActiveProfile(state), getActivePlan(state), activeBundle.result));
+        await copyTextWithFeedback(buildAudienceBrief(audience, getActiveProfile(state), getActivePlan(state), activeBundle.result), `${capitalize(audience)} brief copied.`);
     }));
-    app.querySelector("[data-copy-payload='true']")?.addEventListener("click", async () => {
+    app.querySelectorAll("[data-copy-payload='true']").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
             return;
-        await navigator.clipboard.writeText(buildStructuredPayload(getActiveProfile(state), getActivePlan(state), activeBundle.result));
-    });
-    app.querySelector("[data-copy-diff='true']")?.addEventListener("click", async () => {
+        await copyTextWithFeedback(buildStructuredPayload(getActiveProfile(state), getActivePlan(state), activeBundle.result), "Structured JSON copied.");
+    }));
+    app.querySelectorAll("[data-copy-diff='true']").forEach((button) => button.addEventListener("click", async () => {
         if (!state || !comparisonBundle)
             return;
-        await navigator.clipboard.writeText(buildDiffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result, comparisonBundle.plan, comparisonBundle.result));
-    });
+        await copyTextWithFeedback(buildDiffPrompt(getActiveProfile(state), getActivePlan(state), activeBundle.result, comparisonBundle.plan, comparisonBundle.result), "Plan diff brief copied.");
+    }));
+    app.querySelectorAll("[data-copy-text]").forEach((button) => button.addEventListener("click", async () => {
+        const text = button.dataset.copyText;
+        if (!text)
+            return;
+        await copyTextWithFeedback(text, "Copied!");
+    }));
     app.querySelectorAll("[data-field='ui.aiMode']").forEach((select) => select.addEventListener("change", async () => {
         if (!state)
             return;
         state.ui.aiMode = select.value;
         await persist();
+    }));
+    app.querySelectorAll("[data-api-config]").forEach((input) => input.addEventListener("change", () => {
+        const key = input.dataset.apiConfig;
+        if (!key)
+            return;
+        apiConfig = { ...apiConfig, [key]: input.value };
+        saveApiConfig(apiConfig);
+        showToast("success", "API settings saved locally.");
     }));
     app.querySelectorAll("[data-profile-field]").forEach((input) => input.addEventListener("change", async () => {
         if (!state)
@@ -850,9 +1081,12 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
     app.querySelectorAll("[data-convenience]").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
             return;
-        applyConvenience(button.dataset.convenience);
+        const feedback = applyConvenience(button.dataset.convenience);
         syncActivePlanConstraints(state);
         await persist();
+        if (feedback.highlightFields.length)
+            highlightFields(feedback.highlightFields);
+        showToast("success", feedback.message);
     }));
     app.querySelectorAll("[data-chart-toggle]").forEach((button) => button.addEventListener("click", async () => {
         if (!state)
@@ -875,7 +1109,8 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
         root.querySelectorAll("[data-token-option]").forEach((option) => {
             const labelNode = option.querySelector("[data-token-label]");
             const rawLabel = labelNode?.dataset.rawLabel || option.textContent || "";
-            const matches = !query || rawLabel.toLowerCase().includes(query);
+            const searchText = option.dataset.searchText || rawLabel.toLowerCase();
+            const matches = !query || searchText.includes(query);
             option.hidden = !matches;
             if (labelNode) {
                 labelNode.innerHTML = matches && query
@@ -905,10 +1140,44 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
         syncActivePlanConstraints(state);
         await persist();
     }));
+    app.querySelectorAll("[data-inline-ai-suggest]").forEach((button) => button.addEventListener("click", () => {
+        inlineQuestionState.question = button.dataset.inlineAiSuggest === "family"
+            ? "What should the family do in the next 6 months?"
+            : "Explain this plan in plain English for the retiree.";
+        inlineQuestionState.error = null;
+        render();
+    }));
+    app.querySelector("[data-inline-ai-run='true']")?.addEventListener("click", async () => {
+        if (!state)
+            return;
+        const questionInput = app.querySelector("[data-inline-ai-question]");
+        inlineQuestionState.question = questionInput?.value.trim() || inlineQuestionState.question.trim();
+        if (!inlineQuestionState.question) {
+            showToast("warning", "Enter a question first.");
+            return;
+        }
+        inlineQuestionState.loading = true;
+        inlineQuestionState.error = null;
+        inlineQuestionState.answer = "";
+        render();
+        try {
+            const answer = await answerInlineQuestion(requireState(), activeBundle, inlineQuestionState.question);
+            inlineQuestionState.answer = answer;
+            showToast("success", "AI answer ready.");
+        }
+        catch (error) {
+            inlineQuestionState.error = error instanceof Error ? error.message : "AI answer failed.";
+            showToast("error", inlineQuestionState.error);
+        }
+        finally {
+            inlineQuestionState.loading = false;
+            render();
+        }
+    });
 }
 function applyConvenience(id) {
     if (!state)
-        return;
+        return { message: "No quick control applied.", highlightFields: [] };
     const profile = getActiveProfile(state).profile;
     const plan = getActivePlan(state);
     const constraints = getCpfConstraints(profile, plan);
@@ -916,7 +1185,7 @@ function applyConvenience(id) {
         case "max-topup":
         case "remaining-ers":
             plan.oneOffTopup = constraints.remainingErsRoom;
-            break;
+            return { message: `One-off top-up set to ${currency.format(plan.oneOffTopup)}.`, highlightFields: ["plan.oneOffTopup"] };
         case "basic-gap": {
             const bundle = runPlan(profile, plan);
             const firstRow = bundle.rows[0];
@@ -924,7 +1193,7 @@ function applyConvenience(id) {
                 break;
             const gap = Math.max(0, firstRow.basicSpendAnnual - firstRow.grossIncomeAnnual);
             plan.oneOffTopup = Math.min(constraints.remainingErsRoom, gap * 4);
-            break;
+            return { message: `One-off top-up set to ${currency.format(plan.oneOffTopup)} for the basic-spend gap.`, highlightFields: ["plan.oneOffTopup"] };
         }
         case "discretionary-gap": {
             const bundle = runPlan(profile, plan);
@@ -933,46 +1202,47 @@ function applyConvenience(id) {
                 break;
             const gap = Math.max(0, firstRow.totalSpendAnnual - firstRow.grossIncomeAnnual);
             plan.oneOffTopup = Math.min(constraints.remainingErsRoom, gap * 4);
-            break;
+            return { message: `One-off top-up set to ${currency.format(plan.oneOffTopup)} for the total-spend gap.`, highlightFields: ["plan.oneOffTopup"] };
         }
         case "ma-cap":
             profile.ma = constraints.bhs;
-            break;
+            return { message: `MA set to the BHS cap at ${currency.format(profile.ma)}.`, highlightFields: ["profile.ma"] };
         case "tax-efficient":
             plan.childSupportStrategy = "tax-efficient";
-            break;
+            return { message: "Child support strategy set to tax-efficient.", highlightFields: ["plan.childSupportStrategy"] };
         case "payout-efficient":
             plan.childSupportStrategy = "payout-efficient";
-            break;
+            return { message: "Child support strategy set to payout-efficient.", highlightFields: ["plan.childSupportStrategy"] };
         case "split-evenly":
             plan.childSupportStrategy = "split-evenly";
-            break;
+            return { message: "Child support strategy set to split evenly.", highlightFields: ["plan.childSupportStrategy"] };
         case "public":
             profile.insurance.carePreference = "public";
             plan.careSetting = "public";
-            break;
+            return { message: "Care setting switched to public care.", highlightFields: ["profile.insurance.carePreference", "plan.careSetting"] };
         case "private":
             profile.insurance.carePreference = "private";
             plan.careSetting = "private";
-            break;
+            return { message: "Care setting switched to private care.", highlightFields: ["profile.insurance.carePreference", "plan.careSetting"] };
         case "insured":
             plan.medicalScenario = "insurance-default";
-            break;
+            return { message: "Medical scenario set to insurance-default.", highlightFields: ["plan.medicalScenario"] };
         case "downside":
             plan.medicalScenario = "conservative-downside";
-            break;
+            return { message: "Medical scenario set to conservative downside.", highlightFields: ["plan.medicalScenario"] };
         case "buffer-min":
             plan.emergencyStyle = "minimum";
-            break;
+            return { message: "Reserve style set to minimum.", highlightFields: ["plan.emergencyStyle"] };
         case "buffer-balanced":
             plan.emergencyStyle = "balanced";
-            break;
+            return { message: "Reserve style set to balanced.", highlightFields: ["plan.emergencyStyle"] };
         case "buffer-conservative":
             plan.emergencyStyle = "conservative";
-            break;
+            return { message: "Reserve style set to conservative.", highlightFields: ["plan.emergencyStyle"] };
         default:
-            break;
+            return { message: "No quick control applied.", highlightFields: [] };
     }
+    return { message: "No quick control applied.", highlightFields: [] };
 }
 function paintCharts(bundle) {
     const hidden = requireState().ui.chartHiddenSeries;
@@ -1090,12 +1360,23 @@ function exportJson() {
     anchor.click();
     URL.revokeObjectURL(url);
 }
+function renderInsuranceEstimateWarning(profile) {
+    const usingDefault = !profile.insurance.shieldProvider || profile.insurance.shieldProvider === "public" || !profile.insurance.shieldPlan;
+    if (!usingDefault)
+        return "";
+    return `
+    <div class="rp-alert rp-alert-warning">
+      <strong>Insurance estimate warning</strong>
+      <div>These medical cost estimates use MediShield Life or public-baseline defaults. Update your actual shield plan and rider above for more accurate results.</div>
+    </div>
+  `;
+}
 function field(label, control, help = "") {
     return `
     <div class="rp-field">
       <label class="rp-field-label">
         <span>${label}</span>
-        ${help ? `<button class="rp-field-hint" type="button" aria-label="${escapeAttr(help)}" title="${escapeAttr(help)}">?</button>` : ""}
+        ${help ? `<button class="rp-field-hint" type="button" aria-label="${escapeAttr(help)}" data-tooltip="${escapeAttr(help)}">?</button>` : ""}
       </label>
       ${control}
     </div>
@@ -1109,17 +1390,18 @@ function select(path, current, entries) {
 }
 function searchableMultiSelect(path, current, entries, help = "") {
     const hint = help ? ` title="${escapeAttr(help)}"` : "";
-    const selected = entries.filter(([value]) => current.includes(value));
+    const normalizedEntries = entries.map((item) => Array.isArray(item) ? { value: item[0], label: item[1], searchText: item[1].toLowerCase() } : item);
+    const selected = normalizedEntries.filter((item) => current.includes(item.value));
     const chips = selected.length
-        ? selected.map(([value, label]) => `<span class="rp-token-chip">${escapeHtml(label)}<button type="button" class="rp-token-remove" data-token-remove="${path}" data-token-value="${escapeAttr(value)}" aria-label="Remove ${escapeAttr(label)}">×</button></span>`).join("")
+        ? selected.map(({ value, label }) => `<span class="rp-token-chip">${escapeHtml(label)}<button type="button" class="rp-token-remove" data-token-remove="${path}" data-token-value="${escapeAttr(value)}" aria-label="Remove ${escapeAttr(label)}">×</button></span>`).join("")
         : `<span class="rp-token-empty">No conditions selected</span>`;
     return `
     <div class="rp-token-picker" data-multiselect-root="${path}"${hint}>
       <div class="rp-token-list">${chips}</div>
-      <input class="rp-input rp-token-search" type="search" placeholder="Search conditions" data-multiselect-search="${path}">
+      <input class="rp-input rp-token-search" type="search" placeholder="Search conditions (for example: knee pain, sugar, memory)" data-multiselect-search="${path}">
       <div class="rp-token-options">
-        ${entries.map(([value, label]) => `
-          <label class="rp-token-option" data-token-option>
+        ${normalizedEntries.map(({ value, label, searchText }) => `
+          <label class="rp-token-option" data-token-option data-search-text="${escapeAttr(searchText || label.toLowerCase())}">
             <input type="checkbox" value="${escapeAttr(value)}" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" ${current.includes(value) ? "checked" : ""}>
             <span data-token-label data-raw-label="${escapeAttr(label)}">${escapeHtml(label)}</span>
           </label>
@@ -1197,4 +1479,158 @@ function escapeHtml(value) {
 }
 function escapeAttr(value) {
     return escapeHtml(value).replaceAll('"', "&quot;");
+}
+function showToast(kind, message) {
+    activeToast = { kind, message };
+    if (toastTimer)
+        window.clearTimeout(toastTimer);
+    render();
+    toastTimer = window.setTimeout(() => {
+        activeToast = null;
+        render();
+    }, 2000);
+}
+function highlightFields(paths) {
+    highlightedFieldPaths = new Set(paths);
+    if (highlightTimer)
+        window.clearTimeout(highlightTimer);
+    render();
+    highlightTimer = window.setTimeout(() => {
+        highlightedFieldPaths.clear();
+        render();
+    }, 1800);
+}
+function paintTransientUi() {
+    app.querySelectorAll("[data-profile-field],[data-plan-field]").forEach((input) => {
+        const path = input.getAttribute("data-profile-field") || input.getAttribute("data-plan-field");
+        const field = input.closest(".rp-field");
+        if (!path || !field)
+            return;
+        field.classList.toggle("rp-field-flash", highlightedFieldPaths.has(path));
+    });
+}
+async function copyTextWithFeedback(text, successMessage) {
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast("success", successMessage);
+    }
+    catch {
+        showToast("error", "Clipboard access failed. Select the preview text and copy it manually.");
+    }
+}
+function explainRecommendation(item) {
+    if (item.tag.includes("CPF"))
+        return "This shifts more of the plan into guaranteed CPF income so monthly cashflow becomes less fragile.";
+    if (item.tag.includes("Family"))
+        return "This uses allowed family top-ups to improve the retiree's position while also improving tax efficiency.";
+    if (item.tag.includes("Liquidity"))
+        return "This keeps enough cash accessible so medical or living-cost shocks do not force a bad decision.";
+    if (item.tag.includes("Lifestyle"))
+        return "This turns discretionary spending into a deliberate choice instead of an invisible leak.";
+    return "This is meant to improve the plan after CPF certainty and liquidity are addressed.";
+}
+function nextStepForRecommendation(item) {
+    if (item.tag.includes("CPF"))
+        return "Check CPF remaining ERS room, confirm available cash, and decide whether to top up now or in stages.";
+    if (item.tag.includes("Family"))
+        return "Call the family contributors, agree on support amounts, and confirm the top-up route.";
+    if (item.tag.includes("Liquidity"))
+        return "Set aside the emergency reserve in accessible cash before making longer-term commitments.";
+    if (item.tag.includes("Lifestyle"))
+        return "List the discretionary items worth preserving and cut the ones that do not matter.";
+    return "Review the numbers with a planner and convert this recommendation into one concrete next action.";
+}
+function capitalize(value) {
+    return value ? value[0].toUpperCase() + value.slice(1) : value;
+}
+async function answerInlineQuestion(currentState, bundle, question) {
+    const mode = currentState.ui.aiMode;
+    const prompt = `${buildHandoffPrompt(getActiveProfile(currentState), getActivePlan(currentState), bundle.result)}\n\nUser question: ${question}\n\nAnswer plainly for a Singapore retiree and supporting family.`;
+    if (mode === "chatgpt" || mode === "claude" || mode === "off") {
+        openHandoff(mode === "off" ? "claude" : mode, prompt);
+        return "Opened this question in the selected AI handoff flow.";
+    }
+    if (mode === "browser") {
+        return runBrowserAi(prompt);
+    }
+    if (mode === "api") {
+        return runApiAi(prompt);
+    }
+    throw new Error("Select a supported AI mode.");
+}
+async function runBrowserAi(prompt) {
+    const browserWindow = window;
+    const ai = browserWindow.ai;
+    const sessionFactory = typeof ai?.createTextSession === "function"
+        ? ai.createTextSession
+        : typeof ai?.languageModel?.create === "function"
+            ? (ai?.languageModel).create
+            : typeof browserWindow.LanguageModel?.create === "function"
+                ? browserWindow.LanguageModel.create
+                : null;
+    if (typeof ai?.prompt === "function") {
+        return String(await ai.prompt(prompt));
+    }
+    if (!sessionFactory) {
+        throw new Error("Local Browser AI is not available in this browser. Use Claude or ChatGPT handoff.");
+    }
+    const session = await sessionFactory();
+    try {
+        return String(await session.prompt(prompt));
+    }
+    finally {
+        session.destroy?.();
+    }
+}
+function loadApiConfig() {
+    try {
+        const raw = window.localStorage.getItem("retirement-planning-ai-config-v1");
+        if (!raw)
+            return apiConfig;
+        const parsed = JSON.parse(raw);
+        return {
+            endpoint: parsed.endpoint || apiConfig.endpoint,
+            model: parsed.model || apiConfig.model,
+            apiKey: parsed.apiKey || "",
+        };
+    }
+    catch {
+        return apiConfig;
+    }
+}
+function saveApiConfig(next) {
+    window.localStorage.setItem("retirement-planning-ai-config-v1", JSON.stringify(next));
+}
+async function runApiAi(prompt) {
+    if (!apiConfig.apiKey.trim()) {
+        throw new Error("Add an API key in Bring Your Own API mode before asking a question.");
+    }
+    const response = await fetch(apiConfig.endpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiConfig.apiKey}`,
+        },
+        body: JSON.stringify({
+            model: apiConfig.model,
+            input: prompt,
+        }),
+    });
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`API request failed: ${response.status} ${errorText.slice(0, 180)}`);
+    }
+    const data = await response.json();
+    const outputText = data.output_text
+        || data.output?.flatMap((item) => item.content || []).map((item) => item.text || "").join("\n").trim()
+        || data.choices?.flatMap((choice) => {
+            const content = choice.message?.content;
+            if (typeof content === "string")
+                return [content];
+            return (content || []).map((item) => item.text || "");
+        }).join("\n").trim();
+    if (!outputText) {
+        throw new Error("The API responded without readable text output.");
+    }
+    return outputText;
 }

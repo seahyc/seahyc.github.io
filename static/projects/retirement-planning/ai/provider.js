@@ -13,17 +13,95 @@ export function buildHandoffPrompt(profile, plan, result) {
 }
 export function buildAudienceBrief(audience, profile, plan, result) {
     const firstRow = result.rows[0];
+    const conditions = profile.profile.chronicConditions?.join(", ") || "none recorded";
+    const priorConditions = profile.profile.priorSeriousConditions?.join(", ") || "none recorded";
+    const shieldProvider = profile.profile.insurance.shieldProvider || "Unspecified provider";
+    const shieldPlan = profile.profile.insurance.shieldPlan || "Unspecified plan";
+    const rider = profile.profile.insurance.rider || "No rider";
+    const openingNetAnnual = firstRow?.netAnnual ?? 0;
+    const openingNetMonthly = openingNetAnnual / 12;
+    const topQuestions = {
+        expert: [
+            "Answer the retiree's core question holistically: given her finances, health, and desired lifestyle, what should she do next?",
+            "List the top 3 actions for the next 12 months, in priority order, with rationale and tradeoffs.",
+            "Explain the biggest risk if she does nothing."
+        ],
+        actuary: [
+            `At what age does the ${plan.cpfPlan} CPF LIFE plan break even against its premium equivalent?`,
+            `Is the longevity tail to p90 age ${result.p90Age.toFixed(1)} adequately funded?`,
+            "What reserve or payout change would you recommend to reduce late-life solvency risk?"
+        ],
+        doctor: [
+            `Given chronic conditions (${conditions}) and prior serious conditions (${priorConditions}), what medical trajectory is realistic from age 75 to 85?`,
+            `How should care setting (${profile.profile.insurance.carePreference}) affect expected treatment intensity and follow-up?`,
+            "What should the family monitor in the next 12 months?"
+        ],
+        planner: [
+            `Given OA ${profile.profile.oa}, SA ${profile.profile.sa}, RA ${profile.profile.ra}, and MA ${profile.profile.ma}, what is the best top-up and liquidity sequence?`,
+            `How should she address an opening net cashflow of ${openingNetAnnual.toFixed(0)} annual (${openingNetMonthly.toFixed(0)} monthly)?`,
+            "What would you do first, second, and third if you were her planner?"
+        ],
+        family: [
+            "In exactly 3 bullet points, what should the family do in the next 6 months?",
+            "For each bullet: include action, rough cost, owner, and deadline.",
+            "Keep the language non-technical."
+        ],
+        insurance: [
+            `She currently shows ${shieldProvider} / ${shieldPlan} / ${rider} with care preference ${profile.profile.insurance.carePreference}.`,
+            `Given chronic conditions (${conditions}) and prior serious conditions (${priorConditions}), what realistic hospital and rider options remain?`,
+            "What exclusions, pre-existing condition limitations, premium expectations, and rider terms should she verify with an insurance agent?"
+        ],
+    }[audience];
     const intro = {
         expert: "You are reviewing a retirement plan as a multidisciplinary expert panel.",
         actuary: "You are reviewing a retirement plan as an actuary. Focus on longevity, cashflow durability, annuity fit, and reserve adequacy.",
         doctor: "You are reviewing a retirement plan as a family physician. Focus on disease burden, frailty, care setting, and future medical-cost realism.",
         planner: "You are reviewing a retirement plan as a financial planner. Focus on solvency, liquidity, emergency reserves, spending sustainability, and product fit.",
         family: "You are reviewing a retirement plan for a family discussion. Explain the key risks, tradeoffs, and next actions in plain English.",
+        insurance: "You are reviewing a retirement plan as an insurance agent. Focus on shield coverage, riders, pre-existing conditions, exclusions, and claims realism.",
     }[audience];
     if (!firstRow) {
-        return `${intro}\n\nProfile summary:\n- Name: ${profile.name}\n- CPF LIFE plan: ${plan.cpfPlan}\n- Payout start age: ${plan.payoutStartAge}\n- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}\n- Median death age: ${result.medianAge.toFixed(1)}\n\nPlease critique the plan, state the main risks, and suggest a better alternative if one exists.`;
+        return `${intro}\n\nProfile summary:\n- Name: ${profile.name}\n- CPF LIFE plan: ${plan.cpfPlan}\n- Payout start age: ${plan.payoutStartAge}\n- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}\n- Median death age: ${result.medianAge.toFixed(1)}\n- Conditions: ${conditions}\n\nQuestions to answer:\n- ${topQuestions.join("\n- ")}\n\nPlease critique the plan, state the main risks, and suggest a better alternative if one exists.`;
     }
-    return `${intro}\n\nProfile summary:\n- Name: ${profile.name}\n- CPF LIFE plan: ${plan.cpfPlan}\n- Payout start age: ${plan.payoutStartAge}\n- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}\n- Median death age: ${result.medianAge.toFixed(1)}\n- Basic spend annual: ${firstRow.basicSpendAnnual.toFixed(0)}\n- Total spend annual: ${firstRow.totalSpendAnnual.toFixed(0)}\n- Balanced emergency buffer: ${firstRow.emergencyBalanced.toFixed(0)}\n- Medical cash annual: ${firstRow.medicalCash.toFixed(0)}\n- Estate equivalent opening: ${(firstRow.estateEquivalent || 0).toFixed(0)}\n- Prior serious conditions: ${(profile.profile.priorSeriousConditions || []).join(", ") || "none recorded"}\n\nPlease critique the plan, state the main risks, and suggest a better alternative if one exists.`;
+    return `${intro}
+
+Profile summary:
+- Name: ${profile.name}
+- Birth date: ${profile.profile.birthDate}
+- CPF LIFE plan: ${plan.cpfPlan}
+- Payout start age: ${plan.payoutStartAge}
+- Policy year: ${profile.profile.cpfCohortYear}
+- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}
+- Median death age: ${result.medianAge.toFixed(1)} | p90 age: ${result.p90Age.toFixed(1)}
+- OA: ${profile.profile.oa}
+- SA: ${profile.profile.sa}
+- RA: ${profile.profile.ra}
+- MA: ${profile.profile.ma}
+- Bank / cash: ${profile.profile.bankCash}
+- Market income annual: ${profile.profile.marketIncomeAnnual}
+- Basic spend annual: ${firstRow.basicSpendAnnual.toFixed(0)}
+- Total spend annual: ${firstRow.totalSpendAnnual.toFixed(0)}
+- Opening net annual: ${openingNetAnnual.toFixed(0)}
+- Balanced emergency buffer: ${firstRow.emergencyBalanced.toFixed(0)}
+- Medical cash annual: ${firstRow.medicalCash.toFixed(0)}
+- Estate equivalent opening: ${(firstRow.estateEquivalent || 0).toFixed(0)}
+- Shield provider: ${shieldProvider}
+- Shield plan: ${shieldPlan}
+- Rider: ${rider}
+- Long-term care: ${profile.profile.insurance.longTermCareCover}
+- Care preference: ${profile.profile.insurance.carePreference}
+- Chronic conditions: ${conditions}
+- Prior serious conditions: ${priorConditions}
+- Medical scenario: ${plan.medicalScenario}
+- One-off top-up: ${plan.oneOffTopup}
+- Recurring top-up annual: ${plan.recurringTopupAnnual}
+- Monthly support: ${plan.monthlySupport}
+- Objective: ${plan.objective}
+
+Questions to answer:
+- ${topQuestions.join("\n- ")}
+
+Please critique the plan, state the main risks, and suggest a better alternative if one exists.`;
 }
 export function buildStructuredPayload(profile, plan, result) {
     const firstRow = result.rows[0];
@@ -32,9 +110,26 @@ export function buildStructuredPayload(profile, plan, result) {
             name: profile.name,
             sex: profile.profile.sex,
             birthDate: profile.profile.birthDate,
+            cpfBalances: {
+                oa: profile.profile.oa,
+                sa: profile.profile.sa,
+                ra: profile.profile.ra,
+                ma: profile.profile.ma,
+            },
+            bankCash: profile.profile.bankCash,
+            marketIncomeAnnual: profile.profile.marketIncomeAnnual,
+            basicSpendMonthly: profile.profile.basicSpendMonthly,
+            discretionarySpendAnnual: profile.profile.discretionarySpendAnnual,
             chronicConditions: profile.profile.chronicConditions,
             priorSeriousConditions: profile.profile.priorSeriousConditions,
-            carePreference: profile.profile.insurance.carePreference,
+            insuranceStatus: {
+                shieldProvider: profile.profile.insurance.shieldProvider,
+                shieldPlan: profile.profile.insurance.shieldPlan,
+                rider: profile.profile.insurance.rider,
+                medishield: profile.profile.insurance.medishield,
+                longTermCareCover: profile.profile.insurance.longTermCareCover,
+                carePreference: profile.profile.insurance.carePreference,
+            },
         },
         plan: {
             name: plan.name,
@@ -42,6 +137,10 @@ export function buildStructuredPayload(profile, plan, result) {
             payoutStartAge: plan.payoutStartAge,
             medicalScenario: plan.medicalScenario,
             objective: plan.objective,
+            oneOffTopup: plan.oneOffTopup,
+            recurringTopupAnnual: plan.recurringTopupAnnual,
+            monthlySupport: plan.monthlySupport,
+            childSupportStrategy: plan.childSupportStrategy,
         },
         output: {
             medianAge: result.medianAge,
@@ -51,6 +150,9 @@ export function buildStructuredPayload(profile, plan, result) {
             openingMedicalCash: firstRow?.medicalCash ?? null,
             balancedEmergencyBuffer: firstRow?.emergencyBalanced ?? null,
             openingNetAnnual: firstRow?.netAnnual ?? null,
+            openingGrossIncomeAnnual: firstRow?.grossIncomeAnnual ?? null,
+            openingBasicSpendAnnual: firstRow?.basicSpendAnnual ?? null,
+            openingTotalSpendAnnual: firstRow?.totalSpendAnnual ?? null,
         },
     }, null, 2);
 }

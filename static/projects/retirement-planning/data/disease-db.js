@@ -855,6 +855,7 @@ export function listSupportedDiseases() {
         key: item.key,
         label: item.label,
         category: item.category,
+        aliases: item.aliases,
         surveillanceCadenceMonths: item.claimsPathway?.surveillanceCadenceMonths ?? null,
         recurrenceWindowYears: item.claimsPathway?.recurrenceWindowYears ?? null,
     }));

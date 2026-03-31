@@ -7,6 +7,7 @@ export declare function listSupportedDiseases(): {
     key: string;
     label: string;
     category: string;
+    aliases: string[];
     surveillanceCadenceMonths: number | null;
     recurrenceWindowYears: number | null;
 }[];
