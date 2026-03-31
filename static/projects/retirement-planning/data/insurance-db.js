@@ -101,6 +101,60 @@ function benefits(overrides = {}) {
         ...overrides,
     };
 }
+function inferWardTier(label) {
+    if (/standard/i.test(label))
+        return "public";
+    if (/\bB\b|Lite|Basic/i.test(label))
+        return "b1";
+    if (/\bA\b|Advantage|Plus|Plan 2/i.test(label) && !/Private|Premier|Preferred|Plan 1/.test(label))
+        return "a";
+    return "private";
+}
+export const INSURANCE_RIDER_CATALOG = {
+    public: [
+        {
+            id: "none",
+            label: "No rider",
+            sku: "PUBLIC-RIDER-NONE",
+            effectiveFrom: "2015-11-01",
+            sourceRefs: ["moh-medishield"],
+            compatibility: { wardTiers: ["public"], claimPathTags: ["public-baseline"] },
+        },
+    ],
+    AIA: [
+        { id: "none", label: "No rider", sku: "AIA-RIDER-NONE", effectiveFrom: "2018-01-01", sourceRefs: ["aia-hsgm"], compatibility: { planFamilies: ["HealthShield Gold Max"], claimPathTags: ["no-rider"] } },
+        { id: "max-vitalhealth-a", label: "MAX VitalHealth A", sku: "AIA-MVH-A", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.24, effectiveFrom: "2021-04-01", sourceRefs: ["aia-hsgm"], compatibility: { planFamilies: ["HealthShield Gold Max"], wardTiers: ["private", "a"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "panel-first"] }, claimPathTags: ["copay-rider", "panel-first"] },
+        { id: "max-vitalhealth-b", label: "MAX VitalHealth B", sku: "AIA-MVH-B", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.18, effectiveFrom: "2021-04-01", sourceRefs: ["aia-hsgm"], compatibility: { planFamilies: ["HealthShield Gold Max"], wardTiers: ["b1", "a"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+    ],
+    "Great Eastern": [
+        { id: "none", label: "No rider", sku: "GE-RIDER-NONE", effectiveFrom: "2018-01-01", sourceRefs: ["moh-compare"], compatibility: { planFamilies: ["GREAT SupremeHealth"], claimPathTags: ["no-rider"] } },
+        { id: "totalcare-classic", label: "GREAT TotalCare Classic", sku: "GE-TC-CLASSIC", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12, effectiveFrom: "2021-01-01", sourceRefs: ["moh-compare"], compatibility: { planFamilies: ["GREAT SupremeHealth"], wardTiers: ["b1", "a", "private"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "panel-first"] }, claimPathTags: ["copay-rider", "panel-first"] },
+        { id: "totalcare-elite", label: "GREAT TotalCare Elite", sku: "GE-TC-ELITE", riderCoverage: 0.84, riderCopayPct: 0.05, riderCopayCapAnnual: 2500, stopLossAnnual: 2500, preferredProviderFactor: 0.93, outpatientCancerMultiplier: 1.16, effectiveFrom: "2021-01-01", sourceRefs: ["moh-compare"], compatibility: { planFamilies: ["GREAT SupremeHealth"], wardTiers: ["private", "a"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "elite"] }, claimPathTags: ["copay-rider", "elite"] },
+    ],
+    Prudential: [
+        { id: "none", label: "No rider", sku: "PRU-RIDER-NONE", effectiveFrom: "2018-01-01", sourceRefs: ["prudential-prushield"], compatibility: { planFamilies: ["PRUShield"], claimPathTags: ["no-rider"] } },
+        { id: "pruextra-premier-copay", label: "PRUExtra Premier CoPay", sku: "PRU-EXTRA-PREMIER-COPAY", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12, effectiveFrom: "2021-04-01", sourceRefs: ["prudential-prushield"], compatibility: { planFamilies: ["PRUShield"], wardTiers: ["a", "private"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "panel-first"] }, claimPathTags: ["copay-rider", "panel-first"] },
+        { id: "pruextra-plus-copay", label: "PRUExtra Plus CoPay", sku: "PRU-EXTRA-PLUS-COPAY", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08, effectiveFrom: "2021-04-01", sourceRefs: ["prudential-prushield"], compatibility: { planFamilies: ["PRUShield"], wardTiers: ["a", "private"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+    ],
+    Income: [
+        { id: "none", label: "No rider", sku: "INCOME-RIDER-NONE", effectiveFrom: "2018-01-01", sourceRefs: ["income-eis"], compatibility: { planFamilies: ["Enhanced IncomeShield"], claimPathTags: ["no-rider"] } },
+        { id: "deluxe-care", label: "Deluxe Care Rider", sku: "INCOME-DELUXE-CARE", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.22, effectiveFrom: "2021-04-01", sourceRefs: ["income-eis"], compatibility: { planFamilies: ["Enhanced IncomeShield"], wardTiers: ["a", "private"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "extended-panel"] }, claimPathTags: ["copay-rider", "extended-panel"] },
+        { id: "classic-care", label: "Classic Care Rider", sku: "INCOME-CLASSIC-CARE", riderCoverage: 0.75, riderCopayPct: 0.1, riderCopayCapAnnual: 4000, stopLossAnnual: 4000, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.12, effectiveFrom: "2021-04-01", sourceRefs: ["income-eis"], compatibility: { planFamilies: ["Enhanced IncomeShield"], wardTiers: ["b1", "a"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+    ],
+    Singlife: [
+        { id: "none", label: "No rider", sku: "SINGLIFE-RIDER-NONE", effectiveFrom: "2020-01-01", sourceRefs: ["singlife-shield"], compatibility: { planFamilies: ["Singlife Shield"], claimPathTags: ["no-rider"] } },
+        { id: "health-plus-public", label: "Health Plus Public", sku: "SINGLIFE-HEALTH-PLUS-PUBLIC", riderCoverage: 0.74, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08, effectiveFrom: "2021-04-01", sourceRefs: ["singlife-shield"], compatibility: { planFamilies: ["Singlife Shield"], wardTiers: ["b1", "a"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+        { id: "health-plus-private", label: "Health Plus Private", sku: "SINGLIFE-HEALTH-PLUS-PRIVATE", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12, effectiveFrom: "2021-04-01", sourceRefs: ["singlife-shield"], compatibility: { planFamilies: ["Singlife Shield"], wardTiers: ["a", "private"], requiresPanel: true, requiresPreAuthorisation: true, claimPathTags: ["copay-rider", "private"] }, claimPathTags: ["copay-rider", "private"] },
+    ],
+    "HSBC Life": [
+        { id: "none", label: "No rider", sku: "HSBC-RIDER-NONE", effectiveFrom: "2022-01-01", sourceRefs: ["hsbc-shield"], compatibility: { planFamilies: ["HSBC Life Shield"], claimPathTags: ["no-rider"] } },
+        { id: "life-enhancer", label: "Life Enhancer Rider", sku: "HSBC-LIFE-ENHANCER", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08, effectiveFrom: "2022-01-01", sourceRefs: ["hsbc-shield"], compatibility: { planFamilies: ["HSBC Life Shield"], wardTiers: ["a", "private"], requiresPanel: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+    ],
+    Raffles: [
+        { id: "none", label: "No rider", sku: "RAFFLES-RIDER-NONE", effectiveFrom: "2023-01-01", sourceRefs: ["raffles-shield"], compatibility: { planFamilies: ["Raffles Shield"], claimPathTags: ["no-rider"] } },
+        { id: "raffles-rider", label: "Raffles Shield Rider", sku: "RAFFLES-SHIELD-RIDER", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08, effectiveFrom: "2023-01-01", sourceRefs: ["raffles-shield"], compatibility: { planFamilies: ["Raffles Shield"], wardTiers: ["a", "private"], requiresPanel: true, claimPathTags: ["copay-rider"] }, claimPathTags: ["copay-rider"] },
+    ],
+};
 export const UNIFIED_INSURANCE_DB = {
     generatedAt: "2026-03-30",
     sources: INSURANCE_SOURCE_MANIFEST,
@@ -457,3 +511,61 @@ export const UNIFIED_INSURANCE_DB = {
         },
     },
 };
+function buildPlanCatalogEntries(insurers) {
+    return Object.entries(insurers).flatMap(([provider, providerRecord]) => Object.entries(providerRecord.plans).map(([planName, plan]) => {
+        const wardTier = inferWardTier(planName);
+        const compatibleRiders = (INSURANCE_RIDER_CATALOG[provider] || []).filter((item) => {
+            const wardTiers = item.compatibility.wardTiers || [];
+            return !wardTiers.length || wardTiers.includes(wardTier);
+        });
+        return {
+            skuKind: "plan",
+            skuId: `${provider.toUpperCase().replace(/\s+/g, "-")}-${planName.toUpperCase().replace(/[^A-Z0-9]+/g, "-")}`,
+            provider,
+            displayName: planName,
+            planName,
+            effectiveFrom: provider === "Raffles" ? "2023-01-01" : provider === "HSBC Life" ? "2022-01-01" : "2021-04-01",
+            sourceRefs: [providerRecord.sourceId, plan.sourceId].filter(Boolean),
+            compatibility: {
+                riderIds: compatibleRiders.map((item) => item.id),
+                wardTiers: [wardTier],
+                requiresPanel: Boolean(plan.panelRequiredForBestTerms),
+                requiresPreAuthorisation: Boolean(plan.preAuthorisationRequiredForBestTerms),
+                outpatientCancerCoverage: plan.claimPathRules?.outpatientCancerDrugCoverage || "cdl-and-non-cdl",
+                claimPathTags: [
+                    plan.panelRequiredForBestTerms ? "panel-first" : "panel-optional",
+                    plan.preAuthorisationRequiredForBestTerms ? "preauth-sensitive" : "preauth-light",
+                ],
+            },
+            claimPathTags: [
+                plan.panelRequiredForBestTerms ? "panel-first" : "panel-optional",
+                plan.preAuthorisationRequiredForBestTerms ? "preauth-sensitive" : "preauth-light",
+                wardTier,
+            ],
+            notes: [
+                `Target coverage ${String(plan.targetCoverage || "not specified")}.`,
+                plan.annualLimit ? `Annual limit ${plan.annualLimit}.` : "No explicit annual limit encoded.",
+            ],
+        };
+    }));
+}
+function buildRiderCatalogEntries() {
+    return Object.entries(INSURANCE_RIDER_CATALOG).flatMap(([provider, riders]) => riders.map((rider) => ({
+        skuKind: "rider",
+        skuId: rider.sku,
+        provider,
+        displayName: rider.label,
+        riderId: rider.id,
+        riderLabel: rider.label,
+        effectiveFrom: rider.effectiveFrom,
+        ...(rider.effectiveTo !== undefined ? { effectiveTo: rider.effectiveTo } : {}),
+        sourceRefs: rider.sourceRefs,
+        compatibility: rider.compatibility,
+        claimPathTags: rider.claimPathTags || rider.compatibility.claimPathTags || [],
+        ...(rider.notes ? { notes: rider.notes } : {}),
+    })));
+}
+UNIFIED_INSURANCE_DB.catalog = [
+    ...buildPlanCatalogEntries(UNIFIED_INSURANCE_DB.insurers),
+    ...buildRiderCatalogEntries(),
+];

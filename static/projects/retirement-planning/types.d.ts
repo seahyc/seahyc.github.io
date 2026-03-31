@@ -290,6 +290,33 @@ export interface InsuranceDbSource {
     kind?: string;
     localPath?: string;
 }
+export type InsuranceCatalogSkuKind = "plan" | "rider";
+export interface InsuranceCatalogCompatibility {
+    planNames?: string[];
+    planFamilies?: string[];
+    riderIds?: string[];
+    carePreferences?: CarePreference[];
+    wardTiers?: Array<"public" | "b1" | "a" | "private">;
+    requiresPanel?: boolean;
+    requiresPreAuthorisation?: boolean;
+    outpatientCancerCoverage?: "cdl-only" | "cdl-only-plus-selected-non-cdl" | "cdl-and-non-cdl";
+    claimPathTags?: string[];
+}
+export interface InsuranceCatalogEntry {
+    skuKind: InsuranceCatalogSkuKind;
+    skuId: string;
+    provider: string;
+    displayName: string;
+    effectiveFrom: string;
+    effectiveTo?: string | null;
+    sourceRefs: string[];
+    planName?: string;
+    riderId?: string;
+    riderLabel?: string;
+    compatibility: InsuranceCatalogCompatibility;
+    claimPathTags: string[];
+    notes?: string[];
+}
 export interface InsurancePlanRecord {
     sourceId?: string;
     plans: Record<string, unknown>;
@@ -297,6 +324,7 @@ export interface InsurancePlanRecord {
 export interface InsuranceDb {
     generatedAt?: string;
     sources: InsuranceDbSource[];
+    catalog?: InsuranceCatalogEntry[];
     publicSchemes?: Record<string, unknown>;
     insurers: Record<string, InsurancePlanRecord>;
 }

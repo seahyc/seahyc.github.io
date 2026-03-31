@@ -10,8 +10,25 @@ interface DiffSummaryItem {
     delta: number;
     unit: "currency-monthly" | "years" | "currency";
 }
+interface InsuranceInspectorContext {
+    providerLabel: string;
+    planLabel: string;
+    riderLabel: string;
+    planSku: string;
+    riderSku: string;
+    planEffectiveFrom: string;
+    riderEffectiveFrom: string;
+    sourceLabel: string;
+    sourceUrl: string;
+    generatedAt: string;
+    planCount: number;
+    benefitClassCount: number;
+    panelStrength: string;
+    preAuthSummary: string;
+    targetCoverage: string;
+}
 export declare function summarizePanel(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[]): PanelInsight[];
-export declare function buildExpertReview(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[], sensitivities: SensitivityNote[]): {
+export declare function buildExpertReview(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[], sensitivities: SensitivityNote[], insuranceContext?: InsuranceInspectorContext): {
     assumptions: string[];
     findings: string[];
     rationale: string[];

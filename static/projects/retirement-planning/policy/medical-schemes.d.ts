@@ -1,4 +1,4 @@
-import type { CarePreference } from "../types.js";
+import type { CarePreference, InsuranceCatalogEntry } from "../types.js";
 export type TreatmentClass = "inpatient" | "daySurgery" | "outpatientCancerDrug" | "outpatientCancerNonDrug" | "chronicSpecialist" | "emergencyAccident" | "rehabilitation" | "homeRecovery" | "mentalHealthInpatient" | "longTermCare";
 export interface CoverageBenefit {
     coveragePct?: number;
@@ -93,6 +93,14 @@ export declare function getRiderOptions(insurance: {
     shieldProvider?: string;
     shieldPlan?: string;
 }): Array<InsuranceRiderOption>;
+export declare function getInsuranceCatalogSelection(insurance: {
+    shieldProvider?: string;
+    shieldPlan?: string;
+    rider?: string;
+}): {
+    planEntry: InsuranceCatalogEntry | null;
+    riderEntry: InsuranceCatalogEntry | null;
+};
 export declare function resolveInsurancePlan(insurance: {
     shieldProvider?: string;
     shieldPlan?: string;

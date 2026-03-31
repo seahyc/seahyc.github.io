@@ -13,9 +13,32 @@ interface DiffSummaryItem {
   unit: "currency-monthly" | "years" | "currency";
 }
 
+interface InsuranceInspectorContext {
+  providerLabel: string;
+  planLabel: string;
+  riderLabel: string;
+  planSku: string;
+  riderSku: string;
+  planEffectiveFrom: string;
+  riderEffectiveFrom: string;
+  sourceLabel: string;
+  sourceUrl: string;
+  generatedAt: string;
+  planCount: number;
+  benefitClassCount: number;
+  panelStrength: string;
+  preAuthSummary: string;
+  targetCoverage: string;
+}
+
 export function summarizePanel(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[]): PanelInsight[] {
-  void profile;
   const first = result.rows[0];
+  const insuranceLabel = profile.profile.insurance.shieldProvider === "public"
+    ? "Public baseline"
+    : [profile.profile.insurance.shieldProvider, profile.profile.insurance.shieldPlan].filter(Boolean).join(" · ");
+  const riderLabel = profile.profile.insurance.rider && profile.profile.insurance.rider !== "none"
+    ? ` · rider ${profile.profile.insurance.rider}`
+    : "";
   return [
     {
       title: "Actuarial",
@@ -34,13 +57,24 @@ export function summarizePanel(profile: ProfileRecord, plan: PlanData, result: P
       summary: `Modeled family top-ups create about ${formatMoney(first?.taxSavingsAnnual || 0)} of annual tax savings while improving payout headroom.`,
     },
     {
+      title: "Insurance",
+      summary: `${insuranceLabel}${riderLabel} with ${profile.profile.insurance.carePreference} care preference drives the current medical adjudication path.`,
+    },
+    {
       title: "Investments",
       summary: recommendations.at(-1)?.why || "Low-volatility income assets become relevant after CPF and reserves are stabilized.",
     },
   ];
 }
 
-export function buildExpertReview(profile: ProfileRecord, plan: PlanData, result: PlanRunResult, recommendations: Recommendation[], sensitivities: SensitivityNote[]) {
+export function buildExpertReview(
+  profile: ProfileRecord,
+  plan: PlanData,
+  result: PlanRunResult,
+  recommendations: Recommendation[],
+  sensitivities: SensitivityNote[],
+  insuranceContext?: InsuranceInspectorContext,
+) {
   const first = result.rows[0];
   const assumptionList = [
     `CPF cohort year anchored to ${profile.profile.cpfCohortYear}.`,
@@ -48,6 +82,13 @@ export function buildExpertReview(profile: ProfileRecord, plan: PlanData, result
     `Observed CPF payout anchor is ${formatMoney(profile.profile.observedCpfPayout || 0)} on ${profile.profile.observedCpfPlan || "n/a"}.`,
     `Emergency reserve style is ${plan.emergencyStyle}, with a balanced reserve target of ${formatMoney(first?.emergencyBalanced || 0)}.`,
   ];
+  if (insuranceContext) {
+    assumptionList.push(
+      `Insurance catalog version ${insuranceContext.generatedAt} selects ${insuranceContext.providerLabel} / ${insuranceContext.planLabel} / ${insuranceContext.riderLabel}.`,
+      `Matched SKUs are ${insuranceContext.planSku} and ${insuranceContext.riderSku}, effective from ${insuranceContext.planEffectiveFrom} and ${insuranceContext.riderEffectiveFrom}.`,
+      `Claims-manual source is ${insuranceContext.sourceLabel} with ${insuranceContext.benefitClassCount} modeled benefit classes and ${insuranceContext.planCount} plans under this provider.`,
+    );
+  }
 
   const findings = [
     `Median modeled death age is ${result.medianAge.toFixed(1)} with a modal age of ${result.modalAge.toFixed(1)} and p90 of ${result.p90Age.toFixed(1)}.`,
@@ -55,6 +96,11 @@ export function buildExpertReview(profile: ProfileRecord, plan: PlanData, result
     `CPF LIFE starts near ${formatMoney(result.cpfInitialPayout)}/month under the ${plan.cpfPlan} plan, ${result.principalCrossoverAge ? `crossing principal around age ${result.principalCrossoverAge}.` : "without a principal crossover in the visible horizon."}`,
     `Top recommendation: ${recommendations[0]?.title || "No recommendation generated"} because ${recommendations[0]?.why || "no rationale was generated."}`,
   ];
+  if (insuranceContext) {
+    findings.push(
+      `${insuranceContext.providerLabel} ${insuranceContext.planLabel} targets ${insuranceContext.targetCoverage} with ${insuranceContext.panelStrength} panel strength and ${insuranceContext.preAuthSummary}.`,
+    );
+  }
 
   const rationale = sensitivities.slice(0, 4).map((item) => `${item.label}: ${item.why}`);
 

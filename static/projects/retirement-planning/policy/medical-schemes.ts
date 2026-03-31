@@ -1,5 +1,5 @@
-import type { CarePreference } from "../types.js";
-import { UNIFIED_INSURANCE_DB } from "../data/insurance-db.js";
+import type { CarePreference, InsuranceCatalogEntry } from "../types.js";
+import { INSURANCE_RIDER_CATALOG, UNIFIED_INSURANCE_DB } from "../data/insurance-db.js";
 
 export type TreatmentClass =
   | "inpatient"
@@ -105,45 +105,6 @@ type ProviderEntry = {
   sourceId?: string;
 };
 
-const RIDER_OPTIONS: Record<string, Array<InsuranceRiderOption>> = {
-  AIA: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "max-vitalhealth-a", label: "MAX VitalHealth A", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.24 },
-    { id: "max-vitalhealth-b", label: "MAX VitalHealth B", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.18 },
-  ],
-  "Great Eastern": [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "totalcare-classic", label: "GREAT TotalCare Classic", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
-    { id: "totalcare-elite", label: "GREAT TotalCare Elite", riderCoverage: 0.84, riderCopayPct: 0.05, riderCopayCapAnnual: 2500, stopLossAnnual: 2500, preferredProviderFactor: 0.93, outpatientCancerMultiplier: 1.16 },
-  ],
-  Prudential: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "pruextra-premier-copay", label: "PRUExtra Premier CoPay", riderCoverage: 0.82, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
-    { id: "pruextra-plus-copay", label: "PRUExtra Plus CoPay", riderCoverage: 0.78, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
-  ],
-  Income: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "deluxe-care", label: "Deluxe Care Rider", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.22 },
-    { id: "classic-care", label: "Classic Care Rider", riderCoverage: 0.75, riderCopayPct: 0.1, riderCopayCapAnnual: 4000, stopLossAnnual: 4000, preferredProviderFactor: 0.9, outpatientCancerMultiplier: 1.12 },
-  ],
-  Singlife: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "health-plus-public", label: "Health Plus Public", riderCoverage: 0.74, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
-    { id: "health-plus-private", label: "Health Plus Private", riderCoverage: 0.8, riderCopayPct: 0.05, riderCopayCapAnnual: 3000, stopLossAnnual: 3000, preferredProviderFactor: 0.92, outpatientCancerMultiplier: 1.12 },
-  ],
-  "HSBC Life": [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "life-enhancer", label: "Life Enhancer Rider", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
-  ],
-  Raffles: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-    { id: "raffles-rider", label: "Raffles Shield Rider", riderCoverage: 0.76, riderCopayPct: 0.05, riderCopayCapAnnual: 3500, stopLossAnnual: 3500, preferredProviderFactor: 0.91, outpatientCancerMultiplier: 1.08 },
-  ],
-  public: [
-    { id: "none", label: "No rider", riderCoverage: 0, riderCopayPct: 0, stopLossAnnual: 0 },
-  ],
-};
-
 const sourceDb = UNIFIED_INSURANCE_DB as {
   publicSchemes: {
     medishieldLife: { deductible: number; coinsurance: number; annualLimit: number; sourceId: string };
@@ -221,11 +182,22 @@ export function getRiderOptions(insurance: {
   shieldPlan?: string;
 }): Array<InsuranceRiderOption> {
   const providerName = insurance.shieldProvider || "public";
-  const options = RIDER_OPTIONS[providerName] ?? RIDER_OPTIONS.public ?? [];
+  const options = INSURANCE_RIDER_CATALOG[providerName] ?? INSURANCE_RIDER_CATALOG.public ?? [];
   const planName = insurance.shieldPlan || "";
   if (/standard/i.test(planName)) return options.filter((item) => item.id === "none" || !/private|elite|premier/i.test(item.id));
   if (/\bB\b|Lite|Basic/i.test(planName)) return options.filter((item) => item.id === "none" || !/elite|private|premier/i.test(item.id));
   return options;
+}
+
+export function getInsuranceCatalogSelection(insurance: {
+  shieldProvider?: string;
+  shieldPlan?: string;
+  rider?: string;
+}): { planEntry: InsuranceCatalogEntry | null; riderEntry: InsuranceCatalogEntry | null } {
+  const catalog = UNIFIED_INSURANCE_DB.catalog || [];
+  const planEntry = catalog.find((item) => item.skuKind === "plan" && item.provider === (insurance.shieldProvider || "public") && item.planName === (insurance.shieldPlan || "medishield")) || null;
+  const riderEntry = catalog.find((item) => item.skuKind === "rider" && item.provider === (insurance.shieldProvider || "public") && item.riderId === (insurance.rider || "none")) || null;
+  return { planEntry, riderEntry };
 }
 
 export function resolveInsurancePlan(insurance: {

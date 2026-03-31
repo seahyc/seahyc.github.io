@@ -4,7 +4,7 @@ import { createProfile, duplicateProfile, deleteProfile } from "./profile-manage
 import { createPlan, duplicatePlan, deletePlan } from "./plan-manager.js";
 import { getActiveProfile, getActivePlan, getPlansForProfile } from "./state.js";
 import { validatePlan, getCpfConstraints, normalizePlanToConstraints } from "./policy/cpf-validation.js";
-import { getRiderOptions, resolveInsurancePlan } from "./policy/medical-schemes.js";
+import { getInsuranceCatalogSelection, getRiderOptions, resolveInsurancePlan } from "./policy/medical-schemes.js";
 import { runPlan } from "./models/cashflow.js";
 import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
 import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
@@ -77,8 +77,9 @@ function render(): void {
     return;
   }
   const comparisonBundle = planResults.find((item) => item.plan.id !== activeBundle.plan.id) || null;
+  const insuranceCatalog = getInsuranceCatalogSummary(profile);
   const sensitivities = buildSensitivityDiagnostics(profile, activeBundle.plan, activeBundle.result);
-  const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities);
+  const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities, insuranceCatalog);
   const diffSummary = buildPlanDiffSummary(activeBundle, comparisonBundle);
 
   app.innerHTML = `
@@ -203,7 +204,7 @@ function render(): void {
       </section>
 
       <section class="rp-inspector-grid">
-        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle)}
+        ${renderExpertInspector(expertReview, sensitivities, diffSummary, comparisonBundle, insuranceCatalog)}
         <div class="rp-card">
           <div class="rp-card-header">
             <div>
@@ -274,6 +275,7 @@ function renderExpertInspector(
   sensitivities: Array<{ label: string; impact: number; unit: string; signal: string; why: string }>,
   diffSummary: Array<{ label: string; current: number; comparison: number; delta: number; unit: string }>,
   comparisonBundle: PlanBundle | null,
+  insuranceCatalog: ReturnType<typeof getInsuranceCatalogSummary>,
 ): string {
   return `
     <div class="rp-card">
@@ -288,6 +290,34 @@ function renderExpertInspector(
           <div class="rp-insights-list">
             ${expertReview.assumptions.map((item) => `<div class="rp-insight"><strong>Assumption</strong><div>${escapeHtml(item)}</div></div>`).join("")}
             ${expertReview.findings.map((item) => `<div class="rp-insight"><strong>Finding</strong><div>${escapeHtml(item)}</div></div>`).join("")}
+          </div>
+        </details>
+        <details class="rp-inspector-details">
+          <summary>Insurance catalog</summary>
+          <div class="rp-insurance-meta-grid">
+            <div class="rp-mini-list">
+              <div class="rp-mini-item"><span>Provider</span><strong>${escapeHtml(insuranceCatalog.providerLabel)}</strong></div>
+              <div class="rp-mini-item"><span>Plan</span><strong>${escapeHtml(insuranceCatalog.planLabel)}</strong></div>
+              <div class="rp-mini-item"><span>Rider</span><strong>${escapeHtml(insuranceCatalog.riderLabel)}</strong></div>
+              <div class="rp-mini-item"><span>Plan SKU</span><strong>${escapeHtml(insuranceCatalog.planSku)}</strong></div>
+              <div class="rp-mini-item"><span>Rider SKU</span><strong>${escapeHtml(insuranceCatalog.riderSku)}</strong></div>
+              <div class="rp-mini-item"><span>Plan effective</span><strong>${escapeHtml(insuranceCatalog.planEffectiveFrom)}</strong></div>
+              <div class="rp-mini-item"><span>Rider effective</span><strong>${escapeHtml(insuranceCatalog.riderEffectiveFrom)}</strong></div>
+              <div class="rp-mini-item"><span>Catalog version</span><strong>${escapeHtml(insuranceCatalog.generatedAt)}</strong></div>
+              <div class="rp-mini-item"><span>Source</span><strong>${escapeHtml(insuranceCatalog.sourceLabel)}</strong></div>
+              <div class="rp-mini-item"><span>Provider plans in catalog</span><strong>${insuranceCatalog.planCount}</strong></div>
+            </div>
+            <div class="rp-mini-list">
+              <div class="rp-mini-item"><span>Target coverage</span><strong>${escapeHtml(insuranceCatalog.targetCoverage)}</strong></div>
+              <div class="rp-mini-item"><span>Panel strength</span><strong>${escapeHtml(insuranceCatalog.panelStrength)}</strong></div>
+              <div class="rp-mini-item"><span>Pre-auth rule</span><strong>${escapeHtml(insuranceCatalog.preAuthSummary)}</strong></div>
+              <div class="rp-mini-item"><span>Benefit classes modeled</span><strong>${insuranceCatalog.benefitClassCount}</strong></div>
+              <div class="rp-mini-item"><span>Source links in catalog</span><strong>${insuranceCatalog.sourceCount}</strong></div>
+              <div class="rp-mini-item"><span>Plan source refs</span><strong>${escapeHtml(insuranceCatalog.planSourceRefs.join(", ") || "n/a")}</strong></div>
+              <div class="rp-mini-item"><span>Rider source refs</span><strong>${escapeHtml(insuranceCatalog.riderSourceRefs.join(", ") || "n/a")}</strong></div>
+              <div class="rp-mini-item"><span>Compatibility tags</span><strong>${escapeHtml(insuranceCatalog.compatibilityTags.join(", ") || "n/a")}</strong></div>
+              <div class="rp-mini-item"><span>Source URL</span><strong class="rp-mini-link">${escapeHtml(insuranceCatalog.sourceUrl)}</strong></div>
+            </div>
           </div>
         </details>
         <details class="rp-inspector-details">
@@ -442,6 +472,7 @@ function renderProfileForm(profileRecord: ProfileRecord, plan: PlanData, constra
     stopLossAnnual?: number;
     selectedRiderLabel?: string;
   };
+  const insuranceCatalog = getInsuranceCatalogSummary(p);
   return `
     <div class="rp-form-grid three">
       ${field("Name", `<input class="rp-input" data-profile-field="name" value="${escapeAttr(profileRecord.name)}">`)}
@@ -484,6 +515,8 @@ function renderProfileForm(profileRecord: ProfileRecord, plan: PlanData, constra
         </div>
         <div class="rp-mini-list">
           <div class="rp-mini-item"><span>Selected rider</span><strong>${escapeHtml(insurancePlan.selectedRiderLabel || "No rider")}</strong></div>
+          <div class="rp-mini-item"><span>Plan SKU</span><strong>${escapeHtml(insuranceCatalog.planSku)}</strong></div>
+          <div class="rp-mini-item"><span>Rider SKU</span><strong>${escapeHtml(insuranceCatalog.riderSku)}</strong></div>
           <div class="rp-mini-item"><span>Target coverage</span><strong>${escapeHtml(insurancePlan.targetCoverage || "n/a")}</strong></div>
           <div class="rp-mini-item"><span>Deductible</span><strong>${currency.format(insurancePlan.deductible || 0)}</strong></div>
           <div class="rp-mini-item"><span>Co-insurance</span><strong>${((insurancePlan.coinsurance || 0) * 100).toFixed(0)}%</strong></div>
@@ -526,17 +559,21 @@ function renderMedicalLifestyle(bundle: PlanBundle): string {
   if (!first) return "";
   const sourcesCount = UNIFIED_INSURANCE_DB.sources.length;
   const providerCount = Object.keys(UNIFIED_INSURANCE_DB.insurers).length;
+  const insuranceCatalog = getInsuranceCatalogSummary(getActiveProfile(requireState()).profile);
   return `
     <details class="rp-inspector-details">
       <summary>Medical, buffers, and lifestyle</summary>
       <div class="rp-medical-grid">
         <div class="rp-mini-list">
+          <div class="rp-mini-item"><span>Coverage selection</span><strong>${escapeHtml(`${insuranceCatalog.providerLabel} · ${insuranceCatalog.planLabel}`)}</strong></div>
+          <div class="rp-mini-item"><span>Rider</span><strong>${escapeHtml(insuranceCatalog.riderLabel)}</strong></div>
+          <div class="rp-mini-item"><span>Catalog source</span><strong>${escapeHtml(insuranceCatalog.sourceLabel)}</strong></div>
           <div class="rp-mini-item"><span>Expected medical gross</span><strong>${currency.format(first.medicalGross)}</strong></div>
           <div class="rp-mini-item"><span>Insurer paid</span><strong>${currency.format(first.insurerPaid)}</strong></div>
           <div class="rp-mini-item"><span>Medisave paid</span><strong>${currency.format(first.medisavePaid)}</strong></div>
           <div class="rp-mini-item"><span>Cash out-of-pocket</span><strong>${currency.format(first.medicalCash)}</strong></div>
           <div class="rp-mini-item"><span>Recommended balanced emergency buffer</span><strong>${currency.format(first.emergencyBalanced)}</strong></div>
-          <div class="rp-mini-item"><span>Local insurance DB coverage</span><strong>${providerCount} insurers · ${sourcesCount} source links</strong></div>
+          <div class="rp-mini-item"><span>Local insurance DB coverage</span><strong>${providerCount} insurers · ${sourcesCount} source links · ${escapeHtml(insuranceCatalog.generatedAt)}</strong></div>
         </div>
         <div class="rp-section-stack">
           <div class="rp-card-title">Discretionary spend equivalents</div>
@@ -547,6 +584,54 @@ function renderMedicalLifestyle(bundle: PlanBundle): string {
       </div>
     </details>
   `;
+}
+
+function getInsuranceCatalogSummary(profile: ProfileData) {
+  const insurerMap = UNIFIED_INSURANCE_DB.insurers as Record<string, { sourceId?: string; plans?: Record<string, unknown> }>;
+  const providerKey = profile.insurance.shieldProvider === "public" ? "public" : profile.insurance.shieldProvider;
+  const selectedPlan = providerKey === "public" ? "MediShield Life baseline" : (profile.insurance.shieldPlan || "Unspecified plan");
+  const resolvedPlan = resolveInsurancePlan({
+    shieldProvider: providerKey,
+    shieldPlan: providerKey === "public" ? "medishield" : profile.insurance.shieldPlan,
+    rider: profile.insurance.rider,
+  }) as {
+    sourceId?: string;
+    selectedRiderLabel?: string;
+    targetCoverage?: string;
+    panelStrength?: string;
+    preAuthorisationRequiredForBestTerms?: boolean;
+    benefits?: Record<string, unknown>;
+  };
+  const { planEntry, riderEntry } = getInsuranceCatalogSelection({
+    shieldProvider: providerKey,
+    shieldPlan: providerKey === "public" ? "medishield" : profile.insurance.shieldPlan,
+    rider: profile.insurance.rider,
+  });
+  const sourceId = resolvedPlan.sourceId || insurerMap[providerKey]?.sourceId || "";
+  const source = UNIFIED_INSURANCE_DB.sources.find((item) => item.id === sourceId);
+  return {
+    providerLabel: providerKey === "public" ? "Public baseline" : providerKey || "Unspecified provider",
+    planLabel: selectedPlan,
+    riderLabel: resolvedPlan.selectedRiderLabel || (providerKey === "public" ? "Built-in public baseline" : "No rider"),
+    planSku: planEntry?.skuId || "n/a",
+    riderSku: riderEntry?.skuId || "n/a",
+    planEffectiveFrom: planEntry?.effectiveFrom || "n/a",
+    riderEffectiveFrom: riderEntry?.effectiveFrom || "n/a",
+    planStatus: planEntry ? "catalog matched" : "derived",
+    riderStatus: riderEntry ? "catalog matched" : "derived",
+    planSourceRefs: planEntry?.sourceRefs || [],
+    riderSourceRefs: riderEntry?.sourceRefs || [],
+    compatibilityTags: [...(planEntry?.claimPathTags || []), ...(riderEntry?.claimPathTags || [])],
+    sourceLabel: source?.label || source?.provider || sourceId || "Catalog source unavailable",
+    sourceUrl: source?.url || "n/a",
+    generatedAt: UNIFIED_INSURANCE_DB.generatedAt || "Catalog version unavailable",
+    sourceCount: UNIFIED_INSURANCE_DB.sources.length,
+    planCount: providerKey === "public" ? 1 : Object.keys(insurerMap[providerKey]?.plans || {}).length,
+    benefitClassCount: Object.keys(resolvedPlan.benefits || {}).length,
+    panelStrength: resolvedPlan.panelStrength || "n/a",
+    preAuthSummary: resolvedPlan.preAuthorisationRequiredForBestTerms ? "Pre-authorisation required for best terms" : "No pre-authorisation uplift required",
+    targetCoverage: resolvedPlan.targetCoverage || "n/a",
+  };
 }
 
 function renderActions(actions: Recommendation[]): string {
