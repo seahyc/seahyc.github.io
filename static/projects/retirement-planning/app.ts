@@ -1573,7 +1573,7 @@ function field(label: string, control: string, help = ""): string {
 }
 
 function numberInput(path: string, value: number): string {
-  return `<input class="rp-input" type="text" inputmode="numeric" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${escapeAttr(formatEditableNumber(value ?? 0))}">`;
+  return `<input class="rp-input" type="text" inputmode="numeric" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${escapeAttr(formatEditableNumber(value ?? 0, path))}">`;
 }
 
 function select(path: string, current: string | number | boolean, entries: Array<[string, string]>): string {
@@ -1746,8 +1746,9 @@ function nextStepForRecommendation(item: Recommendation): string {
   return "Review the numbers with a planner and convert this recommendation into one concrete next action.";
 }
 
-function formatEditableNumber(value: number): string {
+function formatEditableNumber(value: number, path = ""): string {
   if (!Number.isFinite(value)) return "0";
+  if (path === "profile.cpfCohortYear") return String(Math.trunc(value));
   return new Intl.NumberFormat("en-SG", { maximumFractionDigits: 0 }).format(value);
 }
 

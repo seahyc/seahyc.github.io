@@ -1504,7 +1504,7 @@ function field(label, control, help = "") {
   `;
 }
 function numberInput(path, value) {
-    return `<input class="rp-input" type="text" inputmode="numeric" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${escapeAttr(formatEditableNumber(value ?? 0))}">`;
+    return `<input class="rp-input" type="text" inputmode="numeric" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${escapeAttr(formatEditableNumber(value ?? 0, path))}">`;
 }
 function select(path, current, entries) {
     return `<select class="rp-select" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}">${entries.map(([value, label]) => `<option value="${value}" ${String(current) === String(value) ? "selected" : ""}>${label}</option>`).join("")}</select>`;
@@ -1685,9 +1685,11 @@ function nextStepForRecommendation(item) {
         return "Ask an insurer or adviser what hospital coverage is still available for your current conditions, what exclusions apply, and what annual premium you would pay before your next birthday.";
     return "Review the numbers with a planner and convert this recommendation into one concrete next action.";
 }
-function formatEditableNumber(value) {
+function formatEditableNumber(value, path = "") {
     if (!Number.isFinite(value))
         return "0";
+    if (path === "profile.cpfCohortYear")
+        return String(Math.trunc(value));
     return new Intl.NumberFormat("en-SG", { maximumFractionDigits: 0 }).format(value);
 }
 function parseFormattedNumber(value) {
