@@ -129,10 +129,9 @@
 }
 
 .rp-page-section-header {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     gap: 0.8rem;
-    align-items: baseline;
+    align-items: start;
     color: var(--rp-body);
 }
 
@@ -196,6 +195,12 @@
     color: var(--rp-body);
     box-shadow: 0 10px 28px rgba(36, 29, 18, 0.08);
     font-size: var(--rp-text-sm);
+}
+
+.rp-mini-pill.subdued {
+    background: rgba(255, 250, 242, 0.82);
+    color: var(--rp-muted);
+    box-shadow: none;
 }
 
 .rp-mini-pill.warning {
@@ -361,7 +366,7 @@
 }
 
 .rp-form-grid.three {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
 }
 
 .rp-summary-grid {
@@ -387,6 +392,27 @@
 
 .rp-manage-inline {
     margin-top: -0.2rem;
+}
+
+.rp-start-guide {
+    margin-bottom: 0.75rem;
+}
+
+.rp-start-guide-grid {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.rp-start-guide-grid div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.55rem;
+    align-items: start;
+}
+
+.rp-start-guide-grid span {
+    color: var(--rp-info);
+    font-weight: 700;
 }
 
 .rp-controls-inline {
@@ -440,13 +466,13 @@
 
 .rp-field-hint {
     appearance: none;
-    width: 1.55rem;
-    height: 1.55rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 999px;
     border: 1px solid var(--rp-border);
     background: var(--rp-card-strong);
     color: var(--rp-muted);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1;
     display: inline-flex;
@@ -491,8 +517,8 @@
 .rp-inline-help {
     appearance: none;
     position: relative;
-    width: 1.45rem;
-    height: 1.45rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 999px;
     border: 1px solid var(--rp-border);
     background: var(--rp-card-strong);
@@ -573,6 +599,12 @@
     color: var(--rp-body);
 }
 
+.rp-alert-success {
+    background: var(--rp-success-soft);
+    border-color: rgba(36, 92, 49, 0.22);
+    color: var(--rp-body);
+}
+
 .rp-plain-english-card {
     margin-bottom: 1rem;
 }
@@ -587,6 +619,20 @@
     border: 1px solid var(--rp-border);
     border-radius: 1rem;
     min-height: 7.2rem;
+}
+
+.rp-summary-card-positive {
+    background: linear-gradient(180deg, rgba(223, 240, 225, 0.92), rgba(255, 250, 242, 0.98));
+    border-color: rgba(36, 92, 49, 0.22);
+}
+
+.rp-summary-card-warning {
+    background: linear-gradient(180deg, rgba(248, 239, 210, 0.98), rgba(255, 250, 242, 0.98));
+    border-color: rgba(140, 102, 26, 0.22);
+}
+
+.rp-summary-card-neutral {
+    background: linear-gradient(180deg, rgba(244, 236, 222, 0.98), rgba(255, 250, 242, 0.98));
 }
 
 .rp-summary-card h3 {
@@ -607,7 +653,8 @@
 .rp-summary-card p {
     margin-top: 0.35rem;
     color: var(--rp-body);
-    font-size: var(--rp-text-sm);
+    font-size: var(--rp-text-md);
+    line-height: 1.4;
 }
 
 .rp-ai-cta-strip {
@@ -618,8 +665,8 @@
     align-items: center;
     padding: 0.9rem 1rem;
     border-radius: 1rem;
-    border: 1px solid rgba(15, 106, 103, 0.18);
-    background: linear-gradient(135deg, rgba(217, 240, 239, 0.9), rgba(255, 250, 242, 0.96));
+    border: 1px solid rgba(28, 93, 149, 0.18);
+    background: linear-gradient(135deg, rgba(238, 244, 252, 0.96), rgba(255, 250, 242, 0.98));
     margin-top: 1rem;
 }
 
@@ -629,6 +676,61 @@
 
 .rp-chart-card {
     overflow: hidden;
+}
+
+.rp-action-ladder-card .rp-card-body {
+    padding-top: 0.9rem;
+}
+
+.rp-action-ladder-list {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.rp-action-ladder-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.8rem;
+    align-items: start;
+    padding: 0.85rem 0.95rem;
+    border-radius: 1rem;
+    border: 1px solid var(--rp-border);
+    background: rgba(255, 250, 242, 0.9);
+}
+
+.rp-action-ladder-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 6.8rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 999px;
+    background: var(--rp-card-strong);
+    border: 1px solid var(--rp-border);
+    color: var(--rp-ink);
+    font-size: var(--rp-text-sm);
+    font-weight: 700;
+}
+
+.rp-action-ladder-copy {
+    display: grid;
+    gap: 0.22rem;
+    color: var(--rp-body);
+    line-height: 1.45;
+}
+
+.rp-action-ladder-copy strong {
+    color: var(--rp-ink);
+    font-size: var(--rp-text-md);
+}
+
+.rp-action-ladder-metrics {
+    display: grid;
+    gap: 0.3rem;
+    justify-items: end;
+    text-align: right;
+    color: var(--rp-muted);
+    font-size: var(--rp-text-sm);
 }
 
 .rp-chart-toolbar {
@@ -824,6 +926,13 @@
     display: grid;
     gap: 0.55rem;
     overflow: hidden;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.rp-action:hover,
+.rp-action[open] {
+    border-color: var(--rp-border-strong);
+    box-shadow: 0 10px 24px rgba(36, 29, 18, 0.06);
 }
 
 .rp-action-top {
@@ -836,6 +945,20 @@
 .rp-action summary {
     list-style: none;
     cursor: pointer;
+}
+
+.rp-action summary::after,
+.rp-inspector-details summary::after {
+    content: "▾";
+    color: var(--rp-muted);
+    font-size: 1.1rem;
+    flex: 0 0 auto;
+    transition: transform 0.16s ease;
+}
+
+.rp-action[open] summary::after,
+.rp-inspector-details[open] summary::after {
+    transform: rotate(180deg);
 }
 
 .rp-action summary::-webkit-details-marker {
@@ -1194,6 +1317,10 @@
     border-color: rgba(28, 93, 149, 0.2);
 }
 
+.rp-constraint-success {
+    margin-bottom: 0;
+}
+
 .rp-field-flash .rp-input,
 .rp-field-flash .rp-select,
 .rp-field-flash .rp-readonly-row,
@@ -1228,15 +1355,20 @@
         grid-template-columns: 1fr;
     }
 
+    .rp-action-ladder-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rp-action-ladder-metrics {
+        justify-items: start;
+        text-align: left;
+    }
+
     .rp-ai-cta-strip {
         align-items: start;
     }
 
     .rp-summary-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .rp-form-grid.three {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
@@ -1255,10 +1387,6 @@
     .rp-medical-grid,
     .rp-insurance-meta-grid {
         grid-template-columns: 1fr;
-    }
-
-    .rp-form-grid.three {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .rp-summary-grid {
@@ -1323,10 +1451,6 @@
 
     .rp-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .rp-form-grid.three {
-        grid-template-columns: 1fr;
     }
 
     .rp-token-options {

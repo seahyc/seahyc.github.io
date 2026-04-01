@@ -61,8 +61,16 @@ export function buildAudienceBrief(audience, profile, plan, result) {
         family: "You are reviewing a retirement plan for a family discussion. Explain the key risks, tradeoffs, and next actions in plain English.",
         insurance: "You are reviewing a retirement plan as an insurance agent. Focus on shield coverage, riders, pre-existing conditions, exclusions, and claims realism.",
     }[audience];
+    const closingInstruction = {
+        expert: "Give one integrated recommendation set, ordered by urgency, with clear tradeoffs and a direct answer to what she should do next.",
+        actuary: "End with a solvency verdict, the main longevity risk, and the single reserve or annuity change you would recommend.",
+        doctor: "End with the most likely health risks over the next decade and what the family should prepare for first.",
+        planner: "End with a practical first-90-days action plan in order, using plain language where possible.",
+        family: "End with a calm, plain-English summary the family can read out loud together.",
+        insurance: "End with the exact questions she should ask insurers next and the coverage tradeoff she is most likely to face.",
+    }[audience];
     if (!firstRow) {
-        return `${intro}\n\nProfile summary:\n- Name: ${profile.name}\n- CPF LIFE plan: ${plan.cpfPlan}\n- Payout start age: ${plan.payoutStartAge}\n- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}\n- Median death age: ${result.medianAge.toFixed(1)}\n- Conditions: ${conditions}\n\nQuestions to answer:\n- ${topQuestions.join("\n- ")}\n\nPlease critique the plan, state the main risks, and suggest a better alternative if one exists.`;
+        return `${intro}\n\nProfile summary:\n- Name: ${profile.name}\n- CPF LIFE plan: ${plan.cpfPlan}\n- Payout start age: ${plan.payoutStartAge}\n- Observed payout anchor: ${profile.profile.observedCpfPayout || "n/a"}\n- Median death age: ${result.medianAge.toFixed(1)}\n- Conditions: ${conditions}\n\nQuestions to answer:\n- ${topQuestions.join("\n- ")}\n\n${closingInstruction}`;
     }
     return `${intro}
 
@@ -102,7 +110,7 @@ Profile summary:
 Questions to answer:
 - ${topQuestions.join("\n- ")}
 
-Please critique the plan, state the main risks, and suggest a better alternative if one exists.`;
+${closingInstruction}`;
 }
 export function buildStructuredPayload(profile, plan, result) {
     const firstRow = result.rows[0];

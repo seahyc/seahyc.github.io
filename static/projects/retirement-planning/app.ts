@@ -187,6 +187,7 @@ function render(): void {
       </section>
 
       <section class="rp-manage-inline">
+        ${renderStartHereGuide()}
         <details class="rp-inspector-details">
           <summary>
             <span>Manage profiles and plans</span>
@@ -256,6 +257,7 @@ function render(): void {
         <div class="rp-card-body">
           ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
           ${renderIncomeGapAlert(activeBundle, topRecommendation)}
+          ${renderInsuranceReviewAlert(syncedProfileRecord, activeBundle)}
           <div class="rp-summary-grid">
             ${renderSummary(activeBundle)}
           </div>
@@ -345,10 +347,11 @@ function render(): void {
 
 function renderBanner(profileRecord: ProfileRecord, plan: PlanData): string {
   const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const personLabel = getPersonLabel(profileRecord.name);
   return `
     <section class="rp-status-strip" aria-label="Planner status">
       <div class="rp-status-line">
-        <strong>${escapeHtml(profileRecord.name)} / ${escapeHtml(plan.name)}</strong>
+        <strong>${escapeHtml(personLabel)} / ${escapeHtml(plan.name)}</strong>
         <span>Local only: saved in this browser. Export JSON if you want a backup.</span>
         <span>Autosaved ${now}</span>
       </div>
@@ -360,11 +363,12 @@ function renderStickyMiniBar(profileRecord: ProfileRecord, plan: PlanData, bundl
   const first = bundle.result.rows[0];
   const monthlyGap = Math.round(((first?.grossIncomeAnnual || 0) - (first?.basicSpendAnnual || 0)) / 12);
   const topAction = bundle.recommendations[0]?.title || "Review recommendations";
+  const personLabel = getPersonLabel(profileRecord.name);
   return `
     <section class="rp-mini-bar" aria-label="Current plan summary">
-      <div class="rp-mini-pill">${escapeHtml(profileRecord.name)} · ${escapeHtml(plan.name)}</div>
+      <div class="rp-mini-pill subdued">${escapeHtml(personLabel)} · ${escapeHtml(plan.name)}</div>
       <div class="rp-mini-pill ${monthlyGap < 0 ? "warning" : "success"}">Income gap: ${currency.format(monthlyGap)}/m</div>
-      <div class="rp-mini-pill">Top action: ${escapeHtml(topAction)}</div>
+      <div class="rp-mini-pill subdued">Top action: ${escapeHtml(topAction)}</div>
       <a class="rp-btn soft" href="#rp-outputs">Jump to results</a>
     </section>
   `;
@@ -404,6 +408,19 @@ function renderProfiles(activeProfileId: string): string {
       </div>
     </div>
   `).join("");
+}
+
+function renderStartHereGuide(): string {
+  return `
+    <div class="rp-alert rp-alert-info rp-start-guide">
+      <strong>Start here</strong>
+      <div class="rp-start-guide-grid">
+        <div><span>1.</span> Enter your CPF balances from <strong>cpf.gov.sg → My CPF → Account balances</strong>.</div>
+        <div><span>2.</span> Fill in your bank savings, monthly spending, insurance, and health conditions.</div>
+        <div><span>3.</span> Use <strong>Jump to results</strong> to see your shortfall, top actions, and AI-ready plan summary.</div>
+      </div>
+    </div>
+  `;
 }
 
 function renderPlans(plans: PlanData[], activePlanId: string): string {
@@ -539,8 +556,8 @@ function renderAiPanel(profileRecord: ProfileRecord, plan: PlanData, bundle: Pla
       ${renderInlineAiResponse()}
     </div>
     <div class="rp-flex">
-      <button class="rp-btn soft" data-ai-open="chatgpt">Open in ChatGPT</button>
-      <button class="rp-btn soft" data-ai-open="claude">Open in Claude</button>
+      <button class="rp-btn soft" data-ai-open="chatgpt">Open your plan in ChatGPT</button>
+      <button class="rp-btn soft" data-ai-open="claude">Open your plan in Claude</button>
       <button class="rp-btn soft" data-copy-prompt="true">Copy expert prompt</button>
       <button class="rp-btn soft" data-copy-brief="actuary">Copy actuary brief</button>
       <button class="rp-btn soft" data-copy-brief="doctor">Copy doctor brief</button>
@@ -622,15 +639,15 @@ function renderSummary(bundle: PlanBundle): string {
   const first = bundle.result.rows[0] ?? bundle.result.rows.at(-1);
   if (!first) return "";
   const cards = [
-    ["CPF LIFE start", `${currency.format(bundle.result.cpfInitialPayout)}/m`, `${bundle.plan.cpfPlan} plan, observed-calibrated if anchor exists.`],
-    ["Median death age", bundle.result.medianAge.toFixed(1), `Modal ${bundle.result.modalAge.toFixed(1)} · p90 ${bundle.result.p90Age.toFixed(1)}`],
-    ["Balanced buffer", currency.format(first.emergencyBalanced), `Recommended reserve based on basic spend and age-conditional medical EV.`],
-    ["Medical cash / yr", currency.format(first.medicalCash), `Out-of-pocket after insurer and Medisave contributions.`],
-    ["Family tax saved / yr", currency.format(first.taxSavingsAnnual), `Estimated based on modeled allowed child top-ups and marginal rates.`],
-    ["Estate at median", currency.format(lookupByAge(bundle.result.rows, bundle.result.medianAge)?.estateEquivalent || 0), `Estate-equivalent balance near median life expectancy.`],
+    ["CPF LIFE start", `${currency.format(bundle.result.cpfInitialPayout)}/m`, `${bundle.plan.cpfPlan} plan, calibrated to observed payout if one is recorded.`, "neutral"],
+    ["Median death age", bundle.result.medianAge.toFixed(1), `Modal ${bundle.result.modalAge.toFixed(1)} · p90 ${bundle.result.p90Age.toFixed(1)}`, "neutral"],
+    ["Balanced buffer", currency.format(first.emergencyBalanced), `Recommended reserve based on basic spend and age-adjusted medical risk.`, "positive"],
+    ["Medical cash / yr", currency.format(first.medicalCash), `Estimated out-of-pocket after insurer and MediSave contributions.`, "warning"],
+    ["Family tax saved / yr", currency.format(first.taxSavingsAnnual), `Estimated from modeled family top-ups and marginal tax rates.`, "positive"],
+    ["Estate at median", currency.format(lookupByAge(bundle.result.rows, bundle.result.medianAge)?.estateEquivalent || 0), `Estate-equivalent balance near median life expectancy.`, "positive"],
   ];
-  return cards.map(([title, value, note]) => `
-    <div class="rp-summary-card">
+  return cards.map(([title, value, note, tone]) => `
+    <div class="rp-summary-card ${tone ? `rp-summary-card-${tone}` : ""}">
       <h3>${title}</h3>
       <strong>${value}</strong>
       <p>${note}</p>
@@ -641,6 +658,8 @@ function renderSummary(bundle: PlanBundle): string {
 function renderPlainEnglishSummary(profileRecord: ProfileRecord, plan: PlanData, bundle: PlanBundle): string {
   const first = bundle.result.rows[0];
   if (!first) return "";
+  const personLabel = getPersonLabel(profileRecord.name);
+  const verb = isGenericProfileName(profileRecord.name) ? "are" : "is";
   const monthlyIncome = Math.round(first.grossIncomeAnnual / 12);
   const monthlyBasicSpend = Math.round(first.basicSpendAnnual / 12);
   const monthlyGap = monthlyIncome - monthlyBasicSpend;
@@ -653,12 +672,31 @@ function renderPlainEnglishSummary(profileRecord: ProfileRecord, plan: PlanData,
       <strong>Your plan in plain English</strong>
       <div>
         ${monthlyGap < 0
-          ? `${escapeHtml(profileRecord.name)} is currently short by about ${currency.format(Math.abs(monthlyGap))}/month against basic spending.`
-          : `${escapeHtml(profileRecord.name)} currently covers basic spending with a buffer of about ${currency.format(monthlyGap)}/month.`}
+          ? `${escapeHtml(personLabel)} ${verb} currently short by about ${currency.format(Math.abs(monthlyGap))}/month against basic spending.`
+          : `${escapeHtml(personLabel)} ${verb} currently ahead of basic spending by about ${currency.format(monthlyGap)}/month.`}
         The current ${escapeHtml(plan.cpfPlan)} CPF LIFE setup starts around ${currency.format(bundle.result.cpfInitialPayout)}/month.
         ${healthContext}
       </div>
       <div><strong>Top 3 actions:</strong> ${escapeHtml(actions)}</div>
+    </div>
+  `;
+}
+
+function renderInsuranceReviewAlert(profileRecord: ProfileRecord, bundle: PlanBundle): string {
+  const profile = profileRecord.profile;
+  const first = bundle.result.rows[0];
+  if (!first) return "";
+  const usingPublicBaseline = !profile.insurance.shieldProvider || profile.insurance.shieldProvider === "public" || !profile.insurance.shieldPlan;
+  const age = getAgeFromBirthDate(profile.birthDate);
+  if (!usingPublicBaseline || age < 55) return "";
+  const conditions = profile.chronicConditions.length
+    ? profile.chronicConditions.join(", ")
+    : "your current health profile";
+  return `
+    <div class="rp-alert rp-alert-warning rp-insurance-review-card">
+      <strong>Insurance review is urgent</strong>
+      <div>At age ${age}, with ${escapeHtml(conditions)} and only public-baseline hospital coverage selected, a future hospitalisation could still leave meaningful cash bills. The current model estimates about ${currency.format(first.medicalCash)}/year out of pocket before any major shock.</div>
+      <div><strong>What to do Monday morning:</strong> Ask an insurance adviser or provider what Integrated Shield coverage is still available, what exclusions apply, and what the annual premium would be before your next birthday.</div>
     </div>
   `;
 }
@@ -684,12 +722,12 @@ function renderAiQuickActions(profileRecord: ProfileRecord, plan: PlanData, bund
   return `
     <div class="rp-ai-cta-strip">
       <div class="rp-ai-cta-copy">
-        <strong>Ask AI about this plan</strong>
-        <div class="rp-card-subtitle">Open the current plan in Claude or ChatGPT, or copy the family-friendly brief.</div>
+        <strong>Open your plan in AI</strong>
+        <div class="rp-card-subtitle">Your current plan state will be preloaded so you can ask a real question immediately.</div>
       </div>
       <div class="rp-flex">
-        <button class="rp-btn accent" data-ai-open="claude">Ask AI about my plan</button>
-        <button class="rp-btn soft" data-ai-open="chatgpt">Open in ChatGPT</button>
+        <button class="rp-btn accent" data-ai-open="claude">Open your plan in Claude</button>
+        <button class="rp-btn soft" data-ai-open="chatgpt">Open your plan in ChatGPT</button>
         <button class="rp-btn soft" data-copy-text="${escapeAttr(familyPrompt)}">Copy family brief</button>
       </div>
     </div>
@@ -820,7 +858,7 @@ function renderPlanForm(plan: PlanData, profile: ProfileData, validation: Valida
       </div>
     </details>
     <div class="rp-details">
-      ${validation.issues.length ? validation.issues.map((item) => `<div class="rp-constraint">${item}</div>`).join("") : `<div class="rp-help">Hard CPF constraints are currently satisfied.</div>`}
+      ${validation.issues.length ? validation.issues.map((item) => `<div class="rp-constraint">${item}</div>`).join("") : `<div class="rp-alert rp-alert-success rp-constraint-success"><strong>CPF constraints satisfied</strong><div>Hard CPF constraints are currently satisfied for this plan.</div></div>`}
     </div>
   `;
 }
@@ -1008,7 +1046,9 @@ function getChartDefinitions(bundle: PlanBundle): Array<{
 
 function renderChartCards(bundle: PlanBundle): string {
   const hidden = requireState().ui.chartHiddenSeries;
-  return getChartDefinitions(bundle).map(({ id, title, takeaway, series }) => `
+  const chartCards = getChartDefinitions(bundle)
+    .filter((chart) => chart.id !== "actionImpact")
+    .map(({ id, title, takeaway, series }) => `
     <div class="rp-card rp-chart-card">
       <div class="rp-card-header">
         <div>
@@ -1028,6 +1068,39 @@ function renderChartCards(bundle: PlanBundle): string {
       <div class="rp-chart-stage"><canvas id="chart-${id}" width="760" height="320"></canvas></div>
     </div>
   `).join("");
+  return `${chartCards}${renderActionLadder(bundle.recommendations)}`;
+}
+
+function renderActionLadder(actions: Recommendation[]): string {
+  if (!actions.length) return "";
+  return `
+    <div class="rp-card rp-chart-card rp-action-ladder-card">
+      <div class="rp-card-header">
+        <div>
+          <div class="rp-card-title">Action ladder</div>
+          <div class="rp-card-subtitle">What to do next, in order, without making you read a chart.</div>
+        </div>
+      </div>
+      <div class="rp-card-body">
+        <div class="rp-action-ladder-list">
+          ${actions.slice(0, 4).map((item, index) => `
+            <div class="rp-action-ladder-row">
+              <div class="rp-action-ladder-rank">Action ${index + 1}</div>
+              <div class="rp-action-ladder-copy">
+                <strong>${escapeHtml(item.title)}</strong>
+                <div>${escapeHtml(explainRecommendation(item))}</div>
+              </div>
+              <div class="rp-action-ladder-metrics">
+                <span>Shortfall ${currency.format(item.shortfallReduction || 0)}/m</span>
+                <span>Liquidity ${currency.format(item.liquidityImpact || 0)}</span>
+                <span>Estate ${currency.format(item.estateImpact || 0)}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderAppendix(rows: CashflowRow[], preset: AppendixPreset): string {
@@ -1428,7 +1501,8 @@ function normalizeValue(path: string, value: string | string[]): string | number
     return normalized === "true" ? "default" : normalized === "false" ? "none" : normalized;
   }
   if (/Cash|oa|ra|ma|Spend|Annual|Pct|Age|Support|Topup|payout|weight|height|Income|amount/i.test(path)) {
-    return Number(Array.isArray(value) ? value[0] || 0 : value || 0);
+    const raw = Array.isArray(value) ? value[0] || 0 : value || 0;
+    return parseFormattedNumber(raw);
   }
   return Array.isArray(value) ? value.join(", ") : value;
 }
@@ -1474,7 +1548,7 @@ function field(label: string, control: string, help = ""): string {
 }
 
 function numberInput(path: string, value: number): string {
-  return `<input class="rp-input" type="number" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${value ?? 0}">`;
+  return `<input class="rp-input" type="text" inputmode="numeric" data-${path.startsWith("plan.") ? "plan" : "profile"}-field="${path}" value="${escapeAttr(formatEditableNumber(value ?? 0))}">`;
 }
 
 function select(path: string, current: string | number | boolean, entries: Array<[string, string]>): string {
@@ -1639,11 +1713,46 @@ function explainRecommendation(item: Recommendation): string {
 }
 
 function nextStepForRecommendation(item: Recommendation): string {
-  if (item.tag.includes("CPF")) return "Check CPF remaining ERS room, confirm available cash, and decide whether to top up now or in stages.";
+  if (item.tag.includes("CPF")) return "Log in to My CPF, check how much more you can still add to your Retirement Account before hitting the Enhanced Retirement Sum, then decide whether to top up now or in stages.";
   if (item.tag.includes("Family")) return "Call the family contributors, agree on support amounts, and confirm the top-up route.";
   if (item.tag.includes("Liquidity")) return "Set aside the emergency reserve in accessible cash before making longer-term commitments.";
   if (item.tag.includes("Lifestyle")) return "List the discretionary items worth preserving and cut the ones that do not matter.";
   return "Review the numbers with a planner and convert this recommendation into one concrete next action.";
+}
+
+function formatEditableNumber(value: number): string {
+  if (!Number.isFinite(value)) return "0";
+  return new Intl.NumberFormat("en-SG", { maximumFractionDigits: 0 }).format(value);
+}
+
+function parseFormattedNumber(value: string | number): number {
+  if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+  const cleaned = String(value).replace(/[^\d.-]/g, "");
+  const parsed = Number(cleaned || 0);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function isGenericProfileName(name: string): boolean {
+  return /^profile\s+\d+$/i.test(name.trim());
+}
+
+function getPersonLabel(name: string): string {
+  if (isGenericProfileName(name)) return "You";
+  return firstName(name);
+}
+
+function firstName(name: string): string {
+  return name.trim().split(/\s+/)[0] || "You";
+}
+
+function getAgeFromBirthDate(birthDate: string): number {
+  const date = new Date(birthDate);
+  if (Number.isNaN(date.getTime())) return 0;
+  const now = new Date();
+  let age = now.getFullYear() - date.getFullYear();
+  const monthDiff = now.getMonth() - date.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < date.getDate())) age -= 1;
+  return Math.max(0, age);
 }
 
 function capitalize(value: string): string {
