@@ -109,6 +109,7 @@ function render() {
         app.innerHTML = `<div class="rp-card"><div class="rp-card-body">Loading local planner data…</div></div>`;
         return;
     }
+    ensureAppChrome();
     const currentState = requireState();
     const profileRecord = getActiveProfile(currentState);
     syncActivePlanConstraints(currentState);
@@ -142,11 +143,14 @@ function render() {
     const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities, insuranceCatalog);
     const diffSummary = buildPlanDiffSummary(activeBundle, comparisonBundle);
     const topRecommendation = activeBundle.recommendations[0] ?? null;
-    app.innerHTML = `
+    const appRoot = app.querySelector("#rp-app-root");
+    if (!appRoot) {
+        throw new Error("Retirement planner app root not found.");
+    }
+    appRoot.innerHTML = `
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
       ${renderStickyMiniBar(syncedProfileRecord, syncedActivePlan, activeBundle)}
-      <div id="rp-toast-root" aria-live="polite" aria-atomic="true">${renderToast()}</div>
 
       <section class="rp-page-section rp-page-section-inputs">
         <div class="rp-page-section-header">
@@ -308,6 +312,7 @@ function render() {
     bindActions(planResults, activeBundle, comparisonBundle);
     paintCharts(activeBundle);
     paintTransientUi();
+    renderToastIntoRoot();
 }
 function renderBanner(profileRecord, plan) {
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -338,6 +343,20 @@ function renderToast() {
     if (!activeToast)
         return "";
     return `<div class="rp-toast rp-toast-${activeToast.kind}" role="status" aria-live="polite">${escapeHtml(activeToast.message)}</div>`;
+}
+function ensureAppChrome() {
+    if (app.querySelector("#rp-app-root") && app.querySelector("#rp-toast-root"))
+        return;
+    app.innerHTML = `
+    <div id="rp-toast-root" aria-live="polite" aria-atomic="true"></div>
+    <div id="rp-app-root"></div>
+  `;
+}
+function renderToastIntoRoot() {
+    const toastRoot = app.querySelector("#rp-toast-root");
+    if (!toastRoot)
+        return;
+    toastRoot.innerHTML = renderToast();
 }
 function renderProfiles(activeProfileId) {
     return requireState().profiles.map((profile) => `
@@ -1487,10 +1506,10 @@ function showToast(kind, message) {
     activeToast = { kind, message };
     if (toastTimer)
         window.clearTimeout(toastTimer);
-    render();
+    renderToastIntoRoot();
     toastTimer = window.setTimeout(() => {
         activeToast = null;
-        render();
+        renderToastIntoRoot();
     }, 2000);
 }
 function highlightFields(paths) {
