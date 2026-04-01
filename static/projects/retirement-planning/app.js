@@ -99,6 +99,7 @@ function requireState() {
 }
 async function boot() {
     state = await loadState();
+    sanitizeLoadedState(state);
     aiCaps = await detectAiCapabilities();
     apiConfig = loadApiConfig();
     render();
@@ -145,7 +146,7 @@ function render() {
     <div class="rp-app">
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
       ${renderStickyMiniBar(syncedProfileRecord, syncedActivePlan, activeBundle)}
-      ${renderToast()}
+      <div id="rp-toast-root" aria-live="polite" aria-atomic="true">${renderToast()}</div>
 
       <section class="rp-page-section rp-page-section-inputs">
         <div class="rp-page-section-header">
@@ -196,7 +197,7 @@ function render() {
             </div>
           </div>
           <section class="rp-controls-inline">
-            <details class="rp-inspector-details">
+            <details class="rp-inspector-details" open>
               <summary>
                 <span>Constraints and quick controls</span>
                 <span class="rp-manage-summary">Policy status and shortcuts</span>
@@ -1112,6 +1113,8 @@ function bindActions(planResults, activeBundle, comparisonBundle) {
             const searchText = option.dataset.searchText || rawLabel.toLowerCase();
             const matches = !query || searchText.includes(query);
             option.hidden = !matches;
+            option.style.display = matches ? "" : "none";
+            option.setAttribute("aria-hidden", matches ? "false" : "true");
             if (labelNode) {
                 labelNode.innerHTML = matches && query
                     ? highlightSubstring(rawLabel, query)
@@ -1508,6 +1511,28 @@ function paintTransientUi() {
             return;
         field.classList.toggle("rp-field-flash", highlightedFieldPaths.has(path));
     });
+}
+function sanitizeLoadedState(currentState) {
+    currentState.profiles.forEach((profileRecord) => {
+        profileRecord.profile.insurance.rider = sanitizeRiderValue(profileRecord.profile.insurance.rider);
+        profileRecord.profile.insurance.carePreference = sanitizeCarePreferenceValue(profileRecord.profile.insurance.carePreference);
+    });
+}
+function sanitizeRiderValue(value) {
+    if (typeof value === "boolean")
+        return value ? "default" : "none";
+    const normalized = String(value ?? "").trim().toLowerCase();
+    if (!normalized || normalized === "false")
+        return "none";
+    if (normalized === "true")
+        return "default";
+    return String(value ?? "none");
+}
+function sanitizeCarePreferenceValue(value) {
+    const normalized = String(value ?? "").trim().toLowerCase();
+    if (normalized === "public" || normalized === "mixed" || normalized === "private")
+        return normalized;
+    return "public";
 }
 async function copyTextWithFeedback(text, successMessage) {
     try {

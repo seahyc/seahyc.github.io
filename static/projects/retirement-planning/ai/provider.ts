@@ -30,7 +30,8 @@ export function buildAudienceBrief(audience: "expert" | "actuary" | "doctor" | "
   const priorConditions = profile.profile.priorSeriousConditions?.join(", ") || "none recorded";
   const shieldProvider = profile.profile.insurance.shieldProvider || "Unspecified provider";
   const shieldPlan = profile.profile.insurance.shieldPlan || "Unspecified plan";
-  const rider = profile.profile.insurance.rider || "No rider";
+  const rider = formatRiderLabel(profile.profile.insurance.rider);
+  const carePreference = formatCarePreference(profile.profile.insurance.carePreference);
   const openingNetAnnual = firstRow?.netAnnual ?? 0;
   const openingNetMonthly = openingNetAnnual / 12;
   const topQuestions = {
@@ -46,7 +47,7 @@ export function buildAudienceBrief(audience: "expert" | "actuary" | "doctor" | "
     ],
     doctor: [
       `Given chronic conditions (${conditions}) and prior serious conditions (${priorConditions}), what medical trajectory is realistic from age 75 to 85?`,
-      `How should care setting (${profile.profile.insurance.carePreference}) affect expected treatment intensity and follow-up?`,
+      `How should care setting (${carePreference}) affect expected treatment intensity and follow-up?`,
       "What should the family monitor in the next 12 months?"
     ],
     planner: [
@@ -60,7 +61,7 @@ export function buildAudienceBrief(audience: "expert" | "actuary" | "doctor" | "
       "Keep the language non-technical."
     ],
     insurance: [
-      `She currently shows ${shieldProvider} / ${shieldPlan} / ${rider} with care preference ${profile.profile.insurance.carePreference}.`,
+      `She currently shows ${shieldProvider} / ${shieldPlan} / ${rider} with care preference ${carePreference}.`,
       `Given chronic conditions (${conditions}) and prior serious conditions (${priorConditions}), what realistic hospital and rider options remain?`,
       "What exclusions, pre-existing condition limitations, premium expectations, and rider terms should she verify with an insurance agent?"
     ],
@@ -102,7 +103,7 @@ Profile summary:
 - Shield plan: ${shieldPlan}
 - Rider: ${rider}
 - Long-term care: ${profile.profile.insurance.longTermCareCover}
-- Care preference: ${profile.profile.insurance.carePreference}
+- Care preference: ${carePreference}
 - Chronic conditions: ${conditions}
 - Prior serious conditions: ${priorConditions}
 - Medical scenario: ${plan.medicalScenario}
@@ -137,14 +138,14 @@ export function buildStructuredPayload(profile: ProfileRecord, plan: PlanData, r
       chronicConditions: profile.profile.chronicConditions,
       priorSeriousConditions: profile.profile.priorSeriousConditions,
       insuranceStatus: {
-        shieldProvider: profile.profile.insurance.shieldProvider,
-        shieldPlan: profile.profile.insurance.shieldPlan,
-        rider: profile.profile.insurance.rider,
-        medishield: profile.profile.insurance.medishield,
-        longTermCareCover: profile.profile.insurance.longTermCareCover,
-        carePreference: profile.profile.insurance.carePreference,
-      },
-    },
+            shieldProvider: profile.profile.insurance.shieldProvider,
+            shieldPlan: profile.profile.insurance.shieldPlan,
+            rider: formatRiderLabel(profile.profile.insurance.rider),
+            medishield: profile.profile.insurance.medishield,
+            longTermCareCover: profile.profile.insurance.longTermCareCover,
+            carePreference: formatCarePreference(profile.profile.insurance.carePreference),
+          },
+        },
     plan: {
       name: plan.name,
       cpfPlan: plan.cpfPlan,
@@ -169,6 +170,24 @@ export function buildStructuredPayload(profile: ProfileRecord, plan: PlanData, r
       openingTotalSpendAnnual: firstRow?.totalSpendAnnual ?? null,
     },
   }, null, 2);
+}
+
+function formatRiderLabel(value: unknown): string {
+  if (typeof value === "boolean") return value ? "Rider selected" : "No rider";
+  const normalized = String(value ?? "").trim();
+  if (!normalized || normalized === "none" || normalized === "false") return "No rider";
+  if (normalized === "true") return "Rider selected";
+  if (normalized === "default") return "Default rider";
+  return normalized;
+}
+
+function formatCarePreference(value: unknown): string {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  if (!normalized || normalized === "nan" || normalized === "undefined" || normalized === "null") return "Not specified";
+  if (normalized === "public") return "Public";
+  if (normalized === "mixed") return "Mixed";
+  if (normalized === "private") return "Private";
+  return normalized;
 }
 
 export function buildDiffPrompt(
