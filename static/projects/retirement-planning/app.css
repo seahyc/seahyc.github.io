@@ -348,6 +348,7 @@
 
 .rp-profile-grid,
 .rp-form-grid,
+.rp-output-highlights,
 .rp-summary-grid,
 .rp-inspector-grid,
 .rp-chart-grid,
@@ -367,6 +368,11 @@
 
 .rp-form-grid.three {
     grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+}
+
+.rp-output-highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
 }
 
 .rp-summary-grid {
@@ -664,7 +670,7 @@
 .rp-plain-english-card {
     gap: 0.18rem;
     padding: 0.75rem 0.95rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
 }
 
 .rp-plain-english-card strong {
@@ -686,7 +692,7 @@
 .rp-income-gap-card {
     gap: 0.18rem;
     padding: 0.8rem 0.95rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
 }
 
 .rp-income-gap-card strong {
@@ -1490,6 +1496,10 @@
 
     .rp-summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .rp-output-highlights {
+        grid-template-columns: 1fr;
     }
 
     .rp-page-copy,

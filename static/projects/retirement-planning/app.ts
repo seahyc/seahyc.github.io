@@ -271,11 +271,13 @@ function render(): void {
       <section class="rp-card rp-topline-stack" id="rp-outputs">
         <div class="rp-page-section-header rp-page-section-inline">
           <div class="rp-page-section-kicker">Outputs</div>
-          <div class="rp-page-section-note">Decision metrics, charts, recommendations, and concrete consequences.</div>
+        <div class="rp-page-section-note">Decision metrics, charts, recommendations, and concrete consequences.</div>
         </div>
         <div class="rp-card-body">
-          ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
-          ${renderIncomeGapAlert(activeBundle, topRecommendation)}
+          <div class="rp-output-highlights">
+            ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
+            ${renderIncomeGapAlert(activeBundle, topRecommendation)}
+          </div>
           ${renderInsuranceReviewAlert(syncedProfileRecord, activeBundle)}
           <div class="rp-summary-grid">
             ${renderSummary(activeBundle)}
