@@ -466,8 +466,9 @@
 
 .rp-field-hint {
     appearance: none;
-    width: 2.75rem;
-    height: 2.75rem;
+    min-width: 4.8rem;
+    width: 4.8rem;
+    height: 4.8rem;
     border-radius: 999px;
     border: 1px solid var(--rp-border);
     background: var(--rp-card-strong);
@@ -517,8 +518,9 @@
 .rp-inline-help {
     appearance: none;
     position: relative;
-    width: 2.75rem;
-    height: 2.75rem;
+    min-width: 4.8rem;
+    width: 4.8rem;
+    height: 4.8rem;
     border-radius: 999px;
     border: 1px solid var(--rp-border);
     background: var(--rp-card-strong);
@@ -622,17 +624,17 @@
 }
 
 .rp-summary-card-positive {
-    background: linear-gradient(180deg, rgba(223, 240, 225, 0.92), rgba(255, 250, 242, 0.98));
+    background-color: rgba(223, 240, 225, 0.92);
     border-color: rgba(36, 92, 49, 0.22);
 }
 
 .rp-summary-card-warning {
-    background: linear-gradient(180deg, rgba(248, 239, 210, 0.98), rgba(255, 250, 242, 0.98));
+    background-color: rgba(248, 239, 210, 0.98);
     border-color: rgba(140, 102, 26, 0.22);
 }
 
 .rp-summary-card-neutral {
-    background: linear-gradient(180deg, rgba(244, 236, 222, 0.98), rgba(255, 250, 242, 0.98));
+    background-color: rgba(244, 236, 222, 0.98);
 }
 
 .rp-summary-card h3 {
@@ -949,15 +951,18 @@
 
 .rp-action summary::after,
 .rp-inspector-details summary::after {
-    content: "▾";
+    content: none;
+}
+
+.rp-chevron {
     color: var(--rp-muted);
     font-size: 1.1rem;
     flex: 0 0 auto;
     transition: transform 0.16s ease;
 }
 
-.rp-action[open] summary::after,
-.rp-inspector-details[open] summary::after {
+.rp-action[open] .rp-chevron,
+.rp-inspector-details[open] .rp-chevron {
     transform: rotate(180deg);
 }
 
@@ -1319,6 +1324,12 @@
 
 .rp-constraint-success {
     margin-bottom: 0;
+    color: var(--rp-success);
+}
+
+.rp-constraint-success strong,
+.rp-constraint-success div {
+    color: var(--rp-success);
 }
 
 .rp-field-flash .rp-input,

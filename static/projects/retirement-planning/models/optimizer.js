@@ -16,6 +16,21 @@ export function computeRecommendations(profile, plan, result) {
         liquidityImpact: -Math.min(result.constraints.remainingErsRoom, 12000),
         tag: "CPF / annuity",
     });
+    const needsInsuranceReview = (profile.insurance.shieldProvider === "public" || !profile.insurance.shieldProvider || !profile.insurance.shieldPlan)
+        && profile.chronicConditions.length > 0
+        && result.currentAge >= 55;
+    if (needsInsuranceReview) {
+        recommendations.push({
+            title: "Review insurance coverage before pre-existing conditions lock you out",
+            why: "Hospital coverage becomes harder to improve with age and existing conditions, so delay can permanently narrow the option set.",
+            risk: "High",
+            confidence: "High",
+            shortfallReduction: Math.round((firstRow.medicalCash || 0) / 12),
+            estateImpact: -Math.min(6000, Math.round((firstRow.medicalCash || 0) * 1.5)),
+            liquidityImpact: -Math.min(3000, Math.round((firstRow.medicalCash || 0) * 0.8)),
+            tag: "Insurance",
+        });
+    }
     if (result.familyTopups.some((row) => (row.allowedTopup || 0) > 0)) {
         recommendations.push({
             title: "Use child top-ups for tax-efficient income support",

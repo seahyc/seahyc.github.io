@@ -164,7 +164,7 @@ function render() {
         <details class="rp-inspector-details">
           <summary>
             <span>Manage profiles and plans</span>
-            <span class="rp-manage-summary">${escapeHtml(syncedProfileRecord.name)} · ${escapeHtml(syncedActivePlan.name)} · ${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
+            <span class="rp-manage-summary">${escapeHtml(getPersonLabel(syncedProfileRecord.name))} · ${escapeHtml(syncedActivePlan.name)} · ${plansForProfile.length} plan${plansForProfile.length === 1 ? "" : "s"}</span>
           </summary>
           <div class="rp-flex rp-manage-actions">
             <button class="rp-btn accent" data-action="new-profile">New profile</button>
@@ -315,6 +315,7 @@ function render() {
     paintCharts(activeBundle);
     paintTransientUi();
     renderToastIntoRoot();
+    enhanceDetailsAffordance();
 }
 function renderBanner(profileRecord, plan) {
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -335,7 +336,7 @@ function renderStickyMiniBar(profileRecord, plan, bundle) {
     const topAction = bundle.recommendations[0]?.title || "Review recommendations";
     const personLabel = getPersonLabel(profileRecord.name);
     return `
-    <section class="rp-mini-bar" aria-label="Current plan summary">
+    <section class="rp-mini-bar rp-sticky-bar" aria-label="Current plan summary">
       <div class="rp-mini-pill subdued">${escapeHtml(personLabel)} · ${escapeHtml(plan.name)}</div>
       <div class="rp-mini-pill ${monthlyGap < 0 ? "warning" : "success"}">Income gap: ${currency.format(monthlyGap)}/m</div>
       <div class="rp-mini-pill subdued">Top action: ${escapeHtml(topAction)}</div>
@@ -362,12 +363,23 @@ function renderToastIntoRoot() {
         return;
     toastRoot.innerHTML = renderToast();
 }
+function enhanceDetailsAffordance() {
+    app.querySelectorAll("details summary").forEach((summary) => {
+        if (summary.querySelector(".rp-chevron"))
+            return;
+        const chevron = document.createElement("span");
+        chevron.className = "rp-chevron";
+        chevron.setAttribute("aria-hidden", "true");
+        chevron.textContent = "▾";
+        summary.appendChild(chevron);
+    });
+}
 function renderProfiles(activeProfileId) {
     return requireState().profiles.map((profile) => `
     <div class="rp-profile-row">
       <div class="rp-action-top rp-compact-top">
         <div class="rp-compact-copy">
-          <strong>${profile.name}</strong>
+          <strong>${escapeHtml(getPersonLabel(profile.name))}</strong>
           <div class="rp-card-subtitle">${profile.profile.sex} · ${profile.profile.birthDate}</div>
         </div>
         <div class="rp-flex">
@@ -380,7 +392,7 @@ function renderProfiles(activeProfileId) {
 }
 function renderStartHereGuide() {
     return `
-    <div class="rp-alert rp-alert-info rp-start-guide">
+    <div class="rp-alert rp-alert-info rp-start-guide rp-onboarding">
       <strong>Start here</strong>
       <div class="rp-start-guide-grid">
         <div><span>1.</span> Enter your CPF balances from <strong>cpf.gov.sg → My CPF → Account balances</strong>.</div>
@@ -615,8 +627,8 @@ function renderPlainEnglishSummary(profileRecord, plan, bundle) {
     const first = bundle.result.rows[0];
     if (!first)
         return "";
-    const personLabel = getPersonLabel(profileRecord.name);
-    const verb = isGenericProfileName(profileRecord.name) ? "are" : "is";
+    const personLabel = "You";
+    const verb = "are";
     const monthlyIncome = Math.round(first.grossIncomeAnnual / 12);
     const monthlyBasicSpend = Math.round(first.basicSpendAnnual / 12);
     const monthlyGap = monthlyIncome - monthlyBasicSpend;
@@ -795,7 +807,7 @@ function renderPlanForm(plan, profile, validation) {
       ${field("Objective", select("plan.objective", plan.objective, [["basic-certainty", "Basic certainty"], ["total-spend", "Total spend certainty"], ["bequest", "Bequest"], ["tax-efficient", "After-tax family utility"]]))}
     </div>
     <details class="rp-inspector-details">
-      <summary>Advanced planner settings</summary>
+      <summary><span>Advanced planner settings</span><span class="rp-chevron" aria-hidden="true">▾</span></summary>
       <div class="rp-form-grid three">
         ${field("Equity allocation %", numberInput("plan.equityAllocationPct", plan.equityAllocationPct))}
         ${field("Fixed income %", numberInput("plan.fixedIncomeAllocationPct", plan.fixedIncomeAllocationPct))}
@@ -889,6 +901,7 @@ function renderActions(actions) {
           <div class="rp-card-subtitle">${item.tag} · ${item.risk} risk · ${item.confidence} confidence</div>
         </div>
         <span class="rp-chip">${item.tag}</span>
+        <span class="rp-chevron" aria-hidden="true">▾</span>
       </summary>
       <div class="rp-action-body">
         <div>${item.why}</div>
@@ -1649,13 +1662,15 @@ function explainRecommendation(item) {
 }
 function nextStepForRecommendation(item) {
     if (item.tag.includes("CPF"))
-        return "Log in to My CPF, check how much more you can still add to your Retirement Account before hitting the Enhanced Retirement Sum, then decide whether to top up now or in stages.";
+        return "Log in to My CPF, check how much more you can still add to your Retirement Account (RA) before hitting the Enhanced Retirement Sum, then decide whether to top up now or in stages.";
     if (item.tag.includes("Family"))
         return "Call the family contributors, agree on support amounts, and confirm the top-up route.";
     if (item.tag.includes("Liquidity"))
         return "Set aside the emergency reserve in accessible cash before making longer-term commitments.";
     if (item.tag.includes("Lifestyle"))
         return "List the discretionary items worth preserving and cut the ones that do not matter.";
+    if (item.tag.includes("Insurance"))
+        return "Ask an insurer or adviser what hospital coverage is still available for your current conditions, what exclusions apply, and what annual premium you would pay before your next birthday.";
     return "Review the numbers with a planner and convert this recommendation into one concrete next action.";
 }
 function formatEditableNumber(value) {
