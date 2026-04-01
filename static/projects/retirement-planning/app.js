@@ -41,6 +41,25 @@ const CONDITION_SYNONYMS = {
     "stroke": ["stroke", "mini stroke", "weakness", "slurred speech"],
     "diabetes": ["sugar", "high sugar", "blood sugar"],
 };
+const NUMERIC_FIELD_PATHS = new Set([
+    "profile.bankCash",
+    "profile.oa",
+    "profile.sa",
+    "profile.ra",
+    "profile.ma",
+    "profile.cpfCohortYear",
+    "profile.observedCpfPayout",
+    "profile.basicSpendMonthly",
+    "profile.discretionarySpendAnnual",
+    "profile.marketIncomeAnnual",
+    "profile.cpfInvestments",
+    "plan.payoutStartAge",
+    "plan.oneOffTopup",
+    "plan.recurringTopupAnnual",
+    "plan.monthlySupport",
+    "plan.equityAllocationPct",
+    "plan.fixedIncomeAllocationPct",
+]);
 const APPENDIX_COLUMN_LABELS = {
     age: "Age",
     yearOffset: "Years from now",
@@ -1458,7 +1477,7 @@ function normalizeValue(path, value) {
         const normalized = Array.isArray(value) ? value[0] || "none" : String(value || "none");
         return normalized === "true" ? "default" : normalized === "false" ? "none" : normalized;
     }
-    if (/Cash|oa|ra|ma|Spend|Annual|Pct|Age|Support|Topup|payout|weight|height|Income|amount/i.test(path)) {
+    if (NUMERIC_FIELD_PATHS.has(path)) {
         const raw = Array.isArray(value) ? value[0] || 0 : value || 0;
         return parseFormattedNumber(raw);
     }
