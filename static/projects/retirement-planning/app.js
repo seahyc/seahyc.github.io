@@ -392,14 +392,26 @@ function renderProfiles(activeProfileId) {
 }
 function renderStartHereGuide() {
     return `
-    <div class="rp-alert rp-alert-info rp-start-guide rp-onboarding">
-      <strong>Start here</strong>
+    <details class="rp-start-guide rp-onboarding">
+      <summary>
+        <span>Start here</span>
+        <span class="rp-manage-summary">CPF balances, core details, then results</span>
+      </summary>
       <div class="rp-start-guide-grid">
-        <div><span>1.</span> Enter your CPF balances from <strong>cpf.gov.sg → My CPF → Account balances</strong>.</div>
-        <div><span>2.</span> Fill in your bank savings, monthly spending, insurance, and health conditions.</div>
-        <div><span>3.</span> Use <strong>Jump to results</strong> to see your shortfall, top actions, and AI-ready plan summary.</div>
+        <div class="rp-start-guide-step">
+          <span>1</span>
+          <div><strong>CPF balances</strong><small>cpf.gov.sg → My CPF → Account balances</small></div>
+        </div>
+        <div class="rp-start-guide-step">
+          <span>2</span>
+          <div><strong>Core details</strong><small>Bank savings, spending, insurance, and health conditions</small></div>
+        </div>
+        <div class="rp-start-guide-step">
+          <span>3</span>
+          <div><strong>Jump to results</strong><small>See your shortfall, top actions, and AI-ready summary</small></div>
+        </div>
       </div>
-    </div>
+    </details>
   `;
 }
 function renderPlans(plans, activePlanId) {
