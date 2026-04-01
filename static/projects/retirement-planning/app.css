@@ -662,7 +662,36 @@
 }
 
 .rp-plain-english-card {
-    margin-bottom: 1rem;
+    gap: 0.18rem;
+    padding: 0.75rem 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.rp-plain-english-card strong {
+    font-size: 0.92rem;
+    line-height: 1.2;
+}
+
+.rp-plain-english-copy,
+.rp-plain-english-actions,
+.rp-income-gap-card > div {
+    font-size: var(--rp-text-sm);
+    line-height: 1.35;
+}
+
+.rp-plain-english-actions strong {
+    font-size: inherit;
+}
+
+.rp-income-gap-card {
+    gap: 0.18rem;
+    padding: 0.8rem 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.rp-income-gap-card strong {
+    font-size: 0.92rem;
+    line-height: 1.2;
 }
 
 .rp-constraint {
@@ -670,11 +699,11 @@
 }
 
 .rp-summary-card {
-    padding: 0.9rem 1rem;
+    padding: 0.75rem 0.85rem;
     background: var(--rp-card-strong);
     border: 1px solid var(--rp-border);
     border-radius: 1rem;
-    min-height: 7.2rem;
+    min-height: 6.15rem;
 }
 
 .rp-summary-card-positive {
@@ -696,21 +725,22 @@
     color: var(--rp-muted);
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    line-height: 1.2;
 }
 
 .rp-summary-card strong {
     display: block;
-    margin-top: 0.45rem;
+    margin-top: 0.32rem;
     color: var(--rp-ink);
-    font-size: clamp(1.6rem, 1.6vw, 2.4rem);
-    line-height: 1;
+    font-size: clamp(1.35rem, 1.3vw, 2rem);
+    line-height: 0.96;
 }
 
 .rp-summary-card p {
-    margin-top: 0.35rem;
+    margin-top: 0.28rem;
     color: var(--rp-body);
-    font-size: var(--rp-text-md);
-    line-height: 1.4;
+    font-size: var(--rp-text-sm);
+    line-height: 1.32;
 }
 
 .rp-ai-cta-strip {

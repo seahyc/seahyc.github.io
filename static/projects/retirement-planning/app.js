@@ -670,14 +670,14 @@ function renderPlainEnglishSummary(profileRecord, plan, bundle) {
     return `
     <div class="rp-alert rp-alert-info rp-plain-english-card">
       <strong>Your plan in plain English</strong>
-      <div>
+      <div class="rp-plain-english-copy">
         ${monthlyGap < 0
         ? `${escapeHtml(personLabel)} ${verb} currently short by about ${currency.format(Math.abs(monthlyGap))}/month against basic spending.`
         : `${escapeHtml(personLabel)} ${verb} currently ahead of basic spending by about ${currency.format(monthlyGap)}/month.`}
         The current ${escapeHtml(plan.cpfPlan)} CPF LIFE setup starts around ${currency.format(bundle.result.cpfInitialPayout)}/month.
         ${healthContext}
       </div>
-      <div><strong>Top 3 actions:</strong> ${escapeHtml(actions)}</div>
+      <div class="rp-plain-english-actions"><strong>Top 3 actions:</strong> ${escapeHtml(actions)}</div>
     </div>
   `;
 }
@@ -711,7 +711,7 @@ function renderIncomeGapAlert(bundle, topRecommendation) {
     if (first.netAnnual >= 0 && monthlyGap >= 0)
         return "";
     return `
-    <div class="rp-alert rp-alert-warning">
+    <div class="rp-alert rp-alert-warning rp-income-gap-card">
       <strong>Income gap detected</strong>
       <div>Your monthly income (${currency.format(monthlyIncome)}/m) does not cover basic needs (${currency.format(monthlyBasicSpend)}/m). Shortfall: ${currency.format(Math.abs(monthlyGap))}/m.</div>
       ${topRecommendation ? `<div>Top action: ${escapeHtml(topRecommendation.title)}</div>` : ""}
