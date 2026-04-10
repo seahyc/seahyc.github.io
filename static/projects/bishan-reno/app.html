@@ -230,14 +230,15 @@ va.position.set(0.15,1.95,curtainGap+0.15); room.add(va);
 const ob=new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6),d2);
 ob.position.set(0.15,1.55,curtainGap+0.25); ob.scale.set(1,0.7,0.8); room.add(ob);
 
-// Cream cabinets (z=0.85 to z=MW, full height)
-const cabStart=curtainGap+shW; // cabinets start after curtain gap + shelving
+// Suspended cream cabinets (wall-mounted ABOVE console, z=shW+curtainGap to z=MW)
+const cabStart=curtainGap+shW;
 const cabLen=2.74; // 9ft suspended storage cabinet
-const cabBody=box(0.35,H-0.05,cabLen,M.creamP);
-cabBody.position.set(0.175,H/2-0.025,cabStart+cabLen/2); room.add(cabBody);
+const cabH=H-TVH-0.05; // from console top to ceiling
+const cabBody=box(0.35,cabH,cabLen,M.creamP);
+cabBody.position.set(0.175,TVH+cabH/2,cabStart+cabLen/2); room.add(cabBody);
 for(let i=0;i<14;i++){
-  const g=box(0.352,H-0.1,0.003,M.cream);
-  g.position.set(0.175,H/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
+  const g=box(0.352,cabH-0.05,0.003,M.cream);
+  g.position.set(0.175,TVH+cabH/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
 }
 
 // ═══ TV CONSOLE (walnut, 50cm deep, runs most of main wall) ═══
@@ -498,7 +499,8 @@ function lb(t,p,c,s){lblGrp.add(mkLbl(t,new THREE.Vector3(...p),c||'#999',s||0.7
 lb('MAIN WALL',[0.05,2.5,MW/2],'#ccc',0.8);
 lb('FEATURE WALL',[FW/2,2.5,MW-0.2],'#ccc',0.6);
 lb('WINDOW WALL',[DEPTH/2,2.5,0.2],'#ccc',0.7);
-lb('CABINETS (cream, full ht)',[0.35,1.8,cabStart+cabLen/2],'#999',0.7);
+lb('SUSPENDED CABINETS (cream)',[0.35,1.8,cabStart+cabLen/2],'#999',0.7);
+lb('CONSOLE INTERIOR (empty — sump extends here)',[TVD/2,0.2,cabStart+0.5],'#666',0.6);
 lb('OPEN SHELVING + ROCKY WALL',[shD+0.15,1.8,curtainGap+shW/2],'#999',0.6);
 lb('TV CONSOLE (walnut)',[TVD+0.15,0.55,tvStart+tvLen/2],'#7a5a3a',0.6);
 lb('CLOUD FOREST PALUDARIUM 30×30×90',[TVD/2,TVH+tH2+0.2,paluZ],'#6ab8e8',0.7);
