@@ -243,8 +243,9 @@ for(let i=0;i<14;i++){
   g.position.set(0.175,cabBtm+cabH/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
 }
 // LED niche (in the gap between console top and cabinet bottom)
-const nichBar=box(cabLen-0.1,0.04,0.15,M.walnut);
-nichBar.position.set(0.10,TVH+cabGap/2,cabStart+cabLen/2); room.add(nichBar);
+// LED niche strip (thin, flat against wall in the gap)
+const nichStrip=box(0.02,0.015,cabLen-0.1,new THREE.MeshStandardMaterial({color:0xffd699,emissive:0xffd699,emissiveIntensity:0.3,roughness:0.5}));
+nichStrip.position.set(0.02,TVH+cabGap*0.6,cabStart+cabLen/2); room.add(nichStrip);
 
 // ═══ TV CONSOLE (walnut, 50cm deep, runs most of main wall) ═══
 const tvStart=curtainGap; // console starts at curtain gap
