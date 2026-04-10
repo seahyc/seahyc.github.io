@@ -356,7 +356,7 @@ paluGroup.add(tank);
 
 // ═══ SUMP inside console (always visible through transparent front) ═══
 const sumpGroup=new THREE.Group();
-const rW=0.28,rD=0.39,rH=0.28,rWL=0.20; // SAMLA 22L: 39wide×28deep×28tall, water at 20cm
+const rW=0.24,rD=0.35,rH=0.27,rWL=0.20; // SAMLA 22L internal: ~35wide×24deep×27tall, water at 20cm (~17L usable)
 
 // Reservoir
 const rf=new THREE.Mesh(new THREE.BoxGeometry(rW,rH,0.003),M.resGlass); rf.position.set(0,rH/2,rD/2); sumpGroup.add(rf);
@@ -489,7 +489,7 @@ dimLn([TVD/2+tD/2+0.2,TVH,paluZ],[TVD/2+tD/2+0.2,TVH+tH2,paluZ],'900mm',[0,0,0],
 // Volume labels
 dimGrp.add(mkLbl('Floor: ~14.8 m²  ·  Vol: ~38.5 m³',new THREE.Vector3(DEPTH/2,0.02,MW/2),'#777',1.0));
 dimGrp.add(mkLbl('Tank: 81L vol · ~35-40kg loaded · System water: ~25-30L',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.9));
-dimGrp.add(mkLbl('Sump: SAMLA 22L (39×28×28cm) · ~3-4 week top-up',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
+dimGrp.add(mkLbl('Sump: SAMLA 22L (~35×24×27 internal) · ~17L usable · ~3 week top-up',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
 
 scene.add(dimGrp);
 
