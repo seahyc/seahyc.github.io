@@ -356,7 +356,7 @@ paluGroup.add(tank);
 
 // ═══ SUMP inside console (always visible through transparent front) ═══
 const sumpGroup=new THREE.Group();
-const rW=0.39,rD=0.28,rH=0.28,rWL=0.20; // SAMLA 22L: 39×28×28cm, water at 20cm
+const rW=0.28,rD=0.39,rH=0.28,rWL=0.20; // SAMLA 22L: 39wide×28deep×28tall, water at 20cm
 
 // Reservoir
 const rf=new THREE.Mesh(new THREE.BoxGeometry(rW,rH,0.003),M.resGlass); rf.position.set(0,rH/2,rD/2); sumpGroup.add(rf);
