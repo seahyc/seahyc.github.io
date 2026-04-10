@@ -483,7 +483,7 @@ dimLn([TVD/2+tD/2+0.15,TVH+0.01,paluZ-tW/2],[TVD/2+tD/2+0.15,TVH+0.01,paluZ+tW/2
 dimLn([TVD/2+tD/2+0.2,TVH,paluZ],[TVD/2+tD/2+0.2,TVH+tH2,paluZ],'600mm',[0,0,0],0.5);
 // Volume labels
 dimGrp.add(mkLbl('Floor: ~14.8 m²  ·  Vol: ~38.5 m³',new THREE.Vector3(DEPTH/2,0.02,MW/2),'#777',1.0));
-dimGrp.add(mkLbl('Tank: 54L total · ~22L water',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.7));
+dimGrp.add(mkLbl('Tank: 54L vol · System water: ~15-17L (sump 12L + display 3-5L)',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.9));
 dimGrp.add(mkLbl('Sump: ~12L reservoir (45cm internal depth)',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
 
 scene.add(dimGrp);
