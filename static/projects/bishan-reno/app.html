@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>532B Living Room — 3D Layout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #e0ddd5; font-family: 'DM Mono', monospace; overflow: hidden; height: 100vh; }
+  #c { width: 100vw; height: 100vh; }
+  canvas { display: block; }
+  #hud { position: absolute; top: 20px; left: 24px; z-index: 10; pointer-events: none; }
+  #hud h1 { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: 400; color: #e0ddd5; }
+  #hud p { font-size: 10px; color: #666; margin-top: 4px; letter-spacing: 1.5px; text-transform: uppercase; }
+  #btns { position: absolute; bottom: 20px; left: 24px; z-index: 10; display: flex; gap: 6px; flex-wrap: wrap; max-width: 90vw; }
+  .b { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; font-family: 'DM Mono', monospace; font-size: 11px; padding: 8px 14px; cursor: pointer; transition: all 0.2s; }
+  .b:hover,.b.on { background: rgba(255,255,255,0.12); color: #ddd; border-color: rgba(255,255,255,0.2); }
+</style>
+</head>
+<body>
+<div id="c">
+  <div id="hud">
+    <h1>532B Bishan Ridges — Living Room</h1>
+    <p>Comfort Home Interior · V11</p>
+  </div>
+  <div id="btns">
+    <button class="b on" onclick="sv('overview')">Overview</button>
+    <button class="b" onclick="sv('mainWall')">Main Wall</button>
+    <button class="b" onclick="sv('featureWall')">Feature Wall</button>
+    <button class="b" onclick="sv('windowWall')">Window Wall</button>
+    <button class="b" onclick="sv('top')">Top Down</button>
+    <button class="b" onclick="sv('palu')">Paludarium</button>
+    <button class="b" onclick="sv('inside')">Inside Tank</button>
+    <button class="b" onclick="sv('sump')">Sump</button>
+    <button class="b" onclick="toggleDims()">Dimensions</button>
+    <button class="b" onclick="toggleLabels()">Labels</button>
+  </div>
+  <div style="position:absolute;bottom:55px;left:50%;transform:translateX(-50%);z-index:10;font-size:9px;color:#555;letter-spacing:1px;text-transform:uppercase;pointer-events:none;">Drag: orbit · Scroll: zoom · Right-click: pan · WASD: move · Q/E: up/down · Mobile: pinch+drag</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+/*
+  LAYOUT (top-down, z increases right, x increases toward viewer):
+
+  Feature wall (z=0, LEFT, 1.7m along x, partial)
+  Main wall (x=0, BACK, 4.95m along z, longest)
+  Window wall (z=MW, RIGHT, 3.55m along x, full depth)
+
+  Paludarium + shelving at RIGHT end of main wall (near window wall)
+  Cabinets span most of main wall from left
+  Console runs along main wall bottom
+*/
+
+const MW = 3.45;    // main wall length along z (cabinet 2740 + shelving 460 + curtain 250)
+const DEPTH = 3.55; // room depth along x
+const FW = 1.70;    // feature wall along x (partial, left side)
+const H = 2.60;     // ceiling
+const TVH = 0.40;   // console height
+const TVD = 0.50;   // console depth (confirmed by CP)
+const TVDI = 0.45;  // console internal depth
+const curtainGap = 0.25; // clearance to window wall for curtains
+const shW = 0.46;   // 1.5ft open shelving (10.5ft console - 9ft cabinet)
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x111111);
+scene.fog = new THREE.FogExp2(0x111111, 0.06);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.05, 50);
+camera.position.set(DEPTH+2, 3.5, MW*0.35);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+document.getElementById('c').appendChild(renderer.domElement);
+
+const ctrl = new THREE.OrbitControls(camera, renderer.domElement);
+ctrl.enableDamping = true;
+ctrl.dampingFactor = 0.06;
+ctrl.rotateSpeed = 1.0;
+ctrl.zoomSpeed = 1.5;
+ctrl.panSpeed = 1.2;
+ctrl.minDistance = 0.3;
+ctrl.maxDistance = 15;
+ctrl.maxPolarAngle = Math.PI * 0.95; // allow looking from below
+ctrl.minPolarAngle = 0.05;
+ctrl.enablePan = true;
+ctrl.screenSpacePanning = true; // pan moves in screen plane, not ground plane
+ctrl.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN }; // mobile: 1 finger rotate, 2 finger zoom+pan
+ctrl.target.set(DEPTH/2, 1.0, MW/2);
+
+// Helpers
+function box(w,h,d,m){ const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m); o.castShadow=true; return o; }
+
+// ── Lighting
+scene.add(new THREE.AmbientLight(0xfff5e6, 0.35));
+for(let xi=0;xi<3;xi++) for(let zi=0;zi<4;zi++){
+  const dl=new THREE.SpotLight(0xfff0d6,0.35,5,Math.PI/4,0.7,1.5);
+  dl.position.set(0.8+xi*1.0,H-0.02,0.8+zi*1.2);
+  dl.target.position.set(0.8+xi*1.0,0,0.8+zi*1.2);
+  dl.castShadow=true; dl.shadow.mapSize.set(256,256);
+  scene.add(dl); scene.add(dl.target);
+}
+// Window light from right
+const wl=new THREE.DirectionalLight(0xf5f0e8,0.7);
+wl.position.set(DEPTH/2,3,MW+3); wl.castShadow=true; scene.add(wl);
+// Shelf LED
+const led1=new THREE.RectAreaLight(0xffd699,3,0.8,0.02);
+led1.position.set(0.06,1.6,curtainGap+shW/2); led1.lookAt(1,1.6,curtainGap+shW/2); scene.add(led1);
+const led2=new THREE.RectAreaLight(0xffd699,2,0.5,0.02);
+led2.position.set(0.06,1.2,curtainGap+shW/2); led2.lookAt(1,1.2,curtainGap+shW/2); scene.add(led2);
+// Globe light on feature wall (z=MW side)
+const glPt=new THREE.PointLight(0xffeedd,0.8,3,2);
+glPt.position.set(FW/2,1.85,MW-0.12); scene.add(glPt);
+
+// ── Materials
+const M = {
+  wall: new THREE.MeshStandardMaterial({color:0xe8e2d8,roughness:0.9}),
+  ceil: new THREE.MeshStandardMaterial({color:0xf0ece4,roughness:0.95}),
+  floor: new THREE.MeshStandardMaterial({color:0xddd5c8,roughness:0.4,metalness:0.05}),
+  walnut: new THREE.MeshStandardMaterial({color:0x5a3d2b,roughness:0.65,metalness:0.03}),
+  walnutDk: new THREE.MeshStandardMaterial({color:0x4a3020,roughness:0.7}),
+  cream: new THREE.MeshStandardMaterial({color:0xe5dfd5,roughness:0.85}),
+  creamP: new THREE.MeshStandardMaterial({color:0xddd8cc,roughness:0.8}),
+  stone: new THREE.MeshStandardMaterial({color:0xd5cfc5,roughness:0.95}),
+  glass: new THREE.MeshPhysicalMaterial({color:0x8cc8dc,transparent:true,opacity:0.15,roughness:0.05,transmission:0.8,thickness:0.005,side:THREE.DoubleSide}),
+  water: new THREE.MeshPhysicalMaterial({color:0x4a90d9,transparent:true,opacity:0.3,roughness:0.1}),
+  plant: new THREE.MeshStandardMaterial({color:0x4a7a3a,roughness:0.8}),
+  plantDk: new THREE.MeshStandardMaterial({color:0x3a5a2a,roughness:0.85}),
+  metal: new THREE.MeshStandardMaterial({color:0x888,roughness:0.3,metalness:0.7}),
+  curtain: new THREE.MeshStandardMaterial({color:0xf0ece4,transparent:true,opacity:0.4,roughness:0.95,side:THREE.DoubleSide}),
+  pumpPipe: new THREE.MeshStandardMaterial({color:0xd94a4a,roughness:0.4,metalness:0.3}),
+  drainPipe: new THREE.MeshStandardMaterial({color:0x4ad97a,roughness:0.4,metalness:0.3}),
+  pump: new THREE.MeshStandardMaterial({color:0xff8c00,roughness:0.5,metalness:0.4}),
+  resGlass: new THREE.MeshPhysicalMaterial({color:0x80a0c8,transparent:true,opacity:0.25,roughness:0.05,side:THREE.DoubleSide}),
+  grommet: new THREE.MeshStandardMaterial({color:0x444,roughness:0.9}),
+  gap: new THREE.MeshStandardMaterial({color:0xd9d94a,transparent:true,opacity:0.5}),
+  consoleFront: new THREE.MeshStandardMaterial({color:0x4a3020,transparent:true,opacity:0.15,roughness:0.7}),
+};
+
+// ════════════════════════
+// ROOM SHELL
+// ════════════════════════
+const room = new THREE.Group();
+
+// Floor
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(DEPTH,MW),M.floor);
+fl.rotation.x=-Math.PI/2; fl.position.set(DEPTH/2,0,MW/2); fl.receiveShadow=true; room.add(fl);
+
+// Ceiling
+const ce=new THREE.Mesh(new THREE.PlaneGeometry(DEPTH,MW),M.ceil);
+ce.rotation.x=Math.PI/2; ce.position.set(DEPTH/2,H,MW/2); room.add(ce);
+
+// Grid
+const grid=new THREE.GridHelper(7,70,0x222,0x1a1a1a);
+grid.position.set(DEPTH/2,0.001,MW/2); room.add(grid);
+
+// ═══ MAIN WALL (x=0, runs along z, 4,950mm) ═══
+const mwS=new THREE.Mesh(new THREE.PlaneGeometry(MW,H),M.wall);
+mwS.position.set(0.001,H/2,MW/2); mwS.rotation.y=Math.PI/2; room.add(mwS);
+
+// ═══ WINDOW WALL at z=0 (RIGHT side of screen) ═══
+const wwS=new THREE.Mesh(new THREE.PlaneGeometry(DEPTH,H),M.wall);
+wwS.position.set(DEPTH/2,H/2,0.001); room.add(wwS);
+
+function makeWin(cx,cy){
+  const g=new THREE.Group();
+  const fr=new THREE.MeshStandardMaterial({color:0x444,roughness:0.4,metalness:0.3});
+  const wg=new THREE.MeshPhysicalMaterial({color:0x87CEEB,transparent:true,opacity:0.45,roughness:0.05});
+  const ww=0.9,wh=1.6,t=0.03;
+  const v1=box(t,wh,t,fr); v1.position.set(-ww/2,0,0); g.add(v1);
+  const v2=box(t,wh,t,fr); v2.position.set(ww/2,0,0); g.add(v2);
+  const h1=box(ww,t,t,fr); h1.position.set(0,wh/2,0); g.add(h1);
+  const h2=box(ww,t,t,fr); h2.position.set(0,-wh/2,0); g.add(h2);
+  const h3=box(ww,t,t,fr); h3.position.set(0,0,0); g.add(h3);
+  const gl=new THREE.Mesh(new THREE.PlaneGeometry(ww,wh),wg); gl.position.set(0,0,-0.01); g.add(gl);
+  g.position.set(cx,cy,0.02);
+  return g;
+}
+room.add(makeWin(1.0,1.5));
+room.add(makeWin(2.3,1.5));
+
+const cur=new THREE.Mesh(new THREE.PlaneGeometry(2.8,2.3),M.curtain);
+cur.position.set(DEPTH/2,1.35,0.06); room.add(cur);
+const cTk=box(2.8,0.02,0.03,M.metal);
+cTk.position.set(DEPTH/2,H-0.08,0.04); room.add(cTk);
+
+
+// ═══ FEATURE WALL at z=MW (LEFT side of screen) ═══
+const fwS=new THREE.Mesh(new THREE.PlaneGeometry(FW,H),M.wall);
+fwS.position.set(FW/2,H/2,MW-0.001); fwS.rotation.y=Math.PI; room.add(fwS);
+// Cream panel overlay
+const fwP=box(FW-0.1,H-0.05,0.04,M.creamP);
+fwP.position.set(FW/2,H/2-0.025,MW-0.02); room.add(fwP);
+// Vertical grooves
+for(let i=0;i<5;i++){
+  const g=box(0.003,H-0.1,0.045,M.cream);
+  g.position.set(0.15+i*(FW-0.3)/4,H/2,MW-0.022); room.add(g);
+}
+// Double globe wall lights
+const glbM=new THREE.MeshPhysicalMaterial({color:0xfff5e0,transparent:true,opacity:0.7,roughness:0.15,emissive:0xffd699,emissiveIntensity:0.4});
+const g1=new THREE.Mesh(new THREE.SphereGeometry(0.06,16,12),glbM);
+g1.position.set(FW/2,1.9,MW-0.08); room.add(g1);
+const g2=new THREE.Mesh(new THREE.SphereGeometry(0.06,16,12),glbM);
+g2.position.set(FW/2,1.75,MW-0.08); room.add(g2);
+const gA=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.25,6),M.metal);
+gA.position.set(FW/2,1.825,MW-0.04); room.add(gA);
+
+// ═══ MAIN WALL cabinets + shelving ═══
+// Open shelving niche at z=0..0.85 (near WINDOW wall = RIGHT side, near paludarium)
+const shD=0.30;
+const stBk=box(0.02,1.4,shW,M.stone);
+stBk.position.set(0.01,1.5,curtainGap+shW/2); room.add(stBk);
+const shMat=new THREE.MeshStandardMaterial({color:0xe8e2d8,roughness:0.6});
+for(let i=0;i<3;i++){
+  const s=box(shD,0.015,shW-0.04,shMat);
+  s.position.set(shD/2+0.02,1.0+i*0.45,curtainGap+shW/2); room.add(s);
+}
+// Deco on shelves
+const d1=new THREE.MeshStandardMaterial({color:0xd5ccc0,roughness:0.7});
+const d2=new THREE.MeshStandardMaterial({color:0xb8a898,roughness:0.6});
+const va=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.04,0.12,8),d1);
+va.position.set(0.15,1.95,curtainGap+0.15); room.add(va);
+const ob=new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6),d2);
+ob.position.set(0.15,1.55,curtainGap+0.25); ob.scale.set(1,0.7,0.8); room.add(ob);
+
+// Cream cabinets (z=0.85 to z=MW, full height)
+const cabStart=curtainGap+shW; // cabinets start after curtain gap + shelving
+const cabLen=2.74; // 9ft suspended storage cabinet
+const cabBody=box(0.35,H-0.05,cabLen,M.creamP);
+cabBody.position.set(0.175,H/2-0.025,cabStart+cabLen/2); room.add(cabBody);
+for(let i=0;i<14;i++){
+  const g=box(0.352,H-0.1,0.003,M.cream);
+  g.position.set(0.175,H/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
+}
+
+// ═══ TV CONSOLE (walnut, 50cm deep, runs most of main wall) ═══
+const tvStart=curtainGap; // console starts at curtain gap
+const tvLen=3.20; // 10.5ft console
+const tt=box(TVD,0.02,tvLen,M.walnut); tt.position.set(TVD/2,TVH,tvStart+tvLen/2); room.add(tt);
+const tbo=box(TVD,0.02,tvLen,M.walnut); tbo.position.set(TVD/2,0.01,tvStart+tvLen/2); room.add(tbo);
+const tbk=box(0.015,TVH-0.02,tvLen,M.walnutDk); tbk.position.set(0.008,TVH/2,tvStart+tvLen/2); room.add(tbk);
+const tFront=box(0.02,TVH-0.04,tvLen,M.consoleFront);
+tFront.position.set(TVD-0.01,TVH/2,tvStart+tvLen/2); room.add(tFront);
+const tLS=box(TVD,TVH-0.02,0.02,M.walnutDk); tLS.position.set(TVD/2,TVH/2,tvStart+0.01); room.add(tLS);
+const tRS=box(TVD,TVH-0.02,0.02,M.walnutDk); tRS.position.set(TVD/2,TVH/2,tvStart+tvLen-0.01); room.add(tRS);
+
+scene.add(room);
+
+// ════════════════════════
+// PALUDARIUM + SUMP
+// ════════════════════════
+const tW=0.30,tD=0.30,tH2=0.60;
+const paluZ=curtainGap+shW/2; // centered in the shelving niche, near window wall
+const paluGroup=new THREE.Group();
+
+// Glass tank
+const tank=new THREE.Group();
+function gp(w,h,d){return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M.glass);}
+const tf=gp(tD,tH2,0.004); tf.position.set(0,tH2/2,tW/2); tank.add(tf);
+const tb=gp(tD,tH2,0.004); tb.position.set(0,tH2/2,-tW/2); tank.add(tb);
+const tl=gp(0.004,tH2,tW); tl.position.set(-tD/2,tH2/2,0); tank.add(tl);
+const tr=gp(0.004,tH2,tW); tr.position.set(tD/2,tH2/2,0); tank.add(tr);
+const tbt2=gp(tD,0.004,tW); tbt2.position.set(0,0.002,0); tank.add(tbt2);
+
+// Gravel
+const grvl=box(tD-0.01,0.015,tW-0.01,new THREE.MeshStandardMaterial({color:0x2a2020,roughness:1}));
+grvl.position.set(0,0.01,0); tank.add(grvl);
+
+// Substrate sloped
+const subM=new THREE.MeshStandardMaterial({color:0x3d3026,roughness:0.95});
+const sb1=box(tD-0.01,0.06,tW*0.55,subM); sb1.position.set(0,0.048,-tW*0.15); tank.add(sb1);
+const sb2=box(tD-0.01,0.03,tW*0.4,subM); sb2.position.set(0,0.033,tW*0.2); tank.add(sb2);
+
+// Water pool
+const poolW=new THREE.Mesh(new THREE.BoxGeometry(tD-0.02,0.015,tW*0.35),M.water);
+poolW.position.set(0,0.02,tW*0.2); tank.add(poolW);
+
+// Waterfall trickle
+const spM=new THREE.MeshStandardMaterial({color:0x6ab8e8,transparent:true,opacity:0.35,emissive:0x2a6890,emissiveIntensity:0.15});
+const trc=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0.08,0.08,-tW/2+0.03),new THREE.Vector3(0.05,0.06,-tW/2+0.06),
+  new THREE.Vector3(0.02,0.04,-0.02),new THREE.Vector3(-0.02,0.025,0.04),
+]);
+tank.add(new THREE.Mesh(new THREE.TubeGeometry(trc,15,0.004,4,false),spM));
+
+// Drain hole
+const dhn=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.006,8),M.drainPipe);
+dhn.position.set(0.05,0.003,tW*0.3); tank.add(dhn);
+
+// Dragon stones
+const dsM=new THREE.MeshStandardMaterial({color:0x8a7d6b,roughness:0.9});
+const d3=new THREE.Mesh(new THREE.DodecahedronGeometry(0.04,1),dsM);
+d3.position.set(0.02,0.11,-0.05); d3.scale.set(0.8,1.4,0.7); tank.add(d3);
+const d4=new THREE.Mesh(new THREE.DodecahedronGeometry(0.025,1),dsM);
+d4.position.set(-0.06,0.08,-0.02); d4.scale.set(0.9,1.1,0.8); tank.add(d4);
+const d5=new THREE.Mesh(new THREE.DodecahedronGeometry(0.018,1),dsM);
+d5.position.set(0.07,0.06,0.04); tank.add(d5);
+
+// Driftwood
+const dwM=new THREE.MeshStandardMaterial({color:0x5c4033,roughness:0.8});
+const dwC1=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-0.08,0.06,0),new THREE.Vector3(-0.02,0.14,-0.03),
+  new THREE.Vector3(0.03,0.24,-0.02),new THREE.Vector3(0.05,0.36,0),new THREE.Vector3(0.03,0.46,0.02),
+]);
+tank.add(new THREE.Mesh(new THREE.TubeGeometry(dwC1,20,0.005,5,false),dwM));
+const dwC2=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0.03,0.24,-0.02),new THREE.Vector3(0.08,0.30,-0.05),new THREE.Vector3(0.11,0.37,-0.03),
+]);
+tank.add(new THREE.Mesh(new THREE.TubeGeometry(dwC2,12,0.004,5,false),dwM));
+
+// Moss
+const moM=new THREE.MeshStandardMaterial({color:0x4a7a3a,roughness:0.95});
+[[0.02,0.15,-0.05,0.018],[-0.06,0.11,-0.02,0.012],[0.03,0.25,-0.02,0.01],
+ [-0.02,0.06,0.05,0.015],[0.07,0.055,0.07,0.013],[0.05,0.37,0,0.01]].forEach(([x,y,z,r])=>{
+  const m=new THREE.Mesh(new THREE.SphereGeometry(r,6,4),moM);
+  m.position.set(x,y,z); m.scale.set(1,0.35,1); tank.add(m);
+});
+
+// Ferns
+function mkF(x,y,z,s){
+  const g=new THREE.Group();
+  for(let i=0;i<7;i++){
+    const a=i/7*Math.PI*2+Math.random()*0.3;
+    const f=new THREE.Mesh(new THREE.ConeGeometry(s*0.3,s,4),i%2?M.plant:M.plantDk);
+    f.position.set(Math.cos(a)*s*0.15,s*0.4,Math.sin(a)*s*0.15);
+    f.rotation.set(Math.cos(a)*0.4,a,Math.sin(a)*0.4); g.add(f);
+  }
+  g.position.set(x,y,z); return g;
+}
+tank.add(mkF(-0.05,0.10,-0.07,0.055));
+tank.add(mkF(0.07,0.08,-0.06,0.04));
+
+// Vine leaves
+[[0.0,0.18,-0.02],[0.02,0.26,-0.02],[0.04,0.33,-0.01],[0.03,0.42,0.01],[0.09,0.32,-0.04]].forEach(([x,y,z])=>{
+  const l=new THREE.Mesh(new THREE.SphereGeometry(0.012,5,3),M.plant);
+  l.position.set(x,y,z); l.scale.set(1,0.2,0.7); l.rotation.set(Math.random()*0.5,Math.random()*3,0); tank.add(l);
+});
+
+// Glass lid 75%
+const lM=new THREE.MeshPhysicalMaterial({color:0xddeeff,transparent:true,opacity:0.1,roughness:0.05,side:THREE.DoubleSide});
+const lid2=box(tD-0.01,0.003,tW*0.75,lM); lid2.position.set(0,tH2-0.002,tW*0.1); tank.add(lid2);
+
+tank.position.set(0,TVH+0.01,0);
+paluGroup.add(tank);
+
+// ═══ SUMP inside console (always visible through transparent front) ═══
+const sumpGroup=new THREE.Group();
+const rW=0.38,rD=0.38,rH=0.30,rWL=0.10;
+
+// Reservoir
+const rf=new THREE.Mesh(new THREE.BoxGeometry(rW,rH,0.003),M.resGlass); rf.position.set(0,rH/2,rD/2); sumpGroup.add(rf);
+const rb=new THREE.Mesh(new THREE.BoxGeometry(rW,rH,0.003),M.resGlass); rb.position.set(0,rH/2,-rD/2); sumpGroup.add(rb);
+const rl=new THREE.Mesh(new THREE.BoxGeometry(0.003,rH,rD),M.resGlass); rl.position.set(-rW/2,rH/2,0); sumpGroup.add(rl);
+const rr=new THREE.Mesh(new THREE.BoxGeometry(0.003,rH,rD),M.resGlass); rr.position.set(rW/2,rH/2,0); sumpGroup.add(rr);
+const rbt=new THREE.Mesh(new THREE.BoxGeometry(rW,0.003,rD),M.resGlass); rbt.position.set(0,0.002,0); sumpGroup.add(rbt);
+// Water
+const rWat=new THREE.Mesh(new THREE.BoxGeometry(rW-0.006,rWL,rD-0.006),M.water);
+rWat.position.set(0,rWL/2+0.003,0); sumpGroup.add(rWat);
+
+// Pump
+const pB=box(0.06,0.05,0.04,M.pump); pB.position.set(0.08,0.05,0.05); sumpGroup.add(pB);
+const pN=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.02,8),M.pump);
+pN.position.set(0.08,0.08,0.05); sumpGroup.add(pN);
+
+// Pipes
+const pR=0.008;
+const ppC=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0.08,0.08,0.05),
+  new THREE.Vector3(0.08,0.08,-TVD/2+0.03),
+  new THREE.Vector3(0.08,TVH-0.01,-TVD/2+0.03),
+  new THREE.Vector3(0.08,TVH+0.04,-TVD/2+0.03),
+  new THREE.Vector3(0.08,TVH+0.04,-tW/2+0.04),
+  new THREE.Vector3(0.08,TVH+0.09,-tW/2+0.04),
+]);
+sumpGroup.add(new THREE.Mesh(new THREE.TubeGeometry(ppC,30,pR,8,false),M.pumpPipe));
+
+const dpC=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-0.06,TVH+0.02,tW*0.3),
+  new THREE.Vector3(-0.06,TVH+0.02,-TVD/2+0.03),
+  new THREE.Vector3(-0.06,TVH-0.01,-TVD/2+0.03),
+  new THREE.Vector3(-0.06,0.18,-TVD/2+0.03),
+  new THREE.Vector3(-0.06,0.18,-0.05),
+  new THREE.Vector3(-0.06,rH+0.04,-0.05),
+]);
+sumpGroup.add(new THREE.Mesh(new THREE.TubeGeometry(dpC,30,pR,8,false),M.drainPipe));
+
+// Console top pass-through (where pipes go through)
+const gH=box(0.20,0.005,0.03,M.gap);
+gH.position.set(0,TVH+0.005,-0.08); sumpGroup.add(gH);
+
+// Grommets — on console top surface where pipes pass through
+const grG=new THREE.TorusGeometry(0.012,0.004,8,16);
+[[0.08,TVH+0.005,-0.08],[-0.06,TVH+0.005,-0.08]].forEach(([x,y,z])=>{
+  const g=new THREE.Mesh(grG,M.grommet);
+  g.position.set(x,y,z); sumpGroup.add(g); // flat on console top (no rotation = horizontal)
+});
+
+// Flow particles
+const flowP=[];
+const fM=new THREE.MeshStandardMaterial({color:0x5ab8e8,transparent:true,opacity:0.7,emissive:0x2a6890,emissiveIntensity:0.3});
+const fG=new THREE.SphereGeometry(0.004,6,6);
+for(let i=0;i<10;i++){
+  const p=new THREE.Mesh(fG,fM.clone()); p.userData={t:i/10,speed:0.15+Math.random()*0.05,curve:ppC};
+  sumpGroup.add(p); flowP.push(p);
+}
+for(let i=0;i<7;i++){
+  const p=new THREE.Mesh(fG,fM.clone()); p.userData={t:i/7,speed:0.12+Math.random()*0.04,curve:dpC};
+  sumpGroup.add(p); flowP.push(p);
+}
+
+sumpGroup.position.set(0,0.02,0);
+paluGroup.add(sumpGroup);
+paluGroup.position.set(TVD/2, 0, paluZ);
+scene.add(paluGroup);
+
+// ════════════════════════
+// DIMENSION LINES (in-model, BIGGER text)
+// ════════════════════════
+const dimGrp=new THREE.Group();
+const dimL=new THREE.LineBasicMaterial({color:0xc9a96e});
+
+function mkLbl(text,pos,color,scale){
+  const cv=document.createElement('canvas'); const cx=cv.getContext('2d');
+  cv.width=1024; cv.height=128;
+  cx.font='bold 48px monospace'; cx.fillStyle=color||'#c9a96e'; cx.textAlign='center';
+  cx.fillText(text,512,80);
+  const t=new THREE.CanvasTexture(cv);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));
+  sp.position.copy(pos); sp.scale.set(scale||0.8,0.1,1);
+  return sp;
+}
+
+function dimLn(p1,p2,label,off,sc){
+  const a=new THREE.Vector3(...p1),b=new THREE.Vector3(...p2);
+  const dir=new THREE.Vector3().subVectors(b,a).normalize();
+  const len=a.distanceTo(b);
+  let perp=new THREE.Vector3(-dir.z,0,dir.x).multiplyScalar(0.08);
+  if(Math.abs(dir.y)>0.5) perp.set(0.08,0,0);
+
+  // Main dimension line (thicker via LineBasicMaterial)
+  const lineMat=new THREE.LineBasicMaterial({color:0xe8b84a,linewidth:2});
+  dimGrp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a,b]),lineMat));
+
+  // End ticks (perpendicular bars at each end)
+  [a,b].forEach(p=>{
+    dimGrp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([p.clone().add(perp),p.clone().sub(perp)]),lineMat));
+  });
+
+  // Arrowheads (cones at each end pointing along the line)
+  const arrowLen=0.06, arrowRad=0.02;
+  const arrowGeo=new THREE.ConeGeometry(arrowRad,arrowLen,6);
+  const arrowMat=new THREE.MeshBasicMaterial({color:0xe8b84a});
+  // Arrow at end A pointing toward B
+  const arr1=new THREE.Mesh(arrowGeo,arrowMat);
+  arr1.position.copy(a);
+  arr1.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir);
+  dimGrp.add(arr1);
+  // Arrow at end B pointing toward A
+  const arr2=new THREE.Mesh(arrowGeo,arrowMat);
+  arr2.position.copy(b);
+  arr2.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().negate());
+  dimGrp.add(arr2);
+
+  // Label (centered, matching gold colour)
+  const mid=a.clone().add(b).multiplyScalar(0.5);
+  if(off) mid.add(new THREE.Vector3(...off));
+  dimGrp.add(mkLbl(label,mid,'#e8b84a',sc));
+}
+
+dimLn([0,0.01,-0.5],[0,0.01,MW+0.5],'4,950mm (main wall)',[0,0.12,0],0.9);
+dimLn([-0.5,0.01,0],[DEPTH+0.5,0.01,0],'3,550mm (window wall)',[0,0.12,0],0.9);
+dimLn([-0.4,0.01,MW],[FW+0.1,0.01,MW],'1,700mm (feature wall)',[0,0.12,0],0.7);
+dimLn([-0.6,0,-0.4],[-0.6,H,-0.4],'2,600mm ceiling',[0,0,0],0.6);
+dimLn([TVD+0.15,TVH+0.08,tvStart],[TVD+0.15,TVH+0.08,tvStart+tvLen],'TV console (50cm deep, CP confirmed)',[0,0.1,0],0.9);
+// Palu dims
+dimLn([TVD/2+tD/2+0.15,TVH+0.01,paluZ-tW/2],[TVD/2+tD/2+0.15,TVH+0.01,paluZ+tW/2],'300mm',[0,0.08,0],0.5);
+dimLn([TVD/2+tD/2+0.2,TVH,paluZ],[TVD/2+tD/2+0.2,TVH+tH2,paluZ],'600mm',[0,0,0],0.5);
+// Volume labels
+dimGrp.add(mkLbl('Floor: ~14.8 m²  ·  Vol: ~38.5 m³',new THREE.Vector3(DEPTH/2,0.02,MW/2),'#777',1.0));
+dimGrp.add(mkLbl('Tank: 54L total · ~22L water',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.7));
+dimGrp.add(mkLbl('Sump: ~12L reservoir (45cm internal depth)',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
+
+scene.add(dimGrp);
+
+// ════════════════════════
+// LABELS (in-model, BIGGER)
+// ════════════════════════
+const lblGrp=new THREE.Group();
+function lb(t,p,c,s){lblGrp.add(mkLbl(t,new THREE.Vector3(...p),c||'#999',s||0.7));}
+
+lb('MAIN WALL',[0.05,2.5,MW/2],'#ccc',0.8);
+lb('FEATURE WALL',[FW/2,2.5,MW-0.2],'#ccc',0.6);
+lb('WINDOW WALL',[DEPTH/2,2.5,0.2],'#ccc',0.7);
+lb('CABINETS (cream, full ht)',[0.35,1.8,cabStart+cabLen/2],'#999',0.7);
+lb('OPEN SHELVING + ROCKY WALL',[shD+0.15,1.8,curtainGap+shW/2],'#999',0.6);
+lb('TV CONSOLE (walnut)',[TVD+0.15,0.55,tvStart+tvLen/2],'#7a5a3a',0.6);
+lb('PALUDARIUM 30×30×60',[TVD/2,TVH+tH2+0.2,paluZ],'#6ab8e8',0.6);
+lb('GLOBE LIGHTS',[FW/2,2.05,MW-0.15],'#ffd699',0.4);
+lb('PUMP PIPE ↑ (red)',[TVD/2+0.25,0.35,paluZ-0.15],'#d94a4a',0.4);
+lb('DRAIN PIPE ↓ (green)',[TVD/2-0.25,0.35,paluZ-0.15],'#4ad97a',0.4);
+lb('RESERVOIR + PUMP',[TVD/2,0.12,paluZ+0.3],'#ff8c00',0.5);
+lb('GROMMETS (pipe pass-through)',[TVD/2,TVH+0.08,paluZ-0.08],'#d9d94a',0.45);
+
+scene.add(lblGrp);
+
+// ════════════════════════
+// CAMERA VIEWS
+// ════════════════════════
+const views={
+  overview:    {p:[DEPTH+2,3.5,MW*0.35],t:[DEPTH/2,1,MW/2]},
+  mainWall:    {p:[3.5,1.3,MW/2],t:[0,1.3,MW/2]},
+  featureWall: {p:[1.5,1.3,MW-2],t:[FW/2,1.3,MW]},
+  windowWall:  {p:[DEPTH/2,1.3,2],t:[DEPTH/2,1.3,0]},
+  top:         {p:[DEPTH/2,7,MW/2],t:[DEPTH/2,0,MW/2]},
+  palu:        {p:[TVD/2+0.7,0.9,paluZ+0.8],t:[TVD/2,TVH+tH2/2,paluZ]},
+  inside:      {p:[TVD/2+0.15,TVH+0.35,paluZ+0.25],t:[TVD/2,TVH+0.25,paluZ]},
+  sump:        {p:[TVD/2+0.5,0.15,paluZ+0.5],t:[TVD/2,0.12,paluZ]},
+};
+
+function sv(v){
+  document.querySelectorAll('.b').forEach(b=>b.classList.remove('on'));
+  if(event&&event.target) event.target.classList.add('on');
+  const end=views[v]||views.overview;
+  const s={p:[camera.position.x,camera.position.y,camera.position.z],t:[ctrl.target.x,ctrl.target.y,ctrl.target.z]};
+  const t0=performance.now();
+  (function a(now){
+    let t=Math.min((now-t0)/900,1);
+    t=t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    camera.position.set(s.p[0]+(end.p[0]-s.p[0])*t,s.p[1]+(end.p[1]-s.p[1])*t,s.p[2]+(end.p[2]-s.p[2])*t);
+    ctrl.target.set(s.t[0]+(end.t[0]-s.t[0])*t,s.t[1]+(end.t[1]-s.t[1])*t,s.t[2]+(end.t[2]-s.t[2])*t);
+    ctrl.update(); if(t<1) requestAnimationFrame(a);
+  })(performance.now());
+}
+
+let dimsOn=true,lblsOn=true;
+function toggleDims(){dimsOn=!dimsOn;dimGrp.visible=dimsOn;}
+function toggleLabels(){lblsOn=!lblsOn;lblGrp.visible=lblsOn;}
+
+// WASD + Arrow keys
+const keys={};
+window.addEventListener('keydown',e=>keys[e.key.toLowerCase()]=true);
+window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+function handleKeys(){
+  const speed=0.05;
+  const dir=new THREE.Vector3();
+  camera.getWorldDirection(dir);
+  const right=new THREE.Vector3().crossVectors(dir,camera.up).normalize();
+  if(keys['w']||keys['arrowup']){camera.position.addScaledVector(dir,speed);ctrl.target.addScaledVector(dir,speed);}
+  if(keys['s']||keys['arrowdown']){camera.position.addScaledVector(dir,-speed);ctrl.target.addScaledVector(dir,-speed);}
+  if(keys['a']||keys['arrowleft']){camera.position.addScaledVector(right,-speed);ctrl.target.addScaledVector(right,-speed);}
+  if(keys['d']||keys['arrowright']){camera.position.addScaledVector(right,speed);ctrl.target.addScaledVector(right,speed);}
+  if(keys['q']){camera.position.y+=speed;ctrl.target.y+=speed;}
+  if(keys['e']){camera.position.y-=speed;ctrl.target.y-=speed;}
+}
+
+// Animate
+const clock=new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt=clock.getDelta();
+  flowP.forEach(p=>{
+    try{
+      p.userData.t+=dt*p.userData.speed;
+      if(p.userData.t>1)p.userData.t-=1;
+      if(p.userData.t<0)p.userData.t=0;
+      if(p.userData.t>0.999)p.userData.t=0.999;
+      const pos=p.userData.curve.getPointAt(p.userData.t);
+      if(pos){p.position.copy(pos);}
+      p.material.opacity=0.4+Math.sin(p.userData.t*Math.PI)*0.4;
+    }catch(e){}
+  });
+  if(rWat)rWat.material.opacity=0.25+Math.sin(clock.elapsedTime*2)*0.05;
+  if(poolW)poolW.material.opacity=0.25+Math.sin(clock.elapsedTime*2.5+1)*0.05;
+  handleKeys();
+  ctrl.update();
+  renderer.render(scene,camera);
+}
+animate();
+
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
