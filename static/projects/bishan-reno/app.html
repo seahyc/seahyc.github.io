@@ -137,7 +137,7 @@ const M = {
   pumpPipe: new THREE.MeshStandardMaterial({color:0xd94a4a,roughness:0.4,metalness:0.3}),
   drainPipe: new THREE.MeshStandardMaterial({color:0x4ad97a,roughness:0.4,metalness:0.3}),
   pump: new THREE.MeshStandardMaterial({color:0xff8c00,roughness:0.5,metalness:0.4}),
-  resGlass: new THREE.MeshPhysicalMaterial({color:0x80a0c8,transparent:true,opacity:0.25,roughness:0.05,side:THREE.DoubleSide}),
+  resGlass: new THREE.MeshPhysicalMaterial({color:0x80a0c8,transparent:true,opacity:0.4,roughness:0.05,side:THREE.DoubleSide}),
   grommet: new THREE.MeshStandardMaterial({color:0x444,roughness:0.9}),
   gap: new THREE.MeshStandardMaterial({color:0xd9d94a,transparent:true,opacity:0.5}),
   consoleFront: new THREE.MeshStandardMaterial({color:0x4a3020,transparent:true,opacity:0.15,roughness:0.7}),
@@ -526,7 +526,7 @@ const views={
   top:         {p:[DEPTH/2,7,MW/2],t:[DEPTH/2,0,MW/2]},
   palu:        {p:[TVD/2+0.7,0.9,paluZ+0.8],t:[TVD/2,TVH+tH2/2,paluZ]},
   inside:      {p:[TVD/2+0.15,TVH+0.35,paluZ+0.25],t:[TVD/2,TVH+0.25,paluZ]},
-  sump:        {p:[TVD/2+0.5,0.15,paluZ+0.5],t:[TVD/2,0.12,paluZ]},
+  sump:        {p:[TVD/2+0.6,0.25,paluZ+0.7],t:[TVD/2,0.18,paluZ]},
 };
 
 function sv(v){
