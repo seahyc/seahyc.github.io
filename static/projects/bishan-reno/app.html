@@ -230,16 +230,21 @@ va.position.set(0.15,1.95,curtainGap+0.15); room.add(va);
 const ob=new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6),d2);
 ob.position.set(0.15,1.55,curtainGap+0.25); ob.scale.set(1,0.7,0.8); room.add(ob);
 
-// Suspended cream cabinets (wall-mounted ABOVE console, z=shW+curtainGap to z=MW)
+// Suspended cream cabinets (wall-mounted, gap above console for LED niche)
 const cabStart=curtainGap+shW;
 const cabLen=2.74; // 9ft suspended storage cabinet
-const cabH=H-TVH-0.05; // from console top to ceiling
+const cabGap=0.30; // gap between console top and cabinet bottom (LED niche)
+const cabBtm=TVH+cabGap; // cabinet starts 30cm above console top
+const cabH=H-cabBtm-0.03; // from cabinet bottom to ceiling
 const cabBody=box(0.35,cabH,cabLen,M.creamP);
-cabBody.position.set(0.175,TVH+cabH/2,cabStart+cabLen/2); room.add(cabBody);
+cabBody.position.set(0.175,cabBtm+cabH/2,cabStart+cabLen/2); room.add(cabBody);
 for(let i=0;i<14;i++){
   const g=box(0.352,cabH-0.05,0.003,M.cream);
-  g.position.set(0.175,TVH+cabH/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
+  g.position.set(0.175,cabBtm+cabH/2,cabStart+0.15+i*(cabLen-0.3)/13); room.add(g);
 }
+// LED niche (in the gap between console top and cabinet bottom)
+const nichBar=box(cabLen-0.1,0.04,0.15,M.walnut);
+nichBar.position.set(0.10,TVH+cabGap/2,cabStart+cabLen/2); room.add(nichBar);
 
 // ═══ TV CONSOLE (walnut, 50cm deep, runs most of main wall) ═══
 const tvStart=curtainGap; // console starts at curtain gap
