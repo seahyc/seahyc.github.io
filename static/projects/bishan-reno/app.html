@@ -217,10 +217,11 @@ const shD=0.30;
 const stBk=box(0.02,1.4,shW,M.stone);
 stBk.position.set(0.01,1.5,curtainGap+shW/2); room.add(stBk);
 const shMat=new THREE.MeshStandardMaterial({color:0xe8e2d8,roughness:0.6});
-for(let i=0;i<3;i++){
+// 2 shelves above the tank (tank top at 1.30m)
+[1.55, 1.95].forEach(y=>{
   const s=box(shD,0.015,shW-0.04,shMat);
-  s.position.set(shD/2+0.02,1.0+i*0.45,curtainGap+shW/2); room.add(s);
-}
+  s.position.set(shD/2+0.02,y,curtainGap+shW/2); room.add(s);
+});
 // Deco on shelves
 const d1=new THREE.MeshStandardMaterial({color:0xd5ccc0,roughness:0.7});
 const d2=new THREE.MeshStandardMaterial({color:0xb8a898,roughness:0.6});
@@ -255,7 +256,7 @@ scene.add(room);
 // ════════════════════════
 // PALUDARIUM + SUMP
 // ════════════════════════
-const tW=0.30,tD=0.30,tH2=0.60;
+const tW=0.30,tD=0.30,tH2=0.90; // 30x30x90cm cloud forest paludarium
 const paluZ=curtainGap+shW/2; // centered in the shelving niche, near window wall
 const paluGroup=new THREE.Group();
 
@@ -480,11 +481,11 @@ dimLn([-0.6,0,-0.4],[-0.6,H,-0.4],'2,600mm ceiling',[0,0,0],0.6);
 dimLn([TVD+0.15,TVH+0.08,tvStart],[TVD+0.15,TVH+0.08,tvStart+tvLen],'TV console (50cm deep, CP confirmed)',[0,0.1,0],0.9);
 // Palu dims
 dimLn([TVD/2+tD/2+0.15,TVH+0.01,paluZ-tW/2],[TVD/2+tD/2+0.15,TVH+0.01,paluZ+tW/2],'300mm',[0,0.08,0],0.5);
-dimLn([TVD/2+tD/2+0.2,TVH,paluZ],[TVD/2+tD/2+0.2,TVH+tH2,paluZ],'600mm',[0,0,0],0.5);
+dimLn([TVD/2+tD/2+0.2,TVH,paluZ],[TVD/2+tD/2+0.2,TVH+tH2,paluZ],'900mm',[0,0,0],0.5);
 // Volume labels
 dimGrp.add(mkLbl('Floor: ~14.8 m²  ·  Vol: ~38.5 m³',new THREE.Vector3(DEPTH/2,0.02,MW/2),'#777',1.0));
-dimGrp.add(mkLbl('Tank: 54L vol · System water: ~15-17L (sump 12L + display 3-5L)',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.9));
-dimGrp.add(mkLbl('Sump: ~12L reservoir (45cm internal depth)',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
+dimGrp.add(mkLbl('Tank: 81L vol · ~35-40kg loaded · System water: ~25-30L',new THREE.Vector3(TVD/2,TVH+tH2+0.12,paluZ),'#6ab8e8',0.9));
+dimGrp.add(mkLbl('Sump: SAMLA 22L (39×28×28cm) · ~3-4 week top-up',new THREE.Vector3(TVD/2,0.18,paluZ+0.3),'#80a0c8',0.7));
 
 scene.add(dimGrp);
 
@@ -500,7 +501,7 @@ lb('WINDOW WALL',[DEPTH/2,2.5,0.2],'#ccc',0.7);
 lb('CABINETS (cream, full ht)',[0.35,1.8,cabStart+cabLen/2],'#999',0.7);
 lb('OPEN SHELVING + ROCKY WALL',[shD+0.15,1.8,curtainGap+shW/2],'#999',0.6);
 lb('TV CONSOLE (walnut)',[TVD+0.15,0.55,tvStart+tvLen/2],'#7a5a3a',0.6);
-lb('PALUDARIUM 30×30×60',[TVD/2,TVH+tH2+0.2,paluZ],'#6ab8e8',0.6);
+lb('CLOUD FOREST PALUDARIUM 30×30×90',[TVD/2,TVH+tH2+0.2,paluZ],'#6ab8e8',0.7);
 lb('GLOBE LIGHTS',[FW/2,2.05,MW-0.15],'#ffd699',0.4);
 lb('PUMP PIPE ↑ (red)',[TVD/2+0.25,0.35,paluZ-0.15],'#d94a4a',0.4);
 lb('DRAIN PIPE ↓ (green)',[TVD/2-0.25,0.35,paluZ-0.15],'#4ad97a',0.4);
