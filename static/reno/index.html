@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1a1a1a">
+<title>532B Reno</title>
+<style>
+:root {
+  --bg: #faf8f3;
+  --panel: #ffffff;
+  --border: #e5e1d8;
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #b8860b;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100dvh; min-height: 100vh; }
+body { font-size: 16px; line-height: 1.5; padding: 32px 16px 64px; }
+.wrap { max-width: 640px; margin: 0 auto; }
+
+header { padding: 24px 0 32px; }
+h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+.sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+.section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin: 24px 0 8px; padding: 0 4px; }
+
+.card-link {
+  display: flex; gap: 14px; align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  transition: transform 0.1s, box-shadow 0.15s;
+  min-height: 60px;
+}
+.card-link:hover, .card-link:active { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.card-link.disabled { opacity: 0.55; pointer-events: none; }
+.card-link .icon { font-size: 24px; width: 44px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); border-radius: 10px; }
+.card-link .body { flex: 1; min-width: 0; }
+.card-link .title { font-weight: 600; font-size: 16px; }
+.card-link .desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.card-link .arrow { color: var(--muted); font-size: 22px; line-height: 1; }
+.card-link.disabled .arrow { display: none; }
+.card-link.disabled .title::after { content: " · soon"; color: var(--muted); font-weight: 400; font-size: 12px; }
+
+footer { text-align: center; padding: 32px 0 0; color: var(--muted); font-size: 12px; }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>532B Bishan St 14</h1>
+    <div class="sub">Renovation reference · personal · noindex</div>
+  </header>
+
+  <div class="section-title">Active</div>
+  <a class="card-link" href="/reno/electrical/">
+    <div class="icon">⚡</div>
+    <div class="body">
+      <div class="title">Electrical · smart switches</div>
+      <div class="desc">17 Aqara plates · floor-plan map · BOM · vendor pricing</div>
+    </div>
+    <div class="arrow">›</div>
+  </a>
+
+  <div class="section-title">Planned</div>
+  <a class="card-link disabled">
+    <div class="icon">💡</div>
+    <div class="body">
+      <div class="title">Lighting · BOM</div>
+      <div class="desc">LED strips, drivers, downlights, fans, tracks</div>
+    </div>
+  </a>
+  <a class="card-link disabled">
+    <div class="icon">📐</div>
+    <div class="body">
+      <div class="title">Floor plans</div>
+      <div class="desc">Layout, electrical, layered drawings</div>
+    </div>
+  </a>
+  <a class="card-link disabled">
+    <div class="icon">💰</div>
+    <div class="body">
+      <div class="title">Budget · running total</div>
+      <div class="desc">Quotes, payments, deltas</div>
+    </div>
+  </a>
+  <a class="card-link disabled">
+    <div class="icon">🪑</div>
+    <div class="body">
+      <div class="title">Furniture</div>
+      <div class="desc">Wishlist, dimensions, vendor links</div>
+    </div>
+  </a>
+
+  <footer>seahyingcong.com/reno</footer>
+</div>
+</body>
+</html>
