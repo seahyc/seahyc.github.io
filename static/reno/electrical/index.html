@@ -135,7 +135,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 .sku-list { background: var(--panel); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .sku-row { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
 .sku-row:last-child { border-bottom: none; }
-.sku-row .sku-name { flex: 1; font-size: 14px; min-width: 200px; }
+.sku-row .sku-img { width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0; object-fit: contain; background: #fff; border: 1px solid var(--border); padding: 4px; }
+.sku-row .sku-name { flex: 1; font-size: 14px; min-width: 160px; }
 .sku-row .sku-refs { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .sku-row .sku-qty { font-weight: 600; font-variant-numeric: tabular-nums; }
 .sku-row .sku-cost { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; min-width: 70px; text-align: right; }
@@ -419,6 +420,7 @@ function renderOrder() {
   const c = document.getElementById('sku-list');
   c.innerHTML = SKU_GROUPS.map(g => `
     <div class="sku-row">
+      <img class="sku-img" src="${g.img}" alt="" loading="lazy">
       <div class="sku-name">${g.name}<div class="sku-refs">${g.refs}</div></div>
       <div class="sku-qty">×${g.qty}</div>
       <div class="sku-cost">$${g.qty * g.unit}</div>
