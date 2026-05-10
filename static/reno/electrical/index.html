@@ -167,6 +167,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 .drawer-close { position: absolute; top: 14px; right: 14px; background: none; border: none; font-size: 28px; cursor: pointer; color: var(--muted); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; font-family: inherit; -webkit-appearance: none; appearance: none; }
 .drawer h2 { font-size: 18px; margin-bottom: 4px; padding-right: 40px; line-height: 1.3; }
 .drawer .ploc { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+.drawer-img-wrap { width: 100%; padding: 12px; background: #f7f4ed; border-radius: var(--radius); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+.drawer-img-wrap img { max-width: 140px; max-height: 140px; width: auto; height: auto; object-fit: contain; }
 .drawer .field { margin-bottom: 14px; }
 .drawer .field-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.6px; margin-bottom: 4px; font-weight: 600; }
 .drawer .field-value { font-size: 14px; line-height: 1.5; }
@@ -300,6 +302,10 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
   <h2 id="drawer-title"></h2>
   <div class="ploc" id="drawer-loc"></div>
 
+  <div class="drawer-img-wrap">
+    <img id="drawer-img" alt="" loading="lazy">
+  </div>
+
   <div class="field">
     <div class="field-label">Controls</div>
     <ul class="controls-list field-value" id="drawer-controls"></ul>
@@ -428,10 +434,17 @@ function renderOrder() {
 }
 
 let drawerSwitch = null;
+function imgForSwitch(s) {
+  // Map a switch to the right SKU thumbnail
+  if (s.label === 'HEATER (common)') return SKU_GROUPS.find(g => g.name.includes('20A')).img;
+  if (s.modelClass === 'z1') return SKU_GROUPS.find(g => g.name.includes('Z1 Pro')).img;
+  return SKU_GROUPS.find(g => g.name.includes('H1 Smart Wall')).img;
+}
 function openDrawer(s) {
   drawerSwitch = s;
   document.getElementById('drawer-title').textContent = `${s.n}. ${s.label}`;
   document.getElementById('drawer-loc').textContent = `${s.room} — ${s.loc}`;
+  document.getElementById('drawer-img').src = imgForSwitch(s);
   document.getElementById('drawer-controls').innerHTML = s.controls.map(c=>`<li>${c}</li>`).join('');
   document.getElementById('drawer-model').textContent = s.model;
   document.getElementById('drawer-meta').textContent = `Plan label "${s.label}" · ${s.gang} · $${s.price}`;
