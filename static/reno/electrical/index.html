@@ -435,10 +435,11 @@ function renderOrder() {
 
 let drawerSwitch = null;
 function imgForSwitch(s) {
-  // Map a switch to the right SKU thumbnail
   if (s.label === 'HEATER (common)') return SKU_GROUPS.find(g => g.name.includes('20A')).img;
-  if (s.modelClass === 'z1') return SKU_GROUPS.find(g => g.name.includes('Z1 Pro')).img;
-  return SKU_GROUPS.find(g => g.name.includes('H1 Smart Wall')).img;
+  const family = s.modelClass === 'z1' ? 'Z1 Pro' : 'H1 Smart Wall';
+  const gangNum = parseInt(s.gang);
+  const tag = gangNum === 4 ? '4-gang' : gangNum === 3 ? '3-gang' : gangNum === 2 ? '2-gang' : '1-gang';
+  return SKU_GROUPS.find(g => g.name.includes(family) && g.name.includes(tag)).img;
 }
 function openDrawer(s) {
   drawerSwitch = s;
