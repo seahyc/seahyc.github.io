@@ -253,15 +253,12 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
         <span class="hint" id="map-hint">Tap a marker · pinch to zoom</span>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <strong id="calib-status">Click switch <span id="calib-current">SS1</span> on the floor plan</strong>
-          <button id="calib-skip" style="padding:4px 10px; font-size:12px;">Skip</button>
-        </div>
-        <div id="calib-progress" style="font-size:12px; color:var(--muted); margin-bottom:8px;">0 / 17 placed</div>
-        <textarea id="calib-output" style="width:100%; height:120px; font-family:monospace; font-size:11px; border:1px solid var(--border); border-radius:6px; padding:6px;" placeholder="Captured coords appear here..."></textarea>
+        <strong>Drag pins to fix their positions</strong>
+        <div style="font-size:12px; color:var(--muted); margin:4px 0 8px;">Tap-and-hold a pin, then drag. Pinch to zoom for precision.</div>
+        <textarea id="calib-output" style="width:100%; height:200px; font-family:monospace; font-size:11px; border:1px solid var(--border); border-radius:6px; padding:6px;"></textarea>
         <div style="display:flex; gap:8px; margin-top:8px;">
           <button id="calib-copy">Copy</button>
-          <button id="calib-reset">Reset</button>
+          <button id="calib-reset">Reset to original</button>
           <button id="calib-done">Done</button>
         </div>
       </div>
@@ -399,7 +396,8 @@ function renderMarkers() {
     m.textContent = s.n;
     m.title = `${s.label} — ${s.room}`;
     m.setAttribute('aria-label', `Switch ${s.n}: ${s.label} in ${s.room}`);
-    m.onclick = (e) => { e.stopPropagation(); openDrawer(s); };
+    m.dataset.idx = SWITCHES.indexOf(s);
+    m.onclick = (e) => { if (calibActive) return; e.stopPropagation(); openDrawer(s); };
     c.appendChild(m);
   });
 }
@@ -512,29 +510,17 @@ document.querySelectorAll('nav button').forEach(b => {
 renderMarkers(); renderList(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
-// ─── Calibration mode ──────────────────────────────────────
+// ─── Calibrate (drag pins) mode ──────────────────────────────
 let calibActive = false;
-let calibIdx = 0;
-const calibResults = [];
+const ORIGINAL_COORDS = SWITCHES.map(s => ({ x: s.x, y: s.y }));
 const calibToggle = document.getElementById('calibrate-toggle');
 const calibPanel = document.getElementById('calibrate-panel');
-const calibCurrent = document.getElementById('calib-current');
-const calibProgress = document.getElementById('calib-progress');
 const calibOutput = document.getElementById('calib-output');
-const calibStatus = document.getElementById('calib-status');
 
-function updateCalibUI() {
-  if (calibIdx < SWITCHES.length) {
-    calibCurrent.textContent = SWITCHES[calibIdx].label + ' (' + SWITCHES[calibIdx].loc + ')';
-    calibStatus.firstChild.nodeValue = 'Click switch ';
-  } else {
-    calibStatus.textContent = '✓ All 17 placed — copy the output';
-  }
-  calibProgress.textContent = calibResults.filter(r => r).length + ' / 17 placed';
-  calibOutput.value = calibResults.map((r, i) => {
-    const s = SWITCHES[i];
-    return r ? `  { n:${s.n}, label:"${s.label}", x:${r.x.toFixed(1)}, y:${r.y.toFixed(1)} },` : `  // ${s.label} — skipped`;
-  }).join('\n');
+function refreshCalibOutput() {
+  calibOutput.value = SWITCHES.map(s =>
+    `  { n:${s.n}, label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
+  ).join('\n');
 }
 
 calibToggle.onclick = () => {
@@ -542,16 +528,20 @@ calibToggle.onclick = () => {
   calibPanel.style.display = calibActive ? 'block' : 'none';
   calibToggle.style.background = calibActive ? '#ffd966' : '';
   document.getElementById('map-hint').textContent = calibActive
-    ? 'Tap the floor plan where the switch actually is'
+    ? 'Drag pins to move them · pinch to zoom'
     : 'Tap a marker · pinch to zoom';
-  if (calibActive) { calibIdx = 0; calibResults.length = 0; updateCalibUI(); }
+  document.querySelectorAll('.marker').forEach(m => {
+    m.style.cursor = calibActive ? 'move' : 'pointer';
+    m.style.touchAction = calibActive ? 'none' : '';
+  });
+  if (calibActive) refreshCalibOutput();
 };
 
-document.getElementById('calib-skip').onclick = () => {
-  if (calibIdx < SWITCHES.length) { calibResults[calibIdx] = null; calibIdx++; updateCalibUI(); }
-};
 document.getElementById('calib-reset').onclick = () => {
-  calibIdx = 0; calibResults.length = 0; updateCalibUI();
+  SWITCHES.forEach((s, i) => { s.x = ORIGINAL_COORDS[i].x; s.y = ORIGINAL_COORDS[i].y; });
+  renderMarkers();
+  document.querySelectorAll('.marker').forEach(m => { m.style.cursor = 'move'; m.style.touchAction = 'none'; });
+  refreshCalibOutput();
 };
 document.getElementById('calib-copy').onclick = () => {
   navigator.clipboard.writeText(calibOutput.value).then(() => {
@@ -561,18 +551,30 @@ document.getElementById('calib-copy').onclick = () => {
 };
 document.getElementById('calib-done').onclick = () => { calibToggle.click(); };
 
-mapInner.addEventListener('click', (e) => {
-  if (!calibActive || calibIdx >= SWITCHES.length) return;
-  if (e.target.classList.contains('marker')) return;
+// Drag handlers (pointer events cover mouse + touch)
+let dragIdx = null;
+mapInner.addEventListener('pointerdown', (e) => {
+  if (!calibActive) return;
+  if (!e.target.classList.contains('marker')) return;
+  dragIdx = parseInt(e.target.dataset.idx);
+  e.target.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+mapInner.addEventListener('pointermove', (e) => {
+  if (dragIdx === null) return;
   const img = document.getElementById('floorplan-img');
   const rect = img.getBoundingClientRect();
   const x = ((e.clientX - rect.left) / rect.width) * 100;
   const y = ((e.clientY - rect.top) / rect.height) * 100;
-  if (x < 0 || x > 100 || y < 0 || y > 100) return;
-  calibResults[calibIdx] = { x, y };
-  calibIdx++;
-  updateCalibUI();
+  SWITCHES[dragIdx].x = Math.max(0, Math.min(100, x));
+  SWITCHES[dragIdx].y = Math.max(0, Math.min(100, y));
+  const m = document.querySelector(`.marker[data-idx="${dragIdx}"]`);
+  if (m) { m.style.left = SWITCHES[dragIdx].x + '%'; m.style.top = SWITCHES[dragIdx].y + '%'; }
 });
+mapInner.addEventListener('pointerup', () => {
+  if (dragIdx !== null) { dragIdx = null; refreshCalibOutput(); }
+});
+mapInner.addEventListener('pointercancel', () => { dragIdx = null; });
 </script>
 </body>
 </html>
