@@ -249,7 +249,21 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
         <button id="zoom-out">−</button>
         <button id="zoom-reset">Fit</button>
         <button id="zoom-in">+</button>
-        <span class="hint">Tap a marker · pinch to zoom</span>
+        <button id="calibrate-toggle">📍 Calibrate</button>
+        <span class="hint" id="map-hint">Tap a marker · pinch to zoom</span>
+      </div>
+      <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <strong id="calib-status">Click switch <span id="calib-current">SS1</span> on the floor plan</strong>
+          <button id="calib-skip" style="padding:4px 10px; font-size:12px;">Skip</button>
+        </div>
+        <div id="calib-progress" style="font-size:12px; color:var(--muted); margin-bottom:8px;">0 / 17 placed</div>
+        <textarea id="calib-output" style="width:100%; height:120px; font-family:monospace; font-size:11px; border:1px solid var(--border); border-radius:6px; padding:6px;" placeholder="Captured coords appear here..."></textarea>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button id="calib-copy">Copy</button>
+          <button id="calib-reset">Reset</button>
+          <button id="calib-done">Done</button>
+        </div>
       </div>
     </div>
   </div>
@@ -497,6 +511,68 @@ document.querySelectorAll('nav button').forEach(b => {
 
 renderMarkers(); renderList(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
+
+// ─── Calibration mode ──────────────────────────────────────
+let calibActive = false;
+let calibIdx = 0;
+const calibResults = [];
+const calibToggle = document.getElementById('calibrate-toggle');
+const calibPanel = document.getElementById('calibrate-panel');
+const calibCurrent = document.getElementById('calib-current');
+const calibProgress = document.getElementById('calib-progress');
+const calibOutput = document.getElementById('calib-output');
+const calibStatus = document.getElementById('calib-status');
+
+function updateCalibUI() {
+  if (calibIdx < SWITCHES.length) {
+    calibCurrent.textContent = SWITCHES[calibIdx].label + ' (' + SWITCHES[calibIdx].loc + ')';
+    calibStatus.firstChild.nodeValue = 'Click switch ';
+  } else {
+    calibStatus.textContent = '✓ All 17 placed — copy the output';
+  }
+  calibProgress.textContent = calibResults.filter(r => r).length + ' / 17 placed';
+  calibOutput.value = calibResults.map((r, i) => {
+    const s = SWITCHES[i];
+    return r ? `  { n:${s.n}, label:"${s.label}", x:${r.x.toFixed(1)}, y:${r.y.toFixed(1)} },` : `  // ${s.label} — skipped`;
+  }).join('\n');
+}
+
+calibToggle.onclick = () => {
+  calibActive = !calibActive;
+  calibPanel.style.display = calibActive ? 'block' : 'none';
+  calibToggle.style.background = calibActive ? '#ffd966' : '';
+  document.getElementById('map-hint').textContent = calibActive
+    ? 'Tap the floor plan where the switch actually is'
+    : 'Tap a marker · pinch to zoom';
+  if (calibActive) { calibIdx = 0; calibResults.length = 0; updateCalibUI(); }
+};
+
+document.getElementById('calib-skip').onclick = () => {
+  if (calibIdx < SWITCHES.length) { calibResults[calibIdx] = null; calibIdx++; updateCalibUI(); }
+};
+document.getElementById('calib-reset').onclick = () => {
+  calibIdx = 0; calibResults.length = 0; updateCalibUI();
+};
+document.getElementById('calib-copy').onclick = () => {
+  navigator.clipboard.writeText(calibOutput.value).then(() => {
+    const b = document.getElementById('calib-copy');
+    const t = b.textContent; b.textContent = '✓ Copied'; setTimeout(() => b.textContent = t, 1200);
+  });
+};
+document.getElementById('calib-done').onclick = () => { calibToggle.click(); };
+
+mapInner.addEventListener('click', (e) => {
+  if (!calibActive || calibIdx >= SWITCHES.length) return;
+  if (e.target.classList.contains('marker')) return;
+  const img = document.getElementById('floorplan-img');
+  const rect = img.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  if (x < 0 || x > 100 || y < 0 || y > 100) return;
+  calibResults[calibIdx] = { x, y };
+  calibIdx++;
+  updateCalibUI();
+});
 </script>
 </body>
 </html>
