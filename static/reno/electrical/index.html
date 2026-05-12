@@ -552,11 +552,17 @@ document.getElementById('calib-copy').onclick = () => {
 document.getElementById('calib-done').onclick = () => { calibToggle.click(); };
 
 // Drag handlers (pointer events cover mouse + touch)
-let dragIdx = null;
+let dragIdx = null, dragOffX = 0, dragOffY = 0;
 mapInner.addEventListener('pointerdown', (e) => {
   if (!calibActive) return;
   if (!e.target.classList.contains('marker')) return;
   dragIdx = parseInt(e.target.dataset.idx);
+  const img = document.getElementById('floorplan-img');
+  const rect = img.getBoundingClientRect();
+  const cursorX = ((e.clientX - rect.left) / rect.width) * 100;
+  const cursorY = ((e.clientY - rect.top) / rect.height) * 100;
+  dragOffX = SWITCHES[dragIdx].x - cursorX;
+  dragOffY = SWITCHES[dragIdx].y - cursorY;
   e.target.setPointerCapture(e.pointerId);
   e.preventDefault();
 });
@@ -564,8 +570,8 @@ mapInner.addEventListener('pointermove', (e) => {
   if (dragIdx === null) return;
   const img = document.getElementById('floorplan-img');
   const rect = img.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  const x = ((e.clientX - rect.left) / rect.width) * 100 + dragOffX;
+  const y = ((e.clientY - rect.top) / rect.height) * 100 + dragOffY;
   SWITCHES[dragIdx].x = Math.max(0, Math.min(100, x));
   SWITCHES[dragIdx].y = Math.max(0, Math.min(100, y));
   const m = document.querySelector(`.marker[data-idx="${dragIdx}"]`);
