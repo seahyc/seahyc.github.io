@@ -393,7 +393,11 @@ function renderMarkers() {
     m.className = 'marker' + (done[s.n] ? ' done' : '');
     m.style.left = s.x + '%';
     m.style.top = s.y + '%';
-    m.textContent = s.n;
+    const pinLabel = s.label.startsWith('HEATER')
+      ? (s.label.includes('common') ? 'Hc' : 'Hm')
+      : s.label;
+    m.textContent = pinLabel;
+    if (pinLabel.length >= 3) m.style.fontSize = '11px';
     m.title = `${s.label} — ${s.room}`;
     m.setAttribute('aria-label', `Switch ${s.n}: ${s.label} in ${s.room}`);
     m.dataset.idx = SWITCHES.indexOf(s);
