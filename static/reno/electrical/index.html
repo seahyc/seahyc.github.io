@@ -246,9 +246,6 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
         </div>
       </div>
       <div class="map-controls">
-        <button id="zoom-out">−</button>
-        <button id="zoom-reset">Fit</button>
-        <button id="zoom-in">+</button>
         <button id="calibrate-toggle">📍 Calibrate</button>
         <span class="hint" id="map-hint">Tap a marker · pinch to zoom</span>
       </div>
@@ -487,19 +484,15 @@ document.getElementById('drawer-check').onchange = (e) => {
   renderMarkers(); renderList(); updateProgress();
 };
 
-// Map zoom controls
-let mapZoom = 1;
+// Map sizing (always fit baseline; pinch-zoom still works natively)
 const mapImage = document.getElementById('floorplan-img');
 const mapInner = document.querySelector('.map-inner');
 function applyZoom() {
-  const baseW = window.innerWidth < 768 ? 150 : 100;
-  const w = baseW * mapZoom;
+  const w = window.innerWidth < 768 ? 150 : 100;
   mapImage.style.width = w + '%';
   mapInner.style.width = w + '%';
 }
-document.getElementById('zoom-in').onclick = () => { mapZoom = Math.min(3, mapZoom + 0.25); applyZoom(); };
-document.getElementById('zoom-out').onclick = () => { mapZoom = Math.max(0.5, mapZoom - 0.25); applyZoom(); };
-document.getElementById('zoom-reset').onclick = () => { mapZoom = 1; applyZoom(); };
+applyZoom();
 
 document.querySelectorAll('nav button').forEach(b => {
   b.onclick = () => {
