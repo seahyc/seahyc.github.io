@@ -194,8 +194,10 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
 .sku-row .sku-refs { font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; line-height: 1.25; }
 .sku-row .sku-ref { display: inline-flex; align-items: baseline; gap: 4px; }
 .sku-row .sku-ref strong { color: var(--ink); font-weight: 600; }
-.sku-row .sku-qty { font-weight: 600; font-variant-numeric: tabular-nums; }
-.sku-row .sku-cost { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; min-width: 70px; text-align: right; }
+.sku-row .sku-price { min-width: 86px; text-align: right; font-variant-numeric: tabular-nums; }
+.sku-row .sku-qty { font-weight: 600; font-size: 13px; }
+.sku-row .sku-unit { color: var(--muted); font-size: 11px; margin-top: 1px; }
+.sku-row .sku-cost { color: var(--ink); font-size: 13px; font-weight: 600; margin-top: 1px; }
 .sku-total { padding: 10px 12px; background: #f7f4ed; font-weight: 600; display: flex; justify-content: space-between; }
 
 .notes { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: var(--radius); font-size: 13px; line-height: 1.38; }
@@ -558,8 +560,11 @@ function renderOrder() {
     <div class="sku-row">
       <img class="sku-img" src="${g.img}" alt="" loading="lazy">
       <div class="sku-name">${g.name}<div class="sku-refs">${g.refs.map(ref => `<span class="sku-ref"><strong>${ref.code}</strong><span>${ref.place}</span></span>`).join('')}</div></div>
-      <div class="sku-qty">×${g.qty}</div>
-      <div class="sku-cost">$${g.qty * g.unit}</div>
+      <div class="sku-price">
+        <div class="sku-qty">×${g.qty}</div>
+        <div class="sku-unit">$${g.unit} each</div>
+        <div class="sku-cost">$${g.qty * g.unit}</div>
+      </div>
     </div>`).join('');
   document.getElementById('sku-total-value').textContent = `$${ORDER_GROUPS.reduce((total, g) => total + g.qty * g.unit, 0).toLocaleString()}`;
 }
