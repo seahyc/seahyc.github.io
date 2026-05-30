@@ -54,11 +54,13 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x pan-y pinch-zoom;
   background: var(--panel);
+  text-align: center;
 }
 .map-inner {
   position: relative;
   display: inline-block;
-  min-width: 100%;
+  width: 100%;
+  line-height: 0;
 }
 .map-image {
   display: block;
@@ -194,8 +196,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
   }
   .drawer.open { transform: translateX(0); }
   .drawer-handle { display: none; }
-  .map-image { max-height: 80vh; width: auto; max-width: 100%; margin: 0 auto; }
-  .map-inner { display: block; text-align: center; }
+  .map-inner { max-width: 100%; }
 }
 
 /* Mobile fine-tuning */
@@ -341,24 +342,24 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
 
 <script>
 const SWITCHES = [
-  { n:1, label:"SS1", gang:"1g", room:"Household shelter", loc:"Inside household shelter", controls:["Shelter ceiling light"], model:"H1 1g White Neutral", price:55, x:13.2, y:79.4, modelClass:"h1" },
-  { n:2, label:"A", gang:"1g", room:"Foyer", loc:"Beside main door", controls:["A1 = foyer lights (2-way pair w/ D2)"], model:"H1 1g White Neutral", price:55, x:16.6, y:88.3, modelClass:"h1" },
-  { n:3, label:"B", gang:"2g + 2g", room:"Living/Dining", loc:"Door hallway niche", controls:["B1 = niche LED","B2 = 2× boba lights on living feature wall","B3 = LED strip below floating cabinet","B4 = 4 LED strips on open shelving (window side)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:19.1, y:67.6, modelClass:"z1" },
-  { n:4, label:"C", gang:"3g", room:"Living/Dining (outside study)", loc:"On half-glass wall outside study", controls:["C1 = 2× downlights near window","C2 = living ceiling fan","C3 = 2× downlights (2nd pair)"], model:"H1 3G White Neutral", price:75, x:28.7, y:43.5, modelClass:"h1" },
-  { n:5, label:"D", gang:"2g", room:"Living/Dining (outside study)", loc:"Next to C, on study half-wall", controls:["D1 = 3× downlights along dining table beam","D2 = 2-way to A foyer lights","slider = living/dining motorised curtain"], model:"Z1 Pro 2G White Neutral", price:80, x:30.8, y:45.2, modelClass:"z1" },
-  { n:6, label:"E", gang:"3g", room:"Dry pantry", loc:"On built-in oven cabinet housing", controls:["E1 = 2× pantry boba lights","E2 = LED strip below open shelves","E3 = dining ceiling fan"], model:"H1 3g White Neutral", price:75, x:47.4, y:74.5, modelClass:"h1" },
-  { n:7, label:"F", gang:"2g + 2g", room:"Kitchen / yard", loc:"Beside E", controls:["F1 = kitchen LED","F2 = kitchen track linear lights","F3 = service yard light","F4 = service yard motorised laundry rack"], model:"2× Z1 Pro 2G White Neutral", price:160, x:44.5, y:74.6, modelClass:"z1" },
-  { n:8, label:"G", gang:"2g", room:"Study (BR3)", loc:"Inside study, on half-wall", controls:["G1 = study ceiling fan","G2 = 4 LED strips on open shelves (1 driver = 1 gang)"], model:"Z1 Pro 2G White Neutral", price:80, x:34.6, y:46.7, modelClass:"z1" },
-  { n:9, label:"H", gang:"1g", room:"Kids room (BR2)", loc:"Inside kids room", controls:["H1 = kids room ceiling fan"], model:"Z1 Pro 1G White Neutral", price:70, x:56.2, y:46.6, modelClass:"z1" },
-  { n:10, label:"I", gang:"2g", room:"Common toilet", loc:"Outside common WC", controls:["I1 = hallway light","I2 = common bathroom ceiling light"], model:"H1 2g White Neutral", price:60, x:56.8, y:60.6, modelClass:"h1" },
-  { n:11, label:"J", gang:"3g", room:"Common toilet", loc:"Inside common toilet", controls:["J1 = LED below vanity cabinet","J2 = ventilation fan","J3 = acrylic panel LED strip"], model:"H1 3g White Neutral", price:75, x:59.9, y:61.2, modelClass:"h1" },
-  { n:12, label:"HEATER (common)", gang:"1g 20A", room:"Hallway outside common WC", loc:"On hallway wall outside common toilet", controls:["20A water heater for master toilet"], model:"H1 20A Smart Heater Switch", price:67, x:54.3, y:60.0, modelClass:"h1" },
-  { n:13, label:"K", gang:"2g + 2g", room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:63.3, y:60.4, modelClass:"z1" },
-  { n:14, label:"L1", gang:"2g + 2g", room:"MBR bedside (side 1)", loc:"Bedside niche, side 1 (wired-as-scene-panel for K)", controls:["niche LED strip (independent)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:84.0, y:42.8, modelClass:"z1" },
-  { n:15, label:"L2", gang:"2g + 2g", room:"MBR bedside (side 2)", loc:"Bedside, opposite side from L1 (wired-as-scene-panel for K)", controls:["niche LED strip (mirrors L1)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:84.6, y:19.1, modelClass:"z1" },
-  { n:16, label:"M", gang:"2g", room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["M1 = master toilet ceiling light","M2 = master toilet acrylic panel LED strip"], model:"H1 2g White Neutral", price:60, x:75.8, y:53.0, modelClass:"h1" },
-  { n:17, label:"N", gang:"3g", room:"MBR wardrobe", loc:"On MBR wardrobe (beside M)", controls:["N1 = master toilet ventilation fan","N2 = vanity cabinet bottom LED strip","N3 = vanity cabinet vertical LED"], model:"H1 3g White Neutral", price:75, x:75.6, y:60.4, modelClass:"h1" },
-  { n:18, label:"HEATER (master)", gang:"1g", room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["Master toilet water heater 2-way scene panel (mirrors common heater via Z2M)"], model:"H1 1g White Neutral", price:55, x:75.2, y:48.5, modelClass:"h1" },
+  { n:1, label:"SS1", gang:"1g", room:"Household shelter", loc:"Inside household shelter", controls:["Shelter ceiling light"], model:"H1 1g White Neutral", price:55, x:29.3, y:58.0, modelClass:"h1" },
+  { n:2, label:"A", gang:"1g", room:"Foyer", loc:"Beside main door", controls:["A1 = foyer lights (2-way pair w/ D2)"], model:"H1 1g White Neutral", price:55, x:33.5, y:63.0, modelClass:"h1" },
+  { n:3, label:"B", gang:"2g + 2g", room:"Living/Dining", loc:"Door hallway niche", controls:["B1 = niche LED","B2 = 2× boba lights on living feature wall","B3 = LED strip below floating cabinet","B4 = 4 LED strips on open shelving (window side)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:32.8, y:55.5, modelClass:"z1" },
+  { n:4, label:"C", gang:"3g", room:"Living/Dining (outside study)", loc:"On half-glass wall outside study", controls:["C1 = 2× downlights near window","C2 = living ceiling fan","C3 = 2× downlights (2nd pair)"], model:"H1 3G White Neutral", price:75, x:36.4, y:43.0, modelClass:"h1" },
+  { n:5, label:"D", gang:"2g", room:"Living/Dining (outside study)", loc:"Next to C, on study half-wall", controls:["D1 = 3× downlights along dining table beam","D2 = 2-way to A foyer lights","slider = living/dining motorised curtain"], model:"Z1 Pro 2G White Neutral", price:80, x:38.0, y:43.0, modelClass:"z1" },
+  { n:6, label:"E", gang:"3g", room:"Dry pantry", loc:"On built-in oven cabinet housing", controls:["E1 = 2× pantry boba lights","E2 = LED strip below open shelves","E3 = dining ceiling fan"], model:"H1 3g White Neutral", price:75, x:47.1, y:50.7, modelClass:"h1" },
+  { n:7, label:"F", gang:"2g + 2g", room:"Kitchen / yard", loc:"Beside E", controls:["F1 = kitchen LED","F2 = kitchen track linear lights","F3 = service yard light","F4 = service yard motorised laundry rack"], model:"2× Z1 Pro 2G White Neutral", price:160, x:45.6, y:53.2, modelClass:"z1" },
+  { n:8, label:"G", gang:"2g", room:"Study (BR3)", loc:"Inside study, on half-wall", controls:["G1 = study ceiling fan","G2 = 4 LED strips on open shelves (1 driver = 1 gang)"], model:"Z1 Pro 2G White Neutral", price:80, x:42.9, y:42.0, modelClass:"z1" },
+  { n:9, label:"H", gang:"1g", room:"Kids room (BR2)", loc:"Inside kids room", controls:["H1 = kids room ceiling fan"], model:"Z1 Pro 1G White Neutral", price:70, x:51.3, y:39.0, modelClass:"z1" },
+  { n:10, label:"I", gang:"2g", room:"Common toilet", loc:"Outside common WC", controls:["I1 = hallway light","I2 = common bathroom ceiling light"], model:"H1 2g White Neutral", price:60, x:53.7, y:48.3, modelClass:"h1" },
+  { n:11, label:"J", gang:"3g", room:"Common toilet", loc:"Inside common toilet", controls:["J1 = LED below vanity cabinet","J2 = ventilation fan","J3 = acrylic panel LED strip"], model:"H1 3g White Neutral", price:75, x:55.3, y:51.1, modelClass:"h1" },
+  { n:12, label:"HEATER (common)", gang:"1g 20A", room:"Hallway outside common WC", loc:"On hallway wall outside common toilet", controls:["20A water heater for master toilet"], model:"H1 20A Smart Heater Switch", price:67, x:56.4, y:48.5, modelClass:"h1" },
+  { n:13, label:"K", gang:"2g + 2g", room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:61.5, y:49.0, modelClass:"z1" },
+  { n:14, label:"L1", gang:"2g + 2g", room:"MBR bedside (side 1)", loc:"Bedside niche, side 1 (wired-as-scene-panel for K)", controls:["niche LED strip (independent)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:68.2, y:40.8, modelClass:"z1" },
+  { n:15, label:"L2", gang:"2g + 2g", room:"MBR bedside (side 2)", loc:"Bedside, opposite side from L1 (wired-as-scene-panel for K)", controls:["niche LED strip (mirrors L1)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:66.7, y:29.6, modelClass:"z1" },
+  { n:16, label:"M", gang:"2g", room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["M1 = master toilet ceiling light","M2 = master toilet acrylic panel LED strip"], model:"H1 2g White Neutral", price:60, x:59.7, y:47.6, modelClass:"h1" },
+  { n:17, label:"N", gang:"3g", room:"MBR wardrobe", loc:"On MBR wardrobe (beside M)", controls:["N1 = master toilet ventilation fan","N2 = vanity cabinet bottom LED strip","N3 = vanity cabinet vertical LED"], model:"H1 3g White Neutral", price:75, x:60.4, y:50.0, modelClass:"h1" },
+  { n:18, label:"HEATER (master)", gang:"1g", room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["Master toilet water heater 2-way scene panel (mirrors common heater via Z2M)"], model:"H1 1g White Neutral", price:55, x:58.6, y:47.0, modelClass:"h1" },
 ];
 
 const SKU_GROUPS = [
@@ -489,8 +490,8 @@ const mapImage = document.getElementById('floorplan-img');
 const mapInner = document.querySelector('.map-inner');
 function applyZoom() {
   const w = window.innerWidth < 768 ? 150 : 100;
-  mapImage.style.width = w + '%';
   mapInner.style.width = w + '%';
+  mapImage.style.width = '100%';
 }
 applyZoom();
 
