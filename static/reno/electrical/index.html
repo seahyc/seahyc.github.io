@@ -46,7 +46,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 .view.active { display: block; }
 
 /* Map view */
-.map-wrap { background: var(--panel); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.map-wrap { position: relative; background: var(--panel); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .map-scroll {
   position: relative;
   width: 100%;
@@ -55,6 +55,11 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
   touch-action: pan-x pan-y;
   background: var(--panel);
   text-align: center;
+  cursor: grab;
+}
+.map-scroll.dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 .map-inner {
   position: relative;
@@ -95,9 +100,31 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 .map-controls { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 8px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; min-height: 38px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
-.zoom-controls { display: flex; gap: 4px; align-items: center; }
-.zoom-controls button { width: 38px; min-width: 38px; padding: 8px 0; font-variant-numeric: tabular-nums; }
-.zoom-controls #zoom-reset { width: auto; min-width: 58px; padding: 8px 10px; }
+.zoom-controls {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
+}
+.zoom-controls button {
+  width: 42px;
+  min-width: 42px;
+  min-height: 38px;
+  padding: 8px 0;
+  background: rgba(255,255,255,0.94);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.zoom-controls #zoom-reset { width: 42px; min-width: 42px; padding: 8px 2px; font-size: 11px; }
 
 /* List view */
 .list { display: flex; flex-direction: column; gap: 8px; }
@@ -220,6 +247,9 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
   .map-controls { gap: 6px; align-items: stretch; }
   .map-controls button { padding: 8px 10px; }
   .map-controls .hint { width: 100%; margin-left: 0; text-align: right; }
+  .zoom-controls { right: 8px; top: 8px; }
+  .zoom-controls button { width: 34px; min-width: 34px; min-height: 34px; padding: 6px 0; }
+  .zoom-controls #zoom-reset { width: 34px; min-width: 34px; font-size: 9px; }
 }
 
 /* Footer */
@@ -252,13 +282,13 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
           <div id="markers"></div>
         </div>
       </div>
+      <div class="zoom-controls" aria-label="Map zoom controls">
+        <button id="zoom-in" aria-label="Zoom in">+</button>
+        <button id="zoom-reset" aria-label="Reset zoom">140%</button>
+        <button id="zoom-out" aria-label="Zoom out">−</button>
+      </div>
       <div class="map-controls">
         <button id="calibrate-toggle">📍 Calibrate</button>
-        <div class="zoom-controls" aria-label="Map zoom controls">
-          <button id="zoom-out" aria-label="Zoom out">−</button>
-          <button id="zoom-reset" aria-label="Reset zoom">140%</button>
-          <button id="zoom-in" aria-label="Zoom in">+</button>
-        </div>
         <a class="hint" id="map-hint" href="532B-Electrical-Plan-2026-05-25.pdf">Latest PDF · 2026-05-25</a>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
@@ -574,6 +604,35 @@ mapScroll.addEventListener('touchend', (e) => {
   if (e.touches.length < 2) pinchStart = null;
 });
 mapScroll.addEventListener('touchcancel', () => { pinchStart = null; });
+
+let panStart = null;
+mapScroll.addEventListener('pointerdown', (e) => {
+  if (calibActive || e.pointerType === 'touch') return;
+  if (e.target.closest('.marker')) return;
+  panStart = {
+    pointerId: e.pointerId,
+    x: e.clientX,
+    y: e.clientY,
+    left: mapScroll.scrollLeft,
+    top: mapScroll.scrollTop
+  };
+  mapScroll.classList.add('dragging');
+  mapScroll.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+mapScroll.addEventListener('pointermove', (e) => {
+  if (!panStart || e.pointerId !== panStart.pointerId) return;
+  mapScroll.scrollLeft = panStart.left - (e.clientX - panStart.x);
+  mapScroll.scrollTop = panStart.top - (e.clientY - panStart.y);
+});
+function stopPan(e) {
+  if (!panStart || (e && e.pointerId !== panStart.pointerId)) return;
+  panStart = null;
+  mapScroll.classList.remove('dragging');
+}
+mapScroll.addEventListener('pointerup', stopPan);
+mapScroll.addEventListener('pointercancel', stopPan);
+mapScroll.addEventListener('pointerleave', stopPan);
 
 document.querySelectorAll('nav button').forEach(b => {
   b.onclick = () => {
