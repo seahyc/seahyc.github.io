@@ -191,7 +191,9 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
 .sku-row:last-child { border-bottom: none; }
 .sku-row .sku-img { width: 42px; height: 42px; border-radius: 6px; flex-shrink: 0; object-fit: contain; background: #fff; border: 1px solid var(--border); padding: 3px; }
 .sku-row .sku-name { flex: 1; font-size: 13px; min-width: 160px; }
-.sku-row .sku-refs { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sku-row .sku-refs { font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; line-height: 1.25; }
+.sku-row .sku-ref { display: inline-flex; align-items: baseline; gap: 4px; }
+.sku-row .sku-ref strong { color: var(--ink); font-weight: 600; }
 .sku-row .sku-qty { font-weight: 600; font-variant-numeric: tabular-nums; }
 .sku-row .sku-cost { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; min-width: 70px; text-align: right; }
 .sku-total { padding: 10px 12px; background: #f7f4ed; font-weight: 600; display: flex; justify-content: space-between; }
@@ -458,6 +460,10 @@ function summarizeSwitchSkus(keys, field) {
   }).join(' + ');
 }
 
+function switchCode(s) {
+  return s.label.startsWith('HEATER') ? 'HC' : s.label;
+}
+
 SWITCHES.forEach(s => {
   s.gang = summarizeSwitchSkus(s.skus, 'gang');
   s.model = summarizeSwitchSkus(s.skus, 'model');
@@ -472,9 +478,12 @@ const ORDER_GROUPS = SKU_CATALOG.map(sku => {
     const count = s.skus.filter(key => key === sku.key).length;
     if (!count) return;
     qty += count;
-    refs.push(count === 1 ? s.label : `${s.label}×${count}`);
+    refs.push({
+      code: count === 1 ? switchCode(s) : `${switchCode(s)}×${count}`,
+      place: `${s.room} — ${s.loc}`
+    });
   });
-  return { ...sku, qty, refs: refs.join(', ') };
+  return { ...sku, qty, refs };
 }).filter(sku => sku.qty > 0);
 
 const STORAGE_KEY = '532b_switch_done';
@@ -548,7 +557,7 @@ function renderOrder() {
   c.innerHTML = ORDER_GROUPS.map(g => `
     <div class="sku-row">
       <img class="sku-img" src="${g.img}" alt="" loading="lazy">
-      <div class="sku-name">${g.name}<div class="sku-refs">${g.refs}</div></div>
+      <div class="sku-name">${g.name}<div class="sku-refs">${g.refs.map(ref => `<span class="sku-ref"><strong>${ref.code}</strong><span>${ref.place}</span></span>`).join('')}</div></div>
       <div class="sku-qty">×${g.qty}</div>
       <div class="sku-cost">$${g.qty * g.unit}</div>
     </div>`).join('');
