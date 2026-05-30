@@ -426,10 +426,10 @@ const SWITCHES = [
   { n:6, label:"F", gang:"2g + 2g", room:"Kitchen / yard", loc:"Beside E", controls:["F1 = kitchen LED","F2 = kitchen track linear lights","F3 = service yard light","F4 = service yard motorised laundry rack"], model:"2× Z1 Pro 2G White Neutral", price:160, x:45.6, y:53.2, modelClass:"z1" },
   { n:7, label:"G", gang:"2g", room:"Study (BR3)", loc:"Inside study, on half-wall", controls:["G1 = study ceiling fan","G2 = 4 LED strips on open shelves (1 driver = 1 gang)"], model:"Z1 Pro 2G White Neutral", price:80, x:42.9, y:42.0, modelClass:"z1" },
   { n:8, label:"H", gang:"1g", room:"Kids room (BR2)", loc:"Inside kids room", controls:["H1 = kids room ceiling fan"], model:"Z1 Pro 1G White Neutral", price:70, x:51.3, y:39.0, modelClass:"z1" },
-  { n:9, label:"I", gang:"2g", room:"Common toilet", loc:"Outside common WC", controls:["I1 = hallway light","I2 = common bathroom ceiling light"], model:"H1 2g White Neutral", price:60, x:53.7, y:48.3, modelClass:"h1" },
-  { n:10, label:"J", gang:"3g", room:"Common toilet", loc:"Inside common toilet", controls:["J1 = LED below vanity cabinet","J2 = ventilation fan","J3 = acrylic panel LED strip"], model:"H1 3g White Neutral", price:75, x:55.3, y:51.1, modelClass:"h1" },
-  { n:11, label:"HEATER (common)", gang:"1g 20A", room:"Hallway outside common WC", loc:"On hallway wall outside common toilet", controls:["20A water heater for master toilet"], model:"H1 20A Smart Heater Switch", price:67, x:56.4, y:48.5, modelClass:"h1" },
-  { n:12, label:"K", gang:"2g + 2g", room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:56.7, y:46.8, modelClass:"z1" },
+  { n:9, label:"I", gang:"2g", room:"Common toilet", loc:"Outside common WC", controls:["I1 = hallway light","I2 = common bathroom ceiling light"], model:"H1 2g White Neutral", price:60, x:52.8, y:48.2, modelClass:"h1" },
+  { n:10, label:"J", gang:"3g", room:"Common toilet", loc:"Inside common toilet", controls:["J1 = LED below vanity cabinet","J2 = ventilation fan","J3 = acrylic panel LED strip"], model:"H1 3g White Neutral", price:75, x:53.7, y:50.2, modelClass:"h1" },
+  { n:11, label:"HEATER (common)", gang:"1g 20A", room:"Hallway outside common WC", loc:"On hallway wall outside common toilet", controls:["20A water heater for master toilet"], model:"H1 20A Smart Heater Switch", price:67, x:54.6, y:48.3, modelClass:"h1" },
+  { n:12, label:"K", gang:"2g + 2g", room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:56.1, y:46.3, modelClass:"z1" },
   { n:13, label:"L1", gang:"2g + 2g", room:"MBR bedside (side 1)", loc:"Bedside niche, side 1 (wired-as-scene-panel for K)", controls:["niche LED strip (independent)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:68.2, y:40.8, modelClass:"z1" },
   { n:14, label:"L2", gang:"2g + 2g", room:"MBR bedside (side 2)", loc:"Bedside, opposite side from L1 (wired-as-scene-panel for K)", controls:["niche LED strip (mirrors L1)","harga (mirrors K4)","stick light (mirrors K3)","ceiling fan (mirrors K2)"], model:"2× Z1 Pro 2G White Neutral", price:160, x:66.7, y:29.6, modelClass:"z1" },
   { n:15, label:"M", gang:"3g", room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["M1 = master toilet ceiling light","M2 = master toilet acrylic panel LED strip","M3 = master heater scene rocker (mirrors HC 20A via Home Assistant)"], model:"H1 3g White Neutral", price:75, x:59.7, y:47.6, modelClass:"h1" },
@@ -635,10 +635,11 @@ zoomReset.onclick = () => {
 };
 
 mapScroll.addEventListener('wheel', (e) => {
-  if (!e.ctrlKey && !e.metaKey) return;
+  if (calibActive) return;
   e.preventDefault();
   const rect = mapScroll.getBoundingClientRect();
-  setMapZoom(mapZoom * (e.deltaY > 0 ? 0.9 : 1.1), {
+  const zoomFactor = Math.exp(-e.deltaY * 0.001);
+  setMapZoom(mapZoom * zoomFactor, {
     x: e.clientX - rect.left,
     y: e.clientY - rect.top
   });
@@ -732,7 +733,7 @@ calibToggle.onclick = () => {
   calibToggle.style.background = calibActive ? '#ffd966' : '';
   document.getElementById('map-hint').textContent = calibActive
     ? 'Drag pins to move them · use zoom for precision'
-    : 'Tap a marker · zoom image without enlarging pins';
+    : 'Tap a marker · scroll to zoom · drag map';
   document.querySelectorAll('.marker').forEach(m => {
     m.style.cursor = calibActive ? 'move' : 'pointer';
     m.style.touchAction = calibActive ? 'none' : '';
