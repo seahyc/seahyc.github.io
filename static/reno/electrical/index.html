@@ -45,14 +45,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 .view { display: none; }
 .view.active { display: block; }
 
-/* Map view — pinch-zoomable container */
+/* Map view */
 .map-wrap { background: var(--panel); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .map-scroll {
   position: relative;
   width: 100%;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pan-y pinch-zoom;
+  touch-action: pan-x pan-y;
   background: var(--panel);
   text-align: center;
 }
@@ -91,9 +91,13 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
 }
 .marker:active { transform: translate(-50%, -50%) scale(1.25); }
 .marker.done { background: var(--done); }
+.marker-compact { font-size: 11px; }
 .map-controls { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 8px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; cursor: pointer; min-height: 38px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
+.zoom-controls { display: flex; gap: 4px; align-items: center; }
+.zoom-controls button { width: 38px; min-width: 38px; padding: 8px 0; font-variant-numeric: tabular-nums; }
+.zoom-controls #zoom-reset { width: auto; min-width: 58px; padding: 8px 10px; }
 
 /* List view */
 .list { display: flex; flex-direction: column; gap: 8px; }
@@ -205,15 +209,18 @@ main { max-width: 1200px; margin: 0 auto; padding: 12px; padding-bottom: calc(40
   h1 { font-size: 15px; }
   .subtitle { font-size: 11px; }
   main { padding: 8px; }
-  .marker { width: 36px; height: 36px; font-size: 14px; border-width: 3px; }
+  .marker { width: 24px; height: 24px; font-size: 10px; border-width: 2px; box-shadow: 0 1px 5px rgba(0,0,0,0.32); }
+  .marker-compact { font-size: 8px; }
   .map-inner {
-    /* Make the map larger on mobile so markers are tappable. User can pinch-zoom further. */
-    width: 150%;
+    width: 140%;
   }
   .map-image {
     width: 100%;
     max-width: none;
   }
+  .map-controls { gap: 6px; align-items: stretch; }
+  .map-controls button { padding: 8px 10px; }
+  .map-controls .hint { width: 100%; margin-left: 0; text-align: right; }
 }
 
 /* Footer */
@@ -248,6 +255,11 @@ footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size:
       </div>
       <div class="map-controls">
         <button id="calibrate-toggle">📍 Calibrate</button>
+        <div class="zoom-controls" aria-label="Map zoom controls">
+          <button id="zoom-out" aria-label="Zoom out">−</button>
+          <button id="zoom-reset" aria-label="Reset zoom">140%</button>
+          <button id="zoom-in" aria-label="Zoom in">+</button>
+        </div>
         <a class="hint" id="map-hint" href="532B-Electrical-Plan-2026-05-25.pdf">Latest PDF · 2026-05-25</a>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
@@ -395,7 +407,7 @@ function renderMarkers() {
       ? (s.label.includes('common') ? 'Hc' : 'Hm')
       : s.label;
     m.textContent = pinLabel;
-    if (pinLabel.length >= 3) m.style.fontSize = '11px';
+    if (pinLabel.length >= 3) m.classList.add('marker-compact');
     m.title = `${s.label} — ${s.room}`;
     m.setAttribute('aria-label', `Switch ${s.n}: ${s.label} in ${s.room}`);
     m.dataset.idx = SWITCHES.indexOf(s);
@@ -485,15 +497,84 @@ document.getElementById('drawer-check').onchange = (e) => {
   renderMarkers(); renderList(); updateProgress();
 };
 
-// Map sizing (always fit baseline; pinch-zoom still works natively)
+// Map zoom scales the floorplan coordinate space; marker size stays fixed in CSS pixels.
 const mapImage = document.getElementById('floorplan-img');
 const mapInner = document.querySelector('.map-inner');
-function applyZoom() {
-  const w = window.innerWidth < 768 ? 150 : 100;
-  mapInner.style.width = w + '%';
+const mapScroll = document.getElementById('map-scroll');
+const zoomOut = document.getElementById('zoom-out');
+const zoomIn = document.getElementById('zoom-in');
+const zoomReset = document.getElementById('zoom-reset');
+const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+const defaultZoom = () => window.innerWidth < 768 ? 1.4 : 1;
+let mapZoom = defaultZoom();
+function setMapZoom(nextZoom, anchor) {
+  const before = {
+    zoom: mapZoom,
+    left: mapScroll.scrollLeft,
+    top: mapScroll.scrollTop
+  };
+  mapZoom = clamp(nextZoom, 1, 3);
+  mapInner.style.width = Math.round(mapZoom * 100) + '%';
   mapImage.style.width = '100%';
+  zoomReset.textContent = Math.round(mapZoom * 100) + '%';
+
+  if (anchor) {
+    const baseX = (before.left + anchor.x) / before.zoom;
+    const baseY = (before.top + anchor.y) / before.zoom;
+    requestAnimationFrame(() => {
+      mapScroll.scrollLeft = baseX * mapZoom - anchor.x;
+      mapScroll.scrollTop = baseY * mapZoom - anchor.y;
+    });
+  }
 }
-applyZoom();
+function centerAnchor() {
+  return { x: mapScroll.clientWidth / 2, y: mapScroll.clientHeight / 2 };
+}
+function applyZoom() {
+  setMapZoom(mapZoom);
+}
+setMapZoom(mapZoom);
+
+zoomOut.onclick = () => setMapZoom(mapZoom / 1.2, centerAnchor());
+zoomIn.onclick = () => setMapZoom(mapZoom * 1.2, centerAnchor());
+zoomReset.onclick = () => setMapZoom(defaultZoom(), centerAnchor());
+
+mapScroll.addEventListener('wheel', (e) => {
+  if (!e.ctrlKey && !e.metaKey) return;
+  e.preventDefault();
+  const rect = mapScroll.getBoundingClientRect();
+  setMapZoom(mapZoom * (e.deltaY > 0 ? 0.9 : 1.1), {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  });
+}, { passive: false });
+
+let pinchStart = null;
+function pinchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.hypot(dx, dy);
+}
+function pinchAnchor(touches) {
+  const rect = mapScroll.getBoundingClientRect();
+  return {
+    x: ((touches[0].clientX + touches[1].clientX) / 2) - rect.left,
+    y: ((touches[0].clientY + touches[1].clientY) / 2) - rect.top
+  };
+}
+mapScroll.addEventListener('touchstart', (e) => {
+  if (e.touches.length !== 2) return;
+  pinchStart = { distance: pinchDistance(e.touches), zoom: mapZoom };
+}, { passive: true });
+mapScroll.addEventListener('touchmove', (e) => {
+  if (!pinchStart || e.touches.length !== 2) return;
+  e.preventDefault();
+  setMapZoom(pinchStart.zoom * (pinchDistance(e.touches) / pinchStart.distance), pinchAnchor(e.touches));
+}, { passive: false });
+mapScroll.addEventListener('touchend', (e) => {
+  if (e.touches.length < 2) pinchStart = null;
+});
+mapScroll.addEventListener('touchcancel', () => { pinchStart = null; });
 
 document.querySelectorAll('nav button').forEach(b => {
   b.onclick = () => {
@@ -526,8 +607,8 @@ calibToggle.onclick = () => {
   calibPanel.style.display = calibActive ? 'block' : 'none';
   calibToggle.style.background = calibActive ? '#ffd966' : '';
   document.getElementById('map-hint').textContent = calibActive
-    ? 'Drag pins to move them · pinch to zoom'
-    : 'Tap a marker · pinch to zoom';
+    ? 'Drag pins to move them · use zoom for precision'
+    : 'Tap a marker · zoom image without enlarging pins';
   document.querySelectorAll('.marker').forEach(m => {
     m.style.cursor = calibActive ? 'move' : 'pointer';
     m.style.touchAction = calibActive ? 'none' : '';
