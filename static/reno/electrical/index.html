@@ -352,24 +352,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
   <div class="view" id="view-order">
     <div class="section-title">Vendor pricing</div>
-    <div class="vendors">
-      <div class="vendor-card best">
-        <div class="row1"><span class="badge-best">CHEAPEST</span></div>
-        <div class="name">SLG · Ilyas</div>
-        <div class="price">Requote</div>
-        <div class="terms">White H1 baseline plus Z1 Pro bedside; reprice 20 plates</div>
-      </div>
-      <div class="vendor-card">
-        <div class="name">Homesmart · Lee Ann</div>
-        <div class="price">Requote</div>
-        <div class="terms">Need updated quote for H1 plus Z1 Pro bedside</div>
-      </div>
-      <div class="vendor-card">
-        <div class="name">TTG · William</div>
-        <div class="price">Requote</div>
-        <div class="terms">Use same white SKU list for comparison</div>
-      </div>
-    </div>
+    <div class="vendors" id="vendor-pricing"></div>
 
     <div class="section-title">Consolidated SKU order — Aqara, with neutral</div>
     <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth, with the SLG member bulk tier applied after subtotal as an estimate subject to catalogue terms. C stays upgraded to two 3-gang plates for curtain and scene capacity; M3 remains the master-heater scene rocker that mirrors HC.</div>
@@ -496,6 +479,11 @@ const ORDER_GROUPS = SKU_CATALOG.map(sku => {
   });
   return { ...sku, qty, refs };
 }).filter(sku => sku.qty > 0);
+const VENDOR_OFFERS = [
+  { name: 'SLG · Ilyas', discount: 0.15, terms: 'SLG catalogue · member 20+ item tier −15%', best: true },
+  { name: 'Homesmart · Lee Ann', discount: 0.13, terms: 'Homesmart PDF 2026-04-08 · catalogue prices less −13%' },
+  { name: 'TTG · William', discount: 0.10, terms: 'William catalogue · 10% off everything' },
+];
 
 const STORAGE_KEY = '532b_switch_done';
 function loadDone() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; } }
@@ -563,10 +551,33 @@ function renderList() {
   });
 }
 
+function orderSubtotal() {
+  return ORDER_GROUPS.reduce((total, g) => total + g.qty * g.unit, 0);
+}
+
+function orderItemQty() {
+  return ORDER_GROUPS.reduce((total, g) => total + g.qty, 0);
+}
+
+function renderVendors() {
+  const subtotal = orderSubtotal();
+  const c = document.getElementById('vendor-pricing');
+  c.innerHTML = VENDOR_OFFERS.map(v => {
+    const price = Math.round(subtotal * (1 - v.discount));
+    return `
+      <div class="vendor-card ${v.best ? 'best' : ''}">
+        ${v.best ? '<div class="row1"><span class="badge-best">CHEAPEST</span></div>' : ''}
+        <div class="name">${v.name}</div>
+        <div class="price">$${price.toLocaleString()}</div>
+        <div class="terms">${v.terms} · against $${subtotal.toLocaleString()} catalogue subtotal</div>
+      </div>`;
+  }).join('');
+}
+
 function renderOrder() {
   const c = document.getElementById('sku-list');
-  const itemQty = ORDER_GROUPS.reduce((total, g) => total + g.qty, 0);
-  const subtotal = ORDER_GROUPS.reduce((total, g) => total + g.qty * g.unit, 0);
+  const itemQty = orderItemQty();
+  const subtotal = orderSubtotal();
   const discountRate = itemQty >= MEMBER_BULK_DISCOUNT.minQty ? MEMBER_BULK_DISCOUNT.rate : 0;
   const discount = Math.round(subtotal * discountRate);
   const net = subtotal - discount;
@@ -767,7 +778,7 @@ document.querySelectorAll('nav button').forEach(b => {
   };
 });
 
-renderMarkers(); renderList(); renderOrder(); updateProgress();
+renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
 // ─── Calibrate (drag pins) mode ──────────────────────────────
