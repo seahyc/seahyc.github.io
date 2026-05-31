@@ -1208,7 +1208,7 @@ function buildShopQuoteText() {
       return `- ${g.qty} x ${g.name} / ${g.model} @ $${g.unit} each = $${(g.qty * g.unit).toLocaleString()} [${g.category}; ${refs}]`;
     }),
     '',
-    `Catalogue subtotal: $${subtotal.toLocaleString()} for ${itemQty} plates`,
+    `Catalogue subtotal: $${subtotal.toLocaleString()} for ${itemQty} items`,
     `Bulk/member discount assumption: ${MEMBER_BULK_DISCOUNT.label} = -$${discount.toLocaleString()}`,
     `Estimated after discount: $${net.toLocaleString()}`,
     '',
