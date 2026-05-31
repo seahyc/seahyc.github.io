@@ -481,7 +481,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
 <header>
   <h1>532B Bishan — Smart Switches</h1>
-  <div class="subtitle">16 switch locations · 4 curtain power points · 8 sensor candidates · 20 Aqara plates + 3 sensors · Zigbee 3.0 · Home Assistant via Z2M</div>
+  <div class="subtitle">16 switch locations · 4 curtain power points · 3 first-batch sensors · 20 Aqara plates + 3 sensors · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -518,8 +518,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-legend" id="map-legend">
         <span><i class="legend-dot"></i>switch</span>
         <span><i class="legend-power"></i>curtain power</span>
-        <span><i class="legend-sensor"></i>wired presence</span>
-        <span><i class="legend-sensor-battery"></i>battery presence</span>
+        <span><i class="legend-sensor-battery"></i>first-batch battery presence</span>
         <span><i class="legend-wall"></i>solid wall</span>
         <span><i class="legend-attenuation"></i>attenuating half-wall/beam</span>
       </div>
@@ -1053,10 +1052,14 @@ function sensorWiringText(sensor) {
     : 'Battery / no wire';
 }
 
+function mapSensorPoints() {
+  return SENSOR_POINTS.filter(sensor => sensor.order);
+}
+
 function renderPresenceOverlays() {
   const svg = document.getElementById('presence-overlays');
   svg.innerHTML = '';
-  SENSOR_POINTS.forEach(sensor => {
+  mapSensorPoints().forEach(sensor => {
     const isMotion = sensor.coverage === 'motion';
     const rayCount = isMotion ? 48 : 72;
     const bandCount = isMotion ? 4 : 6;
@@ -1120,7 +1123,7 @@ function renderPresenceOverlays() {
 function renderSensorMarkers() {
   const c = document.getElementById('sensor-markers');
   c.innerHTML = '';
-  SENSOR_POINTS.forEach(p => {
+  mapSensorPoints().forEach(p => {
     const m = document.createElement('button');
     m.className = ['sensor-marker', p.wiring, p.coverage === 'motion' ? 'motion' : ''].filter(Boolean).join(' ');
     m.style.left = p.x + '%';
@@ -1554,7 +1557,7 @@ function refreshCalibOutput() {
   const switchLines = SWITCHES.map(s =>
     `  { n:${s.n}, label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
   );
-  const sensorLines = SENSOR_POINTS.map(s =>
+  const sensorLines = mapSensorPoints().map(s =>
     `  { label:"${s.label}", product:"${s.shortLabel || s.model}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
   );
   calibOutput.value = [
