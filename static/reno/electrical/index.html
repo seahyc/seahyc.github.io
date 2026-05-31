@@ -339,6 +339,12 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
 .vendor-card .badge-best { display: inline-block; font-size: 10px; padding: 3px 8px; background: var(--done); color: white; border-radius: 4px; letter-spacing: 0.5px; font-weight: 600; }
 
 .sku-list { background: var(--panel); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.order-copy { background: var(--panel); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow); }
+.order-copy .copy-text { min-width: 0; }
+.order-copy .copy-title { font-weight: 600; font-size: 13px; }
+.order-copy .copy-subtitle { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.order-copy button { flex-shrink: 0; padding: 8px 12px; border: 1px solid var(--accent); background: var(--accent); color: #fff; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; min-height: 34px; }
+.order-copy button.copied { background: var(--done); border-color: var(--done); }
 .sku-row { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .sku-row:last-child { border-bottom: none; }
 .sku-row .sku-img { width: 42px; height: 42px; border-radius: 6px; flex-shrink: 0; object-fit: contain; background: #fff; border: 1px solid var(--border); padding: 3px; }
@@ -521,6 +527,13 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
     <div class="section-title">Consolidated SKU order — Aqara, with neutral</div>
     <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth, with the SLG member bulk tier applied after subtotal as an estimate subject to catalogue terms. B, C, F, and K carry extra 3-gang capacity for room scenes; M3 remains the master-heater scene rocker that mirrors HC.</div>
+    <div class="order-copy">
+      <div class="copy-text">
+        <div class="copy-title">Shop quote request</div>
+        <div class="copy-subtitle" id="order-copy-summary">Copy quantities, SKU names, unit pricing, and placement refs</div>
+      </div>
+      <button id="copy-order-list">Copy order list</button>
+    </div>
     <div class="sku-list" id="sku-list"></div>
     <div class="sku-summary">
       <div class="sku-total"><span>Catalogue subtotal (<span id="sku-total-qty">20</span> plates)</span><span id="sku-total-value">$1,460</span></div>
@@ -1098,6 +1111,50 @@ function renderVendors() {
   }).join('');
 }
 
+function buildShopQuoteText() {
+  const itemQty = orderItemQty();
+  const subtotal = orderSubtotal();
+  const discountRate = itemQty >= MEMBER_BULK_DISCOUNT.minQty ? MEMBER_BULK_DISCOUNT.rate : 0;
+  const discount = Math.round(subtotal * discountRate);
+  const net = subtotal - discount;
+  const lines = [
+    'Hi, please quote for these Aqara switch SKUs for 532B Bishan.',
+    'All switches should be white. Use neutral variants where applicable.',
+    '',
+    'Order list:',
+    ...ORDER_GROUPS.map(g => {
+      const refs = g.refs.map(ref => `${ref.code} (${ref.place})`).join('; ');
+      return `- ${g.qty} x ${g.name} / ${g.model} @ $${g.unit} each = $${(g.qty * g.unit).toLocaleString()} [${refs}]`;
+    }),
+    '',
+    `Catalogue subtotal: $${subtotal.toLocaleString()} for ${itemQty} plates`,
+    `Bulk/member discount assumption: ${MEMBER_BULK_DISCOUNT.label} = -$${discount.toLocaleString()}`,
+    `Estimated after discount: $${net.toLocaleString()}`,
+    '',
+    'Please confirm final quote, stock availability, exact model/SKU codes, and whether the member/bulk discount applies.'
+  ];
+  return lines.join('\n');
+}
+
+function copyTextToClipboard(text) {
+  const fallbackCopy = () => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+    return Promise.resolve();
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text).catch(fallbackCopy);
+  }
+  return fallbackCopy();
+}
+
 function renderOrder() {
   const c = document.getElementById('sku-list');
   const itemQty = orderItemQty();
@@ -1120,7 +1177,24 @@ function renderOrder() {
   document.getElementById('sku-discount-label').textContent = MEMBER_BULK_DISCOUNT.label;
   document.getElementById('sku-discount-value').textContent = discount ? `−$${discount.toLocaleString()}` : '$0';
   document.getElementById('sku-net-value').textContent = `$${net.toLocaleString()}`;
+  document.getElementById('order-copy-summary').textContent = `${itemQty} plates · $${subtotal.toLocaleString()} catalogue · $${net.toLocaleString()} after estimated discount`;
 }
+
+document.getElementById('copy-order-list').onclick = () => {
+  const button = document.getElementById('copy-order-list');
+  const original = button.textContent;
+  copyTextToClipboard(buildShopQuoteText()).then(() => {
+    button.textContent = 'Copied';
+    button.classList.add('copied');
+    setTimeout(() => {
+      button.textContent = original;
+      button.classList.remove('copied');
+    }, 1400);
+  }).catch(() => {
+    button.textContent = 'Copy failed';
+    setTimeout(() => { button.textContent = original; }, 1400);
+  });
+};
 
 let drawerSwitch = null;
 function imgForSwitch(s) {
