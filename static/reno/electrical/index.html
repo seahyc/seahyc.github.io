@@ -161,7 +161,7 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   user-select: none;
   font-family: inherit;
   text-shadow: 0 1px 2px rgba(0,0,0,0.45);
-  z-index: 10;
+  z-index: 14;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -456,7 +456,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
 <header>
   <h1>532B Bishan — Smart Switches</h1>
-  <div class="subtitle">16 switch locations · 4 curtain power points · 9 sensor candidates · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
+  <div class="subtitle">16 switch locations · 4 curtain power points · 8 sensor candidates · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -554,8 +554,8 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
         <li>Green fades are ray-cast presence estimates: stronger near the sensor, weaker with distance and after attenuating elements.</li>
         <li>FP2, FP1E, and FP300 are directional around 120° for the useful presence FOV, not 360° room scanners.</li>
         <li>Solid black wall segments stop the FOV; the study half-wall/glass and C4 ceiling beam reduce confidence without fully blocking it.</li>
-        <li>Dashed green lines show which curtain power point feeds a wired sensor if a serviceable USB adapter/split is possible.</li>
-        <li>The strongest living/dining option is an FP2 below the C4 beam if the electrician can provide always-on 5V power there.</li>
+        <li>Dashed green lines show actual wired-from-curtain-power candidates if a serviceable USB adapter/split is possible.</li>
+        <li>Living/dining does not get an FP2 at C/C4 unless a new always-on 5V feed is added later; there is no marked wire point there.</li>
         <li>Study and kids room can use FP1E unless you want per-zone behaviour; they mainly need reliable presence/absence.</li>
         <li>Hall, kitchen, and toilets are marked with battery FP300/P1-P2 options unless new low-voltage power is added.</li>
       </ul>
@@ -632,33 +632,16 @@ const SENSOR_POINTS = [
     loc:"High on living window/pelmet corner, aimed across sofa/window side",
     model:"Aqara Presence Multi-Sensor FP300",
     recommendation:"FP300 · battery · Zigbee or Thread",
-    powerPoint:"CP1",
+    powerPoint:null,
     power:"Battery sensor near CP1; CP1 is still curtain power, not required for this sensor",
     detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
-    controls:["Use as a low-wiring living-side presence and climate sensor","Good for curtain-side occupancy and lux/temp/humidity context","Not the main multi-zone sensor if the C4 beam FP2 is installed"],
+    controls:["Use as a low-wiring living-side presence and climate sensor","Good for curtain-side occupancy and lux/temp/humidity context","Practical living/dining option unless a new always-on feed is added for a future FP2"],
     target:[35.5,43.5],
     fov:120,
     range:12,
     fallback:true,
     x:29.0,
     y:35.0
-  },
-  {
-    label:"Living/Dining FP2",
-    shortLabel:"FP2",
-    room:"Living/Dining",
-    loc:"Below C4 ceiling beam, aimed into living and dining",
-    model:"Aqara Presence Sensor FP2",
-    recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
-    powerPoint:null,
-    power:"Needs new always-on 5V USB power near/under the C4 ceiling beam; no existing socket is marked there",
-    detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
-    controls:["Best candidate for living/dining multi-zone control","Can separate dining, sofa, hallway/entry edge, and kitchen approach if tuned in Aqara app","Below-beam placement avoids wasting FP2 zones from the far window corner"],
-    target:[33.4,41.2],
-    fov:120,
-    range:18,
-    x:38.7,
-    y:43.8
   },
   {
     label:"Study FP1E",
@@ -1332,7 +1315,7 @@ mapScroll.addEventListener('touchcancel', () => { pinchStart = null; });
 let panStart = null;
 mapScroll.addEventListener('pointerdown', (e) => {
   if (calibActive || e.pointerType === 'touch') return;
-  if (e.target.closest('.marker')) return;
+  if (e.target.closest('.marker, .sensor-marker, .power-marker, .zoom-controls, .map-controls')) return;
   panStart = {
     pointerId: e.pointerId,
     x: e.clientX,
@@ -1351,6 +1334,9 @@ mapScroll.addEventListener('pointermove', (e) => {
 });
 function stopPan(e) {
   if (!panStart || (e && e.pointerId !== panStart.pointerId)) return;
+  if (mapScroll.hasPointerCapture && mapScroll.hasPointerCapture(panStart.pointerId)) {
+    mapScroll.releasePointerCapture(panStart.pointerId);
+  }
   panStart = null;
   mapScroll.classList.remove('dragging');
 }
