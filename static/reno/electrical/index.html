@@ -355,12 +355,12 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
     <div class="vendors" id="vendor-pricing"></div>
 
     <div class="section-title">Consolidated SKU order — Aqara, with neutral</div>
-    <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth, with the SLG member bulk tier applied after subtotal as an estimate subject to catalogue terms. C stays upgraded to two 3-gang plates for curtain and scene capacity; M3 remains the master-heater scene rocker that mirrors HC.</div>
+    <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth, with the SLG member bulk tier applied after subtotal as an estimate subject to catalogue terms. B, C, F, and K carry extra 3-gang capacity for room scenes; M3 remains the master-heater scene rocker that mirrors HC.</div>
     <div class="sku-list" id="sku-list"></div>
     <div class="sku-summary">
-      <div class="sku-total"><span>Catalogue subtotal (<span id="sku-total-qty">20</span> plates)</span><span id="sku-total-value">$1,400</span></div>
-      <div class="sku-total discount"><span>SLG member bulk discount (<span id="sku-discount-label">20+ items · 15%</span>)</span><span id="sku-discount-value">−$210</span></div>
-      <div class="sku-total net"><span>Estimated after member discount</span><span id="sku-net-value">$1,190</span></div>
+      <div class="sku-total"><span>Catalogue subtotal (<span id="sku-total-qty">20</span> plates)</span><span id="sku-total-value">$1,460</span></div>
+      <div class="sku-total discount"><span>SLG member bulk discount (<span id="sku-discount-label">20+ items · 15%</span>)</span><span id="sku-discount-value">−$219</span></div>
+      <div class="sku-total net"><span>Estimated after member discount</span><span id="sku-net-value">$1,241</span></div>
     </div>
 
     <div class="section-title">Settled decisions</div>
@@ -368,7 +368,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <ul>
         <li>Use white neutral SKUs throughout; H1 remains the baseline and Z1 Pro is the bedside exception.</li>
         <li>Keep SS1 as H1 1G so the shelter light stays on the same smart-switch standard.</li>
-        <li>Use C, G, and H as H1 3G upgrades for curtain and scene capacity.</li>
+        <li>Use B, C, F, G, H, and K as H1 3G upgrades for curtain and scene capacity.</li>
         <li>Use L1/L2 as one Z1 Pro 4-rocker per bedside, grouping bedhead lights and adding MBR curtain, wardrobe, toilet, and night-mode scenes.</li>
         <li>Keep M3 as the in-bedroom master-heater scene rocker that mirrors HC via Home Assistant.</li>
       </ul>
@@ -414,16 +414,16 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 const SWITCHES = [
   { n:1, label:"SS1", skus:["h1-1g"], room:"Household shelter", loc:"Inside household shelter", controls:["Shelter ceiling light"], x:29.3, y:58.0 },
   { n:2, label:"A", skus:["h1-2g"], room:"Foyer", loc:"Beside main door", controls:["A1 = foyer light","A2 = all-off scene for whole house via Home Assistant"], x:33.5, y:63.0 },
-  { n:3, label:"B", skus:["h1-2g","h1-2g"], room:"Living/Dining", loc:"Door hallway niche", controls:["B1 = niche LED","B2 = 2× boba lights on living feature wall","B3 = LED strip below floating cabinet","B4 = 4 LED strips on open shelving (window side)"], x:32.8, y:55.5 },
+  { n:3, label:"B", skus:["h1-3g","h1-2g"], room:"Living/Dining", loc:"Door hallway niche", controls:["B1 = niche LED","B2 = 2× boba lights on living feature wall","B3 = LED strip below floating cabinet","B4 = 4 LED strips on open shelving (window side)","B5 = living all-off / evening scene"], x:32.8, y:55.5 },
   { n:4, label:"C", skus:["h1-3g","h1-3g"], room:"Living/Dining (outside study)", loc:"On half-glass wall outside study", controls:["C1 = 2× living downlights near window","C2 = living ceiling fan","C3 = 2× living downlights near sofa edge","C4 = 3× recessed lights at dining / foyer edge","C5 = living curtains","C6 = living/dining scene rocker"], x:37.2, y:43.0 },
   { n:5, label:"E", skus:["h1-3g"], room:"Dry pantry", loc:"On built-in oven cabinet housing", controls:["E1 = 2× pantry boba lights","E2 = LED strip below open shelves","E3 = dining ceiling fan"], x:47.1, y:50.7 },
-  { n:6, label:"F", skus:["h1-2g","h1-2g"], room:"Kitchen / yard", loc:"Beside E", controls:["F1 = kitchen LED","F2 = kitchen track linear lights","F3 = service yard light","F4 = service yard motorised laundry rack"], x:45.6, y:53.2 },
+  { n:6, label:"F", skus:["h1-3g","h1-2g"], room:"Kitchen / yard", loc:"Beside E", controls:["F1 = kitchen LED","F2 = kitchen track linear lights","F3 = service yard light","F4 = service yard motorised laundry rack","F5 = all kitchen lights off scene"], x:45.6, y:53.2 },
   { n:7, label:"G", skus:["h1-3g"], room:"Study (BR3)", loc:"Inside study, on half-wall", controls:["G1 = study ceiling fan","G2 = 4 LED strips on open shelves (1 driver = 1 gang)","G3 = study curtains"], x:42.9, y:42.0 },
   { n:8, label:"H", skus:["h1-3g"], room:"Kids room (BR2)", loc:"Inside kids room", controls:["H1 = kids room ceiling fan","H2 = kids curtains","H3 = kids sleep / fan-light scene"], x:51.3, y:39.0 },
   { n:9, label:"I", skus:["h1-2g"], room:"Common toilet", loc:"Outside common WC", controls:["I1 = hallway light","I2 = common bathroom ceiling light"], x:52.8, y:48.2 },
   { n:10, label:"J", skus:["h1-3g"], room:"Common toilet", loc:"Inside common toilet", controls:["J1 = LED below vanity cabinet","J2 = ventilation fan","J3 = acrylic panel LED strip"], x:53.7, y:50.2 },
   { n:11, label:"HEATER (common)", skus:["h1-20a"], room:"Hallway outside common WC", loc:"On hallway wall outside common toilet", controls:["20A water heater for master toilet"], x:54.6, y:48.3 },
-  { n:12, label:"K", skus:["h1-2g","h1-2g"], room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)"], x:56.1, y:46.3 },
+  { n:12, label:"K", skus:["h1-3g","h1-3g"], room:"MBR", loc:"Inside MBR, beside MBR toilet door", controls:["K1 = wardrobe lights (2 fixtures, 1 circuit)","K2 = MBR ceiling fan","K3 = stick light beside bed","K4 = harga lights (LED strip above bed)","K5 = bedside niche LED strip (mirrors L1-1)","K6 = MBR curtains open/close"], x:56.1, y:46.3 },
   { n:13, label:"L1", skus:["z1-4g"], room:"MBR bedside (side 1)", loc:"Bedside niche, side 1", controls:["L1-1 wired = bedside niche LED strip","L1-2 scene = bedhead lights group (niche + stick + harga)","L1-3 scene = MBR curtains open/close","L1-4 scene = night mode / all MBR lights off","Slider = optional curtain position only; do not depend on it"], x:68.2, y:40.8 },
   { n:14, label:"L2", skus:["z1-4g"], room:"MBR bedside (side 2)", loc:"Bedside, opposite side from L1", controls:["L2-1 scene = bedhead lights group (mirrors L1-2)","L2-2 scene = wardrobe lights (mirrors K1)","L2-3 scene = master toilet lights (M1 + M2 + N2 + N3)","L2-4 scene = MBR curtains open/close","Slider = optional curtain position only; do not depend on it"], x:66.7, y:29.6 },
   { n:15, label:"M", skus:["h1-3g"], room:"MBR wardrobe", loc:"On MBR wardrobe", controls:["M1 = master toilet ceiling light","M2 = master toilet acrylic panel LED strip","M3 = master heater scene rocker (mirrors HC 20A via Home Assistant)"], x:59.7, y:47.6 },
