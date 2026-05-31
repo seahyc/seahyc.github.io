@@ -177,15 +177,9 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   pointer-events: none;
   z-index: 8;
 }
-.presence-area {
-  fill: rgba(17, 97, 73, 0.16);
-  stroke: rgba(17, 97, 73, 0.72);
-  stroke-width: 0.18;
-  vector-effect: non-scaling-stroke;
-}
-.presence-area.fallback {
-  fill: rgba(171, 93, 17, 0.14);
-  stroke: rgba(171, 93, 17, 0.72);
+.presence-band {
+  stroke: none;
+  pointer-events: none;
 }
 .presence-power-line {
   stroke: rgba(17, 97, 73, 0.9);
@@ -198,6 +192,25 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   stroke: rgba(255,255,255,0.95);
   stroke-width: 0.18;
   vector-effect: non-scaling-stroke;
+}
+.wall-segment {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.wall-solid {
+  stroke: rgba(0,0,0,0.78);
+  stroke-width: 0.58;
+}
+.wall-half {
+  stroke: rgba(38, 115, 155, 0.76);
+  stroke-width: 0.35;
+  stroke-dasharray: 1.2 0.85;
+}
+.wall-beam {
+  stroke: rgba(121, 83, 32, 0.82);
+  stroke-width: 0.36;
+  stroke-dasharray: 0.45 0.55;
 }
 .map-controls { display: flex; gap: 8px; padding: 7px 10px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 6px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; min-height: 30px; font-family: inherit; }
@@ -244,6 +257,18 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   background: rgba(171, 93, 17, 0.78);
   border: 1px solid rgba(255,255,255,0.9);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.legend-wall {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0,0,0,0.78);
+}
+.legend-attenuation {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(90deg, rgba(38,115,155,0.8) 0 4px, transparent 4px 7px);
 }
 .zoom-controls {
   position: absolute;
@@ -470,6 +495,8 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
         <span><i class="legend-power"></i>curtain power</span>
         <span><i class="legend-sensor"></i>wired presence FOV</span>
         <span><i class="legend-sensor-fallback"></i>motion fallback</span>
+        <span><i class="legend-wall"></i>solid wall</span>
+        <span><i class="legend-attenuation"></i>attenuating half-wall/beam</span>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
         <strong>Drag pins to fix their positions</strong>
@@ -524,7 +551,8 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       </ul>
       <strong style="margin-top:8px;">Working recommendation</strong>
       <ul>
-        <li>Green polygons are usable presence areas clipped to walls; they deliberately do not pass through bedrooms, toilets, or thick partitions.</li>
+        <li>Green fades are ray-cast presence estimates: stronger near the sensor, weaker with distance and after attenuating elements.</li>
+        <li>Solid black wall segments stop the FOV; the study half-wall/glass and C4 ceiling beam reduce confidence without fully blocking it.</li>
         <li>Dashed green lines show which curtain power point feeds a wired sensor if a serviceable USB adapter/split is possible.</li>
         <li>Living/Dining and MBR are the best FP2 candidates because zones are actually useful there.</li>
         <li>Study and kids room can use FP1E unless you want per-zone behaviour; they mainly need reliable presence/absence.</li>
@@ -605,8 +633,10 @@ const SENSOR_POINTS = [
     powerPoint:"CP1",
     power:"Wired from CP1 if a serviceable USB adapter/split can be kept near the pelmet",
     detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
-    controls:["Best room for true FP2 zones: sofa, dining, entry, and curtain/window area","Use night rules to trigger dim path lighting only","Green area is clipped to living/dining walls and excludes bedrooms/toilets"],
-    coverage:[[27.6,35.1],[36.4,35.1],[43.4,43.6],[45.3,50.2],[42.4,55.8],[34.1,55.8],[34.1,51.0],[29.0,51.0],[27.6,48.0]],
+    controls:["Best room for true FP2 zones: sofa, dining, entry, and curtain/window area","Use night rules to trigger dim path lighting only","Coverage fades with distance and wall/beam attenuation"],
+    target:[40.0,46.5],
+    fov:120,
+    range:17,
     x:29.0,
     y:35.0
   },
@@ -619,8 +649,10 @@ const SENSOR_POINTS = [
     powerPoint:"CP2",
     power:"Wired from CP2 if a serviceable USB adapter/split can be kept near the pelmet",
     detects:"presence/absence, still/moving state, and room-level occupancy",
-    controls:["Use for study presence and work-light automation","Not worth FP2 unless you need desk/window/door zones","Green area is clipped to the study walls; wall to kids room blocks detection"],
-    coverage:[[38.7,29.7],[48.1,29.7],[48.1,42.8],[45.5,44.5],[38.7,44.5]],
+    controls:["Use for study presence and work-light automation","Not worth FP2 unless you need desk/window/door zones","The grey half-wall/glass near C attenuates rather than fully blocks"],
+    target:[44.0,39.8],
+    fov:120,
+    range:12,
     x:40.3,
     y:31.0
   },
@@ -633,8 +665,10 @@ const SENSOR_POINTS = [
     powerPoint:"CP3",
     power:"Wired from CP3 if a serviceable USB adapter/split can be kept near the pelmet",
     detects:"presence/absence, still/moving state, and room-level occupancy",
-    controls:["Use dim path/night lighting only at night","Use schedules or presence for curtain scenes","Green area is clipped to kids-room walls and does not see into MBR/study"],
-    coverage:[[48.7,29.7],[58.1,29.7],[58.1,44.2],[52.1,44.2],[48.7,42.6]],
+    controls:["Use dim path/night lighting only at night","Use schedules or presence for curtain scenes","Solid partitions block detection into MBR/study"],
+    target:[53.5,39.4],
+    fov:120,
+    range:12,
     x:49.8,
     y:31.0
   },
@@ -647,8 +681,10 @@ const SENSOR_POINTS = [
     powerPoint:"CP4",
     power:"Wired from CP4 at the MBR window/pelmet corner if a serviceable USB adapter/split is possible",
     detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
-    controls:["Use zones for bed, wardrobe/entry, and curtain/window area","Use dim path/night lighting only at night","Green area is clipped to MBR walls and excludes the master toilet behind walls"],
-    coverage:[[58.6,29.6],[68.3,29.6],[68.3,47.6],[62.0,47.6],[58.6,43.4]],
+    controls:["Use zones for bed, wardrobe/entry, and curtain/window area","Use dim path/night lighting only at night","Solid walls block the master toilet; detection weakens toward wardrobe entry"],
+    target:[63.4,40.5],
+    fov:120,
+    range:16,
     x:59.3,
     y:31.0
   },
@@ -662,7 +698,9 @@ const SENSOR_POINTS = [
     power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
     detects:"motion and illuminance only; cannot reliably detect a still seated person",
     controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Good for dim night/path lighting trigger","Orange area is room-limited motion coverage, not true presence"],
-    coverage:[[51.2,47.7],[56.0,47.7],[56.0,53.2],[51.2,53.2]],
+    target:[53.4,51.0],
+    fov:170,
+    range:7,
     fallback:true,
     x:54.1,
     y:49.0
@@ -677,11 +715,34 @@ const SENSOR_POINTS = [
     power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
     detects:"motion and illuminance only; cannot reliably detect a still seated person",
     controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Coordinate with M/N toilet light and fan rockers","Orange area is room-limited motion coverage, not true presence"],
-    coverage:[[56.7,47.7],[64.2,47.7],[64.2,54.4],[56.7,54.4]],
+    target:[61.0,51.5],
+    fov:170,
+    range:8,
     fallback:true,
     x:59.5,
     y:49.0
   },
+];
+
+const WALL_SEGMENTS = [
+  { label:"Living external wall", type:"solid", x1:25.3, y1:33.2, x2:25.3, y2:51.4, loss:1, block:true },
+  { label:"Shelter wall", type:"solid", x1:25.3, y1:51.4, x2:31.0, y2:51.4, loss:1, block:true },
+  { label:"Shelter wall", type:"solid", x1:31.0, y1:51.4, x2:31.0, y2:61.4, loss:1, block:true },
+  { label:"Kitchen / yard wall", type:"solid", x1:37.4, y1:51.4, x2:37.4, y2:70.0, loss:1, block:true },
+  { label:"Study left structural wall", type:"solid", x1:37.4, y1:28.6, x2:37.4, y2:38.2, loss:1, block:true },
+  { label:"Study / kids partition", type:"solid", x1:47.9, y1:28.6, x2:47.9, y2:43.8, loss:1, block:true },
+  { label:"Kids / MBR partition", type:"solid", x1:58.4, y1:28.6, x2:58.4, y2:39.0, loss:1, block:true },
+  { label:"MBR right wall", type:"solid", x1:68.5, y1:28.4, x2:68.5, y2:49.0, loss:1, block:true },
+  { label:"MBR bottom wall", type:"solid", x1:58.5, y1:47.4, x2:68.5, y2:47.4, loss:1, block:true },
+  { label:"Common toilet wall", type:"solid", x1:50.4, y1:46.8, x2:56.2, y2:46.8, loss:1, block:true },
+  { label:"Common toilet wall", type:"solid", x1:50.4, y1:46.8, x2:50.4, y2:54.3, loss:1, block:true },
+  { label:"Common toilet wall", type:"solid", x1:56.2, y1:46.8, x2:56.2, y2:54.3, loss:1, block:true },
+  { label:"Master toilet wall", type:"solid", x1:56.2, y1:46.9, x2:64.2, y2:46.9, loss:1, block:true },
+  { label:"Master toilet wall", type:"solid", x1:64.2, y1:46.9, x2:64.2, y2:54.8, loss:1, block:true },
+  { label:"Study half-wall with glass", type:"half", x1:36.9, y1:35.7, x2:36.9, y2:44.6, loss:0.34, block:false },
+  { label:"Study half-wall with glass", type:"half", x1:36.9, y1:44.6, x2:42.2, y2:44.6, loss:0.34, block:false },
+  { label:"C4 ceiling beam", type:"beam", x1:38.7, y1:43.2, x2:38.7, y2:54.4, loss:0.20, block:false },
+  { label:"C4 ceiling beam", type:"beam", x1:36.9, y1:43.2, x2:40.5, y2:43.2, loss:0.20, block:false },
 ];
 
 const SKU_CATALOG = [
@@ -767,6 +828,7 @@ function renderMarkers() {
     m.title = `${s.label} — ${s.room}`;
     m.setAttribute('aria-label', `Switch ${s.n}: ${s.label} in ${s.room}`);
     m.dataset.idx = SWITCHES.indexOf(s);
+    m.dataset.kind = 'switch';
     m.onclick = (e) => { if (calibActive) return; e.stopPropagation(); openDrawer(s); };
     c.appendChild(m);
   });
@@ -788,37 +850,133 @@ function renderPowerMarkers() {
   });
 }
 
-function pointList(points) {
-  return points.map(([x, y]) => `${x},${y}`).join(' ');
+function addSvgEl(parent, tag, attrs) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+  parent.appendChild(el);
+  return el;
+}
+
+function sensorAngle(sensor) {
+  const [tx, ty] = sensor.target;
+  return Math.atan2(ty - sensor.y, tx - sensor.x);
+}
+
+function raySegmentIntersection(origin, dir, segment) {
+  const vx = segment.x2 - segment.x1;
+  const vy = segment.y2 - segment.y1;
+  const wx = segment.x1 - origin.x;
+  const wy = segment.y1 - origin.y;
+  const denom = dir.x * vy - dir.y * vx;
+  if (Math.abs(denom) < 0.0001) return null;
+  const t = (wx * vy - wy * vx) / denom;
+  const u = (wx * dir.y - wy * dir.x) / denom;
+  if (t <= 0 || u < 0 || u > 1) return null;
+  return { t, segment };
+}
+
+function traceRay(sensor, angle) {
+  const dir = { x: Math.cos(angle), y: Math.sin(angle) };
+  const hits = WALL_SEGMENTS
+    .map(segment => raySegmentIntersection(sensor, dir, segment))
+    .filter(Boolean)
+    .filter(hit => hit.t <= sensor.range)
+    .sort((a, b) => a.t - b.t);
+  const solidHit = hits.find(hit => hit.segment.block);
+  const stop = solidHit ? solidHit.t : sensor.range;
+  const attenuators = hits.filter(hit => !hit.segment.block && hit.t < stop);
+  return { angle, stop, attenuators };
+}
+
+function attenuationBefore(ray, distance) {
+  return ray.attenuators
+    .filter(hit => hit.t <= distance)
+    .reduce((total, hit) => total + hit.segment.loss, 0);
+}
+
+function polarPoint(sensor, angle, distance) {
+  return {
+    x: sensor.x + Math.cos(angle) * distance,
+    y: sensor.y + Math.sin(angle) * distance
+  };
+}
+
+function pointString(points) {
+  return points.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
+}
+
+function renderWallSegments(svg) {
+  WALL_SEGMENTS.forEach(wall => {
+    addSvgEl(svg, 'line', {
+      class: `wall-segment wall-${wall.type}`,
+      x1: wall.x1,
+      y1: wall.y1,
+      x2: wall.x2,
+      y2: wall.y2
+    });
+  });
 }
 
 function renderPresenceOverlays() {
   const svg = document.getElementById('presence-overlays');
   svg.innerHTML = '';
-  SENSOR_POINTS.forEach(p => {
-    const area = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    area.setAttribute('class', 'presence-area' + (p.fallback ? ' fallback' : ''));
-    area.setAttribute('points', pointList(p.coverage));
-    svg.appendChild(area);
+  SENSOR_POINTS.forEach(sensor => {
+    const rayCount = sensor.fallback ? 48 : 72;
+    const bandCount = sensor.fallback ? 4 : 6;
+    const halfFov = (sensor.fov * Math.PI / 180) / 2;
+    const start = sensorAngle(sensor) - halfFov;
+    const rays = Array.from({ length: rayCount + 1 }, (_, i) =>
+      traceRay(sensor, start + (i / rayCount) * halfFov * 2)
+    );
+    const color = sensor.fallback ? '171,93,17' : '17,97,73';
 
-    if (!p.powerPoint) return;
-    const power = CURTAIN_POWER_POINTS.find(cp => cp.label === p.powerPoint);
+    for (let i = 0; i < rayCount; i++) {
+      const a = rays[i];
+      const b = rays[i + 1];
+      for (let band = 0; band < bandCount; band++) {
+        const nearBase = sensor.range * (band / bandCount);
+        const farBase = sensor.range * ((band + 1) / bandCount);
+        const farA = Math.min(a.stop, farBase);
+        const farB = Math.min(b.stop, farBase);
+        const nearA = Math.min(a.stop, nearBase);
+        const nearB = Math.min(b.stop, nearBase);
+        if (farA <= nearA && farB <= nearB) continue;
+
+        const mid = (nearBase + farBase) / 2;
+        const loss = Math.max(attenuationBefore(a, mid), attenuationBefore(b, mid));
+        const distanceFade = 1 - (band / bandCount) * 0.78;
+        const opacity = Math.max(0.018, (sensor.fallback ? 0.11 : 0.16) * distanceFade * Math.max(0.18, 1 - loss));
+        const p1 = polarPoint(sensor, a.angle, nearA);
+        const p2 = polarPoint(sensor, b.angle, nearB);
+        const p3 = polarPoint(sensor, b.angle, farB);
+        const p4 = polarPoint(sensor, a.angle, farA);
+
+        addSvgEl(svg, 'polygon', {
+          class: 'presence-band',
+          points: pointString([p1, p2, p3, p4]),
+          fill: `rgba(${color},${opacity.toFixed(3)})`
+        });
+      }
+    }
+
+    if (!sensor.powerPoint) return;
+    const power = CURTAIN_POWER_POINTS.find(cp => cp.label === sensor.powerPoint);
     if (!power) return;
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('class', 'presence-power-line');
-    line.setAttribute('x1', p.x);
-    line.setAttribute('y1', p.y);
-    line.setAttribute('x2', power.x);
-    line.setAttribute('y2', power.y);
-    svg.appendChild(line);
-
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.setAttribute('class', 'presence-power-dot');
-    dot.setAttribute('cx', power.x);
-    dot.setAttribute('cy', power.y);
-    dot.setAttribute('r', 0.45);
-    svg.appendChild(dot);
+    addSvgEl(svg, 'line', {
+      class: 'presence-power-line',
+      x1: sensor.x,
+      y1: sensor.y,
+      x2: power.x,
+      y2: power.y
+    });
+    addSvgEl(svg, 'circle', {
+      class: 'presence-power-dot',
+      cx: power.x,
+      cy: power.y,
+      r: 0.45
+    });
   });
+  renderWallSegments(svg);
 }
 
 function renderSensorMarkers() {
@@ -832,7 +990,9 @@ function renderSensorMarkers() {
     m.textContent = p.label;
     m.title = `${p.label} — ${p.room}: ${p.loc}. ${p.recommendation}.`;
     m.setAttribute('aria-label', `${p.label}: sensor candidate in ${p.room}, ${p.loc}`);
-    m.onclick = (e) => { e.stopPropagation(); openSensorDrawer(p); };
+    m.dataset.idx = SENSOR_POINTS.indexOf(p);
+    m.dataset.kind = 'sensor';
+    m.onclick = (e) => { if (calibActive) return; e.stopPropagation(); openSensorDrawer(p); };
     c.appendChild(m);
   });
 }
@@ -1152,14 +1312,25 @@ window.addEventListener('resize', applyZoom);
 // ─── Calibrate (drag pins) mode ──────────────────────────────
 let calibActive = false;
 const ORIGINAL_COORDS = SWITCHES.map(s => ({ x: s.x, y: s.y }));
+const ORIGINAL_SENSOR_COORDS = SENSOR_POINTS.map(s => ({ x: s.x, y: s.y }));
 const calibToggle = document.getElementById('calibrate-toggle');
 const calibPanel = document.getElementById('calibrate-panel');
 const calibOutput = document.getElementById('calib-output');
 
 function refreshCalibOutput() {
-  calibOutput.value = SWITCHES.map(s =>
+  const switchLines = SWITCHES.map(s =>
     `  { n:${s.n}, label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
-  ).join('\n');
+  );
+  const sensorLines = SENSOR_POINTS.map(s =>
+    `  { label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
+  );
+  calibOutput.value = [
+    'SWITCHES',
+    ...switchLines,
+    '',
+    'SENSORS',
+    ...sensorLines
+  ].join('\n');
 }
 
 calibToggle.onclick = () => {
@@ -1167,10 +1338,10 @@ calibToggle.onclick = () => {
   calibPanel.style.display = calibActive ? 'block' : 'none';
   calibToggle.style.background = calibActive ? '#ffd966' : '';
   document.getElementById('map-hint').textContent = calibActive
-    ? 'Drag pins to move them · use zoom for precision'
+    ? 'Drag switch or sensor pins · FOV updates live'
     : 'Tap a marker · scroll to zoom · drag map';
-  document.querySelectorAll('.marker').forEach(m => {
-    m.style.cursor = calibActive ? 'move' : 'pointer';
+  document.querySelectorAll('.marker, .sensor-marker').forEach(m => {
+    m.style.cursor = calibActive ? 'move' : '';
     m.style.touchAction = calibActive ? 'none' : '';
   });
   if (calibActive) refreshCalibOutput();
@@ -1178,8 +1349,11 @@ calibToggle.onclick = () => {
 
 document.getElementById('calib-reset').onclick = () => {
   SWITCHES.forEach((s, i) => { s.x = ORIGINAL_COORDS[i].x; s.y = ORIGINAL_COORDS[i].y; });
+  SENSOR_POINTS.forEach((s, i) => { s.x = ORIGINAL_SENSOR_COORDS[i].x; s.y = ORIGINAL_SENSOR_COORDS[i].y; });
+  renderPresenceOverlays();
   renderMarkers();
-  document.querySelectorAll('.marker').forEach(m => { m.style.cursor = 'move'; m.style.touchAction = 'none'; });
+  renderSensorMarkers();
+  document.querySelectorAll('.marker, .sensor-marker').forEach(m => { m.style.cursor = 'move'; m.style.touchAction = 'none'; });
   refreshCalibOutput();
 };
 document.getElementById('calib-copy').onclick = () => {
@@ -1191,18 +1365,21 @@ document.getElementById('calib-copy').onclick = () => {
 document.getElementById('calib-done').onclick = () => { calibToggle.click(); };
 
 // Drag handlers (pointer events cover mouse + touch)
-let dragIdx = null, dragOffX = 0, dragOffY = 0;
+let dragIdx = null, dragKind = null, dragOffX = 0, dragOffY = 0;
 mapInner.addEventListener('pointerdown', (e) => {
   if (!calibActive) return;
-  if (!e.target.classList.contains('marker')) return;
-  dragIdx = parseInt(e.target.dataset.idx);
+  const target = e.target.closest('.marker, .sensor-marker');
+  if (!target) return;
+  dragIdx = parseInt(target.dataset.idx);
+  dragKind = target.dataset.kind;
+  const item = dragKind === 'sensor' ? SENSOR_POINTS[dragIdx] : SWITCHES[dragIdx];
   const img = document.getElementById('floorplan-img');
   const rect = img.getBoundingClientRect();
   const cursorX = ((e.clientX - rect.left) / rect.width) * 100;
   const cursorY = ((e.clientY - rect.top) / rect.height) * 100;
-  dragOffX = SWITCHES[dragIdx].x - cursorX;
-  dragOffY = SWITCHES[dragIdx].y - cursorY;
-  e.target.setPointerCapture(e.pointerId);
+  dragOffX = item.x - cursorX;
+  dragOffY = item.y - cursorY;
+  target.setPointerCapture(e.pointerId);
   e.preventDefault();
 });
 mapInner.addEventListener('pointermove', (e) => {
@@ -1211,15 +1388,20 @@ mapInner.addEventListener('pointermove', (e) => {
   const rect = img.getBoundingClientRect();
   const x = ((e.clientX - rect.left) / rect.width) * 100 + dragOffX;
   const y = ((e.clientY - rect.top) / rect.height) * 100 + dragOffY;
-  SWITCHES[dragIdx].x = Math.max(0, Math.min(100, x));
-  SWITCHES[dragIdx].y = Math.max(0, Math.min(100, y));
-  const m = document.querySelector(`.marker[data-idx="${dragIdx}"]`);
-  if (m) { m.style.left = SWITCHES[dragIdx].x + '%'; m.style.top = SWITCHES[dragIdx].y + '%'; }
+  const item = dragKind === 'sensor' ? SENSOR_POINTS[dragIdx] : SWITCHES[dragIdx];
+  item.x = Math.max(0, Math.min(100, x));
+  item.y = Math.max(0, Math.min(100, y));
+  const selector = dragKind === 'sensor'
+    ? `.sensor-marker[data-idx="${dragIdx}"]`
+    : `.marker[data-idx="${dragIdx}"]`;
+  const m = document.querySelector(selector);
+  if (m) { m.style.left = item.x + '%'; m.style.top = item.y + '%'; }
+  if (dragKind === 'sensor') renderPresenceOverlays();
 });
 mapInner.addEventListener('pointerup', () => {
-  if (dragIdx !== null) { dragIdx = null; refreshCalibOutput(); }
+  if (dragIdx !== null) { dragIdx = null; dragKind = null; refreshCalibOutput(); }
 });
-mapInner.addEventListener('pointercancel', () => { dragIdx = null; });
+mapInner.addEventListener('pointercancel', () => { dragIdx = null; dragKind = null; });
 </script>
 </body>
 </html>
