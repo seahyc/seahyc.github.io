@@ -166,7 +166,10 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   appearance: none;
 }
 .sensor-marker:active { transform: translate(-50%, -50%) scale(1.08); }
-.sensor-marker.fallback {
+.sensor-marker.battery {
+  background: rgba(35, 99, 142, 0.78);
+}
+.sensor-marker.motion {
   background: rgba(171, 93, 17, 0.78);
 }
 .presence-overlays {
@@ -250,7 +253,15 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   border: 1px solid rgba(255,255,255,0.9);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
 }
-.legend-sensor-fallback {
+.legend-sensor-battery {
+  width: 14px;
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(35, 99, 142, 0.78);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.legend-sensor-motion {
   width: 14px;
   height: 10px;
   border-radius: 6px;
@@ -365,6 +376,20 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
 .notes strong { display: block; margin-bottom: 6px; font-size: 13px; }
 .notes ul { margin-top: 4px; padding-left: 18px; }
 .notes li { margin-bottom: 2px; }
+.sensor-plan-list { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; }
+.sensor-card { background: var(--panel); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 10px 12px; box-shadow: var(--shadow); }
+.sensor-card.wired { border-left: 4px solid #116149; }
+.sensor-card.battery { border-left: 4px solid #23638e; }
+.sensor-card.motion { border-left: 4px solid #ab5d11; }
+.sensor-card .sensor-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.sensor-card .sensor-name { font-weight: 700; font-size: 13px; }
+.sensor-card .sensor-badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+.sensor-card .sensor-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; padding: 3px 6px; border-radius: 4px; background: #f2ede3; color: var(--muted); font-weight: 700; white-space: nowrap; }
+.sensor-card .sensor-badge.wired { background: #e7f4ec; color: #116149; }
+.sensor-card .sensor-badge.battery { background: #e6f0f7; color: #23638e; }
+.sensor-card .sensor-badge.motion { background: #f8ecdd; color: #8b4b0d; }
+.sensor-card .sensor-detail { color: var(--muted); font-size: 12px; line-height: 1.35; margin-top: 4px; }
+.sensor-card .sensor-why { font-size: 12px; line-height: 1.35; margin-top: 6px; }
 
 /* Drawer (bottom sheet on mobile, side panel on desktop) */
 .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: none; z-index: 200; opacity: 0; transition: opacity 0.2s; }
@@ -499,8 +524,9 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-legend" id="map-legend">
         <span><i class="legend-dot"></i>switch</span>
         <span><i class="legend-power"></i>curtain power</span>
-        <span><i class="legend-sensor"></i>wired presence FOV</span>
-        <span><i class="legend-sensor-fallback"></i>motion fallback</span>
+        <span><i class="legend-sensor"></i>wired presence</span>
+        <span><i class="legend-sensor-battery"></i>battery presence</span>
+        <span><i class="legend-sensor-motion"></i>battery motion only</span>
         <span><i class="legend-wall"></i>solid wall</span>
         <span><i class="legend-attenuation"></i>attenuating half-wall/beam</span>
       </div>
@@ -564,15 +590,15 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       </ul>
       <strong style="margin-top:8px;">Working recommendation</strong>
       <ul>
-        <li>Green fades are ray-cast presence estimates: stronger near the sensor, weaker with distance and after attenuating elements.</li>
-        <li>FP2, FP1E, and FP300 are directional around 120° for the useful presence FOV, not 360° room scanners.</li>
+        <li>Coverage fades are spec-informed ray-cast estimates, not a guarantee: stronger near the sensor, weaker with distance and after attenuating elements.</li>
+        <li>FP2, FP1E, and FP300 use directional wall/corner placement assumptions around 120°; the map models horizontal coverage only, not mounting height.</li>
         <li>Solid black wall segments stop the FOV; the study half-wall/glass and C4 ceiling beam reduce confidence without fully blocking it.</li>
-        <li>Dashed green lines show actual wired-from-curtain-power candidates if a serviceable USB adapter/split is possible.</li>
+        <li>Dashed green lines show the only wired-from-curtain-power sensor candidates if a serviceable USB adapter/split is possible.</li>
         <li>Living/dining does not get an FP2 at C/C4 unless a new always-on 5V feed is added later; there is no marked wire point there.</li>
-        <li>Study and kids room can use FP1E unless you want per-zone behaviour; they mainly need reliable presence/absence.</li>
-        <li>Hall, kitchen, and toilets are marked with battery FP300/P1-P2 options unless new low-voltage power is added.</li>
+        <li>Kitchen, hall, and toilets are not wired for presence sensors in this plan; they use battery devices unless new low-voltage power is added.</li>
       </ul>
     </div>
+    <div class="sensor-plan-list" id="sensor-plan-list"></div>
   </div>
 </main>
 
@@ -642,17 +668,19 @@ const SENSOR_POINTS = [
     label:"Living FP300",
     shortLabel:"FP300",
     room:"Living/Dining",
-    loc:"High on living window/pelmet corner, aimed across sofa/window side",
+    loc:"Living window-side wall/corner, preferably around upper-torso height, aimed across sofa/window side",
     model:"Aqara Presence Multi-Sensor FP300",
     recommendation:"FP300 · battery · Zigbee or Thread",
+    wiring:"battery",
+    coverage:"presence",
     powerPoint:null,
-    power:"Battery sensor near CP1; CP1 is still curtain power, not required for this sensor",
+    power:"Battery powered; no wire needed. CP1 remains curtain-motor power only.",
     detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
-    controls:["Use as a low-wiring living-side presence and climate sensor","Good for curtain-side occupancy and lux/temp/humidity context","Practical living/dining option unless a new always-on feed is added for a future FP2"],
+    reason:"Recommended because there is no usable power point at C/C4 for a wired FP2, but living still benefits from true battery presence plus lux, temperature, and humidity context.",
+    controls:["Use as a low-wiring living-side presence and climate sensor","Place at side-wall/window corner where it can face torso movement; battery means the exact height can be tuned after move-in","Practical living/dining option unless a new always-on feed is added for a future FP2"],
     target:[35.5,43.5],
     fov:120,
     range:12,
-    fallback:true,
     x:29.0,
     y:35.0
   },
@@ -663,9 +691,12 @@ const SENSOR_POINTS = [
     loc:"High on study window/pelmet corner, aimed diagonally into the room",
     model:"Aqara Presence Sensor FP1E",
     recommendation:"FP1E · wired 5V USB-A power · Zigbee",
+    wiring:"wired",
+    coverage:"presence",
     powerPoint:"CP2",
     power:"Wired from CP2 if a serviceable USB adapter/split can be kept near the pelmet",
     detects:"presence/absence, still/moving state, and room-level occupancy",
+    reason:"Recommended because study has a curtain power point at CP2 and only needs reliable room-level presence, not FP2-style multi-zone tracking.",
     controls:["Use for study presence and work-light automation","Not worth FP2 unless you need desk/window/door zones","The grey half-wall/glass near C attenuates rather than fully blocks"],
     target:[44.0,39.8],
     fov:120,
@@ -680,9 +711,12 @@ const SENSOR_POINTS = [
     loc:"High on kids-room window/pelmet corner, aimed toward bed/play/door area",
     model:"Aqara Presence Sensor FP1E",
     recommendation:"FP1E · wired 5V USB-A power · Zigbee",
+    wiring:"wired",
+    coverage:"presence",
     powerPoint:"CP3",
     power:"Wired from CP3 if a serviceable USB adapter/split can be kept near the pelmet",
     detects:"presence/absence, still/moving state, and room-level occupancy",
+    reason:"Recommended because CP3 can provide always-on power and the kids room mainly needs dependable occupied/vacant state for dim night/path lighting.",
     controls:["Use dim path/night lighting only at night","Use schedules or presence for curtain scenes","Solid partitions block detection into MBR/study"],
     target:[53.5,39.4],
     fov:120,
@@ -697,9 +731,12 @@ const SENSOR_POINTS = [
     loc:"High on MBR window/pelmet left corner, aimed across bed and wardrobe entry",
     model:"Aqara Presence Sensor FP2",
     recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
+    wiring:"wired",
+    coverage:"presence",
     powerPoint:"CP4",
     power:"Wired from CP4 at the MBR window/pelmet corner if a serviceable USB adapter/split is possible",
     detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
+    reason:"Recommended because the master bedroom is the one room where multi-zone behavior is useful: bed, wardrobe/entry, curtain/window area, and night-mode logic.",
     controls:["Use zones for bed, wardrobe/entry, and curtain/window area","Use dim path/night lighting only at night","Solid walls block the master toilet; detection weakens toward wardrobe entry"],
     target:[63.4,40.5],
     fov:120,
@@ -714,14 +751,16 @@ const SENSOR_POINTS = [
     loc:"Battery sensor inside common toilet; no socket planned",
     model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
     recommendation:"Motion fallback · battery · Zigbee P1 or Thread P2",
+    wiring:"battery",
+    coverage:"motion",
     powerPoint:null,
     power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
     detects:"motion and illuminance only; cannot reliably detect a still seated person",
+    reason:"Recommended only as a practical fallback because toilets have no sockets. Use long timeout and optional door/contact logic to avoid lights turning off when someone is still.",
     controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Good for dim night/path lighting trigger","Orange area is room-limited motion coverage, not true presence"],
     target:[53.4,51.0],
     fov:170,
     range:7,
-    fallback:true,
     x:54.1,
     y:49.0
   },
@@ -732,14 +771,16 @@ const SENSOR_POINTS = [
     loc:"Battery sensor inside master toilet; no socket planned",
     model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
     recommendation:"Motion fallback · battery · Zigbee P1 or Thread P2",
+    wiring:"battery",
+    coverage:"motion",
     powerPoint:null,
     power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
     detects:"motion and illuminance only; cannot reliably detect a still seated person",
+    reason:"Recommended only as a no-wiring fallback for the master toilet. It is not true still-person presence, so use longer automations around toilet light and fan control.",
     controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Coordinate with M/N toilet light and fan rockers","Orange area is room-limited motion coverage, not true presence"],
     target:[61.0,51.5],
     fov:170,
     range:8,
-    fallback:true,
     x:59.5,
     y:49.0
   },
@@ -747,17 +788,19 @@ const SENSOR_POINTS = [
     label:"Kitchen FP300",
     shortLabel:"FP300",
     room:"Kitchen / yard",
-    loc:"Battery sensor on kitchen/yard side, aimed along kitchen counter and yard entrance",
+    loc:"Kitchen/yard side wall, preferably around upper-torso height, aimed along kitchen counter and yard entrance",
     model:"Aqara Presence Multi-Sensor FP300",
     recommendation:"FP300 · battery · Zigbee or Thread",
+    wiring:"battery",
+    coverage:"presence",
     powerPoint:null,
     power:"Battery powered; no new socket needed",
     detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
-    controls:["Use for kitchen lights off/on confidence where ceiling beam FP2 may be blocked","Temperature/humidity context is useful near kitchen/yard","Not for fine multi-zone mapping"],
+    reason:"Recommended because the kitchen has no sensible wired sensor point and induction removes the need for a gas sensor. FP300 gives battery presence and useful kitchen climate/lux context.",
+    controls:["Use for kitchen lights off/on confidence where the C4 beam and walls block room inference","Temperature/humidity context is useful near kitchen/yard","Not for fine multi-zone mapping"],
     target:[47.0,61.0],
     fov:120,
     range:11,
-    fallback:true,
     x:43.0,
     y:55.6
   },
@@ -765,17 +808,19 @@ const SENSOR_POINTS = [
     label:"Hall FP300",
     shortLabel:"FP300",
     room:"Hall / entry",
-    loc:"Battery sensor around foyer/hall, aimed toward main door and common toilet approach",
+    loc:"Hall/entry side wall, preferably around upper-torso height, aimed toward main door and common toilet approach",
     model:"Aqara Presence Multi-Sensor FP300",
     recommendation:"FP300 · battery · Zigbee or Thread",
+    wiring:"battery",
+    coverage:"presence",
     powerPoint:null,
     power:"Battery powered; no new socket needed",
     detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
-    controls:["Use for arrival/path lighting and all-off confidence","Good bridge between foyer, toilet approach, and living/dining edge","Avoids using the living FP2 to infer hallway movement through walls/beam"],
+    reason:"Recommended because the hall has no dedicated sensor wiring but is important for arrival, path lighting, and whole-house all-off confidence.",
+    controls:["Use for arrival/path lighting and all-off confidence","Good bridge between foyer, toilet approach, and living/dining edge","Avoids using the living sensor to infer hallway movement through walls/beam"],
     target:[38.0,52.0],
     fov:120,
     range:10,
-    fallback:true,
     x:34.0,
     y:56.0
   },
@@ -974,18 +1019,31 @@ function renderWallSegments(svg) {
   });
 }
 
+function sensorCoverageColor(sensor) {
+  if (sensor.coverage === 'motion') return '171,93,17';
+  if (sensor.wiring === 'battery') return '35,99,142';
+  return '17,97,73';
+}
+
+function sensorWiringText(sensor) {
+  return sensor.wiring === 'wired'
+    ? `Wired from ${sensor.powerPoint || 'new power'}`
+    : 'Battery / no wire';
+}
+
 function renderPresenceOverlays() {
   const svg = document.getElementById('presence-overlays');
   svg.innerHTML = '';
   SENSOR_POINTS.forEach(sensor => {
-    const rayCount = sensor.fallback ? 48 : 72;
-    const bandCount = sensor.fallback ? 4 : 6;
+    const isMotion = sensor.coverage === 'motion';
+    const rayCount = isMotion ? 48 : 72;
+    const bandCount = isMotion ? 4 : 6;
     const halfFov = (sensor.fov * Math.PI / 180) / 2;
     const start = sensorAngle(sensor) - halfFov;
     const rays = Array.from({ length: rayCount + 1 }, (_, i) =>
       traceRay(sensor, start + (i / rayCount) * halfFov * 2)
     );
-    const color = sensor.fallback ? '171,93,17' : '17,97,73';
+    const color = sensorCoverageColor(sensor);
 
     for (let i = 0; i < rayCount; i++) {
       const a = rays[i];
@@ -1002,7 +1060,7 @@ function renderPresenceOverlays() {
         const mid = (nearBase + farBase) / 2;
         const loss = Math.max(attenuationBefore(a, mid), attenuationBefore(b, mid));
         const distanceFade = 1 - (band / bandCount) * 0.78;
-        const opacity = Math.max(0.018, (sensor.fallback ? 0.11 : 0.16) * distanceFade * Math.max(0.18, 1 - loss));
+        const opacity = Math.max(0.018, (isMotion ? 0.11 : 0.16) * distanceFade * Math.max(0.18, 1 - loss));
         const p1 = polarPoint(sensor, a.angle, nearA);
         const p2 = polarPoint(sensor, b.angle, nearB);
         const p3 = polarPoint(sensor, b.angle, farB);
@@ -1042,12 +1100,12 @@ function renderSensorMarkers() {
   c.innerHTML = '';
   SENSOR_POINTS.forEach(p => {
     const m = document.createElement('button');
-    m.className = 'sensor-marker' + (p.fallback ? ' fallback' : '');
+    m.className = ['sensor-marker', p.wiring, p.coverage === 'motion' ? 'motion' : ''].filter(Boolean).join(' ');
     m.style.left = p.x + '%';
     m.style.top = p.y + '%';
     m.textContent = p.shortLabel || p.model;
-    m.title = `${p.label} — ${p.room}: ${p.loc}. ${p.recommendation}.`;
-    m.setAttribute('aria-label', `${p.label}: sensor candidate in ${p.room}, ${p.loc}`);
+    m.title = `${p.label} — ${p.room}: ${p.loc}. ${sensorWiringText(p)}. ${p.recommendation}.`;
+    m.setAttribute('aria-label', `${p.label}: ${sensorWiringText(p)} sensor candidate in ${p.room}, ${p.loc}`);
     m.dataset.idx = SENSOR_POINTS.indexOf(p);
     m.dataset.kind = 'sensor';
     m.onclick = (e) => { if (calibActive) return; e.stopPropagation(); openSensorDrawer(p); };
@@ -1180,6 +1238,32 @@ function renderOrder() {
   document.getElementById('order-copy-summary').textContent = `${itemQty} plates · $${subtotal.toLocaleString()} catalogue · $${net.toLocaleString()} after estimated discount`;
 }
 
+function renderSensorPlan() {
+  const c = document.getElementById('sensor-plan-list');
+  c.innerHTML = SENSOR_POINTS.map(sensor => {
+    const cardClass = sensor.coverage === 'motion' ? 'motion' : sensor.wiring;
+    const powerBadge = sensor.wiring === 'wired'
+      ? `<span class="sensor-badge wired">wired</span>`
+      : `<span class="sensor-badge battery">battery</span>`;
+    const coverageBadge = sensor.coverage === 'motion'
+      ? `<span class="sensor-badge motion">motion only</span>`
+      : `<span class="sensor-badge">presence</span>`;
+    const wireBadge = sensor.powerPoint
+      ? `<span class="sensor-badge">${sensor.powerPoint}</span>`
+      : `<span class="sensor-badge">no wire point</span>`;
+    return `
+      <div class="sensor-card ${cardClass}">
+        <div class="sensor-top">
+          <div class="sensor-name">${sensor.label} · ${sensor.model}</div>
+          <div class="sensor-badges">${powerBadge}${coverageBadge}${wireBadge}</div>
+        </div>
+        <div class="sensor-detail">${sensor.room} — ${sensor.loc}</div>
+        <div class="sensor-detail">${sensor.power}</div>
+        <div class="sensor-why">${sensor.reason}</div>
+      </div>`;
+  }).join('');
+}
+
 document.getElementById('copy-order-list').onclick = () => {
   const button = document.getElementById('copy-order-list');
   const original = button.textContent;
@@ -1232,13 +1316,14 @@ function openSensorDrawer(p) {
   document.getElementById('drawer-img').alt = '';
   document.getElementById('drawer-controls').innerHTML = [
     `Detects: ${p.detects}`,
+    `Why this SKU: ${p.reason}`,
     ...p.controls
   ].map(c=>`<li>${c}</li>`).join('');
-  document.getElementById('drawer-model').textContent = `${p.model} · ${p.recommendation}`;
-  document.getElementById('drawer-meta-label').textContent = p.powerPoint ? 'Power source · FOV note' : 'Power source · detection note';
+  document.getElementById('drawer-model').textContent = `${p.model} · ${p.recommendation} · ${p.coverage === 'motion' ? 'motion only' : 'presence'}`;
+  document.getElementById('drawer-meta-label').textContent = p.powerPoint ? 'Power source · FOV note' : 'Power source · wiring note';
   document.getElementById('drawer-meta').textContent = p.powerPoint
-    ? `${p.power} · dashed green line to ${p.powerPoint}`
-    : p.power;
+    ? `${sensorWiringText(p)} · ${p.power} · dashed green line to ${p.powerPoint}`
+    : `${sensorWiringText(p)} · ${p.power}`;
   const cb = document.getElementById('drawer-check');
   cb.checked = false;
   cb.disabled = true;
@@ -1428,7 +1513,7 @@ document.querySelectorAll('nav button').forEach(b => {
   };
 });
 
-renderPowerMarkers(); renderPresenceOverlays(); renderSensorMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
+renderPowerMarkers(); renderPresenceOverlays(); renderSensorMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); renderSensorPlan(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
 // ─── Calibrate (drag pins) mode ──────────────────────────────
