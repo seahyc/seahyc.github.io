@@ -456,7 +456,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
 <header>
   <h1>532B Bishan — Smart Switches</h1>
-  <div class="subtitle">16 switch locations · 4 curtain power points · 6 sensor candidates · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
+  <div class="subtitle">16 switch locations · 4 curtain power points · 9 sensor candidates · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -552,11 +552,12 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <strong style="margin-top:8px;">Working recommendation</strong>
       <ul>
         <li>Green fades are ray-cast presence estimates: stronger near the sensor, weaker with distance and after attenuating elements.</li>
+        <li>FP2, FP1E, and FP300 are directional around 120° for the useful presence FOV, not 360° room scanners.</li>
         <li>Solid black wall segments stop the FOV; the study half-wall/glass and C4 ceiling beam reduce confidence without fully blocking it.</li>
         <li>Dashed green lines show which curtain power point feeds a wired sensor if a serviceable USB adapter/split is possible.</li>
-        <li>Living/Dining and MBR are the best FP2 candidates because zones are actually useful there.</li>
+        <li>The strongest living/dining option is an FP2 below the C4 beam if the electrician can provide always-on 5V power there.</li>
         <li>Study and kids room can use FP1E unless you want per-zone behaviour; they mainly need reliable presence/absence.</li>
-        <li>Toilets have no sockets, so they are marked as battery motion fallback, not true wired presence.</li>
+        <li>Hall, kitchen, and toilets are marked with battery FP300/P1-P2 options unless new low-voltage power is added.</li>
       </ul>
     </div>
   </div>
@@ -625,23 +626,43 @@ const CURTAIN_POWER_POINTS = [
 
 const SENSOR_POINTS = [
   {
-    label:"S1",
+    label:"Living FP300",
+    shortLabel:"FP300",
     room:"Living/Dining",
-    loc:"High on living window/pelmet corner, aimed across living and dining",
-    model:"Aqara Presence Sensor FP2",
-    recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
+    loc:"High on living window/pelmet corner, aimed across sofa/window side",
+    model:"Aqara Presence Multi-Sensor FP300",
+    recommendation:"FP300 · battery · Zigbee or Thread",
     powerPoint:"CP1",
-    power:"Wired from CP1 if a serviceable USB adapter/split can be kept near the pelmet",
-    detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
-    controls:["Best room for true FP2 zones: sofa, dining, entry, and curtain/window area","Use night rules to trigger dim path lighting only","Coverage fades with distance and wall/beam attenuation"],
-    target:[40.0,46.5],
+    power:"Battery sensor near CP1; CP1 is still curtain power, not required for this sensor",
+    detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
+    controls:["Use as a low-wiring living-side presence and climate sensor","Good for curtain-side occupancy and lux/temp/humidity context","Not the main multi-zone sensor if the C4 beam FP2 is installed"],
+    target:[35.5,43.5],
     fov:120,
-    range:17,
+    range:12,
+    fallback:true,
     x:29.0,
     y:35.0
   },
   {
-    label:"S2",
+    label:"Living/Dining FP2",
+    shortLabel:"FP2",
+    room:"Living/Dining",
+    loc:"Below C4 ceiling beam, aimed into living and dining",
+    model:"Aqara Presence Sensor FP2",
+    recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
+    powerPoint:null,
+    power:"Needs new always-on 5V USB power near/under the C4 ceiling beam; no existing socket is marked there",
+    detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
+    controls:["Best candidate for living/dining multi-zone control","Can separate dining, sofa, hallway/entry edge, and kitchen approach if tuned in Aqara app","Below-beam placement avoids wasting FP2 zones from the far window corner"],
+    target:[33.4,41.2],
+    fov:120,
+    range:18,
+    x:38.7,
+    y:43.8
+  },
+  {
+    label:"Study FP1E",
+    shortLabel:"FP1E",
     room:"Study (BR3)",
     loc:"High on study window/pelmet corner, aimed diagonally into the room",
     model:"Aqara Presence Sensor FP1E",
@@ -657,7 +678,8 @@ const SENSOR_POINTS = [
     y:31.0
   },
   {
-    label:"S3",
+    label:"Kids FP1E",
+    shortLabel:"FP1E",
     room:"Kids room (BR2)",
     loc:"High on kids-room window/pelmet corner, aimed toward bed/play/door area",
     model:"Aqara Presence Sensor FP1E",
@@ -673,7 +695,8 @@ const SENSOR_POINTS = [
     y:31.0
   },
   {
-    label:"S4",
+    label:"Master FP2",
+    shortLabel:"FP2",
     room:"Master bedroom",
     loc:"High on MBR window/pelmet left corner, aimed across bed and wardrobe entry",
     model:"Aqara Presence Sensor FP2",
@@ -689,7 +712,8 @@ const SENSOR_POINTS = [
     y:31.0
   },
   {
-    label:"S5",
+    label:"Common Toilet P1/P2",
+    shortLabel:"P1/P2",
     room:"Common toilet",
     loc:"Battery sensor inside common toilet; no socket planned",
     model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
@@ -706,7 +730,8 @@ const SENSOR_POINTS = [
     y:49.0
   },
   {
-    label:"S6",
+    label:"Master Toilet P1/P2",
+    shortLabel:"P1/P2",
     room:"Master toilet",
     loc:"Battery sensor inside master toilet; no socket planned",
     model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
@@ -721,6 +746,42 @@ const SENSOR_POINTS = [
     fallback:true,
     x:59.5,
     y:49.0
+  },
+  {
+    label:"Kitchen FP300",
+    shortLabel:"FP300",
+    room:"Kitchen / yard",
+    loc:"Battery sensor on kitchen/yard side, aimed along kitchen counter and yard entrance",
+    model:"Aqara Presence Multi-Sensor FP300",
+    recommendation:"FP300 · battery · Zigbee or Thread",
+    powerPoint:null,
+    power:"Battery powered; no new socket needed",
+    detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
+    controls:["Use for kitchen lights off/on confidence where ceiling beam FP2 may be blocked","Temperature/humidity context is useful near kitchen/yard","Not for fine multi-zone mapping"],
+    target:[47.0,61.0],
+    fov:120,
+    range:11,
+    fallback:true,
+    x:43.0,
+    y:55.6
+  },
+  {
+    label:"Hall FP300",
+    shortLabel:"FP300",
+    room:"Hall / entry",
+    loc:"Battery sensor around foyer/hall, aimed toward main door and common toilet approach",
+    model:"Aqara Presence Multi-Sensor FP300",
+    recommendation:"FP300 · battery · Zigbee or Thread",
+    powerPoint:null,
+    power:"Battery powered; no new socket needed",
+    detects:"presence/absence, motion, light, temperature, and humidity; no FP2-style zone map",
+    controls:["Use for arrival/path lighting and all-off confidence","Good bridge between foyer, toilet approach, and living/dining edge","Avoids using the living FP2 to infer hallway movement through walls/beam"],
+    target:[38.0,52.0],
+    fov:120,
+    range:10,
+    fallback:true,
+    x:34.0,
+    y:56.0
   },
 ];
 
@@ -959,22 +1020,23 @@ function renderPresenceOverlays() {
       }
     }
 
-    if (!sensor.powerPoint) return;
-    const power = CURTAIN_POWER_POINTS.find(cp => cp.label === sensor.powerPoint);
-    if (!power) return;
-    addSvgEl(svg, 'line', {
-      class: 'presence-power-line',
-      x1: sensor.x,
-      y1: sensor.y,
-      x2: power.x,
-      y2: power.y
-    });
-    addSvgEl(svg, 'circle', {
-      class: 'presence-power-dot',
-      cx: power.x,
-      cy: power.y,
-      r: 0.45
-    });
+    if (sensor.powerPoint) {
+      const power = CURTAIN_POWER_POINTS.find(cp => cp.label === sensor.powerPoint);
+      if (!power) return;
+      addSvgEl(svg, 'line', {
+        class: 'presence-power-line',
+        x1: sensor.x,
+        y1: sensor.y,
+        x2: power.x,
+        y2: power.y
+      });
+      addSvgEl(svg, 'circle', {
+        class: 'presence-power-dot',
+        cx: power.x,
+        cy: power.y,
+        r: 0.45
+      });
+    }
   });
   renderWallSegments(svg);
 }
@@ -987,7 +1049,7 @@ function renderSensorMarkers() {
     m.className = 'sensor-marker' + (p.fallback ? ' fallback' : '');
     m.style.left = p.x + '%';
     m.style.top = p.y + '%';
-    m.textContent = p.label;
+    m.textContent = p.shortLabel || p.model;
     m.title = `${p.label} — ${p.room}: ${p.loc}. ${p.recommendation}.`;
     m.setAttribute('aria-label', `${p.label}: sensor candidate in ${p.room}, ${p.loc}`);
     m.dataset.idx = SENSOR_POINTS.indexOf(p);
@@ -1322,7 +1384,7 @@ function refreshCalibOutput() {
     `  { n:${s.n}, label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
   );
   const sensorLines = SENSOR_POINTS.map(s =>
-    `  { label:"${s.label}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
+    `  { label:"${s.label}", product:"${s.shortLabel || s.model}", x:${s.x.toFixed(1)}, y:${s.y.toFixed(1)} },`
   );
   calibOutput.value = [
     'SWITCHES',
