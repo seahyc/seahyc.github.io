@@ -166,6 +166,39 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   appearance: none;
 }
 .sensor-marker:active { transform: translate(-50%, -50%) scale(1.08); }
+.sensor-marker.fallback {
+  background: rgba(171, 93, 17, 0.78);
+}
+.presence-overlays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+}
+.presence-area {
+  fill: rgba(17, 97, 73, 0.16);
+  stroke: rgba(17, 97, 73, 0.72);
+  stroke-width: 0.18;
+  vector-effect: non-scaling-stroke;
+}
+.presence-area.fallback {
+  fill: rgba(171, 93, 17, 0.14);
+  stroke: rgba(171, 93, 17, 0.72);
+}
+.presence-power-line {
+  stroke: rgba(17, 97, 73, 0.9);
+  stroke-width: 0.22;
+  stroke-dasharray: 1 0.75;
+  vector-effect: non-scaling-stroke;
+}
+.presence-power-dot {
+  fill: rgba(17, 97, 73, 0.92);
+  stroke: rgba(255,255,255,0.95);
+  stroke-width: 0.18;
+  vector-effect: non-scaling-stroke;
+}
 .map-controls { display: flex; gap: 8px; padding: 7px 10px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 6px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; min-height: 30px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
@@ -201,6 +234,14 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   height: 10px;
   border-radius: 6px;
   background: rgba(17, 97, 73, 0.74);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.legend-sensor-fallback {
+  width: 14px;
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(171, 93, 17, 0.78);
   border: 1px solid rgba(255,255,255,0.9);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
 }
@@ -409,6 +450,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-scroll" id="map-scroll">
         <div class="map-inner">
           <img src="532B-Electrical-Plan-2026-05-25-page1.jpg" class="map-image" id="floorplan-img" alt="532B Bishan electrical plan, updated 2026-05-25" draggable="false">
+          <svg id="presence-overlays" class="presence-overlays" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
           <div id="power-markers"></div>
           <div id="sensor-markers"></div>
           <div id="markers"></div>
@@ -426,7 +468,8 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-legend" id="map-legend">
         <span><i class="legend-dot"></i>switch</span>
         <span><i class="legend-power"></i>curtain power</span>
-        <span><i class="legend-sensor"></i>sensor candidate</span>
+        <span><i class="legend-sensor"></i>wired presence FOV</span>
+        <span><i class="legend-sensor-fallback"></i>motion fallback</span>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
         <strong>Drag pins to fix their positions</strong>
@@ -481,10 +524,11 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       </ul>
       <strong style="margin-top:8px;">Working recommendation</strong>
       <ul>
-        <li>Use powered mmWave only where the pelmet corner has a clear view across the room; otherwise use battery motion as a secondary/backup sensor.</li>
-        <li>Living/Dining is the best FP2 candidate because zone detection can separate sofa, dining, entry, and curtain/window areas.</li>
-        <li>Bedrooms can use FP1E/FP2 from the pelmet corner only if the sensor can face bed, door, and desk/play area without being blocked by curtains.</li>
-        <li>Toilets have no socket, so assume battery motion/contact sensors unless a new serviceable low-voltage feed is added later.</li>
+        <li>Green polygons are usable presence areas clipped to walls; they deliberately do not pass through bedrooms, toilets, or thick partitions.</li>
+        <li>Dashed green lines show which curtain power point feeds a wired sensor if a serviceable USB adapter/split is possible.</li>
+        <li>Living/Dining and MBR are the best FP2 candidates because zones are actually useful there.</li>
+        <li>Study and kids room can use FP1E unless you want per-zone behaviour; they mainly need reliable presence/absence.</li>
+        <li>Toilets have no sockets, so they are marked as battery motion fallback, not true wired presence.</li>
       </ul>
     </div>
   </div>
@@ -512,7 +556,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
   </div>
 
   <div class="field">
-    <div class="field-label">Plan label · Gang · Unit price</div>
+    <div class="field-label" id="drawer-meta-label">Plan label · Gang · Unit price</div>
     <div class="field-value" id="drawer-meta"></div>
   </div>
 
@@ -548,16 +592,96 @@ const CURTAIN_POWER_POINTS = [
   { label:"CP1", room:"Living/Dining", loc:"Left wall of living window", paired:"C5 living curtains", x:27.6, y:36.2 },
   { label:"CP2", room:"Study (BR3)", loc:"Left side of study window", paired:"G3 study curtains", x:40.0, y:28.6 },
   { label:"CP3", room:"Kids room (BR2)", loc:"Left side of kids room window", paired:"H2 kids curtains", x:49.5, y:28.6 },
-  { label:"CP4", room:"Master bedroom", loc:"Left side of master bedroom window", paired:"K6 / L1 / L2 MBR curtains", x:60.4, y:28.6 },
+  { label:"CP4", room:"Master bedroom", loc:"Left corner of MBR window/pelmet", paired:"K6 / L1 / L2 MBR curtains", x:58.6, y:28.6 },
 ];
 
 const SENSOR_POINTS = [
-  { label:"S1", room:"Living/Dining", loc:"High pelmet corner at living window", power:"Possible powered sensor from CP1 area only if adapter/cable remains serviceable", recommendation:"FP2 preferred", controls:["Primary no-touch automation zone for living/dining","Use zones for sofa, dining, entry, and curtain/window area","Dim/night scenes only during sleep hours"] , x:29.2, y:34.2 },
-  { label:"S2", room:"Study (BR3)", loc:"High pelmet corner at study window", power:"Possible powered sensor from CP2 area only if view is not blocked by curtains", recommendation:"FP1E or FP2 after sightline check", controls:["Presence for study work lighting","Optional curtain scene trigger","Fallback to battery motion if the corner view is poor"], x:40.0, y:30.7 },
-  { label:"S3", room:"Kids room (BR2)", loc:"High pelmet corner at kids room window", power:"Possible powered sensor from CP3 area only if aimed across bed/play/door", recommendation:"FP1E or FP2 after sightline check", controls:["Dim path/night lighting only at night","Curtain automation when room is occupied or scheduled","Fallback to battery motion if bed/door is outside view"], x:49.5, y:30.7 },
-  { label:"S4", room:"Master bedroom", loc:"High pelmet corner at MBR window", power:"Possible powered sensor from CP4 area only if aimed across bed, wardrobe, and entry", recommendation:"FP2 if zones are useful; otherwise FP1E", controls:["Dim path/night lighting only at night","Presence-aware curtains and bedside scenes","Do not rely on air-con automation until AC control path is decided"], x:60.4, y:30.7 },
-  { label:"S5", room:"Common toilet", loc:"No socket planned", power:"Battery only unless a new low-voltage feed is added", recommendation:"P1/P2 motion plus door/contact logic", controls:["Auto-on toilet night/path lighting","Longer timeout to avoid lights off during stillness","Ventilation fan automation can use switch state plus timeout"], x:54.1, y:48.8 },
-  { label:"S6", room:"Master toilet", loc:"No socket planned", power:"Battery only unless a new low-voltage feed is added", recommendation:"P1/P2 motion plus door/contact logic", controls:["Auto-on toilet night/path lighting","Longer timeout to avoid lights off during stillness","Coordinate with M/N toilet light and fan rockers"], x:59.0, y:48.8 },
+  {
+    label:"S1",
+    room:"Living/Dining",
+    loc:"High on living window/pelmet corner, aimed across living and dining",
+    model:"Aqara Presence Sensor FP2",
+    recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
+    powerPoint:"CP1",
+    power:"Wired from CP1 if a serviceable USB adapter/split can be kept near the pelmet",
+    detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
+    controls:["Best room for true FP2 zones: sofa, dining, entry, and curtain/window area","Use night rules to trigger dim path lighting only","Green area is clipped to living/dining walls and excludes bedrooms/toilets"],
+    coverage:[[27.6,35.1],[36.4,35.1],[43.4,43.6],[45.3,50.2],[42.4,55.8],[34.1,55.8],[34.1,51.0],[29.0,51.0],[27.6,48.0]],
+    x:29.0,
+    y:35.0
+  },
+  {
+    label:"S2",
+    room:"Study (BR3)",
+    loc:"High on study window/pelmet corner, aimed diagonally into the room",
+    model:"Aqara Presence Sensor FP1E",
+    recommendation:"FP1E · wired 5V USB-A power · Zigbee",
+    powerPoint:"CP2",
+    power:"Wired from CP2 if a serviceable USB adapter/split can be kept near the pelmet",
+    detects:"presence/absence, still/moving state, and room-level occupancy",
+    controls:["Use for study presence and work-light automation","Not worth FP2 unless you need desk/window/door zones","Green area is clipped to the study walls; wall to kids room blocks detection"],
+    coverage:[[38.7,29.7],[48.1,29.7],[48.1,42.8],[45.5,44.5],[38.7,44.5]],
+    x:40.3,
+    y:31.0
+  },
+  {
+    label:"S3",
+    room:"Kids room (BR2)",
+    loc:"High on kids-room window/pelmet corner, aimed toward bed/play/door area",
+    model:"Aqara Presence Sensor FP1E",
+    recommendation:"FP1E · wired 5V USB-A power · Zigbee",
+    powerPoint:"CP3",
+    power:"Wired from CP3 if a serviceable USB adapter/split can be kept near the pelmet",
+    detects:"presence/absence, still/moving state, and room-level occupancy",
+    controls:["Use dim path/night lighting only at night","Use schedules or presence for curtain scenes","Green area is clipped to kids-room walls and does not see into MBR/study"],
+    coverage:[[48.7,29.7],[58.1,29.7],[58.1,44.2],[52.1,44.2],[48.7,42.6]],
+    x:49.8,
+    y:31.0
+  },
+  {
+    label:"S4",
+    room:"Master bedroom",
+    loc:"High on MBR window/pelmet left corner, aimed across bed and wardrobe entry",
+    model:"Aqara Presence Sensor FP2",
+    recommendation:"FP2 · wired 5V USB-C power · Wi-Fi",
+    powerPoint:"CP4",
+    power:"Wired from CP4 at the MBR window/pelmet corner if a serviceable USB adapter/split is possible",
+    detects:"presence/absence, motion, stillness, multiple targets, zones, and illuminance",
+    controls:["Use zones for bed, wardrobe/entry, and curtain/window area","Use dim path/night lighting only at night","Green area is clipped to MBR walls and excludes the master toilet behind walls"],
+    coverage:[[58.6,29.6],[68.3,29.6],[68.3,47.6],[62.0,47.6],[58.6,43.4]],
+    x:59.3,
+    y:31.0
+  },
+  {
+    label:"S5",
+    room:"Common toilet",
+    loc:"Battery sensor inside common toilet; no socket planned",
+    model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
+    recommendation:"Motion fallback · battery · Zigbee P1 or Thread P2",
+    powerPoint:null,
+    power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
+    detects:"motion and illuminance only; cannot reliably detect a still seated person",
+    controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Good for dim night/path lighting trigger","Orange area is room-limited motion coverage, not true presence"],
+    coverage:[[51.2,47.7],[56.0,47.7],[56.0,53.2],[51.2,53.2]],
+    fallback:true,
+    x:54.1,
+    y:49.0
+  },
+  {
+    label:"S6",
+    room:"Master toilet",
+    loc:"Battery sensor inside master toilet; no socket planned",
+    model:"Aqara Motion Sensor P1 or Motion/Light Sensor P2",
+    recommendation:"Motion fallback · battery · Zigbee P1 or Thread P2",
+    powerPoint:null,
+    power:"No wired power point available; not true mmWave presence unless a new low-voltage feed is added",
+    detects:"motion and illuminance only; cannot reliably detect a still seated person",
+    controls:["Use longer timeout and door/contact logic to avoid lights off during stillness","Coordinate with M/N toilet light and fan rockers","Orange area is room-limited motion coverage, not true presence"],
+    coverage:[[56.7,47.7],[64.2,47.7],[64.2,54.4],[56.7,54.4]],
+    fallback:true,
+    x:59.5,
+    y:49.0
+  },
 ];
 
 const SKU_CATALOG = [
@@ -664,12 +788,45 @@ function renderPowerMarkers() {
   });
 }
 
+function pointList(points) {
+  return points.map(([x, y]) => `${x},${y}`).join(' ');
+}
+
+function renderPresenceOverlays() {
+  const svg = document.getElementById('presence-overlays');
+  svg.innerHTML = '';
+  SENSOR_POINTS.forEach(p => {
+    const area = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    area.setAttribute('class', 'presence-area' + (p.fallback ? ' fallback' : ''));
+    area.setAttribute('points', pointList(p.coverage));
+    svg.appendChild(area);
+
+    if (!p.powerPoint) return;
+    const power = CURTAIN_POWER_POINTS.find(cp => cp.label === p.powerPoint);
+    if (!power) return;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('class', 'presence-power-line');
+    line.setAttribute('x1', p.x);
+    line.setAttribute('y1', p.y);
+    line.setAttribute('x2', power.x);
+    line.setAttribute('y2', power.y);
+    svg.appendChild(line);
+
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('class', 'presence-power-dot');
+    dot.setAttribute('cx', power.x);
+    dot.setAttribute('cy', power.y);
+    dot.setAttribute('r', 0.45);
+    svg.appendChild(dot);
+  });
+}
+
 function renderSensorMarkers() {
   const c = document.getElementById('sensor-markers');
   c.innerHTML = '';
   SENSOR_POINTS.forEach(p => {
     const m = document.createElement('button');
-    m.className = 'sensor-marker';
+    m.className = 'sensor-marker' + (p.fallback ? ' fallback' : '');
     m.style.left = p.x + '%';
     m.style.top = p.y + '%';
     m.textContent = p.label;
@@ -778,6 +935,7 @@ function openPowerDrawer(p) {
     'Do not assume spare sensor power unless the electrician can add a serviceable adapter or split'
   ].map(c=>`<li>${c}</li>`).join('');
   document.getElementById('drawer-model').textContent = 'Curtain motor power point';
+  document.getElementById('drawer-meta-label').textContent = 'Power note';
   document.getElementById('drawer-meta').textContent = 'Planning marker only · not part of switch SKU order';
   const cb = document.getElementById('drawer-check');
   cb.checked = false;
@@ -793,9 +951,15 @@ function openSensorDrawer(p) {
   document.querySelector('.drawer-img-wrap').style.display = 'none';
   document.getElementById('drawer-img').removeAttribute('src');
   document.getElementById('drawer-img').alt = '';
-  document.getElementById('drawer-controls').innerHTML = p.controls.map(c=>`<li>${c}</li>`).join('');
-  document.getElementById('drawer-model').textContent = p.recommendation;
-  document.getElementById('drawer-meta').textContent = p.power;
+  document.getElementById('drawer-controls').innerHTML = [
+    `Detects: ${p.detects}`,
+    ...p.controls
+  ].map(c=>`<li>${c}</li>`).join('');
+  document.getElementById('drawer-model').textContent = `${p.model} · ${p.recommendation}`;
+  document.getElementById('drawer-meta-label').textContent = p.powerPoint ? 'Power source · FOV note' : 'Power source · detection note';
+  document.getElementById('drawer-meta').textContent = p.powerPoint
+    ? `${p.power} · dashed green line to ${p.powerPoint}`
+    : p.power;
   const cb = document.getElementById('drawer-check');
   cb.checked = false;
   cb.disabled = true;
@@ -812,6 +976,7 @@ function openDrawer(s) {
   document.getElementById('drawer-img').src = imgForSwitch(s);
   document.getElementById('drawer-controls').innerHTML = s.controls.map(c=>`<li>${c}</li>`).join('');
   document.getElementById('drawer-model').textContent = s.model;
+  document.getElementById('drawer-meta-label').textContent = 'Plan label · Gang · Unit price';
   document.getElementById('drawer-meta').textContent = `Plan label "${s.label}" · ${s.gang} · $${s.price}`;
   const cb = document.getElementById('drawer-check');
   cb.checked = !!done[s.n];
@@ -981,7 +1146,7 @@ document.querySelectorAll('nav button').forEach(b => {
   };
 });
 
-renderPowerMarkers(); renderSensorMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
+renderPowerMarkers(); renderPresenceOverlays(); renderSensorMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
 // ─── Calibrate (drag pins) mode ──────────────────────────────
