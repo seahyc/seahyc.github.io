@@ -141,6 +141,31 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   appearance: none;
 }
 .power-marker:active { transform: translate(-50%, -50%) scale(1.08); }
+.sensor-marker {
+  position: absolute;
+  min-width: 24px;
+  height: 18px;
+  padding: 0 5px;
+  background: rgba(17, 97, 73, 0.74);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.9);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: help;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  user-select: none;
+  font-family: inherit;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  z-index: 10;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sensor-marker:active { transform: translate(-50%, -50%) scale(1.08); }
 .map-controls { display: flex; gap: 8px; padding: 7px 10px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 6px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; min-height: 30px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
@@ -168,6 +193,14 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   height: 10px;
   border-radius: 3px;
   background: rgba(35, 99, 142, 0.72);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.legend-sensor {
+  width: 14px;
+  height: 10px;
+  border-radius: 6px;
+  background: rgba(17, 97, 73, 0.74);
   border: 1px solid rgba(255,255,255,0.9);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
 }
@@ -333,6 +366,7 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   .marker { width: 18px; height: 18px; font-size: 8px; border-width: 1px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
   .marker-compact { font-size: 7px; }
   .power-marker { min-width: 22px; height: 14px; padding: 0 4px; font-size: 7px; border-radius: 4px; border-width: 1px; }
+  .sensor-marker { min-width: 20px; height: 14px; padding: 0 4px; font-size: 7px; border-width: 1px; }
   .map-inner {
     width: 140%;
   }
@@ -356,7 +390,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
 <header>
   <h1>532B Bishan — Smart Switches</h1>
-  <div class="subtitle">16 switch locations · 4 curtain power points · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
+  <div class="subtitle">16 switch locations · 4 curtain power points · 6 sensor candidates · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -376,6 +410,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
         <div class="map-inner">
           <img src="532B-Electrical-Plan-2026-05-25-page1.jpg" class="map-image" id="floorplan-img" alt="532B Bishan electrical plan, updated 2026-05-25" draggable="false">
           <div id="power-markers"></div>
+          <div id="sensor-markers"></div>
           <div id="markers"></div>
         </div>
       </div>
@@ -391,6 +426,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-legend" id="map-legend">
         <span><i class="legend-dot"></i>switch</span>
         <span><i class="legend-power"></i>curtain power</span>
+        <span><i class="legend-sensor"></i>sensor candidate</span>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
         <strong>Drag pins to fix their positions</strong>
@@ -430,6 +466,25 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
         <li>Use B, C, F, G, H, and K as H1 3G upgrades for curtain and scene capacity.</li>
         <li>Use L1/L2 as one Z1 Pro 4-rocker per bedside, grouping bedhead lights and adding MBR curtain, wardrobe, toilet, and night-mode scenes.</li>
         <li>Keep M3 as the in-bedroom master-heater scene rocker that mirrors HC via Home Assistant.</li>
+      </ul>
+    </div>
+
+    <div class="section-title">Sensor plan draft</div>
+    <div class="notes">
+      <strong>Confirmed constraints</strong>
+      <ul>
+        <li>Curtain sockets are high near the pelmet/window head; treat them as curtain-motor power first.</li>
+        <li>No extra outlet/USB point is assumed because wiring is already done.</li>
+        <li>Kitchen is induction, so no gas-leak sensor is planned.</li>
+        <li>Bedroom presence should trigger dim path/night lighting, not full lights at night.</li>
+        <li>Air-con automation is undecided and should not drive the sensor purchase yet.</li>
+      </ul>
+      <strong style="margin-top:8px;">Working recommendation</strong>
+      <ul>
+        <li>Use powered mmWave only where the pelmet corner has a clear view across the room; otherwise use battery motion as a secondary/backup sensor.</li>
+        <li>Living/Dining is the best FP2 candidate because zone detection can separate sofa, dining, entry, and curtain/window areas.</li>
+        <li>Bedrooms can use FP1E/FP2 from the pelmet corner only if the sensor can face bed, door, and desk/play area without being blocked by curtains.</li>
+        <li>Toilets have no socket, so assume battery motion/contact sensors unless a new serviceable low-voltage feed is added later.</li>
       </ul>
     </div>
   </div>
@@ -494,6 +549,15 @@ const CURTAIN_POWER_POINTS = [
   { label:"CP2", room:"Study (BR3)", loc:"Left side of study window", paired:"G3 study curtains", x:40.0, y:28.6 },
   { label:"CP3", room:"Kids room (BR2)", loc:"Left side of kids room window", paired:"H2 kids curtains", x:49.5, y:28.6 },
   { label:"CP4", room:"Master bedroom", loc:"Left side of master bedroom window", paired:"K6 / L1 / L2 MBR curtains", x:60.4, y:28.6 },
+];
+
+const SENSOR_POINTS = [
+  { label:"S1", room:"Living/Dining", loc:"High pelmet corner at living window", power:"Possible powered sensor from CP1 area only if adapter/cable remains serviceable", recommendation:"FP2 preferred", controls:["Primary no-touch automation zone for living/dining","Use zones for sofa, dining, entry, and curtain/window area","Dim/night scenes only during sleep hours"] , x:29.2, y:34.2 },
+  { label:"S2", room:"Study (BR3)", loc:"High pelmet corner at study window", power:"Possible powered sensor from CP2 area only if view is not blocked by curtains", recommendation:"FP1E or FP2 after sightline check", controls:["Presence for study work lighting","Optional curtain scene trigger","Fallback to battery motion if the corner view is poor"], x:40.0, y:30.7 },
+  { label:"S3", room:"Kids room (BR2)", loc:"High pelmet corner at kids room window", power:"Possible powered sensor from CP3 area only if aimed across bed/play/door", recommendation:"FP1E or FP2 after sightline check", controls:["Dim path/night lighting only at night","Curtain automation when room is occupied or scheduled","Fallback to battery motion if bed/door is outside view"], x:49.5, y:30.7 },
+  { label:"S4", room:"Master bedroom", loc:"High pelmet corner at MBR window", power:"Possible powered sensor from CP4 area only if aimed across bed, wardrobe, and entry", recommendation:"FP2 if zones are useful; otherwise FP1E", controls:["Dim path/night lighting only at night","Presence-aware curtains and bedside scenes","Do not rely on air-con automation until AC control path is decided"], x:60.4, y:30.7 },
+  { label:"S5", room:"Common toilet", loc:"No socket planned", power:"Battery only unless a new low-voltage feed is added", recommendation:"P1/P2 motion plus door/contact logic", controls:["Auto-on toilet night/path lighting","Longer timeout to avoid lights off during stillness","Ventilation fan automation can use switch state plus timeout"], x:54.1, y:48.8 },
+  { label:"S6", room:"Master toilet", loc:"No socket planned", power:"Battery only unless a new low-voltage feed is added", recommendation:"P1/P2 motion plus door/contact logic", controls:["Auto-on toilet night/path lighting","Longer timeout to avoid lights off during stillness","Coordinate with M/N toilet light and fan rockers"], x:59.0, y:48.8 },
 ];
 
 const SKU_CATALOG = [
@@ -600,6 +664,22 @@ function renderPowerMarkers() {
   });
 }
 
+function renderSensorMarkers() {
+  const c = document.getElementById('sensor-markers');
+  c.innerHTML = '';
+  SENSOR_POINTS.forEach(p => {
+    const m = document.createElement('button');
+    m.className = 'sensor-marker';
+    m.style.left = p.x + '%';
+    m.style.top = p.y + '%';
+    m.textContent = p.label;
+    m.title = `${p.label} — ${p.room}: ${p.loc}. ${p.recommendation}.`;
+    m.setAttribute('aria-label', `${p.label}: sensor candidate in ${p.room}, ${p.loc}`);
+    m.onclick = (e) => { e.stopPropagation(); openSensorDrawer(p); };
+    c.appendChild(m);
+  });
+}
+
 function renderList() {
   const c = document.getElementById('list-container');
   c.innerHTML = '';
@@ -694,7 +774,8 @@ function openPowerDrawer(p) {
   document.getElementById('drawer-controls').innerHTML = [
     `Always-on power point for ${p.paired}`,
     'Keep separate from the smart switch relay so curtains stay reachable from Home Assistant',
-    'Optional: add a nearby serviceable 5V USB supply later for a wired presence sensor'
+    'Located high near the pelmet/window head',
+    'Do not assume spare sensor power unless the electrician can add a serviceable adapter or split'
   ].map(c=>`<li>${c}</li>`).join('');
   document.getElementById('drawer-model').textContent = 'Curtain motor power point';
   document.getElementById('drawer-meta').textContent = 'Planning marker only · not part of switch SKU order';
@@ -702,6 +783,23 @@ function openPowerDrawer(p) {
   cb.checked = false;
   cb.disabled = true;
   document.getElementById('drawer-check-label').textContent = 'Not a purchase checkbox';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+function openSensorDrawer(p) {
+  drawerSwitch = null;
+  document.getElementById('drawer-title').textContent = p.label;
+  document.getElementById('drawer-loc').textContent = `${p.room} — ${p.loc}`;
+  document.querySelector('.drawer-img-wrap').style.display = 'none';
+  document.getElementById('drawer-img').removeAttribute('src');
+  document.getElementById('drawer-img').alt = '';
+  document.getElementById('drawer-controls').innerHTML = p.controls.map(c=>`<li>${c}</li>`).join('');
+  document.getElementById('drawer-model').textContent = p.recommendation;
+  document.getElementById('drawer-meta').textContent = p.power;
+  const cb = document.getElementById('drawer-check');
+  cb.checked = false;
+  cb.disabled = true;
+  document.getElementById('drawer-check-label').textContent = 'Sensor planning marker';
   document.getElementById('overlay').classList.add('open');
   document.getElementById('drawer').classList.add('open');
 }
@@ -883,7 +981,7 @@ document.querySelectorAll('nav button').forEach(b => {
   };
 });
 
-renderPowerMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
+renderPowerMarkers(); renderSensorMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
 // ─── Calibrate (drag pins) mode ──────────────────────────────
