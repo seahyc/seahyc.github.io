@@ -111,13 +111,63 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   text-shadow: 0 1px 2px rgba(0,0,0,0.45);
   -webkit-appearance: none;
   appearance: none;
+  z-index: 12;
 }
 .marker:active { transform: translate(-50%, -50%) scale(1.15); }
 .marker.done { background: rgba(90, 138, 90, 0.68); }
 .marker-compact { font-size: 9px; }
+.power-marker {
+  position: absolute;
+  min-width: 28px;
+  height: 18px;
+  padding: 0 5px;
+  background: rgba(35, 99, 142, 0.72);
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.9);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: help;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  user-select: none;
+  font-family: inherit;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  z-index: 11;
+}
 .map-controls { display: flex; gap: 8px; padding: 7px 10px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 6px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; min-height: 30px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding: 0 10px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  font-size: 11px;
+  color: var(--muted);
+}
+.map-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(193, 138, 0, 0.68);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.legend-power {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  background: rgba(35, 99, 142, 0.72);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
 .zoom-controls {
   position: absolute;
   right: 12px;
@@ -279,6 +329,7 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   main { padding: 6px; }
   .marker { width: 18px; height: 18px; font-size: 8px; border-width: 1px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
   .marker-compact { font-size: 7px; }
+  .power-marker { min-width: 22px; height: 14px; padding: 0 4px; font-size: 7px; border-radius: 4px; border-width: 1px; }
   .map-inner {
     width: 140%;
   }
@@ -302,7 +353,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 
 <header>
   <h1>532B Bishan — Smart Switches</h1>
-  <div class="subtitle">16 switch locations · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
+  <div class="subtitle">16 switch locations · 4 curtain power points · 20 Aqara plates · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -321,6 +372,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-scroll" id="map-scroll">
         <div class="map-inner">
           <img src="532B-Electrical-Plan-2026-05-25-page1.jpg" class="map-image" id="floorplan-img" alt="532B Bishan electrical plan, updated 2026-05-25" draggable="false">
+          <div id="power-markers"></div>
           <div id="markers"></div>
         </div>
       </div>
@@ -332,6 +384,10 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       <div class="map-controls">
         <button id="calibrate-toggle">📍 Calibrate</button>
         <a class="hint" id="map-hint" href="532B-Electrical-Plan-2026-05-25.pdf">Latest PDF · 2026-05-25</a>
+      </div>
+      <div class="map-legend" id="map-legend">
+        <span><i class="legend-dot"></i>switch</span>
+        <span><i class="legend-power"></i>curtain power</span>
       </div>
       <div id="calibrate-panel" style="display:none; padding:12px; border-top:1px solid var(--border); background:#fffbea; font-size:13px;">
         <strong>Drag pins to fix their positions</strong>
@@ -430,6 +486,13 @@ const SWITCHES = [
   { n:16, label:"N", skus:["h1-3g"], room:"MBR wardrobe", loc:"On MBR wardrobe (beside M)", controls:["N1 = master toilet ventilation fan","N2 = vanity cabinet bottom LED strip","N3 = vanity cabinet vertical LED"], x:60.4, y:50.0 },
 ];
 
+const CURTAIN_POWER_POINTS = [
+  { label:"CP1", room:"Living/Dining", loc:"Left wall of living window", paired:"C5 living curtains", x:27.6, y:36.2 },
+  { label:"CP2", room:"Study (BR3)", loc:"Left side of study window", paired:"G3 study curtains", x:40.0, y:28.6 },
+  { label:"CP3", room:"Kids room (BR2)", loc:"Left side of kids room window", paired:"H2 kids curtains", x:52.6, y:28.6 },
+  { label:"CP4", room:"Master bedroom", loc:"Left/window-side power for MBR curtains", paired:"K6 / L1 / L2 MBR curtains", x:67.9, y:28.8 },
+];
+
 const SKU_CATALOG = [
   { key:"h1-1g", name:"H1 Smart Wall Switch Neutral — 1-gang", model:"H1 1G White Neutral", gang:"1g", unit:55, img:"data:image/jpeg;base64,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" },
   { key:"h1-2g", name:"H1 Smart Wall Switch Neutral — 2-gang", model:"H1 2G White Neutral", gang:"2g", unit:60, img:"data:image/jpeg;base64,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" },
@@ -514,6 +577,21 @@ function renderMarkers() {
     m.setAttribute('aria-label', `Switch ${s.n}: ${s.label} in ${s.room}`);
     m.dataset.idx = SWITCHES.indexOf(s);
     m.onclick = (e) => { if (calibActive) return; e.stopPropagation(); openDrawer(s); };
+    c.appendChild(m);
+  });
+}
+
+function renderPowerMarkers() {
+  const c = document.getElementById('power-markers');
+  c.innerHTML = '';
+  CURTAIN_POWER_POINTS.forEach(p => {
+    const m = document.createElement('div');
+    m.className = 'power-marker';
+    m.style.left = p.x + '%';
+    m.style.top = p.y + '%';
+    m.textContent = p.label;
+    m.title = `${p.label} — ${p.room}: ${p.loc}. For ${p.paired}.`;
+    m.setAttribute('aria-label', `${p.label}: curtain power point in ${p.room}, ${p.loc}`);
     c.appendChild(m);
   });
 }
@@ -778,7 +856,7 @@ document.querySelectorAll('nav button').forEach(b => {
   };
 });
 
-renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
+renderPowerMarkers(); renderMarkers(); renderList(); renderVendors(); renderOrder(); updateProgress();
 window.addEventListener('resize', applyZoom);
 
 // ─── Calibrate (drag pins) mode ──────────────────────────────
