@@ -137,7 +137,10 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
   font-family: inherit;
   text-shadow: 0 1px 2px rgba(0,0,0,0.45);
   z-index: 11;
+  -webkit-appearance: none;
+  appearance: none;
 }
+.power-marker:active { transform: translate(-50%, -50%) scale(1.08); }
 .map-controls { display: flex; gap: 8px; padding: 7px 10px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
 .map-controls button { padding: 6px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; min-height: 30px; font-family: inherit; }
 .map-controls .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
@@ -489,8 +492,8 @@ const SWITCHES = [
 const CURTAIN_POWER_POINTS = [
   { label:"CP1", room:"Living/Dining", loc:"Left wall of living window", paired:"C5 living curtains", x:27.6, y:36.2 },
   { label:"CP2", room:"Study (BR3)", loc:"Left side of study window", paired:"G3 study curtains", x:40.0, y:28.6 },
-  { label:"CP3", room:"Kids room (BR2)", loc:"Left side of kids room window", paired:"H2 kids curtains", x:52.6, y:28.6 },
-  { label:"CP4", room:"Master bedroom", loc:"Left/window-side power for MBR curtains", paired:"K6 / L1 / L2 MBR curtains", x:67.9, y:28.8 },
+  { label:"CP3", room:"Kids room (BR2)", loc:"Left side of kids room window", paired:"H2 kids curtains", x:49.5, y:28.6 },
+  { label:"CP4", room:"Master bedroom", loc:"Left side of master bedroom window", paired:"K6 / L1 / L2 MBR curtains", x:60.4, y:28.6 },
 ];
 
 const SKU_CATALOG = [
@@ -585,13 +588,14 @@ function renderPowerMarkers() {
   const c = document.getElementById('power-markers');
   c.innerHTML = '';
   CURTAIN_POWER_POINTS.forEach(p => {
-    const m = document.createElement('div');
+    const m = document.createElement('button');
     m.className = 'power-marker';
     m.style.left = p.x + '%';
     m.style.top = p.y + '%';
     m.textContent = p.label;
     m.title = `${p.label} — ${p.room}: ${p.loc}. For ${p.paired}.`;
     m.setAttribute('aria-label', `${p.label}: curtain power point in ${p.room}, ${p.loc}`);
+    m.onclick = (e) => { e.stopPropagation(); openPowerDrawer(p); };
     c.appendChild(m);
   });
 }
@@ -680,8 +684,31 @@ let drawerSwitch = null;
 function imgForSwitch(s) {
   return SKU_BY_KEY[s.skus[0]].img;
 }
+function openPowerDrawer(p) {
+  drawerSwitch = null;
+  document.getElementById('drawer-title').textContent = p.label;
+  document.getElementById('drawer-loc').textContent = `${p.room} — ${p.loc}`;
+  document.querySelector('.drawer-img-wrap').style.display = 'none';
+  document.getElementById('drawer-img').removeAttribute('src');
+  document.getElementById('drawer-img').alt = '';
+  document.getElementById('drawer-controls').innerHTML = [
+    `Always-on power point for ${p.paired}`,
+    'Keep separate from the smart switch relay so curtains stay reachable from Home Assistant',
+    'Optional: add a nearby serviceable 5V USB supply later for a wired presence sensor'
+  ].map(c=>`<li>${c}</li>`).join('');
+  document.getElementById('drawer-model').textContent = 'Curtain motor power point';
+  document.getElementById('drawer-meta').textContent = 'Planning marker only · not part of switch SKU order';
+  const cb = document.getElementById('drawer-check');
+  cb.checked = false;
+  cb.disabled = true;
+  document.getElementById('drawer-check-label').textContent = 'Not a purchase checkbox';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
 function openDrawer(s) {
   drawerSwitch = s;
+  document.getElementById('drawer-check').disabled = false;
+  document.querySelector('.drawer-img-wrap').style.display = '';
   document.getElementById('drawer-title').textContent = `${s.n}. ${s.label}`;
   document.getElementById('drawer-loc').textContent = `${s.room} — ${s.loc}`;
   document.getElementById('drawer-img').src = imgForSwitch(s);
