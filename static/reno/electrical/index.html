@@ -198,7 +198,10 @@ main { max-width: 1600px; margin: 0 auto; padding: 8px; padding-bottom: calc(24p
 .sku-row .sku-qty { font-weight: 600; font-size: 13px; }
 .sku-row .sku-unit { color: var(--muted); font-size: 11px; margin-top: 1px; }
 .sku-row .sku-cost { color: var(--ink); font-size: 13px; font-weight: 600; margin-top: 1px; }
-.sku-total { padding: 10px 12px; background: #f7f4ed; font-weight: 600; display: flex; justify-content: space-between; }
+.sku-summary { background: #f7f4ed; border-top: 1px solid var(--border); }
+.sku-total { padding: 8px 12px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
+.sku-total.discount { color: #116149; font-weight: 500; }
+.sku-total.net { background: #eee7d8; font-size: 17px; }
 
 .notes { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 12px; border-radius: var(--radius); font-size: 13px; line-height: 1.38; }
 .notes strong { display: block; margin-bottom: 6px; font-size: 13px; }
@@ -369,9 +372,13 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
     </div>
 
     <div class="section-title">Consolidated SKU order — Aqara, with neutral</div>
-    <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth. C stays upgraded to two 3-gang plates for curtain and scene capacity; M3 remains the master-heater scene rocker that mirrors HC.</div>
+    <div class="notes" style="margin-bottom:8px;">White H1 neutral baseline, with Z1 Pro 4-rocker used at L1/L2 for compact bedside scene controls. Olivia's SLG catalogue pricing is used as the switch SKU source of truth, with the SLG member bulk tier applied after subtotal as an estimate subject to catalogue terms. C stays upgraded to two 3-gang plates for curtain and scene capacity; M3 remains the master-heater scene rocker that mirrors HC.</div>
     <div class="sku-list" id="sku-list"></div>
-    <div class="sku-total"><span>Total list (20 plates)</span><span id="sku-total-value">$1,400</span></div>
+    <div class="sku-summary">
+      <div class="sku-total"><span>Catalogue subtotal (<span id="sku-total-qty">20</span> plates)</span><span id="sku-total-value">$1,400</span></div>
+      <div class="sku-total discount"><span>SLG member bulk discount (<span id="sku-discount-label">20+ items · 15%</span>)</span><span id="sku-discount-value">−$210</span></div>
+      <div class="sku-total net"><span>Estimated after member discount</span><span id="sku-net-value">$1,190</span></div>
+    </div>
 
     <div class="section-title">Settled decisions</div>
     <div class="notes">
@@ -447,6 +454,7 @@ const SKU_CATALOG = [
   { key:"h1-20a", name:"H1 20A Smart Heater Switch Neutral", model:"H1 20A Smart Heater Switch Neutral", gang:"1g 20A", unit:67, img:"data:image/jpeg;base64,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" },
   { key:"z1-4g", name:"Z1 Pro Smart Wall Switch — 4-rocker White", model:"Z1 Pro 4R White 2-in-1 Neutral + No Neutral", gang:"4r", unit:99, img:"aqara-z1-pro-white-4-rocker.jpg" },
 ];
+const MEMBER_BULK_DISCOUNT = { minQty: 20, rate: 0.15, label: '20+ items · 15%' };
 const SKU_BY_KEY = Object.fromEntries(SKU_CATALOG.map(sku => [sku.key, sku]));
 
 function countedKeys(keys) {
@@ -557,6 +565,11 @@ function renderList() {
 
 function renderOrder() {
   const c = document.getElementById('sku-list');
+  const itemQty = ORDER_GROUPS.reduce((total, g) => total + g.qty, 0);
+  const subtotal = ORDER_GROUPS.reduce((total, g) => total + g.qty * g.unit, 0);
+  const discountRate = itemQty >= MEMBER_BULK_DISCOUNT.minQty ? MEMBER_BULK_DISCOUNT.rate : 0;
+  const discount = Math.round(subtotal * discountRate);
+  const net = subtotal - discount;
   c.innerHTML = ORDER_GROUPS.map(g => `
     <div class="sku-row">
       <img class="sku-img" src="${g.img}" alt="" loading="lazy">
@@ -567,7 +580,11 @@ function renderOrder() {
         <div class="sku-cost">$${g.qty * g.unit}</div>
       </div>
     </div>`).join('');
-  document.getElementById('sku-total-value').textContent = `$${ORDER_GROUPS.reduce((total, g) => total + g.qty * g.unit, 0).toLocaleString()}`;
+  document.getElementById('sku-total-qty').textContent = itemQty.toLocaleString();
+  document.getElementById('sku-total-value').textContent = `$${subtotal.toLocaleString()}`;
+  document.getElementById('sku-discount-label').textContent = MEMBER_BULK_DISCOUNT.label;
+  document.getElementById('sku-discount-value').textContent = discount ? `−$${discount.toLocaleString()}` : '$0';
+  document.getElementById('sku-net-value').textContent = `$${net.toLocaleString()}`;
 }
 
 let drawerSwitch = null;
