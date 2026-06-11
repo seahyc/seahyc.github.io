@@ -4,3 +4,5 @@ resources/
 .DS_Store
 subscribers.txt
 node_modules/
+
+.superpowers/
