@@ -1,3 +1,5 @@
+import type { FuturesSummary } from "./models/futures.js";
+
 export type Sex = "female" | "male";
 export type SmokingStatus = "never" | "former" | "current";
 export type ExerciseLevel = "low" | "moderate" | "high";
@@ -305,6 +307,7 @@ export interface PlanBundle {
   recommendations: Recommendation[];
   panel: PanelInsight[];
   appendix: CashflowRow[];
+  futures: FuturesSummary;
 }
 
 export interface InsuranceDbSource {

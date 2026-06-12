@@ -1590,3 +1590,89 @@
         max-height: 420px;
     }
 }
+
+/* ===== Futures topline (cockpit shell) ===== */
+.rp-futures {
+    --fut-tint: #0a7d6c;
+    --fut-tint-soft: rgba(10, 125, 108, 0.09);
+    --fut-good: #2f9e57;
+    --fut-bad: #d4572e;
+    display: grid;
+    gap: 1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: 1.2rem;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 10px 30px rgba(36, 29, 18, 0.07);
+}
+.rp-futures-hero {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--rp-ink);
+}
+.rp-futures-hero b { color: var(--fut-tint); font-size: 2.6rem; }
+.rp-futures-hero-en { font-size: 1.05rem; color: var(--rp-muted); font-style: italic; margin-top: 0.2rem; }
+.rp-futures-dots {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    gap: 0.3rem;
+    margin: 0.4rem 0;
+}
+.rp-futures-dots i {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--fut-good);
+    opacity: 0;
+    animation: rp-fut-pop 0.35s ease-out forwards;
+}
+.rp-futures-dots i.bad { background: var(--fut-bad); }
+@keyframes rp-fut-pop { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
+.rp-futures-legend { display: flex; gap: 1.2rem; font-size: 1rem; color: var(--rp-body); flex-wrap: wrap; }
+.rp-futures-legend i { display: inline-block; width: 0.65rem; height: 0.65rem; border-radius: 50%; margin-right: 0.35rem; }
+.rp-futures-legend i.good { background: var(--fut-good); }
+.rp-futures-legend i.bad { background: var(--fut-bad); }
+.rp-futures-fanwrap { position: relative; }
+.rp-futures-fanwrap canvas { width: 100%; height: auto; display: block; }
+.rp-futures-play {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: none;
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+    background: var(--fut-tint);
+    color: #fff;
+    font-size: 1.02rem;
+    font-weight: 600;
+    cursor: pointer;
+    justify-self: start;
+}
+.rp-futures-play:hover { filter: brightness(1.08); }
+.rp-futures-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.rp-futures-chips span {
+    font-size: 0.95rem;
+    background: rgba(0, 0, 0, 0.045);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    color: var(--rp-body);
+}
+.rp-futures-chips b { color: var(--rp-ink); }
+.rp-futures-slider { display: grid; gap: 0.3rem; }
+.rp-futures-slider label { font-size: 1.05rem; font-weight: 600; color: var(--rp-ink); }
+.rp-futures-slider input[type="range"] { width: 100%; accent-color: var(--fut-tint); }
+.rp-futures-ticks { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--rp-muted); }
+.rp-futures-delta {
+    background: var(--fut-tint-soft);
+    border-radius: 0.9rem;
+    padding: 0.7rem 0.95rem;
+    font-size: 1.02rem;
+    line-height: 1.5;
+}
+.rp-futures-delta b { color: var(--fut-tint); }
+.rp-futures-delta .warn { color: var(--fut-bad); font-weight: 600; }
+@media (max-width: 720px) {
+    .rp-futures-hero { font-size: 1.6rem; }
+    .rp-futures-hero b { font-size: 2rem; }
+}

@@ -6,3 +6,4 @@ subscribers.txt
 node_modules/
 
 .superpowers/
+.gstack/

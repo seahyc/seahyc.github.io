@@ -9,6 +9,7 @@ import { runPlan } from "./models/cashflow.js";
 import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
 import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
 import { buildAppendixRows } from "./models/appendix-ledger.js";
+import { simulateFutures } from "./models/futures.js";
 import { renderChart } from "./ui/charts.js";
 import { buildAudienceBrief, buildDiffPrompt, buildHandoffPrompt, buildStructuredPayload, detectAiCapabilities, openHandoff } from "./ai/provider.js";
 import { UNIFIED_INSURANCE_DB } from "./data/insurance-db.js";
@@ -128,6 +129,10 @@ function render() {
         app.innerHTML = `<div class="rp-card"><div class="rp-card-body">Loading local planner data…</div></div>`;
         return;
     }
+    if (futuresPlayTimer !== null) {
+        window.clearInterval(futuresPlayTimer);
+        futuresPlayTimer = null;
+    }
     ensureAppChrome();
     const currentState = requireState();
     const profileRecord = getActiveProfile(currentState);
@@ -143,10 +148,12 @@ function render() {
         Object.assign(plan, normalized.plan);
         const result = runPlan(profile, plan);
         const recommendations = computeRecommendations(profile, plan, result);
+        const futures = simulateFutures(result, profile, plan);
         return {
             plan,
             result,
             recommendations,
+            futures,
             panel: summarizePanel(profileRecord, plan, result, recommendations),
             appendix: buildAppendixRows(result),
         };
@@ -248,6 +255,7 @@ function render() {
         </div>
         <div class="rp-card-body">
           <div class="rp-output-highlights">
+            ${renderFuturesTopline(activeBundle, profile)}
             ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
             ${renderIncomeGapAlert(activeBundle, topRecommendation)}
           </div>
@@ -334,9 +342,16 @@ function render() {
   `;
     bindActions(planResults, activeBundle, comparisonBundle);
     paintCharts(activeBundle);
+    paintFuturesFan(activeBundle);
+    bindFuturesPlayback(activeBundle);
     paintTransientUi();
     renderToastIntoRoot();
     enhanceDetailsAffordance();
+    // First-visit boot can race canvas layout; repaint once after settle.
+    window.setTimeout(() => {
+        paintCharts(activeBundle);
+        paintFuturesFan(activeBundle);
+    }, 200);
 }
 function renderBanner(profileRecord, plan) {
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -655,6 +670,54 @@ function renderSummary(bundle) {
       <p>${note}</p>
     </div>
   `).join("");
+}
+function renderFuturesTopline(bundle, profile) {
+    const fut = bundle.futures;
+    const redOf100 = 100 - fut.okOf100;
+    const breachAges = fut.redFutures.map((f) => f.breachAge).sort((a, b) => a - b);
+    const typicalBreach = breachAges.length ? breachAges[Math.floor(breachAges.length / 2)] : null;
+    const dots = Array.from({ length: 100 }, (_, i) => `<i class="${i < fut.okOf100 ? "" : "bad"}" style="animation-delay:${i * 12}ms"></i>`).join("");
+    const plan = bundle.plan;
+    const candidateAge = plan.payoutStartAge >= 70 ? 69 : plan.payoutStartAge + 1;
+    let deltaHtml = "";
+    if (candidateAge !== plan.payoutStartAge) {
+        const altPlan = { ...plan, payoutStartAge: candidateAge };
+        const altResult = runPlan(profile, altPlan);
+        const altFut = simulateFutures(altResult, profile, altPlan);
+        const okDelta = altFut.okOf100 - fut.okOf100;
+        const payoutDelta = Math.round((altResult.cpfInitialPayout - bundle.result.cpfInitialPayout));
+        const altMinLiquid = Math.round(Math.min(...altFut.bands.map((b) => b.p10)));
+        deltaHtml = `<div class="rp-futures-delta">如果 ${candidateAge} 岁才开始领：<b>${altFut.okOf100} / 100</b> 个未来够用（${okDelta >= 0 ? "+" : ""}${okDelta}），每月${payoutDelta >= 0 ? "多" : "少"} <b>${currency.format(Math.abs(payoutDelta))}</b>${altMinLiquid < 0 ? ` — <span class="warn">但最差的未来现金缺口达 ${currency.format(Math.abs(altMinLiquid))}</span>` : ""}<br><span style="font-size:.9em;color:var(--rp-muted)">If you start at ${candidateAge} instead — drag the slider to try it.</span></div>`;
+    }
+    const chips = [
+        `基于 based on: <b>${plan.payoutStartAge} 岁开始领</b>`,
+        `<b>${plan.cpfPlan === "standard" ? "标准" : plan.cpfPlan === "escalating" ? "递增" : "基本"}计划</b>`,
+        `每月生活费 <b>${currency.format(profile.basicSpendMonthly)}</b>`,
+        `锁定 <b>${currency.format(plan.oneOffTopup || 0)}</b>`,
+    ].map((c) => `<span>${c}</span>`).join("");
+    return `
+    <div class="rp-futures" id="rp-futures">
+      <div>
+        <div class="rp-futures-hero"><b>${fut.okOf100}</b> / 100 个未来里，钱够用一辈子</div>
+        <div class="rp-futures-hero-en">In ${fut.okOf100} of 100 simulated futures, your money outlives you.</div>
+      </div>
+      <div class="rp-futures-dots" aria-label="100 simulated futures">${dots}</div>
+      <div class="rp-futures-legend">
+        <span><i class="good"></i>钱够用 lasts · ${fut.okOf100}</span>
+        <span><i class="bad"></i>${typicalBreach ? `约 ${typicalBreach} 岁前变紧` : "变紧"} tightens · ${redOf100}（CPF LIFE 仍月月照付 payouts never stop）</span>
+      </div>
+      <div class="rp-futures-fanwrap">
+        <canvas id="chart-futures-fan" width="760" height="280"></canvas>
+      </div>
+      <button type="button" class="rp-futures-play" id="rp-futures-play">▶ 播放 100 个未来 play the futures</button>
+      <div class="rp-futures-slider">
+        <label>几岁开始领 CPF LIFE？ Start payouts at: <b id="rp-futures-age">${plan.payoutStartAge}</b> 岁</label>
+        <input type="range" min="65" max="70" step="1" value="${plan.payoutStartAge}" id="rp-futures-age-slider" data-plan-field="plan.payoutStartAge">
+        <div class="rp-futures-ticks"><span>65</span><span>66</span><span>67</span><span>68</span><span>69</span><span>70</span></div>
+      </div>
+      ${deltaHtml}
+      <div class="rp-futures-chips">${chips}</div>
+    </div>`;
 }
 function renderPlainEnglishSummary(profileRecord, plan, bundle) {
     const first = bundle.result.rows[0];
@@ -1384,6 +1447,102 @@ function applyConvenience(id) {
             return { message: "No quick control applied.", highlightFields: [] };
     }
     return { message: "No quick control applied.", highlightFields: [] };
+}
+let futuresPlayTimer = null;
+function paintFuturesFan(bundle, overlayPath) {
+    const canvas = document.getElementById("chart-futures-fan");
+    if (!canvas)
+        return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+        return;
+    const bands = bundle.futures.bands;
+    if (!bands.length)
+        return;
+    const w = canvas.width;
+    const h = canvas.height;
+    const pad = { left: 56, right: 14, top: 14, bottom: 26 };
+    ctx.clearRect(0, 0, w, h);
+    const ages = bands.map((b) => b.age);
+    const minAge = ages[0] ?? 0;
+    const maxAge = ages[ages.length - 1] ?? 0;
+    const values = bands.flatMap((b) => [b.p10, b.p90]);
+    if (overlayPath)
+        values.push(...overlayPath.points.map((p) => p.liquid));
+    const minV = Math.min(0, ...values);
+    const maxV = Math.max(...values);
+    const x = (age) => pad.left + ((age - minAge) / Math.max(1, maxAge - minAge)) * (w - pad.left - pad.right);
+    const y = (v) => pad.top + (1 - (v - minV) / Math.max(1, maxV - minV)) * (h - pad.top - pad.bottom);
+    // axis + zero line
+    ctx.strokeStyle = "rgba(0,0,0,0.15)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y(0));
+    ctx.lineTo(w - pad.right, y(0));
+    ctx.stroke();
+    ctx.fillStyle = "rgba(0,0,0,0.55)";
+    ctx.font = "12px system-ui";
+    ctx.fillText(`${minAge}岁`, pad.left, h - 8);
+    ctx.fillText(`${maxAge}岁`, w - pad.right - 30, h - 8);
+    ctx.fillText("存款 savings", 8, pad.top + 10);
+    // p10–p90 band
+    ctx.beginPath();
+    bands.forEach((b, i) => (i === 0 ? ctx.moveTo(x(b.age), y(b.p90)) : ctx.lineTo(x(b.age), y(b.p90))));
+    for (let i = bands.length - 1; i >= 0; i -= 1) {
+        const b = bands[i];
+        if (b)
+            ctx.lineTo(x(b.age), y(b.p10));
+    }
+    ctx.closePath();
+    ctx.fillStyle = "rgba(10,125,108,0.16)";
+    ctx.fill();
+    // median line
+    ctx.beginPath();
+    bands.forEach((b, i) => (i === 0 ? ctx.moveTo(x(b.age), y(b.p50)) : ctx.lineTo(x(b.age), y(b.p50))));
+    ctx.strokeStyle = "#0a7d6c";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    // band honesty label (spec: bands must not read as boundaries)
+    ctx.fillStyle = "rgba(0,0,0,0.55)";
+    ctx.fillText("100 个未来里 80 个落在绿色范围内 — 也可能落在外面", pad.left + 8, pad.top + 12);
+    if (overlayPath) {
+        ctx.beginPath();
+        overlayPath.points.forEach((p, i) => (i === 0 ? ctx.moveTo(x(p.age), y(p.liquid)) : ctx.lineTo(x(p.age), y(p.liquid))));
+        ctx.strokeStyle = overlayPath.ok ? "#2f9e57" : "#d4572e";
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+    }
+}
+function bindFuturesPlayback(bundle) {
+    const btn = document.getElementById("rp-futures-play");
+    if (!btn)
+        return;
+    btn.addEventListener("click", () => {
+        if (futuresPlayTimer !== null) {
+            window.clearInterval(futuresPlayTimer);
+            futuresPlayTimer = null;
+            btn.textContent = "▶ 播放 100 个未来 play the futures";
+            paintFuturesFan(bundle);
+            return;
+        }
+        const paths = bundle.futures.samplePaths;
+        if (!paths.length)
+            return;
+        let index = 0;
+        btn.textContent = "⏸ 停 stop";
+        futuresPlayTimer = window.setInterval(() => {
+            const path = paths[index % paths.length];
+            if (path)
+                paintFuturesFan(bundle, path);
+            index += 1;
+            if (index >= Math.min(paths.length, 40)) {
+                window.clearInterval(futuresPlayTimer);
+                futuresPlayTimer = null;
+                btn.textContent = "▶ 播放 100 个未来 play the futures";
+                paintFuturesFan(bundle);
+            }
+        }, 450);
+    });
 }
 function paintCharts(bundle) {
     const hidden = requireState().ui.chartHiddenSeries;
