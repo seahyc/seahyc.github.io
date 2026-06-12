@@ -1,4 +1,4 @@
-import { AI_MODES, APPENDIX_PRESETS, QUICK_ACTIONS } from "./constants.js";
+import { AI_MODES, APPENDIX_PRESETS, DEFAULT_DESTINATION_COSTS, QUICK_ACTIONS } from "./constants.js";
 import { loadState, saveState, wipeState } from "./storage.js";
 import { createProfile, duplicateProfile, deleteProfile } from "./profile-manager.js";
 import { createPlan, duplicatePlan, deletePlan } from "./plan-manager.js";
@@ -6,6 +6,9 @@ import { getActiveProfile, getActivePlan, getPlansForProfile } from "./state.js"
 import { validatePlan, getCpfConstraints, normalizePlanToConstraints } from "./policy/cpf-validation.js";
 import { getInsuranceCatalogSelection, getRiderOptions, resolveInsurancePlan } from "./policy/medical-schemes.js";
 import { runPlan } from "./models/cashflow.js";
+import { computeCpfLifeInitial } from "./models/cpf-life.js";
+import { buildLifestyleEquivalents } from "./models/lifestyle-equivalents.js";
+import { buildBaselineSurvival } from "./models/mortality-baseline.js";
 import { buildSensitivityDiagnostics, computeRecommendations } from "./models/optimizer.js";
 import { buildExpertReview, buildPlanDiffSummary, summarizePanel } from "./models/recommendations.js";
 import { buildAppendixRows } from "./models/appendix-ledger.js";
@@ -133,6 +136,56 @@ let apiConfig: ApiConfigState = { endpoint: "https://api.openai.com/v1/responses
 
 const app = document.getElementById("retirement-planning-app") as HTMLDivElement;
 
+// ===== Language toggle (中文 default / EN) =====
+// NOTE: only the NEW cockpit surfaces (onboarding, futures topline, picture
+// header, settings-fold summary) are single-language via t(). The legacy expert
+// layer (profile/plan forms, charts, recommendations, appendix, AI workspace)
+// stays English in both modes — it is the expert layer.
+type Lang = "zh" | "en";
+const LANG_KEY = "rp-lang";
+
+function getLang(): Lang {
+  try {
+    return window.localStorage.getItem(LANG_KEY) === "en" ? "en" : "zh";
+  } catch {
+    return "zh";
+  }
+}
+
+function setLang(lang: Lang): void {
+  try {
+    window.localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* private mode: proceed without persisting */
+  }
+  render();
+}
+
+function t(zh: string, en: string): string {
+  return getLang() === "en" ? en : zh;
+}
+
+function renderLangToggle(): string {
+  const lang = getLang();
+  return `
+    <div class="rp-lang-toggle" role="group" aria-label="Language / 语言">
+      <button type="button" class="rp-lang-pill ${lang === "zh" ? "on" : ""}" data-lang="zh" aria-pressed="${lang === "zh"}">中文</button>
+      <button type="button" class="rp-lang-pill ${lang === "en" ? "on" : ""}" data-lang="en" aria-pressed="${lang === "en"}">EN</button>
+    </div>`;
+}
+
+function bindLangToggle(root: ParentNode): void {
+  root.querySelectorAll<HTMLButtonElement>("[data-lang]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setLang(btn.dataset.lang === "en" ? "en" : "zh");
+    });
+  });
+}
+
+function futuresPlayLabel(): string {
+  return t("▶ 播放 100 个未来", "▶ Play the 100 futures");
+}
+
 boot();
 
 function requireState(): AppState {
@@ -198,7 +251,6 @@ function render(): void {
   const sensitivities = buildSensitivityDiagnostics(profile, activeBundle.plan, activeBundle.result);
   const expertReview = buildExpertReview(syncedProfileRecord, activeBundle.plan, activeBundle.result, activeBundle.recommendations, sensitivities, insuranceCatalog);
   const diffSummary = buildPlanDiffSummary(activeBundle, comparisonBundle);
-  const topRecommendation = activeBundle.recommendations[0] ?? null;
 
   const appRoot = app.querySelector<HTMLDivElement>("#rp-app-root");
   if (!appRoot) {
@@ -211,14 +263,17 @@ function render(): void {
 
       <section class="rp-card rp-topline-stack" id="rp-outputs">
         <div class="rp-page-section-header rp-page-section-inline">
-          <div class="rp-page-section-kicker">你的退休图 Your picture</div>
-        <div class="rp-page-section-note">先看全局，再调整下面的决定 — big picture first, decisions below.</div>
+          <div>
+            <div class="rp-page-section-kicker">${t("你的退休图", "Your picture")}</div>
+            <div class="rp-page-section-note">${t("先看全局，再调整下面的决定。", "Big picture first, decisions below.")}</div>
+          </div>
+          ${renderLangToggle()}
         </div>
         <div class="rp-card-body">
           ${renderFuturesTopline(activeBundle, profile)}
+          ${renderDecisionRail(activeBundle, profile)}
           <div class="rp-output-highlights">
-            ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
-            ${renderIncomeGapAlert(activeBundle, topRecommendation)}
+            ${renderIncomeGapAlert(activeBundle)}
           </div>
           ${renderInsuranceReviewAlert(syncedProfileRecord, activeBundle)}
           <div class="rp-summary-grid">
@@ -230,8 +285,8 @@ function render(): void {
 
       <details class="rp-inspector-details rp-settings-fold">
         <summary>
-          <span>资料与设置 Profile &amp; settings</span>
-          <span class="rp-manage-summary">${escapeHtml(getPersonLabel(syncedProfileRecord.name))} · ${escapeHtml(syncedActivePlan.name)} · edit inputs</span>
+          <span>${t("资料与设置", "Profile & settings")}</span>
+          <span class="rp-manage-summary">${escapeHtml(getPersonLabel(syncedProfileRecord.name))} · ${escapeHtml(syncedActivePlan.name)} · ${t("修改输入", "edit inputs")}</span>
         </summary>
       <section class="rp-manage-inline">
         ${renderStartHereGuide()}
@@ -297,6 +352,12 @@ function render(): void {
       </section>
       </details>
 
+      <details class="rp-inspector-details rp-expert-fold" id="rp-expert-fold">
+        <summary>
+          <span>${t("专家层 · 图表与建议", "Expert layer · charts & analysis")}</span>
+          <span class="rp-manage-summary">${t("图表、建议、医疗与缓冲分析", "Charts, recommendations, medical & buffer analysis")}</span>
+        </summary>
+      ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
       <section class="rp-chart-grid">
         ${renderChartCards(activeBundle)}
       </section>
@@ -323,6 +384,7 @@ function render(): void {
           </div>
         </div>
       </section>
+      </details>
 
       <section class="rp-page-section rp-page-section-appendix">
         <div class="rp-page-section-header rp-page-section-inline">
@@ -372,6 +434,16 @@ function render(): void {
   `;
 
   bindActions(planResults, activeBundle, comparisonBundle);
+  bindDecisionRail(activeBundle, profile);
+  // Canvases inside a closed <details> have zero layout size and paint blank, so the
+  // expert fold's charts must (re)paint when it opens. Bound fresh each render (innerHTML
+  // replaced the element, clearing old listeners) → no leak; paintCharts is idempotent.
+  const expertFold = app.querySelector<HTMLDetailsElement>("#rp-expert-fold");
+  if (expertFold) {
+    expertFold.addEventListener("toggle", () => {
+      if (expertFold.open) paintCharts(activeBundle);
+    });
+  }
   paintCharts(activeBundle);
   paintFuturesFan(activeBundle);
   bindFuturesPlayback(activeBundle);
@@ -698,16 +770,21 @@ function renderConvenience(): string {
   return `<div class="rp-section-stack">${blocks.join("")}</div>`;
 }
 
+function planTypeLabel(kind: string): string {
+  return kind === "standard" ? t("标准", "Standard") : kind === "escalating" ? t("递增", "Escalating") : t("基本", "Basic");
+}
+
 function renderSummary(bundle: PlanBundle): string {
   const first = bundle.result.rows[0] ?? bundle.result.rows.at(-1);
   if (!first) return "";
+  const perMonth = t("月", "m");
   const cards = [
-    ["CPF LIFE start", `${currency.format(bundle.result.cpfInitialPayout)}/m`, `${bundle.plan.cpfPlan} plan, calibrated to observed payout if one is recorded.`, "neutral"],
-    ["Median death age", bundle.result.medianAge.toFixed(1), `Modal ${bundle.result.modalAge.toFixed(1)} · p90 ${bundle.result.p90Age.toFixed(1)}`, "neutral"],
-    ["Balanced buffer", currency.format(first.emergencyBalanced), `Recommended reserve based on basic spend and age-adjusted medical risk.`, "positive"],
-    ["Medical cash / yr", currency.format(first.medicalCash), `Estimated out-of-pocket after insurer and MediSave contributions.`, "warning"],
-    ["Family tax saved / yr", currency.format(first.taxSavingsAnnual), `Estimated from modeled family top-ups and marginal tax rates.`, "positive"],
-    ["Estate at median", currency.format(lookupByAge(bundle.result.rows, bundle.result.medianAge)?.estateEquivalent || 0), `Estate-equivalent balance near median life expectancy.`, "positive"],
+    [t("CPF LIFE 每月", "CPF LIFE start"), `${currency.format(bundle.result.cpfInitialPayout)}/${perMonth}`, t(`${planTypeLabel(bundle.plan.cpfPlan)}计划，如有实际入息则据此校准。`, `${planTypeLabel(bundle.plan.cpfPlan)} plan, calibrated to observed payout if one is recorded.`), "neutral"],
+    [t("预计寿命中位", "Median death age"), bundle.result.medianAge.toFixed(1), t(`众数 ${bundle.result.modalAge.toFixed(1)} · p90 ${bundle.result.p90Age.toFixed(1)}`, `Modal ${bundle.result.modalAge.toFixed(1)} · p90 ${bundle.result.p90Age.toFixed(1)}`), "neutral"],
+    [t("平衡缓冲", "Balanced buffer"), currency.format(first.emergencyBalanced), t("按基本开销与年龄调整后的医疗风险建议的储备金。", "Recommended reserve based on basic spend and age-adjusted medical risk."), "positive"],
+    [t("每年医疗现金", "Medical cash / yr"), currency.format(first.medicalCash), t("保险与 MediSave 支付后预计的自付部分。", "Estimated out-of-pocket after insurer and MediSave contributions."), "warning"],
+    [t("家人节税", "Family tax saved / yr"), currency.format(first.taxSavingsAnnual), t("按家人公积金填补与边际税率估算。", "Estimated from modeled family top-ups and marginal tax rates."), "positive"],
+    [t("遗产（中位寿命时）", "Estate at median"), currency.format(lookupByAge(bundle.result.rows, bundle.result.medianAge)?.estateEquivalent || 0), t("接近预计寿命中位时的遗产等值余额。", "Estate-equivalent balance near median life expectancy."), "positive"],
   ];
   return cards.map(([title, value, note, tone]) => `
     <div class="rp-summary-card ${tone ? `rp-summary-card-${tone}` : ""}">
@@ -754,60 +831,61 @@ function renderOnboarding(): void {
   const d = onboardingDraft;
   const steps = [
     `
-      <div class="rp-onb-q">您哪一年出生？是女士还是先生？</div>
-      <div class="rp-onb-en">Which year were you born, and are you a woman or a man?</div>
+      <div class="rp-onb-q">${t("您哪一年出生？是女士还是先生？", "Which year were you born, and are you a woman or a man?")}</div>
       <div class="rp-onb-row">
         <input type="number" class="rp-onb-input" id="rp-onb-year" inputmode="numeric" min="1930" max="1985" value="${d.birthYear}">
-        <span class="rp-onb-unit">年出生</span>
+        <span class="rp-onb-unit">${t("年出生", "year of birth")}</span>
       </div>
       <div class="rp-onb-opts">
-        <button type="button" class="rp-onb-opt ${d.sex === "female" ? "sel" : ""}" data-onb-sex="female">女士 Woman</button>
-        <button type="button" class="rp-onb-opt ${d.sex === "male" ? "sel" : ""}" data-onb-sex="male">先生 Man</button>
+        <button type="button" class="rp-onb-opt ${d.sex === "female" ? "sel" : ""}" data-onb-sex="female">${t("女士", "Woman")}</button>
+        <button type="button" class="rp-onb-opt ${d.sex === "male" ? "sel" : ""}" data-onb-sex="male">${t("先生", "Man")}</button>
       </div>`,
     `
-      <div class="rp-onb-q">您的公积金里，大约有多少钱？</div>
-      <div class="rp-onb-en">Roughly how much is in your CPF? A rough guess is fine — you can change it anytime.</div>
-      <div class="rp-onb-hint">💡 打开手机里的 CPF app 就能看到。不确定？选个大概。</div>
+      <div class="rp-onb-q">${t("您的公积金里，大约有多少钱？", "Roughly how much is in your CPF?")}</div>
+      <div class="rp-onb-hint">${t("💡 打开手机里的 CPF 应用就能看到。不确定？选个大概，随时可改。", "💡 Open the CPF app on your phone to check. Not sure? Pick a rough range — you can change it anytime.")}</div>
       <div class="rp-onb-opts rp-onb-stack">
-        <button type="button" class="rp-onb-opt ${d.cpfTotal === 80000 ? "sel" : ""}" data-onb-cpf="80000">少过 $100k <small>under</small></button>
+        <button type="button" class="rp-onb-opt ${d.cpfTotal === 80000 ? "sel" : ""}" data-onb-cpf="80000">${t("少过 $100k", "Under $100k")}</button>
         <button type="button" class="rp-onb-opt ${d.cpfTotal === 200000 ? "sel" : ""}" data-onb-cpf="200000">$100k – $300k</button>
-        <button type="button" class="rp-onb-opt ${d.cpfTotal === 400000 ? "sel" : ""}" data-onb-cpf="400000">$300k 以上 <small>above</small></button>
+        <button type="button" class="rp-onb-opt ${d.cpfTotal === 400000 ? "sel" : ""}" data-onb-cpf="400000">${t("$300k 以上", "Above $300k")}</button>
       </div>
       <div class="rp-onb-row">
-        <span class="rp-onb-unit">✏️ 或输入确切数字 exact:</span>
+        <span class="rp-onb-unit">${t("✏️ 或输入确切数字：", "✏️ Or enter the exact amount:")}</span>
         <input type="number" class="rp-onb-input" id="rp-onb-cpf-exact" inputmode="numeric" min="0" step="1000" placeholder="$">
       </div>`,
     `
-      <div class="rp-onb-q">您每个月大约花多少钱？</div>
-      <div class="rp-onb-en">Roughly how much do you spend each month — food, bills, transport, everything?</div>
+      <div class="rp-onb-q">${t("您每个月大约花多少钱？", "Roughly how much do you spend each month?")}</div>
+      <div class="rp-onb-hint">${t("吃饭、水电、交通，全部算进去。", "Food, bills, transport — everything counted.")}</div>
       <div class="rp-onb-opts rp-onb-stack">
-        <button type="button" class="rp-onb-opt ${d.spendMonthly === 1500 ? "sel" : ""}" data-onb-spend="1500">约 $1,500 / 月 <small>simple 简单过日子</small></button>
-        <button type="button" class="rp-onb-opt ${d.spendMonthly === 2300 ? "sel" : ""}" data-onb-spend="2300">约 $2,300 / 月 <small>comfortable 舒适</small></button>
-        <button type="button" class="rp-onb-opt ${d.spendMonthly === 3200 ? "sel" : ""}" data-onb-spend="3200">约 $3,200 / 月 <small>with treats 偶尔旅行</small></button>
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 1500 ? "sel" : ""}" data-onb-spend="1500">${t("约 $1,500 / 月", "About $1,500 / mo")} <small>${t("简单过日子", "simple")}</small></button>
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 2300 ? "sel" : ""}" data-onb-spend="2300">${t("约 $2,300 / 月", "About $2,300 / mo")} <small>${t("舒适", "comfortable")}</small></button>
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 3200 ? "sel" : ""}" data-onb-spend="3200">${t("约 $3,200 / 月", "About $3,200 / mo")} <small>${t("偶尔旅行", "with treats")}</small></button>
       </div>
       <div class="rp-onb-row">
-        <span class="rp-onb-unit">✏️ 或输入确切数字 exact:</span>
-        <input type="number" class="rp-onb-input" id="rp-onb-spend-exact" inputmode="numeric" min="0" step="100" placeholder="$ / 月">
+        <span class="rp-onb-unit">${t("✏️ 或输入确切数字：", "✏️ Or enter the exact amount:")}</span>
+        <input type="number" class="rp-onb-input" id="rp-onb-spend-exact" inputmode="numeric" min="0" step="100" placeholder="${t("$ / 月", "$ / mo")}">
       </div>`,
   ];
   const isLast = d.step === steps.length - 1;
   appRoot.innerHTML = `
     <div class="rp-onb">
       <div class="rp-onb-card">
-        <div class="rp-onb-progress">
-          ${steps.map((_, i) => `<i class="${i <= d.step ? "on" : ""}"></i>`).join("")}
-          <span>第 ${d.step + 1} 题 / ${steps.length} · Question ${d.step + 1} of ${steps.length}</span>
+        <div class="rp-onb-top">
+          <div class="rp-onb-progress">
+            ${steps.map((_, i) => `<i class="${i <= d.step ? "on" : ""}"></i>`).join("")}
+            <span>${t(`第 ${d.step + 1} 题 / ${steps.length}`, `Question ${d.step + 1} of ${steps.length}`)}</span>
+          </div>
+          ${renderLangToggle()}
         </div>
         ${steps[d.step]}
         <div class="rp-onb-sharp">
           <div class="rp-onb-sharp-bar"><span style="width:${Math.round(((d.step + 1) / (steps.length + 1)) * 100)}%"></span></div>
-          <div class="rp-onb-sharp-lbl">每答一题，预测就更清楚 · each answer sharpens your picture</div>
+          <div class="rp-onb-sharp-lbl">${t("每答一题，预测就更清楚", "Each answer sharpens your picture")}</div>
         </div>
         <div class="rp-onb-actions">
-          ${d.step > 0 ? `<button type="button" class="rp-btn soft" data-onb-back>‹ 返回 back</button>` : ""}
-          <button type="button" class="rp-btn accent rp-onb-next" data-onb-next>${isLast ? "看我的退休图 See my picture →" : "下一题 next →"}</button>
+          ${d.step > 0 ? `<button type="button" class="rp-btn soft" data-onb-back>${t("‹ 返回", "‹ Back")}</button>` : ""}
+          <button type="button" class="rp-btn accent rp-onb-next" data-onb-next>${isLast ? t("看我的退休图 →", "See my picture →") : t("下一题 →", "Next →")}</button>
         </div>
-        <button type="button" class="rp-onb-skip" data-onb-skip>先跳过，用新加坡平均值 · skip with averages (change anytime)</button>
+        <button type="button" class="rp-onb-skip" data-onb-skip>${t("先跳过，用新加坡平均值（随时可改）", "Skip with Singapore averages (change anytime)")}</button>
       </div>
     </div>`;
   bindOnboarding(appRoot);
@@ -815,6 +893,7 @@ function renderOnboarding(): void {
 
 function bindOnboarding(appRoot: HTMLDivElement): void {
   const d = onboardingDraft;
+  bindLangToggle(appRoot);
   appRoot.querySelectorAll<HTMLButtonElement>("[data-onb-sex]").forEach((btn) => {
     btn.addEventListener("click", () => {
       d.sex = btn.dataset.onbSex === "male" ? "male" : "female";
@@ -897,53 +976,370 @@ function renderFuturesTopline(bundle: PlanBundle, profile: ProfileData): string 
   ).join("");
 
   const plan = bundle.plan;
-  const candidateAge = plan.payoutStartAge >= 70 ? 69 : plan.payoutStartAge + 1;
-  let deltaHtml = "";
-  if (candidateAge !== plan.payoutStartAge) {
-    const altPlan = { ...plan, payoutStartAge: candidateAge };
-    const altResult = runPlan(profile, altPlan);
-    const altFut = simulateFutures(altResult, profile, altPlan);
-    const okDelta = altFut.okOf100 - fut.okOf100;
-    const payoutDelta = Math.round((altResult.cpfInitialPayout - bundle.result.cpfInitialPayout));
-    const altMinLiquid = Math.round(Math.min(...altFut.bands.map((b) => b.p10)));
-    deltaHtml = `<div class="rp-futures-delta">如果 ${candidateAge} 岁才开始领：<b>${altFut.okOf100} / 100</b> 个未来够用（${okDelta >= 0 ? "+" : ""}${okDelta}），每月${payoutDelta >= 0 ? "多" : "少"} <b>${currency.format(Math.abs(payoutDelta))}</b>${altMinLiquid < 0 ? ` — <span class="warn">但最差的未来现金缺口达 ${currency.format(Math.abs(altMinLiquid))}</span>` : ""}<br><span style="font-size:.9em;color:var(--rp-muted)">If you start at ${candidateAge} instead — drag the slider to try it.</span></div>`;
-  }
-
+  const planLabel = plan.cpfPlan === "standard"
+    ? t("标准计划", "Standard plan")
+    : plan.cpfPlan === "escalating"
+      ? t("递增计划", "Escalating plan")
+      : t("基本计划", "Basic plan");
   const chips = [
-    `基于 based on: <b>${plan.payoutStartAge} 岁开始领</b>`,
-    `<b>${plan.cpfPlan === "standard" ? "标准" : plan.cpfPlan === "escalating" ? "递增" : "基本"}计划</b>`,
-    `每月生活费 <b>${currency.format(profile.basicSpendMonthly)}</b>`,
-    `锁定 <b>${currency.format(plan.oneOffTopup || 0)}</b>`,
+    t(`<b>${plan.payoutStartAge} 岁开始领</b>`, `<b>Payouts at ${plan.payoutStartAge}</b>`),
+    `<b>${planLabel}</b>`,
+    t(`每月生活费 <b>${currency.format(profile.basicSpendMonthly)}</b>`, `Monthly spend <b>${currency.format(profile.basicSpendMonthly)}</b>`),
+    t(`锁定 <b>${currency.format(plan.oneOffTopup || 0)}</b>`, `Locked in <b>${currency.format(plan.oneOffTopup || 0)}</b>`),
   ].map((c) => `<span>${c}</span>`).join("");
+
+  const tightensLabel = typicalBreach
+    ? t(`约 ${typicalBreach} 岁前变紧`, `tightens before ~${typicalBreach}`)
+    : t("变紧", "tightens");
 
   return `
     <div class="rp-futures" id="rp-futures">
       <div class="rp-futures-main">
         <div>
-          <div class="rp-futures-hero"><b>${fut.okOf100}</b> / 100 个未来里，钱够用一辈子</div>
-          <div class="rp-futures-hero-en">In ${fut.okOf100} of 100 simulated futures, your money outlives you.</div>
+          <div class="rp-futures-hero">${t(
+            `<b>${fut.okOf100}</b> / 100 个未来里，钱够用一辈子`,
+            `<b>${fut.okOf100}</b> / 100 futures, your money outlives you`,
+          )}</div>
         </div>
-        <div class="rp-futures-dots" aria-label="100 simulated futures">${dots}</div>
+        <div class="rp-futures-dots" aria-label="${t("100 个模拟未来", "100 simulated futures")}">${dots}</div>
         <div class="rp-futures-legend">
-          <span><i class="good"></i>钱够用 lasts · ${fut.okOf100}</span>
-          <span><i class="bad"></i>${typicalBreach ? `约 ${typicalBreach} 岁前变紧` : "变紧"} tightens · ${redOf100}（CPF LIFE 仍月月照付 payouts never stop）</span>
+          <span><i class="good"></i>${t("钱够用", "lasts")} · ${fut.okOf100}</span>
+          <span><i class="bad"></i>${tightensLabel} · ${redOf100}${t("（CPF LIFE 仍月月照付）", " (CPF LIFE keeps paying)")}</span>
         </div>
-        <button type="button" class="rp-futures-play" id="rp-futures-play">▶ 播放 100 个未来 play the futures</button>
+        <button type="button" class="rp-futures-play" id="rp-futures-play">${futuresPlayLabel()}</button>
       </div>
       <div class="rp-futures-side">
         <div class="rp-futures-fanwrap">
           <canvas id="chart-futures-fan" width="760" height="280"></canvas>
         </div>
-        <div class="rp-futures-fancaption">100 个未来里 80 个落在绿色范围内 — 也可能落在外面 · 80 of 100 futures fall inside the band; some fall outside</div>
-        <div class="rp-futures-slider">
-          <label>几岁开始领 CPF LIFE？ Start payouts at: <b id="rp-futures-age">${plan.payoutStartAge}</b> 岁</label>
-          <input type="range" min="65" max="70" step="1" value="${plan.payoutStartAge}" id="rp-futures-age-slider" data-plan-field="plan.payoutStartAge">
-          <div class="rp-futures-ticks"><span>65</span><span>66</span><span>67</span><span>68</span><span>69</span><span>70</span></div>
-        </div>
-        ${deltaHtml}
+        <div class="rp-futures-fancaption">${t(
+          "100 个未来里 80 个落在绿色范围内 — 也可能落在外面",
+          "80 of 100 futures fall inside the band; some fall outside",
+        )}</div>
       </div>
       <div class="rp-futures-chips">${chips}</div>
     </div>`;
+}
+
+// ===== Decision rail (Task 4): four linked decision cards + per-decision zoom ritual =====
+// Every control here mutates the SAME active plan/profile the legacy forms use and goes
+// through persist()→render(), so the hero, dots, fan and deltas all re-render together
+// (one linked state — no panel left on a stale scenario). All copy via t(); all ritual
+// numbers trace to engine outputs (buildBaselineSurvival / profile risk factors /
+// bundle.futures.redFutures) with no invented magnitudes.
+
+const PARKED_KEY = "rp-parked";
+const DISEASE_LABELS = new Map(SUPPORTED_DISEASES.map((d) => [d.key, d.label] as const));
+
+// zh labels for the conditions a user can actually enter (SUPPORTED_DISEASES). Keeps the
+// mom-facing 里面看 ritual single-language in zh; falls back to the English DB label for
+// any key not mapped. EN mode always uses the English DB label.
+const DISEASE_LABELS_ZH: Record<string, string> = {
+  hypertension: "高血压", diabetes: "糖尿病", hyperlipidemia: "高血脂", obesity: "肥胖",
+  "coronary-artery-disease": "冠心病", "heart-failure": "心力衰竭", "atrial-fibrillation": "心房颤动",
+  "heart-attack": "心脏病发作史", stroke: "中风史", tia: "短暂性脑缺血发作",
+  "peripheral-arterial-disease": "周围动脉疾病", "chronic-kidney-disease": "慢性肾病",
+  dialysis: "透析依赖性肾病", asthma: "哮喘", copd: "慢性阻塞性肺病", "sleep-apnea": "睡眠呼吸暂停",
+  parkinsons: "帕金森病", dementia: "失智症", osteoporosis: "骨质疏松", osteoarthritis: "骨关节炎",
+  "rheumatoid-arthritis": "类风湿关节炎", lupus: "系统性红斑狼疮", "chronic-hepatitis": "慢性肝炎",
+  cirrhosis: "肝硬化", "breast-cancer": "乳腺癌", "colorectal-cancer": "结直肠癌", "lung-cancer": "肺癌",
+  "prostate-cancer": "前列腺癌", "ovarian-cancer": "卵巢癌", "cervical-cancer": "宫颈癌",
+  "thyroid-cancer": "甲状腺癌", "liver-cancer": "肝癌", "pancreatic-cancer": "胰腺癌",
+  "gastric-cancer": "胃癌", "bladder-cancer": "膀胱癌", "kidney-cancer": "肾癌", "uterine-cancer": "子宫癌",
+  "brain-cancer": "脑癌", "nasopharyngeal-cancer": "鼻咽癌", "skin-cancer": "皮肤癌", lymphoma: "淋巴瘤",
+  leukemia: "白血病", "multiple-myeloma": "多发性骨髓瘤", cardiomyopathy: "心肌病",
+  "valvular-heart-disease": "心脏瓣膜病", "deep-vein-thrombosis": "深静脉血栓/肺栓塞史", epilepsy: "癫痫",
+  "multiple-sclerosis": "多发性硬化", depression: "重度抑郁症", schizophrenia: "精神分裂症谱系障碍",
+  ibd: "炎症性肠病", psoriasis: "银屑病", gout: "痛风", "spinal-stenosis": "椎管狭窄/退行性脊椎病",
+  glaucoma: "青光眼", "macular-degeneration": "黄斑变性", "chronic-liver-failure": "慢性肝衰竭",
+};
+
+// zh names for the handful of lifestyle-equivalent destinations (place names, kept as
+// proper nouns but localized for the zh sentence). English fallback for any unmapped key.
+const DESTINATION_LABELS_ZH: Record<string, string> = {
+  japan: "日本", europe: "欧洲", africa: "非洲", us: "美国", sea: "东南亚",
+};
+
+function diseaseLabel(key: string): string {
+  if (getLang() === "zh") return DISEASE_LABELS_ZH[key] ?? DISEASE_LABELS.get(key) ?? key;
+  return DISEASE_LABELS.get(key) ?? key;
+}
+
+function getParkedDate(cardId: string): string | null {
+  try {
+    const map = JSON.parse(window.localStorage.getItem(PARKED_KEY) || "{}") as Record<string, unknown>;
+    const value = map[cardId];
+    return typeof value === "string" ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function setParkedDate(cardId: string, iso: string): void {
+  try {
+    const map = JSON.parse(window.localStorage.getItem(PARKED_KEY) || "{}") as Record<string, string>;
+    map[cardId] = iso;
+    window.localStorage.setItem(PARKED_KEY, JSON.stringify(map));
+  } catch {
+    /* private mode: skip persistence */
+  }
+}
+
+function planSparkline(kind: string): string {
+  // flat (standard), rising (escalating), falling (basic)
+  const path = kind === "escalating" ? "M2,15 L10,9 L18,3" : kind === "basic" ? "M2,4 L10,9 L18,14" : "M2,9 L18,9";
+  return `<svg class="rp-rail-spark" viewBox="0 0 20 18" width="32" height="18" aria-hidden="true"><path d="${path}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function renderAgeDelta(bundle: PlanBundle, profile: ProfileData): string {
+  const plan = bundle.plan;
+  const candidateAge = plan.payoutStartAge >= 70 ? 69 : plan.payoutStartAge + 1;
+  if (candidateAge === plan.payoutStartAge) return "";
+  const altPlan = { ...plan, payoutStartAge: candidateAge };
+  const altResult = runPlan(profile, altPlan);
+  const altFut = simulateFutures(altResult, profile, altPlan);
+  const okDelta = altFut.okOf100 - bundle.futures.okOf100;
+  const payoutDelta = Math.round(altResult.cpfInitialPayout - bundle.result.cpfInitialPayout);
+  const altMinLiquid = Math.round(Math.min(...altFut.bands.map((b) => b.p10)));
+  const okDeltaStr = `${okDelta >= 0 ? "+" : ""}${okDelta}`;
+  const payoutStr = currency.format(Math.abs(payoutDelta));
+  const gapWarn = altMinLiquid < 0
+    ? t(` — <span class="warn">最差现金缺口 ${currency.format(Math.abs(altMinLiquid))}</span>`, ` — <span class="warn">worst cash gap ${currency.format(Math.abs(altMinLiquid))}</span>`)
+    : "";
+  return `<div class="rp-futures-delta">${t(
+    `改到 ${candidateAge} 岁开始领：<b>${altFut.okOf100}/100</b> 个未来够用（${okDeltaStr}），每月${payoutDelta >= 0 ? "多" : "少"} <b>${payoutStr}</b>${gapWarn}`,
+    `Start at ${candidateAge} instead: <b>${altFut.okOf100}/100</b> futures last (${okDeltaStr}), <b>${payoutStr}</b> ${payoutDelta >= 0 ? "more" : "less"}/mo${gapWarn}`,
+  )}</div>`;
+}
+
+function renderLockDelta(bundle: PlanBundle, profile: ProfileData, maxLock: number): string {
+  const plan = bundle.plan;
+  const current = plan.oneOffTopup || 0;
+  const candidate = current < maxLock ? Math.min(maxLock, current + 50000) : 0;
+  if (candidate === current) return "";
+  const altPlan = { ...plan, oneOffTopup: candidate };
+  const altResult = runPlan(profile, altPlan);
+  const altFut = simulateFutures(altResult, profile, altPlan);
+  const okDelta = altFut.okOf100 - bundle.futures.okOf100;
+  const payoutDelta = Math.round(altResult.cpfInitialPayout - bundle.result.cpfInitialPayout);
+  const okDeltaStr = `${okDelta >= 0 ? "+" : ""}${okDelta}`;
+  const dir = candidate > current ? t("多锁", "lock") : t("少锁", "unlock");
+  const amt = currency.format(Math.abs(candidate - current));
+  return `<div class="rp-futures-delta">${t(
+    `${dir} <b>${amt}</b> 进 RA：<b>${altFut.okOf100}/100</b> 个未来够用（${okDeltaStr}），每月${payoutDelta >= 0 ? "多" : "少"} <b>${currency.format(Math.abs(payoutDelta))}</b>`,
+    `${dir} <b>${amt}</b> into RA: <b>${altFut.okOf100}/100</b> futures last (${okDeltaStr}), <b>${currency.format(Math.abs(payoutDelta))}</b> ${payoutDelta >= 0 ? "more" : "less"}/mo`,
+  )}</div>`;
+}
+
+function renderZoomRitual(cardId: string, bundle: PlanBundle, profile: ProfileData, isPlan: boolean): string {
+  const currentAge = bundle.result.currentAge;
+  const sex = profile.sex;
+  const who = sex === "male" ? t("先生", "men") : t("女士", "women");
+
+  // 外面看 — UNADJUSTED base rate (reference class before her specifics)
+  const base = buildBaselineSurvival(currentAge, sex);
+  const survivalAt = (target: number): number | null => base.points.find((p) => p.age === target)?.survival ?? null;
+  const s85 = survivalAt(85);
+  const s90 = survivalAt(90);
+  const outside = (s85 !== null && s90 !== null)
+    ? t(
+        `100 个像您一样的${who}（${currentAge} 岁）：约 <b>${Math.round(s85 * 100)}</b> 个活过 85，<b>${Math.round(s90 * 100)}</b> 个活过 90。`,
+        `Of 100 ${who} like you (age ${currentAge}): about <b>${Math.round(s85 * 100)}</b> live past 85, <b>${Math.round(s90 * 100)}</b> past 90.`,
+      )
+    : t("基于新加坡同龄人的存活率。", "Based on Singapore peers' survival rates.");
+
+  // 里面看 — named nudges from the SAME fields computeRiskMultiplier reads (direction only)
+  const nudges: Array<{ label: string; dir: "up" | "down" }> = [];
+  if (profile.smoking === "current") nudges.push({ label: t("现在吸烟", "current smoker"), dir: "up" });
+  else if (profile.smoking === "former") nudges.push({ label: t("曾经吸烟", "former smoker"), dir: "up" });
+  if (profile.alcohol === "heavy") nudges.push({ label: t("大量饮酒", "heavy drinking"), dir: "up" });
+  if (profile.selfRatedHealth === "poor") nudges.push({ label: t("自评健康差", "self-rated poor health"), dir: "up" });
+  else if (profile.selfRatedHealth === "good") nudges.push({ label: t("自评健康良好", "self-rated good health"), dir: "down" });
+  if (profile.frailty === "frail") nudges.push({ label: t("身体虚弱", "frail"), dir: "up" });
+  else if (profile.frailty === "prefrail") nudges.push({ label: t("偏虚弱", "pre-frail"), dir: "up" });
+  if (profile.mobility !== "independent") nudges.push({ label: t("行动需协助", "mobility needs help"), dir: "up" });
+  if (profile.cognition !== "normal") nudges.push({ label: t("认知有状况", "cognition affected"), dir: "up" });
+  (profile.chronicConditions || []).forEach((c) => nudges.push({ label: diseaseLabel(c), dir: "up" }));
+  (profile.priorSeriousConditions || []).forEach((c) => nudges.push({ label: `${diseaseLabel(c)}${t("（既往）", " (prior)")}`, dir: "up" }));
+  const iv = bundle.plan.interventions;
+  if (iv.exerciseUpgrade) nudges.push({ label: t("加强运动计划", "exercise upgrade"), dir: "down" });
+  if (iv.bpControl) nudges.push({ label: t("控制血压", "BP control"), dir: "down" });
+  if (iv.smokingCessation && profile.smoking === "current") nudges.push({ label: t("戒烟计划", "quit-smoking plan"), dir: "down" });
+  const nudgesHtml = nudges.length
+    ? nudges.map((n) => `<span class="rp-nudge ${n.dir}">${escapeHtml(n.label)} ${n.dir === "up" ? t("↑风险", "↑ risk") : t("↓风险", "↓ risk")}</span>`).join("")
+    : `<span class="rp-help">${t("暂无特别因素 — 使用新加坡平均值。", "No standout factors — using Singapore averages.")}</span>`;
+
+  // 预演失败 — group the ACTUAL red futures by cause (no hardcoded empty buckets)
+  const paths = bundle.futures.paths;
+  const byCause = new Map<string, number[]>();
+  bundle.futures.redFutures.forEach((f) => {
+    const arr = byCause.get(f.cause) ?? [];
+    arr.push(f.breachAge);
+    byCause.set(f.cause, arr);
+  });
+  const causeMeta: Record<string, { label: string; fix: string }> = {
+    medical: { label: t("医疗开销", "medical bills"), fix: t("检查保险与 MediShield 缺口", "review insurance & MediShield gaps") },
+    market: { label: t("市场波动", "market swings"), fix: t("保留更多现金缓冲", "keep a bigger cash buffer") },
+    longevity: { label: t("特别长寿", "living longer"), fix: t("考虑延后开始领或多锁定 RA", "defer payouts or lock more into RA") },
+  };
+  const premortemRows = [...byCause.entries()]
+    .sort((a, b) => b[1].length - a[1].length)
+    .slice(0, 3)
+    .map(([cause, breaches]) => {
+      const sorted = [...breaches].sort((a, b) => a - b);
+      const medBreach = sorted[Math.floor(sorted.length / 2)] ?? 0;
+      const pct = Math.round((breaches.length / paths) * 100);
+      const meta = causeMeta[cause] ?? { label: cause, fix: "" };
+      return { pct, medBreach, label: meta.label, fix: meta.fix };
+    });
+  const premortemHtml = premortemRows.length
+    ? premortemRows.map((r) => `<div class="rp-premortem">${t(
+        `约 <b>${r.pct}</b> / 100 个未来因<b>${r.label}</b>在 ${r.medBreach} 岁左右变紧 → ${r.fix}`,
+        `~<b>${r.pct}</b> of 100 futures tighten from <b>${r.label}</b> around age ${r.medBreach} → ${r.fix}`,
+      )}</div>`).join("")
+    : `<div class="rp-help">${t("目前没有变紧的未来 — 很稳。", "No tightening futures right now — solid.")}</div>`;
+
+  const parked = getParkedDate(cardId);
+  const commitHtml = `${isPlan
+    ? `<button type="button" class="rp-btn soft rp-rail-decide" data-rail-commit="${cardId}" data-rail-plan-final="1">${t("就这样决定", "Decide this")}</button>
+       <div class="rp-rail-final" data-rail-final="${cardId}" hidden>
+         <span class="warn">${t("🔴 选定 30 天后不能更改。确定吗？", "🔴 Final 30 days after enrolment. Sure?")}</span>
+         <button type="button" class="rp-btn accent" data-rail-confirm="${cardId}">${t("确认", "Confirm")}</button>
+       </div>`
+    : `<button type="button" class="rp-btn soft rp-rail-decide" data-rail-commit="${cardId}">${t("就这样决定", "Decide this")}</button>`}
+    <button type="button" class="rp-btn soft" data-rail-park="${cardId}">${t("先放着", "Park for now")}</button>
+    <span class="rp-rail-parkchip" data-rail-parkchip="${cardId}" ${parked ? "" : "hidden"}>${parked ? t(`已暂放 · ${parked}`, `Parked · ${parked}`) : ""}</span>`;
+
+  return `
+    <details class="rp-rail-zoom rp-inspector-details">
+      <summary><span>${t("深入看", "Look deeper")}</span></summary>
+      <div class="rp-rail-ritual">
+        <div class="rp-ritual-block">
+          <div class="rp-ritual-h">${t("外面看 · 像您这样的人", "Outside view · people like you")}</div>
+          <div>${outside}</div>
+        </div>
+        <div class="rp-ritual-block">
+          <div class="rp-ritual-h">${t("里面看 · 您的因素", "Inside view · your factors")}</div>
+          <div class="rp-nudge-list">${nudgesHtml}</div>
+        </div>
+        <div class="rp-ritual-block">
+          <div class="rp-ritual-h">${t("预演失败 · 钱会怎样变紧", "Premortem · how money tightens")}</div>
+          <div class="rp-premortem-list">${premortemHtml}</div>
+        </div>
+        <div class="rp-ritual-block rp-rail-commit">${commitHtml}</div>
+      </div>
+    </details>`;
+}
+
+function renderDecisionRail(bundle: PlanBundle, profile: ProfileData): string {
+  const plan = bundle.plan;
+  const maxLock = Math.max(0, Math.min(bundle.result.constraints.remainingErsRoom, profile.bankCash));
+  const planTiles = (["standard", "escalating", "basic"] as const).map((kind) => {
+    const payout = computeCpfLifeInitial(profile, { ...plan, cpfPlan: kind });
+    const label = kind === "standard" ? t("标准", "Standard") : kind === "escalating" ? t("递增", "Escalating") : t("基本", "Basic");
+    const selected = plan.cpfPlan === kind;
+    return `<button type="button" class="rp-rail-tile ${selected ? "sel" : ""}" data-rail-plan="${kind}" aria-pressed="${selected}">
+      <span class="rp-rail-tile-top">${planSparkline(kind)}<b>${label}</b></span>
+      <span class="rp-rail-tile-payout">${currency.format(Math.round(payout))}/${t("月", "mo")}</span>
+    </button>`;
+  }).join("");
+  const life = buildLifestyleEquivalents(profile.discretionarySpendAnnual)[0];
+  // Destination names (Japan, Europe…) are proper nouns and stay; only the structural
+  // words ("day"/"trip") go through t() so the zh sentence isn't mixed-language.
+  const dest = life ? DEFAULT_DESTINATION_COSTS[life.key] : undefined;
+  const destZh = life ? (DESTINATION_LABELS_ZH[life.key] ?? dest?.label ?? "") : "";
+  const lifeSub = life && dest
+    ? t(`约 ${life.trips.toFixed(1)} 次 ${dest.duration} 天 ${destZh} 之旅/年`, `~${life.trips.toFixed(1)}× ${dest.duration}-day ${dest.label} trip/yr`)
+    : "";
+
+  return `
+    <section class="rp-decision-rail" aria-label="${t("决定区", "Decisions")}">
+      <div class="rp-rail-grid">
+        <div class="rp-rail-card">
+          <div class="rp-rail-card-head">
+            <div class="rp-rail-card-title">${t("几岁开始领", "When to start")}</div>
+            <span class="rp-rail-xn">⟂ ${t("与「锁定多少」联动", "linked to “how much to lock”")}</span>
+          </div>
+          <div class="rp-rail-value"><b id="rp-futures-age">${plan.payoutStartAge}</b> ${t("岁", "yrs")}</div>
+          <input type="range" min="65" max="70" step="1" value="${plan.payoutStartAge}" id="rp-futures-age-slider" data-plan-field="plan.payoutStartAge">
+          <div class="rp-futures-ticks"><span>65</span><span>66</span><span>67</span><span>68</span><span>69</span><span>70</span></div>
+          ${renderAgeDelta(bundle, profile)}
+          ${renderZoomRitual("age", bundle, profile, false)}
+        </div>
+        <div class="rp-rail-card">
+          <div class="rp-rail-card-head">
+            <div class="rp-rail-card-title">${t("选哪个计划", "Which plan")}</div>
+            <span class="rp-rail-xn">⟂ ${t("与「每月生活费」联动", "linked to “monthly spend”")}</span>
+          </div>
+          <div class="rp-rail-tiles">${planTiles}</div>
+          <div class="rp-rail-lock-note">🔒 ${t("选定 30 天内可改，之后定死 — 一道门。", "Changeable for 30 days after enrolment, then final — a one-way door.")}</div>
+          ${renderZoomRitual("plan", bundle, profile, true)}
+        </div>
+        <div class="rp-rail-card">
+          <div class="rp-rail-card-head">
+            <div class="rp-rail-card-title">${t("锁定多少进 RA", "How much to lock into RA")}</div>
+            <span class="rp-rail-xn">⟂ ${t("与「几岁开始领」联动", "linked to “when to start”")}</span>
+          </div>
+          <div class="rp-rail-value"><b>${currency.format(plan.oneOffTopup || 0)}</b></div>
+          <input type="range" min="0" max="${Math.max(10000, maxLock)}" step="10000" value="${Math.min(plan.oneOffTopup || 0, maxLock)}" data-plan-field="plan.oneOffTopup" ${maxLock <= 0 ? "disabled" : ""}>
+          <div class="rp-rail-range-ends"><span>$0</span><span>${currency.format(maxLock)}</span></div>
+          ${maxLock > 0
+            ? renderLockDelta(bundle, profile, maxLock)
+            : `<div class="rp-help">${t("暂无可锁定空间（ERS 已满或现金不足）。", "No room to lock right now (ERS full or low cash).")}</div>`}
+          ${renderZoomRitual("lock", bundle, profile, false)}
+        </div>
+        <div class="rp-rail-card">
+          <div class="rp-rail-card-head">
+            <div class="rp-rail-card-title">${t("每月生活费", "Monthly spending")}</div>
+            <span class="rp-rail-xn">⟂ ${t("与「选哪个计划」联动", "linked to “which plan”")}</span>
+          </div>
+          <div class="rp-rail-value"><b>${currency.format(profile.basicSpendMonthly)}</b> /${t("月", "mo")}</div>
+          <input type="range" min="800" max="6000" step="100" value="${Math.min(6000, Math.max(800, profile.basicSpendMonthly))}" data-profile-field="profile.basicSpendMonthly">
+          <div class="rp-rail-range-ends"><span>$800</span><span>$6,000</span></div>
+          ${lifeSub ? `<div class="rp-rail-subtitle">${escapeHtml(lifeSub)}</div>` : ""}
+          ${renderZoomRitual("spend", bundle, profile, false)}
+        </div>
+      </div>
+    </section>`;
+}
+
+function bindDecisionRail(bundle: PlanBundle, profile: ProfileData): void {
+  void bundle;
+  void profile;
+  if (!state) return;
+  app.querySelectorAll<HTMLButtonElement>("[data-rail-plan]").forEach((btn) => btn.addEventListener("click", async () => {
+    if (!state) return;
+    const kind = btn.dataset.railPlan;
+    if (kind !== "standard" && kind !== "escalating" && kind !== "basic") return;
+    getActivePlan(state).cpfPlan = kind;
+    syncActivePlanConstraints(state);
+    await persist();
+  }));
+  app.querySelectorAll<HTMLButtonElement>("[data-rail-commit]").forEach((btn) => btn.addEventListener("click", () => {
+    if (btn.dataset.railPlanFinal) {
+      const final = app.querySelector<HTMLElement>(`[data-rail-final="${btn.dataset.railCommit}"]`);
+      if (final) final.hidden = false;
+      return;
+    }
+    showToast("success", t("已记录 · 随时可改", "Noted — change anytime"));
+  }));
+  app.querySelectorAll<HTMLButtonElement>("[data-rail-confirm]").forEach((btn) => btn.addEventListener("click", () => {
+    showToast("success", t("已记录 · 选定 30 天后不能更改", "Noted — final 30 days after enrolment"));
+    const final = app.querySelector<HTMLElement>(`[data-rail-final="${btn.dataset.railConfirm}"]`);
+    if (final) final.hidden = true;
+  }));
+  app.querySelectorAll<HTMLButtonElement>("[data-rail-park]").forEach((btn) => btn.addEventListener("click", () => {
+    const id = btn.dataset.railPark;
+    if (!id) return;
+    const iso = new Date().toISOString().slice(0, 10);
+    setParkedDate(id, iso);
+    const chip = app.querySelector<HTMLElement>(`[data-rail-parkchip="${id}"]`);
+    if (chip) {
+      chip.hidden = false;
+      chip.textContent = t(`已暂放 · ${iso}`, `Parked · ${iso}`);
+    }
+    showToast("info", t("已先放着 · 之后再回来看", "Parked — revisit later"));
+  }));
 }
 
 function renderPlainEnglishSummary(profileRecord: ProfileRecord, plan: PlanData, bundle: PlanBundle): string {
@@ -981,29 +1377,38 @@ function renderInsuranceReviewAlert(profileRecord: ProfileRecord, bundle: PlanBu
   const age = getAgeFromBirthDate(profile.birthDate);
   if (!usingPublicBaseline || age < 55) return "";
   const conditions = profile.chronicConditions.length
-    ? profile.chronicConditions.join(", ")
-    : "your current health profile";
+    ? profile.chronicConditions.map((c) => diseaseLabel(c)).join("、")
+    : t("您目前的健康状况", "your current health profile");
   return `
     <div class="rp-alert rp-alert-warning rp-insurance-review-card">
-      <strong>Insurance review is urgent</strong>
-      <div>At age ${age}, with ${escapeHtml(conditions)} and only public-baseline hospital coverage selected, a future hospitalisation could still leave meaningful cash bills. The current model estimates about ${currency.format(first.medicalCash)}/year out of pocket before any major shock.</div>
-      <div><strong>What to do Monday morning:</strong> Ask an insurance adviser or provider what Integrated Shield coverage is still available, what exclusions apply, and what the annual premium would be before your next birthday.</div>
+      <strong>${t("保险检视刻不容缓", "Insurance review is urgent")}</strong>
+      <div>${t(
+        `${age} 岁、有「${escapeHtml(conditions)}」、且只选了公积金公共基础住院保障，未来一次住院仍可能留下不小的现金账单。目前模型估计在重大冲击前每年自付约 ${currency.format(first.medicalCash)}。`,
+        `At age ${age}, with ${escapeHtml(conditions)} and only public-baseline hospital coverage selected, a future hospitalisation could still leave meaningful cash bills. The current model estimates about ${currency.format(first.medicalCash)}/year out of pocket before any major shock.`,
+      )}</div>
+      <div><strong>${t("下一步该做什么：", "What to do Monday morning:")}</strong> ${t(
+        "向保险顾问或保险公司询问：现在还能买哪些综合健保计划（Integrated Shield）、有哪些除外条款、以及在下个生日前的年保费是多少。",
+        "Ask an insurance adviser or provider what Integrated Shield coverage is still available, what exclusions apply, and what the annual premium would be before your next birthday.",
+      )}</div>
     </div>
   `;
 }
 
-function renderIncomeGapAlert(bundle: PlanBundle, topRecommendation: Recommendation | null): string {
+function renderIncomeGapAlert(bundle: PlanBundle): string {
   const first = bundle.result.rows[0];
   if (!first) return "";
   const monthlyIncome = Math.round(first.grossIncomeAnnual / 12);
   const monthlyBasicSpend = Math.round(first.basicSpendAnnual / 12);
   const monthlyGap = monthlyIncome - monthlyBasicSpend;
   if (first.netAnnual >= 0 && monthlyGap >= 0) return "";
+  const m = t("月", "m");
   return `
     <div class="rp-alert rp-alert-warning rp-income-gap-card">
-      <strong>Income gap detected</strong>
-      <div>Your monthly income (${currency.format(monthlyIncome)}/m) does not cover basic needs (${currency.format(monthlyBasicSpend)}/m). Shortfall: ${currency.format(Math.abs(monthlyGap))}/m.</div>
-      ${topRecommendation ? `<div>Top action: ${escapeHtml(topRecommendation.title)}</div>` : ""}
+      <strong>${t("收入缺口", "Income gap detected")}</strong>
+      <div>${t(
+        `每月收入（${currency.format(monthlyIncome)}/${m}）不足以支付基本开销（${currency.format(monthlyBasicSpend)}/${m}）。缺口：${currency.format(Math.abs(monthlyGap))}/${m}。`,
+        `Your monthly income (${currency.format(monthlyIncome)}/${m}) does not cover basic needs (${currency.format(monthlyBasicSpend)}/${m}). Shortfall: ${currency.format(Math.abs(monthlyGap))}/${m}.`,
+      )}</div>
     </div>
   `;
 }
@@ -1013,13 +1418,13 @@ function renderAiQuickActions(profileRecord: ProfileRecord, plan: PlanData, bund
   return `
     <div class="rp-ai-cta-strip">
       <div class="rp-ai-cta-copy">
-        <strong>Open your plan in AI</strong>
-        <div class="rp-card-subtitle">Your current plan state will be preloaded so you can ask a real question immediately.</div>
+        <strong>${t("在 AI 里打开您的计划", "Open your plan in AI")}</strong>
+        <div class="rp-card-subtitle">${t("会预先载入您当前的计划状态，方便您立刻提问。", "Your current plan state will be preloaded so you can ask a real question immediately.")}</div>
       </div>
       <div class="rp-flex">
-        <button class="rp-btn accent" data-ai-open="claude">Open your plan in Claude</button>
-        <button class="rp-btn soft" data-ai-open="chatgpt">Open your plan in ChatGPT</button>
-        <button class="rp-btn soft" data-copy-text="${escapeAttr(familyPrompt)}">Copy family brief</button>
+        <button class="rp-btn accent" data-ai-open="claude">${t("用 Claude 打开", "Open your plan in Claude")}</button>
+        <button class="rp-btn soft" data-ai-open="chatgpt">${t("用 ChatGPT 打开", "Open your plan in ChatGPT")}</button>
+        <button class="rp-btn soft" data-copy-text="${escapeAttr(familyPrompt)}">${t("复制家人简报", "Copy family brief")}</button>
       </div>
     </div>
   `;
@@ -1423,6 +1828,7 @@ function renderAppendix(rows: CashflowRow[], preset: AppendixPreset): string {
 function bindActions(planResults: PlanBundle[], activeBundle: PlanBundle, comparisonBundle: PlanBundle | null): void {
   void planResults;
   if (!state) return;
+  bindLangToggle(app);
   app.querySelectorAll<HTMLButtonElement>("[data-profile-switch]").forEach((button) => button.addEventListener("click", async () => {
     if (!state) return;
     state.activeProfileId = button.dataset.profileSwitch ?? null;
@@ -1736,9 +2142,9 @@ function paintFuturesFan(bundle: PlanBundle, overlayPath?: { points: Array<{ age
   ctx.beginPath(); ctx.moveTo(pad.left, y(0)); ctx.lineTo(w - pad.right, y(0)); ctx.stroke();
   ctx.fillStyle = "rgba(0,0,0,0.55)";
   ctx.font = "12px system-ui";
-  ctx.fillText(`${minAge}岁`, pad.left, h - 8);
-  ctx.fillText(`${maxAge}岁`, w - pad.right - 30, h - 8);
-  ctx.fillText("存款 savings", 8, pad.top + 10);
+  ctx.fillText(t(`${minAge}岁`, `Age ${minAge}`), pad.left, h - 8);
+  ctx.fillText(t(`${maxAge}岁`, `Age ${maxAge}`), w - pad.right - 30, h - 8);
+  ctx.fillText(t("存款", "Savings"), 8, pad.top + 10);
 
   // p10–p90 band
   ctx.beginPath();
@@ -1774,14 +2180,14 @@ function bindFuturesPlayback(bundle: PlanBundle): void {
     if (futuresPlayTimer !== null) {
       window.clearInterval(futuresPlayTimer);
       futuresPlayTimer = null;
-      btn.textContent = "▶ 播放 100 个未来 play the futures";
+      btn.textContent = futuresPlayLabel();
       paintFuturesFan(bundle);
       return;
     }
     const paths = bundle.futures.samplePaths;
     if (!paths.length) return;
     let index = 0;
-    btn.textContent = "⏸ 停 stop";
+    btn.textContent = t("⏸ 停", "⏸ Stop");
     futuresPlayTimer = window.setInterval(() => {
       const path = paths[index % paths.length];
       if (path) paintFuturesFan(bundle, path);
@@ -1789,7 +2195,7 @@ function bindFuturesPlayback(bundle: PlanBundle): void {
       if (index >= Math.min(paths.length, 40)) {
         window.clearInterval(futuresPlayTimer as number);
         futuresPlayTimer = null;
-        btn.textContent = "▶ 播放 100 个未来 play the futures";
+        btn.textContent = futuresPlayLabel();
         paintFuturesFan(bundle);
       }
     }, 450);

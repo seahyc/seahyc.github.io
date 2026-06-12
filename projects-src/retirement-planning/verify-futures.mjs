@@ -50,13 +50,23 @@ assert.equal(sampleDeathAge(hazards, result.rows, draw1), sampleDeathAge(hazards
 const drawMany = mulberry32(99);
 const deaths = Array.from({ length: 2000 }, () => sampleDeathAge(hazards, result.rows, drawMany)).sort((x, y) => x - y);
 const medianDeath = deaths[Math.floor(deaths.length / 2)];
-// Death sampling must be self-consistent with the survival column the hazards are
-// derived from — NOT with result.medianAge, which uses a different mortality formula
-// (cashflow.ts:18-20) and diverges ~12y from the survival curve (cashflow.ts:45).
+// One reconciled mortality model (Task 3): the survival column and result.medianAge are
+// now derived from the SAME adjusted curve, so the sampled median death must agree with
+// BOTH the survival-curve median AND result.medianAge.
 const survivalMedian = (result.rows.find((r) => r.survival <= 0.5) ?? result.rows[result.rows.length - 1]).age;
 assert.ok(
   Math.abs(medianDeath - survivalMedian) <= 3,
   `sampled median death age (${medianDeath}) should sit within 3y of the survival-curve median (${survivalMedian})`
+);
+assert.ok(
+  Math.abs(survivalMedian - result.medianAge) <= 3,
+  `survival-curve median (${survivalMedian}) and result.medianAge (${result.medianAge}) must agree within 3y (single reconciled model)`
+);
+// Default SG-female profile: median death should land in the life-table range, not the
+// old ~77 the miscalibrated baseline produced.
+assert.ok(
+  result.medianAge >= 85 && result.medianAge <= 91,
+  `default-profile medianAge (${result.medianAge}) should sit in the SingStat range [85,91]`
 );
 
 // --- simulateFutures: determinism, structure, honesty ---
@@ -78,6 +88,17 @@ for (const band of fut1.bands) {
   assert.ok(band.p10 <= band.p50 && band.p50 <= band.p90, `band at age ${band.age} must be ordered`);
 }
 assert.equal(fut1.bands[0].age, result.rows[0].age, "bands start at the first ledger age");
+
+// Re-anchoring sanity (Task 2): at year 0 the only stochastic deltas are
+// (medicalDraw − medicalCash), which has ~zero expectation, and marketDelta, which
+// is mean-zero — so the median band must sit on the deterministic, now-draining
+// rows[0].liquidAssets. This is the guard against the futures engine re-introducing
+// its own income−spend drain (which would shift p50 off the ledger anchor).
+const anchor0 = result.rows[0].liquidAssets;
+assert.ok(
+  Math.abs(fut1.bands[0].p50 - anchor0) <= 0.05 * Math.max(1, Math.abs(anchor0)),
+  `year-0 band p50 (${fut1.bands[0].p50}) must sit within 5% of rows[0].liquidAssets (${anchor0})`
+);
 
 // red futures carry when/how-bad (spec: never a bare success score)
 for (const red of fut1.redFutures.slice(0, 5)) {

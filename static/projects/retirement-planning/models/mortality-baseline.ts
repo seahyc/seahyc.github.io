@@ -40,16 +40,52 @@ export function getBaseRemainingYears(age: number, sex: Sex): number {
   return interpolate(sex === "male" ? MALE_BASE_REMAINING : FEMALE_BASE_REMAINING, age);
 }
 
+// Gompertz log-hazard growth (qx roughly doubles every ln2/g ≈ 7.3 years in old age),
+// consistent with SingStat elderly mortality slope. Only the LEVEL is profile-specific
+// and is solved per call so the curve's median matches the remaining-years table.
+const GOMPERTZ_SLOPE = 0.095;
+
 export function buildBaselineSurvival(age: number, sex: Sex, horizon = 35): BaselineSurvival {
   const remainingYears = getBaseRemainingYears(age, sex);
   const medianAge = age + remainingYears;
-  const qScale = sex === "male" ? 0.083 : 0.077;
+  // Calibrate the hazard LEVEL q0 so cumulative survival crosses 0.5 EXACTLY at the
+  // life-table median (age + remainingYears). The previous fixed qScale produced a
+  // curve whose median sat ~10y below its own remaining-years input — the survival
+  // column was internally inconsistent and far too pessimistic (e.g. 63F median 77 vs
+  // table-implied 87). Shape is Gompertz qx(i)=q0·exp(g·i); q0 found by bisection.
+  const g = GOMPERTZ_SLOPE;
+  const survivalAtMedian = (q0: number): number => {
+    let survival = 1;
+    let prevAge = age;
+    for (let i = 1; i <= horizon; i += 1) {
+      const qx = Math.min(0.99, q0 * Math.exp(g * i));
+      const next = survival * Math.max(0, 1 - qx);
+      const currentAge = age + i;
+      if (currentAge >= medianAge) {
+        const span = currentAge - prevAge || 1;
+        const ratio = (medianAge - prevAge) / span;
+        return survival + ratio * (next - survival);
+      }
+      survival = next;
+      prevAge = currentAge;
+    }
+    return survival;
+  };
+  let lo = 1e-5;
+  let hi = 0.5;
+  for (let iter = 0; iter < 60; iter += 1) {
+    const mid = (lo + hi) / 2;
+    // Higher q0 → more hazard → lower survival at the median. Bisect toward s=0.5.
+    if (survivalAtMedian(mid) > 0.5) lo = mid;
+    else hi = mid;
+  }
+  const q0 = (lo + hi) / 2;
   const points: BaselineSurvivalPoint[] = [];
   let survival = 1;
   for (let i = 0; i <= horizon; i += 1) {
     const currentAge = age + i;
-    const qx = Math.min(0.62, qScale * Math.exp((currentAge - age - remainingYears / 2) / 10));
-    survival *= i === 0 ? 1 : Math.max(0, 1 - qx);
+    const qx = i === 0 ? 0 : Math.min(0.99, q0 * Math.exp(g * i));
+    survival *= Math.max(0, 1 - qx);
     points.push({ age: currentAge, qx, survival });
   }
   return { medianAge, points };

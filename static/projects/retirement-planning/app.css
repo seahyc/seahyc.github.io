@@ -137,7 +137,46 @@
 
 .rp-page-section-inline {
     padding: 1rem 1.2rem 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
 }
+
+/* ===== Language toggle (中文 / EN pill) ===== */
+.rp-lang-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    border: 1px solid var(--rp-border);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 2px;
+    align-self: start;
+}
+.rp-lang-pill {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--rp-muted);
+    cursor: pointer;
+    min-height: 32px;
+}
+.rp-lang-pill.on {
+    background: #fff;
+    color: var(--rp-ink);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.rp-onb-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.rp-onb-top .rp-onb-progress { flex: 1; }
 
 .rp-page-section-kicker {
     color: var(--rp-ink);
@@ -1613,7 +1652,6 @@
     color: var(--rp-ink);
 }
 .rp-futures-hero b { color: var(--fut-tint); font-size: 2.6rem; }
-.rp-futures-hero-en { font-size: 1.05rem; color: var(--rp-muted); font-style: italic; margin-top: 0.2rem; }
 .rp-futures-dots {
     display: grid;
     grid-template-columns: repeat(20, minmax(0, 1fr));
@@ -1677,6 +1715,68 @@
     .rp-futures-hero b { font-size: 2rem; }
 }
 
+/* ===== Decision rail (Task 4) ===== */
+.rp-decision-rail { margin-top: 1.4rem; }
+.rp-rail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 980px) {
+    .rp-rail-grid { grid-template-columns: 1fr 1fr; }
+}
+.rp-rail-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(36, 29, 18, 0.07);
+    padding: 1.2rem 1.3rem;
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+}
+.rp-rail-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+.rp-rail-card-title { font-size: 1.15rem; font-weight: 700; color: var(--rp-ink); letter-spacing: -0.01em; }
+.rp-rail-xn { font-size: 0.82rem; color: var(--fut-tint); background: var(--fut-tint-soft); border-radius: 999px; padding: 0.2rem 0.6rem; }
+.rp-rail-value { font-size: 1.5rem; font-weight: 700; color: var(--rp-ink); }
+.rp-rail-value b { color: var(--fut-tint); }
+.rp-rail-card input[type="range"] { width: 100%; accent-color: var(--fut-tint); }
+.rp-rail-range-ends { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--rp-muted); }
+.rp-rail-subtitle { font-size: 0.95rem; color: var(--rp-body); }
+.rp-rail-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.rp-rail-tile {
+    display: grid;
+    gap: 0.3rem;
+    justify-items: center;
+    border: 1.5px solid var(--rp-border);
+    background: #fff;
+    border-radius: 0.9rem;
+    padding: 0.65rem 0.4rem;
+    cursor: pointer;
+    color: var(--rp-ink);
+}
+.rp-rail-tile.sel { border-color: var(--fut-tint); background: var(--fut-tint-soft); }
+.rp-rail-tile-top { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.98rem; }
+.rp-rail-spark { color: var(--fut-tint); }
+.rp-rail-tile-payout { font-size: 0.9rem; color: var(--rp-body); font-weight: 600; }
+.rp-rail-lock-note { font-size: 0.88rem; color: var(--rp-muted); }
+.rp-rail-zoom { margin-top: 0.2rem; }
+.rp-rail-zoom > summary { font-size: 0.98rem; font-weight: 600; color: var(--fut-tint); cursor: pointer; }
+.rp-rail-ritual { display: grid; gap: 0.85rem; padding-top: 0.7rem; }
+.rp-ritual-block { display: grid; gap: 0.35rem; }
+.rp-ritual-h { font-size: 0.92rem; font-weight: 700; color: var(--rp-ink); }
+.rp-ritual-block b { color: var(--rp-ink); }
+.rp-nudge-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.rp-nudge { font-size: 0.85rem; border-radius: 999px; padding: 0.2rem 0.6rem; }
+.rp-nudge.up { background: rgba(212, 87, 46, 0.1); color: #b1431f; }
+.rp-nudge.down { background: rgba(47, 158, 87, 0.12); color: #1f7a44; }
+.rp-premortem { font-size: 0.92rem; color: var(--rp-body); line-height: 1.5; }
+.rp-premortem + .rp-premortem { margin-top: 0.3rem; }
+.rp-rail-commit { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.rp-rail-final { display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.rp-rail-final .warn { color: var(--fut-bad); font-weight: 600; font-size: 0.9rem; }
+.rp-rail-parkchip { font-size: 0.82rem; color: var(--rp-muted); background: rgba(0, 0, 0, 0.05); border-radius: 999px; padding: 0.2rem 0.6rem; }
+
 /* ===== Cockpit-first layout: settings fold ===== */
 .rp-settings-fold {
     background: rgba(255, 250, 242, 0.9);
@@ -1695,6 +1795,35 @@
     gap: 1rem;
 }
 .rp-settings-fold[open] > summary { border-bottom: 1px dashed var(--rp-border); margin-bottom: 0.8rem; }
+
+/* ===== Expert layer fold (Task 5): glass box, harmonized skin ===== */
+.rp-expert-fold {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(36, 29, 18, 0.07);
+    padding: 0.4rem 1rem;
+}
+.rp-expert-fold > summary {
+    cursor: pointer;
+    padding: 0.8rem 0.4rem;
+    font-size: var(--rp-text-md);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    color: var(--rp-ink);
+}
+.rp-expert-fold[open] > summary { border-bottom: 1px dashed var(--rp-border); margin-bottom: 0.9rem; }
+/* Harmonize the legacy cards inside to the .rp-futures family (white, hairline, soft shadow) */
+.rp-expert-fold .rp-card,
+.rp-expert-fold .rp-chart-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(36, 29, 18, 0.07);
+}
 
 /* ===== Futures topline: desktop layout + crisp sizing ===== */
 .rp-futures-main, .rp-futures-side { display: grid; gap: 1rem; min-width: 0; align-content: start; }
@@ -1723,7 +1852,6 @@
 .rp-onb-progress i.on { background: #0a7d6c; }
 .rp-onb-progress span { margin-left: auto; font-size: 0.9rem; color: var(--rp-muted); }
 .rp-onb-q { font-size: 1.7rem; font-weight: 700; line-height: 1.4; color: var(--rp-ink); letter-spacing: -0.01em; }
-.rp-onb-en { font-size: 1.02rem; color: var(--rp-muted); font-style: italic; margin-top: -0.6rem; }
 .rp-onb-hint { background: rgba(10, 125, 108, 0.08); border-radius: 0.9rem; padding: 0.8rem 1rem; font-size: 1rem; color: var(--rp-ink); }
 .rp-onb-opts { display: flex; gap: 0.7rem; flex-wrap: wrap; }
 .rp-onb-opts.rp-onb-stack { flex-direction: column; }

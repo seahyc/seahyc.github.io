@@ -2,15 +2,16 @@ import type { PlanData, PlanRunResult, ProfileData } from "../types.js";
 import { hashSeed, lognormalMultiplier, mulberry32, normal, type Rng } from "./rng.js";
 
 // Per-year conditional probability of dying before next row, from the cumulative
-// survival column (already risk-adjusted in cashflow.ts:45).
+// survival column.
 //
-// KNOWN DIVERGENCE: this survival column and result.medianAge use different mortality
-// models — the column raises base survival to riskMultiplier (cashflow.ts:45) while
-// medianAge divides remaining years by it (cashflow.ts:18-20). For the default profile
-// they sit ~12y apart (survival-curve median ~76-77 vs medianAge ~88.8). The futures
-// engine intentionally anchors on the survival column it samples from; do NOT "fix" it
-// against medianAge. Reconciling the two mortality models is a separate, pre-existing
-// concern tracked outside this engine.
+// RESOLVED (was KNOWN DIVERGENCE): the survival column and result.medianAge now come
+// from ONE reconciled mortality model. cashflow.ts calibrates the baseline curve so its
+// median matches the SingStat remaining-years table, applies riskMultiplier in hazard
+// form (per-year qx·m, not survival**m), and derives medianAge/p75/p90/modalAge from
+// that same adjusted column. So the survival-curve median and result.medianAge agree
+// (within rounding), and the sampled futures median death tracks medianAge — the
+// verify-futures cross-check enforces this. This engine still anchors on the survival
+// column it samples from; that column is now consistent with medianAge by construction.
 export function deriveHazards(rows: PlanRunResult["rows"]): number[] {
   return rows.map((row, i) => {
     if (i === rows.length - 1) return 1;
@@ -105,9 +106,14 @@ export function simulateFutures(
   for (let p = 0; p < paths; p += 1) {
     const deathAge = sampleDeathAge(hazards, rows, rng);
     deathAges.push(deathAge);
-    let liquid = rows[0]?.liquidAssets ?? 0;
+    // Re-anchor on the deterministic, now-draining liquidAssets (cashflow.ts threads
+    // Σ netAnnual into each row). The income−spend drain therefore lives entirely in
+    // rows[y].liquidAssets; here we add ONLY the stochastic deviations around it —
+    // medical out-of-pocket above/below its expected cash, and market deviation
+    // around the ledger's baked-in 2% — so consumption is never double-counted.
+    let cumDelta = 0;
     let breachAge: number | null = null;
-    let minLiquid = liquid;
+    let minLiquid = rows[0]?.liquidAssets ?? 0;
     let medicalShockAtBreach = false;
     const points: Array<{ age: number; liquid: number }> = [];
 
@@ -116,9 +122,13 @@ export function simulateFutures(
       if (!row || row.age > deathAge) break;
       const medicalDraw = row.medicalCash * lognormalMultiplier(rng, MEDICAL_SIGMA);
       const marketDelta = marketBase * (normal(rng, MARKET_MEAN, MARKET_SD) - MARKET_MEAN);
-      const net =
-        row.grossIncomeAnnual - row.basicSpendAnnual - row.discretionaryAnnual - medicalDraw + marketDelta;
-      liquid += net;
+      // The anchor row.liquidAssets already drains the deterministic medicalCash (via
+      // netAnnual). The stochastic adjustment REPLACES that with the actual medicalDraw:
+      // contribution = −medicalDraw − (−medicalCash) = (medicalCash − medicalDraw). A
+      // shock (medicalDraw > medicalCash) therefore lowers liquid, as it must — never
+      // double-counting or inverting the drain.
+      cumDelta += (row.medicalCash - medicalDraw) + marketDelta;
+      const liquid = row.liquidAssets + cumDelta;
       points.push({ age: row.age, liquid });
       liquidByYear[y]?.push(liquid);
       if (liquid < minLiquid) minLiquid = liquid;
