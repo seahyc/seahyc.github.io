@@ -135,6 +135,10 @@ function render() {
     }
     ensureAppChrome();
     const currentState = requireState();
+    if (!isOnboarded()) {
+        renderOnboarding();
+        return;
+    }
     const profileRecord = getActiveProfile(currentState);
     syncActivePlanConstraints(currentState);
     const syncedProfileRecord = getActiveProfile(currentState);
@@ -670,6 +674,165 @@ function renderSummary(bundle) {
     </div>
   `).join("");
 }
+// ===== Step-by-step onboarding (first visit) =====
+const ONBOARDED_KEY = "rp-onboarded-v1";
+const onboardingDraft = { step: 0, birthYear: 1962, sex: "female", cpfTotal: null, spendMonthly: null };
+function isOnboarded() {
+    try {
+        return window.localStorage.getItem(ONBOARDED_KEY) === "1";
+    }
+    catch {
+        return true;
+    }
+}
+function markOnboarded() {
+    try {
+        window.localStorage.setItem(ONBOARDED_KEY, "1");
+    }
+    catch {
+        /* private mode: proceed without persisting */
+    }
+}
+function renderOnboarding() {
+    const appRoot = app.querySelector("#rp-app-root");
+    if (!appRoot)
+        return;
+    const d = onboardingDraft;
+    const steps = [
+        `
+      <div class="rp-onb-q">您哪一年出生？是女士还是先生？</div>
+      <div class="rp-onb-en">Which year were you born, and are you a woman or a man?</div>
+      <div class="rp-onb-row">
+        <input type="number" class="rp-onb-input" id="rp-onb-year" inputmode="numeric" min="1930" max="1985" value="${d.birthYear}">
+        <span class="rp-onb-unit">年出生</span>
+      </div>
+      <div class="rp-onb-opts">
+        <button type="button" class="rp-onb-opt ${d.sex === "female" ? "sel" : ""}" data-onb-sex="female">女士 Woman</button>
+        <button type="button" class="rp-onb-opt ${d.sex === "male" ? "sel" : ""}" data-onb-sex="male">先生 Man</button>
+      </div>`,
+        `
+      <div class="rp-onb-q">您的公积金里，大约有多少钱？</div>
+      <div class="rp-onb-en">Roughly how much is in your CPF? A rough guess is fine — you can change it anytime.</div>
+      <div class="rp-onb-hint">💡 打开手机里的 CPF app 就能看到。不确定？选个大概。</div>
+      <div class="rp-onb-opts rp-onb-stack">
+        <button type="button" class="rp-onb-opt ${d.cpfTotal === 80000 ? "sel" : ""}" data-onb-cpf="80000">少过 $100k <small>under</small></button>
+        <button type="button" class="rp-onb-opt ${d.cpfTotal === 200000 ? "sel" : ""}" data-onb-cpf="200000">$100k – $300k</button>
+        <button type="button" class="rp-onb-opt ${d.cpfTotal === 400000 ? "sel" : ""}" data-onb-cpf="400000">$300k 以上 <small>above</small></button>
+      </div>
+      <div class="rp-onb-row">
+        <span class="rp-onb-unit">✏️ 或输入确切数字 exact:</span>
+        <input type="number" class="rp-onb-input" id="rp-onb-cpf-exact" inputmode="numeric" min="0" step="1000" placeholder="$">
+      </div>`,
+        `
+      <div class="rp-onb-q">您每个月大约花多少钱？</div>
+      <div class="rp-onb-en">Roughly how much do you spend each month — food, bills, transport, everything?</div>
+      <div class="rp-onb-opts rp-onb-stack">
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 1500 ? "sel" : ""}" data-onb-spend="1500">约 $1,500 / 月 <small>simple 简单过日子</small></button>
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 2300 ? "sel" : ""}" data-onb-spend="2300">约 $2,300 / 月 <small>comfortable 舒适</small></button>
+        <button type="button" class="rp-onb-opt ${d.spendMonthly === 3200 ? "sel" : ""}" data-onb-spend="3200">约 $3,200 / 月 <small>with treats 偶尔旅行</small></button>
+      </div>
+      <div class="rp-onb-row">
+        <span class="rp-onb-unit">✏️ 或输入确切数字 exact:</span>
+        <input type="number" class="rp-onb-input" id="rp-onb-spend-exact" inputmode="numeric" min="0" step="100" placeholder="$ / 月">
+      </div>`,
+    ];
+    const isLast = d.step === steps.length - 1;
+    appRoot.innerHTML = `
+    <div class="rp-onb">
+      <div class="rp-onb-card">
+        <div class="rp-onb-progress">
+          ${steps.map((_, i) => `<i class="${i <= d.step ? "on" : ""}"></i>`).join("")}
+          <span>第 ${d.step + 1} 题 / ${steps.length} · Question ${d.step + 1} of ${steps.length}</span>
+        </div>
+        ${steps[d.step]}
+        <div class="rp-onb-sharp">
+          <div class="rp-onb-sharp-bar"><span style="width:${Math.round(((d.step + 1) / (steps.length + 1)) * 100)}%"></span></div>
+          <div class="rp-onb-sharp-lbl">每答一题，预测就更清楚 · each answer sharpens your picture</div>
+        </div>
+        <div class="rp-onb-actions">
+          ${d.step > 0 ? `<button type="button" class="rp-btn soft" data-onb-back>‹ 返回 back</button>` : ""}
+          <button type="button" class="rp-btn accent rp-onb-next" data-onb-next>${isLast ? "看我的退休图 See my picture →" : "下一题 next →"}</button>
+        </div>
+        <button type="button" class="rp-onb-skip" data-onb-skip>先跳过，用新加坡平均值 · skip with averages (change anytime)</button>
+      </div>
+    </div>`;
+    bindOnboarding(appRoot);
+}
+function bindOnboarding(appRoot) {
+    const d = onboardingDraft;
+    appRoot.querySelectorAll("[data-onb-sex]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            d.sex = btn.dataset.onbSex === "male" ? "male" : "female";
+            renderOnboarding();
+        });
+    });
+    appRoot.querySelectorAll("[data-onb-cpf]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            d.cpfTotal = Number(btn.dataset.onbCpf);
+            renderOnboarding();
+        });
+    });
+    appRoot.querySelectorAll("[data-onb-spend]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            d.spendMonthly = Number(btn.dataset.onbSpend);
+            renderOnboarding();
+        });
+    });
+    appRoot.querySelector("[data-onb-back]")?.addEventListener("click", () => {
+        d.step = Math.max(0, d.step - 1);
+        renderOnboarding();
+    });
+    appRoot.querySelector("[data-onb-skip]")?.addEventListener("click", () => {
+        markOnboarded();
+        render();
+    });
+    appRoot.querySelector("[data-onb-next]")?.addEventListener("click", () => {
+        const yearInput = appRoot.querySelector("#rp-onb-year");
+        if (yearInput) {
+            const year = Number(yearInput.value);
+            if (Number.isFinite(year) && year >= 1930 && year <= 1985)
+                d.birthYear = year;
+        }
+        const cpfExact = appRoot.querySelector("#rp-onb-cpf-exact");
+        if (cpfExact && cpfExact.value) {
+            const value = Number(cpfExact.value);
+            if (Number.isFinite(value) && value >= 0)
+                d.cpfTotal = value;
+        }
+        const spendExact = appRoot.querySelector("#rp-onb-spend-exact");
+        if (spendExact && spendExact.value) {
+            const value = Number(spendExact.value);
+            if (Number.isFinite(value) && value > 0)
+                d.spendMonthly = value;
+        }
+        if (d.step < 2) {
+            d.step += 1;
+            renderOnboarding();
+            return;
+        }
+        applyOnboarding();
+    });
+}
+function applyOnboarding() {
+    const currentState = requireState();
+    const profileRecord = getActiveProfile(currentState);
+    const profile = profileRecord.profile;
+    const d = onboardingDraft;
+    profile.birthDate = `${d.birthYear}-06-15`;
+    profile.sex = d.sex;
+    if (d.cpfTotal !== null) {
+        // Retirement-age split: most CPF sits in RA by now; keep MA modest.
+        profile.ra = Math.round(d.cpfTotal * 0.7);
+        profile.oa = Math.round(d.cpfTotal * 0.2);
+        profile.sa = 0;
+        profile.ma = Math.round(d.cpfTotal * 0.1);
+    }
+    if (d.spendMonthly !== null) {
+        profile.basicSpendMonthly = d.spendMonthly;
+    }
+    markOnboarded();
+    void persist();
+}
 function renderFuturesTopline(bundle, profile) {
     const fut = bundle.futures;
     const redOf100 = 100 - fut.okOf100;
@@ -696,25 +859,30 @@ function renderFuturesTopline(bundle, profile) {
     ].map((c) => `<span>${c}</span>`).join("");
     return `
     <div class="rp-futures" id="rp-futures">
-      <div>
-        <div class="rp-futures-hero"><b>${fut.okOf100}</b> / 100 个未来里，钱够用一辈子</div>
-        <div class="rp-futures-hero-en">In ${fut.okOf100} of 100 simulated futures, your money outlives you.</div>
+      <div class="rp-futures-main">
+        <div>
+          <div class="rp-futures-hero"><b>${fut.okOf100}</b> / 100 个未来里，钱够用一辈子</div>
+          <div class="rp-futures-hero-en">In ${fut.okOf100} of 100 simulated futures, your money outlives you.</div>
+        </div>
+        <div class="rp-futures-dots" aria-label="100 simulated futures">${dots}</div>
+        <div class="rp-futures-legend">
+          <span><i class="good"></i>钱够用 lasts · ${fut.okOf100}</span>
+          <span><i class="bad"></i>${typicalBreach ? `约 ${typicalBreach} 岁前变紧` : "变紧"} tightens · ${redOf100}（CPF LIFE 仍月月照付 payouts never stop）</span>
+        </div>
+        <button type="button" class="rp-futures-play" id="rp-futures-play">▶ 播放 100 个未来 play the futures</button>
       </div>
-      <div class="rp-futures-dots" aria-label="100 simulated futures">${dots}</div>
-      <div class="rp-futures-legend">
-        <span><i class="good"></i>钱够用 lasts · ${fut.okOf100}</span>
-        <span><i class="bad"></i>${typicalBreach ? `约 ${typicalBreach} 岁前变紧` : "变紧"} tightens · ${redOf100}（CPF LIFE 仍月月照付 payouts never stop）</span>
+      <div class="rp-futures-side">
+        <div class="rp-futures-fanwrap">
+          <canvas id="chart-futures-fan" width="760" height="280"></canvas>
+        </div>
+        <div class="rp-futures-fancaption">100 个未来里 80 个落在绿色范围内 — 也可能落在外面 · 80 of 100 futures fall inside the band; some fall outside</div>
+        <div class="rp-futures-slider">
+          <label>几岁开始领 CPF LIFE？ Start payouts at: <b id="rp-futures-age">${plan.payoutStartAge}</b> 岁</label>
+          <input type="range" min="65" max="70" step="1" value="${plan.payoutStartAge}" id="rp-futures-age-slider" data-plan-field="plan.payoutStartAge">
+          <div class="rp-futures-ticks"><span>65</span><span>66</span><span>67</span><span>68</span><span>69</span><span>70</span></div>
+        </div>
+        ${deltaHtml}
       </div>
-      <div class="rp-futures-fanwrap">
-        <canvas id="chart-futures-fan" width="760" height="280"></canvas>
-      </div>
-      <button type="button" class="rp-futures-play" id="rp-futures-play">▶ 播放 100 个未来 play the futures</button>
-      <div class="rp-futures-slider">
-        <label>几岁开始领 CPF LIFE？ Start payouts at: <b id="rp-futures-age">${plan.payoutStartAge}</b> 岁</label>
-        <input type="range" min="65" max="70" step="1" value="${plan.payoutStartAge}" id="rp-futures-age-slider" data-plan-field="plan.payoutStartAge">
-        <div class="rp-futures-ticks"><span>65</span><span>66</span><span>67</span><span>68</span><span>69</span><span>70</span></div>
-      </div>
-      ${deltaHtml}
       <div class="rp-futures-chips">${chips}</div>
     </div>`;
 }
@@ -1458,8 +1626,18 @@ function paintFuturesFan(bundle, overlayPath) {
     const bands = bundle.futures.bands;
     if (!bands.length)
         return;
-    const w = canvas.width;
-    const h = canvas.height;
+    // Crisp on retina/desktop: size the bitmap to CSS width × devicePixelRatio.
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth || canvas.parentElement?.clientWidth || 760;
+    const h = Math.max(180, Math.round(w * 0.36));
+    const bw = Math.round(w * dpr);
+    const bh = Math.round(h * dpr);
+    if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
+        canvas.style.height = `${h}px`;
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const pad = { left: 56, right: 14, top: 14, bottom: 26 };
     ctx.clearRect(0, 0, w, h);
     const ages = bands.map((b) => b.age);
@@ -1501,9 +1679,6 @@ function paintFuturesFan(bundle, overlayPath) {
     ctx.strokeStyle = "#0a7d6c";
     ctx.lineWidth = 2.5;
     ctx.stroke();
-    // band honesty label (spec: bands must not read as boundaries)
-    ctx.fillStyle = "rgba(0,0,0,0.55)";
-    ctx.fillText("100 个未来里 80 个落在绿色范围内 — 也可能落在外面", pad.left + 8, pad.top + 12);
     if (overlayPath) {
         ctx.beginPath();
         overlayPath.points.forEach((p, i) => (i === 0 ? ctx.moveTo(x(p.age), y(p.liquid)) : ctx.lineTo(x(p.age), y(p.liquid))));
