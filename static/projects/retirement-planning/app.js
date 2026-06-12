@@ -178,13 +178,30 @@ function render() {
       ${renderBanner(syncedProfileRecord, syncedActivePlan)}
       ${renderStickyMiniBar(syncedProfileRecord, syncedActivePlan, activeBundle)}
 
-      <section class="rp-page-section rp-page-section-inputs">
-        <div class="rp-page-section-header">
-          <div class="rp-page-section-kicker">Inputs</div>
-          <div class="rp-page-section-note">Baseline profile, insurance coverage, plan settings, and quick controls.</div>
+      <section class="rp-card rp-topline-stack" id="rp-outputs">
+        <div class="rp-page-section-header rp-page-section-inline">
+          <div class="rp-page-section-kicker">你的退休图 Your picture</div>
+        <div class="rp-page-section-note">先看全局，再调整下面的决定 — big picture first, decisions below.</div>
+        </div>
+        <div class="rp-card-body">
+          ${renderFuturesTopline(activeBundle, profile)}
+          <div class="rp-output-highlights">
+            ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
+            ${renderIncomeGapAlert(activeBundle, topRecommendation)}
+          </div>
+          ${renderInsuranceReviewAlert(syncedProfileRecord, activeBundle)}
+          <div class="rp-summary-grid">
+            ${renderSummary(activeBundle)}
+          </div>
+          ${renderAiQuickActions(syncedProfileRecord, syncedActivePlan, activeBundle)}
         </div>
       </section>
 
+      <details class="rp-inspector-details rp-settings-fold">
+        <summary>
+          <span>资料与设置 Profile &amp; settings</span>
+          <span class="rp-manage-summary">${escapeHtml(getPersonLabel(syncedProfileRecord.name))} · ${escapeHtml(syncedActivePlan.name)} · edit inputs</span>
+        </summary>
       <section class="rp-manage-inline">
         ${renderStartHereGuide()}
         <details class="rp-inspector-details">
@@ -247,25 +264,7 @@ function render() {
           </section>
         </div>
       </section>
-
-      <section class="rp-card rp-topline-stack" id="rp-outputs">
-        <div class="rp-page-section-header rp-page-section-inline">
-          <div class="rp-page-section-kicker">Outputs</div>
-        <div class="rp-page-section-note">Decision metrics, charts, recommendations, and concrete consequences.</div>
-        </div>
-        <div class="rp-card-body">
-          <div class="rp-output-highlights">
-            ${renderFuturesTopline(activeBundle, profile)}
-            ${renderPlainEnglishSummary(syncedProfileRecord, syncedActivePlan, activeBundle)}
-            ${renderIncomeGapAlert(activeBundle, topRecommendation)}
-          </div>
-          ${renderInsuranceReviewAlert(syncedProfileRecord, activeBundle)}
-          <div class="rp-summary-grid">
-            ${renderSummary(activeBundle)}
-          </div>
-          ${renderAiQuickActions(syncedProfileRecord, syncedActivePlan, activeBundle)}
-        </div>
-      </section>
+      </details>
 
       <section class="rp-chart-grid">
         ${renderChartCards(activeBundle)}

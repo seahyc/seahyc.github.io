@@ -1676,3 +1676,22 @@
     .rp-futures-hero { font-size: 1.6rem; }
     .rp-futures-hero b { font-size: 2rem; }
 }
+
+/* ===== Cockpit-first layout: settings fold ===== */
+.rp-settings-fold {
+    background: rgba(255, 250, 242, 0.9);
+    border: 1px solid var(--rp-border);
+    border-radius: 1.2rem;
+    padding: 0.4rem 1rem;
+}
+.rp-settings-fold > summary {
+    cursor: pointer;
+    padding: 0.8rem 0.4rem;
+    font-size: var(--rp-text-md);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.rp-settings-fold[open] > summary { border-bottom: 1px dashed var(--rp-border); margin-bottom: 0.8rem; }
