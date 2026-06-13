@@ -80,6 +80,8 @@
   .price .y{font-family:"Fraunces",serif;font-size:1.6rem;font-weight:600}
   .price .sg{font-size:1rem;font-weight:700;color:var(--walnut)}
   .price .note{font-size:.77rem;color:var(--ink-soft)}
+  .allin{font-size:.84rem;color:var(--ink);background:#f2ebde;border-radius:8px;padding:6px 10px;margin:2px 0 10px;display:inline-block}
+  .allin b{color:var(--walnut-deep)}
   .ship{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:7px;margin-bottom:12px}
   .ship.direct{background:#e3eed9;color:var(--good)}.ship.fwd{background:#f3e6d2;color:var(--warn)}
   .specs{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:.84rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:12px}
@@ -257,8 +259,18 @@ const DICT=[
  ["定制-搭配-德利丰-依诺--形状-花色","custom: Delifeng/Yinuo, shape & pattern"],["一桌4椅","table + 4 chairs"],["一桌6椅","table + 6 chairs"],
  ["+4张餐椅","+ 4 chairs"],["+4椅","+ 4 chairs"],["+6椅","+ 6 chairs"],["米","m"],["把","×"]
 ];
-function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(e);});
-  o=o.replace(/【/g,'[').replace(/】/g,']').replace(/（/g,'(').replace(/）/g,')').replace(/\s+/g,' ').trim();return o;}
+function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(' '+e+' ');});
+  o=o.replace(/【/g,' [').replace(/】/g,'] ').replace(/（/g,' (').replace(/）/g,') ').replace(/\s+([,)\]])/g,'$1').replace(/\s+/g,' ').trim();return o;}
+/* alicdn on-the-fly resize: tiny fast images for cards/thumbs, full-res only in lightbox.
+   square presets only (non-square 404s). spec e.g. '_400x400q80.jpg' */
+function sized(u,spec){if(!u||!/alicdn\.com/.test(u))return u;return u+spec;}
+const HERO='_400x400q80.jpg', THUMB='_120x120q70.jpg';
+/* all-in landed cost in SGD. direct-to-SG = delivered price; forwarder = item + est. sea-LCL freight band */
+function allInText(d){
+  const n=parseInt((d.sg.match(/([\d,]+)/)||['','0'])[1].replace(/,/g,''),10)||0;
+  if(d.ship==='direct')return 'S$'+n+' · delivered (sea, in price)';
+  return 'S$'+(n+130)+'–'+(n+210)+' · item + est. sea freight';
+}
 /* best-fit score for ordering variant chips */
 function vScore(s){let x=0;
   if(/1\.4米|140x|1\.4\*|1\.4 ?米/.test(s))x+=1000;
@@ -452,11 +464,11 @@ function renderBrowse(filter){
        <div class="rankbadge">${d.seed}</div>
        <div class="verdict ${d.vClass}">${d.verdict}</div>
        ${d.vid?`<a class="vid" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">▶ demo</a>`:''}
-       <div class="gmain"><img src="${urls[0]}" referrerpolicy="no-referrer" loading="lazy"
+       <div class="gmain"><img src="${sized(urls[0],HERO)}" referrerpolicy="no-referrer" loading="lazy" decoding="async"
           onclick="openLb(${JSON.stringify(urls).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')"></div>
-       <div class="thumbs">${urls.map((u,i)=>`<img src="${u}" referrerpolicy="no-referrer" loading="lazy" class="${i===0?'on':''}"
+       <div class="thumbs">${urls.map((u,i)=>`<img src="${sized(u,THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" class="${i===0?'on':''}"
           onerror="this.remove()"
-          onclick="this.closest('.gallery').querySelector('.gmain img').src='${u}';[...this.parentNode.children].forEach(t=>t.classList.remove('on'));this.classList.add('on')">`).join('')}</div>
+          onclick="this.closest('.gallery').querySelector('.gmain img').src='${sized(u,HERO)}';[...this.parentNode.children].forEach(t=>t.classList.remove('on'));this.classList.add('on')">`).join('')}</div>
      </div>
      <div class="body">
        <div class="nm">${d.name}</div>
@@ -464,6 +476,7 @@ function renderBrowse(filter){
        <div class="seller">by <b>${d.seller}</b> · ${d.trust}</div>
        <div class="price"><span class="y">${d.yen}</span><span class="sg">${d.sg}</span></div>
        <div class="price"><span class="note">${d.priceNote}</span></div>
+       <div class="allin">📦 All-in to SG ≈ <b>${allInText(d)}</b></div>
        <span class="ship ${d.ship}">${d.shipTxt}</span>
        <div class="specs">${d.specs.map(s=>`<div><dt>${s[0]}</dt><dd class="${s[2]?'hit':'miss'}">${s[1]}</dd></div>`).join('')}</div>
        <div class="lists">
@@ -552,10 +565,10 @@ function resetDuel(){answers={};askOrder=[];finalOrder=null;pending=null;saveLS(
 function dCard(id,side){
   const d=BY[id];
   return `<div class="dcard" onclick="answer('${pending.a}','${pending.b}','${side}')">
-    <div class="dimg"><img src="${d.photos[0]}" referrerpolicy="no-referrer"></div>
+    <div class="dimg"><img src="${sized(d.photos[0],HERO)}" referrerpolicy="no-referrer" decoding="async"></div>
     <div class="dbody">
       <div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
-      <div class="dmeta"><span class="p">${d.sg}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.specs[1][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+      <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.specs[1][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
       <div class="pick">Choose this ▸</div>
     </div></div>`;
 }
@@ -588,7 +601,7 @@ function renderLadder(){
     const d=BY[id];
     return `<div class="row" data-id="${id}">
       <div class="pos">${i+1}</div>
-      <img src="${d.photos[0]}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(d.photos).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')">
+      <img src="${sized(d.photos[0],THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" onclick="openLb(${JSON.stringify(d.photos).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')">
       <div class="info"><div class="rn">${d.name}</div><div class="re">${d.nameEn} · <b>${d.sg}</b></div></div>
       <div class="mv"><button onclick="moveRow(${i},-1)" ${i===0?'disabled':''}>▲</button><button onclick="moveRow(${i},1)" ${i===order.length-1?'disabled':''}>▼</button></div>
       ${i<order.length-1?`<button class="reduel" onclick="reDuel(${i})">↔ vs #${i+2}</button>`:''}
@@ -627,9 +640,9 @@ function runRematch(){
     </div>
     <div class="tierow"><button class="tie" onclick="rematchPick(${i},'tie')">🤝 Keep as is</button></div>`;
 }
-function cardInner(id){const d=BY[id];return `<div class="dimg"><img src="${d.photos[0]}" referrerpolicy="no-referrer"></div>
+function cardInner(id){const d=BY[id];return `<div class="dimg"><img src="${sized(d.photos[0],HERO)}" referrerpolicy="no-referrer" decoding="async"></div>
   <div class="dbody"><div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
-  <div class="dmeta"><span class="p">${d.sg}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+  <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
   <div class="pick">Choose this ▸</div></div>`;}
 function rematchPick(i,choice){
   if(choice==='b'){const t=finalOrder[i];finalOrder[i]=finalOrder[i+1];finalOrder[i+1]=t;}
