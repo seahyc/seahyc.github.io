@@ -64,8 +64,12 @@
   .gmain{flex:1;position:relative;overflow:hidden;min-height:300px}
   .gmain img{width:100%;height:100%;min-height:300px;object-fit:cover;display:block;cursor:zoom-in}
   .thumbs{display:flex;gap:6px;padding:8px;background:#171310;overflow-x:auto}
-  .thumbs img{width:54px;height:54px;object-fit:cover;border-radius:7px;cursor:pointer;opacity:.55;border:2px solid transparent;transition:.18s;flex:0 0 auto}
-  .thumbs img.on{opacity:1;border-color:var(--travertine)}
+  .thumbs .pthumb,.thumbs .vthumb{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.6;transition:.18s}
+  .thumbs .pthumb img,.thumbs .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumbs .pthumb.on,.thumbs .vthumb.on,.thumbs .pthumb:hover,.thumbs .vthumb:hover{opacity:1;border-color:var(--travertine)}
+  .thumbs .vthumb b{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.1rem;background:rgba(0,0,0,.4)}
+  .thumbs .pthumb.buyer i{position:absolute;bottom:0;left:0;right:0;font-size:.5rem;text-align:center;background:rgba(176,132,66,.9);color:#fff;line-height:1.4}
+  .gmain video{display:block}
   .rankbadge{position:absolute;top:14px;left:14px;z-index:3;font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--walnut-deep);box-shadow:0 6px 16px rgba(0,0,0,.3)}
   .verdict{position:absolute;top:16px;right:14px;z-index:3;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:999px;color:#fff;background:var(--olive)}
   .verdict.top{background:var(--walnut)}.verdict.value{background:var(--good)}.verdict.looks{background:var(--gold)}.verdict.reject{background:var(--bad)}.verdict.mid{background:#8a7d68}
@@ -276,16 +280,48 @@ function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(' '+e+' ');});
 /* alicdn on-the-fly resize: tiny fast images for cards/thumbs, full-res only in lightbox.
    square presets only (non-square 404s). spec e.g. '_400x400q80.jpg' */
 function sized(u,spec){if(!u||!/alicdn\.com/.test(u))return u;return u+spec;}
-const HERO='_400x400q80.jpg', THUMB='_120x120q70.jpg';
+const HERO='_400x400q80.jpg', THUMB='_120x120q70.jpg', BIG='_800x800q90.jpg';
+/* progressive: show small instantly, then swap to a sharp larger version once it loads */
+function pimg(u,extra){const mid=sized(u,HERO),big=sized(u,BIG);
+  return `<img src="${mid}" referrerpolicy="no-referrer" decoding="async" loading="lazy" ${extra||''} onload="if(!this.dataset.up){this.dataset.up=1;var t=this,h=new Image();h.onload=function(){t.src='${big}'};h.referrerPolicy='no-referrer';h.src='${big}';}">`;}
+/* real buyer-review photos (中差评 with images), shown alongside product photos */
+const BUYERPHOTOS={
+"892934018626":["https://gw.alicdn.com/bao/uploaded/i4/2201401613454/O1CN015n9Sn91bNz8TEXoJR~livephoto~_!!2201401613454-0-rate_livephoto.jpg","https://gw.alicdn.com/bao/uploaded/i1/2201401613454/O1CN012vdVTG1bNz8TDeCdM~livephoto~_!!2201401613454-0-rate_livephoto.jpg","https://gw.alicdn.com/bao/uploaded/i3/2201401613454/O1CN01PeACP91bNz8T2QFg8~livephoto~_!!2201401613454-0-rate_livephoto.jpg","https://gw.alicdn.com/bao/uploaded/i4/O1CN016NLq0S1ZfGqkAJftu_!!4611686018427384613-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i3/O1CN01LFgjJi1ZfGqlKoIxc_!!4611686018427384613-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i1/O1CN01Wxuy0D1ZfGqlKnpra_!!4611686018427384613-0-rate.jpg"],
+"898440291612":["https://gw.alicdn.com/bao/uploaded/i3/O1CN01NNrAzn209ClPFmUnB_!!4611686018427386854-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN019G2JXZ1g76dWtrOIx_!!4611686018427385342-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i1/O1CN01nufhZn1g76dWerlJN_!!4611686018427385342-0-rate.jpg"],
+"988869150664":["https://gw.alicdn.com/bao/uploaded/i1/O1CN01GwmcIx1hQAk5dRsQN~hdr~_!!4611686018427381903-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i1/O1CN01aPrJRD1hQAk3uyeTY~hdr~_!!4611686018427381903-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i1/O1CN01Nbjaw51hQAk5dT16L~hdr~_!!4611686018427381903-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN01gFnbVx2AhgjyRhGNc_!!4611686018427387595-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN013iOKJF2AhgjyNjn8X_!!4611686018427387595-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN01KYUsX92AhgjyXVwAp_!!4611686018427387595-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i1/O1CN01JQBKVu2AhgjyNjK2o_!!4611686018427387595-0-rate.jpg"],
+"937570801647":["https://gw.alicdn.com/bao/uploaded/i3/O1CN01KnQIE11ltikd8Y6HH~hdr~_!!4611686018427384589-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i3/O1CN01y86gF41Ur71l38VMs~hdr~_!!4611686018427382282-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i4/O1CN01yGlSjY29mtczWRhsb~hdr~_!!4611686018427387823-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN01TigATn1sFbMqrHtRG~hdr~_!!4611686018427385449-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i2/O1CN01CTtAEM2FIZ5Izm8Ff_!!4611686018427383369-0-rate.jpg","https://gw.alicdn.com/bao/uploaded/i3/O1CN01DHj7Pu2FIZ5DxcP0U_!!4611686018427383369-0-rate.jpg"]
+};
+let MEDIA={};
+function buildMedia(d){const m=[];
+  if(VIDEOS.has(d.id))m.push({t:'vid',src:'videos/'+d.id+'.mp4',poster:sized(d.photos[0],HERO)});
+  d.photos.forEach(u=>m.push({t:'img',u:u,buyer:false}));
+  (BUYERPHOTOS[d.id]||[]).forEach(u=>m.push({t:'img',u:u,buyer:true}));
+  MEDIA[d.id]=m;return m;}
+function imgList(id){return MEDIA[id].filter(x=>x.t==='img').map(x=>x.u);}
+function galleryHTML(d){const m=buildMedia(d);const firstImg=m.findIndex(x=>x.t==='img');
+  return `<div class="gallery">
+    <div class="rankbadge">${d.seed}</div><div class="verdict ${d.vClass}">${d.verdict}</div>
+    <div class="gmain" data-id="${d.id}">${pimg(d.photos[0],`onclick="openLbList('${d.id}','${d.photos[0]}')"`)}</div>
+    <div class="thumbs">${m.map((x,i)=>x.t==='vid'
+      ? `<span class="vthumb" title="Demo video" onclick="showMedia('${d.id}',${i},this)"><img src="${x.poster}" referrerpolicy="no-referrer" loading="lazy"><b>▶</b></span>`
+      : `<span class="pthumb${x.buyer?' buyer':''}${i===firstImg?' on':''}" onclick="showMedia('${d.id}',${i},this)"><img src="${sized(x.u,THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.closest('.pthumb,.vthumb').remove()">${x.buyer?'<i>buyer</i>':''}</span>`
+    ).join('')}</div>
+  </div>`;}
+function showMedia(id,i,el){const m=MEDIA[id][i];const g=el.closest('.gallery').querySelector('.gmain');
+  el.parentNode.querySelectorAll('.pthumb,.vthumb').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  if(m.t==='vid'){g.innerHTML=`<video controls autoplay playsinline src="${m.src}" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`;}
+  else{g.innerHTML=pimg(m.u,`onclick="openLbList('${id}','${m.u}')"`);}}
+function openLbList(id,full){const list=imgList(id);let i=list.indexOf(full);if(i<0)i=0;cur={list:list,i:i,cap:BY[id].seller};showLb();}
 /* all-in landed cost in SGD. direct-to-SG = delivered price; forwarder = item + est. sea-LCL freight band */
 function allInText(d){
   const n=parseInt((d.sg.match(/([\d,]+)/)||['','0'])[1].replace(/,/g,''),10)||0;
-  if(d.ship==='direct')return 'S$'+n+' · delivered (sea, in price)';
-  return 'S$'+(n+130)+'–'+(n+210)+' · item + est. sea freight';
+  if(d.ship==='direct')return 'S$'+n+' · delivered (sea freight in price)';
+  return 'S$'+(n+210)+'–'+(n+340)+' · item + sea LCL (~50–70kg @ ~S$3.5–5/kg, 65daigou/EZBuy)';
 }
 /* best-fit score for ordering variant chips */
 function vScore(s){let x=0;
-  if(/1\.4米|140x|1\.4\*|1\.4 ?米/.test(s))x+=1000;
+  if(/1\.6米|160x|1\.6\*|1\.6 ?米/.test(s))x+=1200;
+  if(/1\.4米|140x|1\.4\*|1\.4 ?米/.test(s))x+=900;
   if(/130x|1\.3米|1\.3\*/.test(s))x+=300;
   if(/椅|椅\*|\+4|\+6|一桌/.test(s))x-=600;
   if(/单桌|^岩板餐桌|实木岩板餐桌|^餐桌1|^1\.4米餐桌|^1\.4米白蜡/.test(s)&&!/椅/.test(s))x+=180;
@@ -311,7 +347,7 @@ const DATA=[
 {id:"892934018626",seed:1,tags:["dshape","direct"],verdict:"Top pick",vClass:"top",vid:false,
  name:"中古风洞石半岛形餐桌",nameEn:"Mid-century travertine D-shape table · white-wax wood",
  seller:"兰庭木作 (Lan Ting Mu Zuo)",trust:"4.8★ · 400+ added · 88VIP review: 「岩板很厚实」 stone is genuinely thick",
- yen:"¥1,494 → ~¥1,270 after subsidy",sg:"≈ S$300",priceNote:"1.4m · incl. direct SG sea freight",
+ yen:"¥1,593 (USD 237) · 1.6m",sg:"≈ S$320",priceNote:"1.6m (Sopisa's size) · incl. direct SG sea freight",
  ship:"direct",shipTxt:"Direct to Singapore · one payment · no forwarder",
  specs:[["Shape","半岛形 ½-round",1],["Surface","洞石 travertine",1],["Base","sculptural walnut",0],["Wood","白蜡木 white-wax solid",1],["1.4m","yes (1.3–2.0m)",1],["Custom","yes (650mm / slab)",1]],
  why:["Travertine D-shape + white-wax solid wood, Italian high-end sintered","Ships direct to SG — seller owns the fragile shipping & returns","Customisable: spec 650mm depth + stone matching your counter","88VIP buyer confirms a genuinely thick top; installer comes"],
@@ -322,7 +358,7 @@ const DATA=[
 {id:"898440291612",seed:2,tags:["dshape","fluted"],verdict:"Best looks",vClass:"looks",vid:false,
  name:"洞石白蜡木半弧靠墙岛台餐桌",nameEn:"Travertine half-arc against-wall island table · fluted walnut columns",
  seller:"巴赛博纳 / 韦纳德森 (Basaibona)",trust:"4.9★ · 100% logistics praise · 31 reviews/90d",
- yen:"¥2,453 (USD 365)",sg:"≈ S$493",priceNote:"1.4×0.8m · + forwarder air freight",
+ yen:"¥2,602 (USD 388) · 1.6m",sg:"≈ S$523",priceNote:"1.6×0.8m (Sopisa's size) · + forwarder",
  ship:"fwd",shipTxt:"Forwarder air consolidation (集运-标准空运) — self-ship",
  specs:[["Shape","半弧 ½-arc D",1],["Surface","加厚洞石 thick travertine",1],["Base","2× fluted walnut",1],["Wood","实木架 solid-wood frame",1],["1.4m","yes (fixed)",1],["Custom","no",0]],
  why:["Nails Sopisa's look: half-moon top on fluted walnut columns","Highest trust here — 4.9★, 100% logistics, solid-wood frame","Thick travertine top; built as an against-wall island"],
@@ -333,7 +369,7 @@ const DATA=[
 {id:"988869150664",seed:3,tags:["dshape","value"],verdict:"Best value",vClass:"value",vid:false,
  name:"德利丰半圆岛台餐桌 · 12MM岩板+18MM托板",nameEn:"Delifeng half-round island · 12mm sintered + 18mm backing board",
  seller:"WSIsle 木屿石梭",trust:"4.9★ · 100% praise · 600+ added · 10-yr warranty + shipping insurance",
- yen:"¥861.9 (USD 128)",sg:"≈ S$173",priceNote:"1.4m (12+18 variant) · + forwarder air",
+ yen:"¥936.9 (USD 140) · 1.6m",sg:"≈ S$188",priceNote:"1.6m (160×80, 12+18 variant) · + forwarder",
  ship:"fwd",shipTxt:"Forwarder air — but 10yr warranty + large-item shipping insurance",
  specs:[["Shape","半圆岛台 ½-round",1],["Surface","洞石 + colour options",1],["Base","walnut panel legs",0],["Structure","12mm + 18mm托板",1],["1.4m","yes (130–200cm)",1],["Custom","fixed sizes",0]],
  why:["The exact 「12MM岩板 + 18MM托板」 structure from the prior note","Travertine colour choices (白色/黄色洞石) — can match the counter","Cheapest credible option + 10-yr warranty + shipping insurance","Verified 1.4m buyer: secure packaging, pro install, size enough"],
@@ -344,8 +380,8 @@ const DATA=[
 {id:"937570801647",seed:4,tags:["dshape","direct"],verdict:"Strong mid",vClass:"mid",vid:false,
  name:"德利丰洞石半圆餐桌 · 白蜡木实木",nameEn:"Delifeng travertine half-round · white-wax solid wood",
  seller:"森格美居 (Sen Ge Mei Ju)",trust:"89 sold · Foshan · customisable",
- yen:"¥1,418.7",sg:"≈ S$285",priceNote:"1.4m · 可定制 custom",
- ship:"fwd",shipTxt:"Foshan seller — confirm shipping",
+ yen:"¥1,548.7 (USD 231) · 1.6m",sg:"≈ S$311",priceNote:"1.6m (Sopisa's size) · incl. direct SG sea · customisable",
+ ship:"direct",shipTxt:"Direct to Singapore · one payment (sea)",
  specs:[["Shape","半圆 ½-round",1],["Surface","洞石 travertine",1],["Base","walnut (verify)",0],["Wood","白蜡木 white-wax",1],["1.4m","yes (1.3–1.8m)",1],["Custom","yes",1]],
  why:["White-wax + travertine, 1.4m available, customisable","Two stone grades (意大利工艺 / 高端德利丰)","Mid price, decent traction"],
  risks:["Base style / structure not deeply verified","Lower sales volume than the leaders"],
@@ -366,7 +402,7 @@ const DATA=[
 {id:"777587917841",seed:6,tags:["direct","fluted"],verdict:"Structure ref",vClass:"mid",vid:false,
  name:"奶油风半椭圆折叠餐桌",nameEn:"Cream half-stadium table (prior find · white)",
  seller:"富菲家居 (FuFei)",trust:"4.7★ · 400+ added to cart",
- yen:"¥1,598 (USD 238)",sg:"≈ S$321",priceNote:"1.4m · incl. direct SG sea",
+ yen:"¥1,683 (USD 251) · 1.6m",sg:"≈ S$338",priceNote:"1.6m (Sopisa's size) · incl. direct SG sea",
  ship:"direct",shipTxt:"Direct to Singapore · one payment",
  specs:[["Shape","半椭圆 full stadium",0],["Surface","cream / white",0],["Base","white fluted pedestal",0],["Structure","12mm + 18mm wood",1],["Stone","将军 / 德利丰",1],["1.4m","yes (1.4–2.0m)",1]],
  why:["The original lead: 12mm 将军/德利丰 sintered + 18mm wood base","Direct SG shipping; two reputable stone brands","Solid, well-reviewed construction"],
@@ -484,20 +520,10 @@ function renderBrowse(filter){
   const root=document.getElementById('cards');root.innerHTML='';
   const list=DATA.filter(d=>filter==='all'||(d.tags||[]).includes(filter));
   list.forEach(d=>{
-    const urls=d.photos;
     const card=document.createElement('article');
     card.className='card'+(d.rejected?' rejected':'');
     card.innerHTML=`
-     <div class="gallery">
-       <div class="rankbadge">${d.seed}</div>
-       <div class="verdict ${d.vClass}">${d.verdict}</div>
-       ${VIDEOS.has(d.id)?`<button class="vid" onclick="openVid('videos/${d.id}.mp4')">▶ Demo video</button>`:''}
-       <div class="gmain"><img src="${sized(urls[0],HERO)}" referrerpolicy="no-referrer" loading="lazy" decoding="async"
-          onclick="openLb(${JSON.stringify(urls).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')"></div>
-       <div class="thumbs">${urls.map((u,i)=>`<img src="${sized(u,THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" class="${i===0?'on':''}"
-          onerror="this.remove()"
-          onclick="this.closest('.gallery').querySelector('.gmain img').src='${sized(u,HERO)}';[...this.parentNode.children].forEach(t=>t.classList.remove('on'));this.classList.add('on')">`).join('')}</div>
-     </div>
+     ${galleryHTML(d)}
      <div class="body">
        <div class="nm">${d.name}</div>
        <div class="nm-en">${d.nameEn}</div>
@@ -594,7 +620,7 @@ function resetDuel(){answers={};askOrder=[];finalOrder=null;pending=null;saveLS(
 function dCard(id,side){
   const d=BY[id];
   return `<div class="dcard" onclick="answer('${pending.a}','${pending.b}','${side}')">
-    <div class="dimg"><img src="${sized(d.photos[0],HERO)}" referrerpolicy="no-referrer" decoding="async"></div>
+    <div class="dimg">${pimg(d.photos[0])}</div>
     <div class="dbody">
       <div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
       <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.specs[1][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
@@ -669,7 +695,7 @@ function runRematch(){
     </div>
     <div class="tierow"><button class="tie" onclick="rematchPick(${i},'tie')">🤝 Keep as is</button></div>`;
 }
-function cardInner(id){const d=BY[id];return `<div class="dimg"><img src="${sized(d.photos[0],HERO)}" referrerpolicy="no-referrer" decoding="async"></div>
+function cardInner(id){const d=BY[id];return `<div class="dimg">${pimg(d.photos[0])}</div>
   <div class="dbody"><div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
   <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
   <div class="pick">Choose this ▸</div></div>`;}
