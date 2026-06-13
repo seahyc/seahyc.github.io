@@ -1,11 +1,10 @@
 ---
-title: "532B Bishan Ridges — Living Room 3D"
-description: "Interactive 3D layout of our BTO living room renovation with paludarium, sump system, and full dimensions."
-tech: ["Three.js", "WebGL", "Comfort Home Interior"]
-weight: 0
-layout: "bishan-reno"
-main_class: "main-wide"
-body_class: "bishan-reno-page"
+title: "532B Bishan Ridges — Renovation"
+description: "Our BTO reno hub: electrical & smart switches, an interactive 3D living-room layout, and the travertine dining-table duel."
+tech: ["Three.js", "Hugo", "Comfort Home Interior"]
+weight: -1
+date: 2026-06-13
+link: "/reno/"
 ---
 
-<div id="bishan-reno-app"></div>
+Renovation hub → [open the reno dashboard](/reno/)

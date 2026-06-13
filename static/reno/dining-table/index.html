@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dining Table Duel · 餐桌 · D-shape Travertine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe7; --paper-2:#ebe3d6; --card:#fcfaf6; --ink:#2c2620; --ink-soft:#6f6354;
+    --travertine:#d8c7ac; --walnut:#7c4f2d; --walnut-deep:#5a3a20; --olive:#6e6b4a;
+    --line:#ddd2c0; --gold:#b08442;
+    --good:#5a7a4f; --warn:#b07a2a; --bad:#a8503f;
+    --shadow:0 18px 40px -22px rgba(60,42,24,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% 8%,rgba(216,199,172,.35),transparent 40%),radial-gradient(circle at 88% 96%,rgba(124,79,45,.07),transparent 45%);background-attachment:fixed;min-height:100dvh}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  .cn{font-weight:600}
+  .en{color:var(--ink-soft);font-weight:400}
+  .sm{font-size:.82rem}
+
+  header.hero{padding:54px 0 26px}
+  .eyebrow{font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--walnut);font-weight:600}
+  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.2rem,6vw,4rem);line-height:1.03;letter-spacing:-.01em;margin:.16em 0 .22em}
+  h1 em{font-style:italic;color:var(--walnut)}
+  .sub{max-width:64ch;color:var(--ink-soft);font-size:1.02rem}
+
+  /* mode toggle */
+  .modes{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+  .mode{font:inherit;font-weight:700;font-size:.92rem;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);padding:11px 22px;border-radius:999px;cursor:pointer;transition:.18s;display:flex;gap:8px;align-items:center}
+  .mode:hover{border-color:var(--walnut);color:var(--walnut)}
+  .mode.on{background:var(--walnut);color:#fff;border-color:var(--walnut)}
+  .mode small{font-weight:500;opacity:.8;font-size:.78rem}
+
+  /* ===== panels ===== */
+  .panel{display:none}
+  .panel.on{display:block}
+
+  /* ---- BROWSE ---- */
+  .bar{position:sticky;top:0;z-index:40;background:rgba(244,239,231,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0;margin:18px 0 0}
+  .bar .wrap{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chip{font:inherit;font-size:.83rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);padding:7px 14px;border-radius:999px;cursor:pointer;transition:.18s;flex:0 0 auto}
+  .chip:hover{border-color:var(--walnut);color:var(--walnut)}
+  .chip.on{background:var(--walnut);color:#fff;border-color:var(--walnut)}
+
+  .ref{background:linear-gradient(180deg,#efe7d8,#f6f1e8);border:1px dashed var(--gold);border-radius:18px;padding:18px;margin:22px 0 8px;display:grid;grid-template-columns:260px 1fr;gap:20px}
+  .ref img{width:100%;height:190px;object-fit:cover;border-radius:12px;background:#1d1812;cursor:zoom-in}
+  .ref .reftag{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .ref h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.3rem;margin:4px 0 2px}
+  .ref .refrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .ref .pill{font-size:.78rem;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+  .refimgs{display:flex;gap:6px;margin-top:8px}
+  .refimgs img{width:60px;height:60px;border-radius:8px;object-fit:cover;cursor:zoom-in}
+
+  main{padding:18px 0 80px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden;display:grid;grid-template-columns:1.04fr 1fr}
+  .card.rejected .gallery{filter:saturate(.72)}
+  .gallery{position:relative;background:#1d1812;display:flex;flex-direction:column}
+  .gmain{flex:1;position:relative;overflow:hidden;min-height:300px}
+  .gmain img{width:100%;height:100%;min-height:300px;object-fit:cover;display:block;cursor:zoom-in}
+  .thumbs{display:flex;gap:6px;padding:8px;background:#171310;overflow-x:auto}
+  .thumbs img{width:54px;height:54px;object-fit:cover;border-radius:7px;cursor:pointer;opacity:.55;border:2px solid transparent;transition:.18s;flex:0 0 auto}
+  .thumbs img.on{opacity:1;border-color:var(--travertine)}
+  .rankbadge{position:absolute;top:14px;left:14px;z-index:3;font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--walnut-deep);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+  .verdict{position:absolute;top:16px;right:14px;z-index:3;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:999px;color:#fff;background:var(--olive)}
+  .verdict.top{background:var(--walnut)}.verdict.value{background:var(--good)}.verdict.looks{background:var(--gold)}.verdict.reject{background:var(--bad)}.verdict.mid{background:#8a7d68}
+  .vid{position:absolute;bottom:70px;right:14px;z-index:3;background:rgba(20,15,10,.78);color:#fff;font-size:.74rem;font-weight:700;padding:6px 11px;border-radius:999px;text-decoration:none}
+
+  .body{padding:22px 24px 24px;display:flex;flex-direction:column}
+  .nm{font-family:"Fraunces",serif;font-size:1.32rem;line-height:1.14;font-weight:500}
+  .nm-en{font-size:.92rem;color:var(--ink-soft);margin-top:2px}
+  .seller{font-size:.85rem;color:var(--ink-soft);margin-top:7px}
+  .seller b{color:var(--walnut)}
+  .price{margin:13px 0 3px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .price .y{font-family:"Fraunces",serif;font-size:1.6rem;font-weight:600}
+  .price .sg{font-size:1rem;font-weight:700;color:var(--walnut)}
+  .price .note{font-size:.77rem;color:var(--ink-soft)}
+  .ship{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:7px;margin-bottom:12px}
+  .ship.direct{background:#e3eed9;color:var(--good)}.ship.fwd{background:#f3e6d2;color:var(--warn)}
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:.84rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:12px}
+  .specs div{display:flex;justify-content:space-between;gap:8px}
+  .specs dt{color:var(--ink-soft)}.specs dd{font-weight:600;text-align:right}
+  .hit{color:var(--good)}.miss{color:var(--bad)}
+  .lists{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:13px}
+  .lists h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .lists.w h4{color:var(--good)}.lists .r h4{color:var(--bad)}
+  .lists ul{list-style:none;font-size:.84rem}
+  .lists li{position:relative;padding-left:15px;margin-bottom:4px}
+  .lists .w li::before{content:"+";position:absolute;left:0;color:var(--good);font-weight:700}
+  .lists .r li::before{content:"–";position:absolute;left:0;color:var(--bad);font-weight:700}
+
+  .vars{margin-bottom:14px}
+  .vars h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--walnut);margin-bottom:7px}
+  .vchips{display:flex;flex-wrap:wrap;gap:6px}
+  .vchip{font-size:.76rem;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;line-height:1.25}
+  .vchip .ve{display:block;color:var(--ink-soft);font-size:.7rem}
+  .vchip.best{border-color:var(--walnut);background:#f6ecde}
+  .vchip.best::before{content:"★ ";color:var(--gold)}
+
+  .foot{margin-top:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-top:4px}
+  .btn{font:inherit;font-weight:700;font-size:.86rem;text-decoration:none;padding:10px 17px;border-radius:10px;background:var(--walnut);color:#fff;transition:.18s;border:none;cursor:pointer}
+  .btn:hover{background:var(--walnut-deep)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+  .sku{font-size:.73rem;color:var(--ink-soft);font-family:ui-monospace,monospace}
+
+  /* ---- DUEL ---- */
+  .duelwrap{padding:14px 0 70px}
+  .duelhead{text-align:center;margin:6px 0 16px}
+  .duelhead h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.7rem}
+  .duelhead p{color:var(--ink-soft);font-size:.92rem;margin-top:3px}
+  .prog{height:8px;background:var(--paper-2);border-radius:99px;overflow:hidden;max-width:520px;margin:14px auto 4px}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--walnut),var(--gold));width:0;transition:width .3s}
+  .progtxt{text-align:center;font-size:.8rem;color:var(--ink-soft)}
+  .duelctl{display:flex;gap:10px;justify-content:center;margin:14px 0}
+  .duelarena{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;max-width:980px;margin:0 auto}
+  .vsbadge{align-self:center;font-family:"Fraunces",serif;font-style:italic;color:var(--walnut);font-size:1.3rem}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .12s,box-shadow .15s,border-color .15s}
+  .dcard:hover{transform:translateY(-3px);box-shadow:0 22px 44px -20px rgba(60,42,24,.55);border-color:var(--walnut)}
+  .dcard .dimg{height:240px;background:#1d1812;position:relative}
+  .dcard .dimg img{width:100%;height:100%;object-fit:cover}
+  .dcard .dswipe{position:absolute;inset:0;display:flex;flex-wrap:wrap;gap:3px;padding:3px;background:#171310}
+  .dcard .dbody{padding:16px 18px 18px}
+  .dcard .dnm{font-family:"Fraunces",serif;font-size:1.12rem;line-height:1.15}
+  .dcard .dnm-en{font-size:.82rem;color:var(--ink-soft);margin-top:2px}
+  .dcard .dmeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:.78rem}
+  .dcard .dmeta .p{font-weight:700;color:var(--walnut)}
+  .dcard .dtag{font-size:.72rem;border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:#fff}
+  .dcard .pick{margin-top:14px;text-align:center;font-weight:700;color:#fff;background:var(--walnut);border-radius:10px;padding:9px;font-size:.9rem}
+  .tierow{text-align:center;margin:16px 0}
+  .tie{font:inherit;font-weight:600;font-size:.85rem;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 20px;cursor:pointer}
+  .tie:hover{border-color:var(--walnut);color:var(--walnut)}
+  .miniexpand{text-align:center;margin-top:6px}
+  .miniexpand a{font-size:.78rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer}
+
+  /* ladder / result */
+  .ladder{max-width:760px;margin:0 auto}
+  .ladderhead{text-align:center;margin-bottom:16px}
+  .ladderhead h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.8rem}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+  .row .pos{font-family:"Fraunces",serif;font-size:1.3rem;font-weight:600;color:var(--walnut);width:30px;text-align:center}
+  .row img{width:60px;height:60px;border-radius:9px;object-fit:cover;background:#1d1812}
+  .row .info{flex:1;min-width:0}
+  .row .rn{font-weight:600;font-size:.95rem}
+  .row .re{font-size:.78rem;color:var(--ink-soft)}
+  .row .mv{display:flex;flex-direction:column;gap:2px}
+  .row .mv button,.row .reduel{font:inherit;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;color:var(--ink-soft);font-size:.8rem;padding:2px 8px}
+  .row .reduel{margin-left:6px;padding:6px 10px}
+  .row .mv button:hover,.row .reduel:hover{border-color:var(--walnut);color:var(--walnut)}
+  .resbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--walnut-deep);color:#fff;padding:11px 20px;border-radius:10px;font-size:.86rem;z-index:200;opacity:0;transition:.25s;pointer-events:none}
+  .toast.on{opacity:1}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(20,15,10,.94);z-index:120;display:none;align-items:center;justify-content:center;flex-direction:column;padding:30px}
+  .lb.on{display:flex}
+  .lb img{max-width:92vw;max-height:80vh;object-fit:contain;border-radius:8px}
+  .lb .x{position:absolute;top:18px;right:24px;color:#fff;font-size:2rem;cursor:pointer;font-family:"Fraunces",serif}
+  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:2.4rem;cursor:pointer;padding:0 18px;opacity:.7;user-select:none}
+  .lb .nav:hover{opacity:1}.lb .prev{left:4px}.lb .next{right:4px}
+  .lb .cap{color:#d8c7ac;margin-top:12px;font-size:.84rem}
+
+  footer{border-top:1px solid var(--line);padding:28px 0 60px;color:var(--ink-soft);font-size:.84rem}
+  footer b{color:var(--ink)}
+
+  /* responsive */
+  @media(max-width:860px){
+    .card{grid-template-columns:1fr}
+    .gmain,.gmain img{min-height:0}.gmain img{aspect-ratio:4/3;height:auto}
+    .ref{grid-template-columns:1fr}.ref img{height:200px}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 15px}
+    header.hero{padding:38px 0 20px}
+    .sub{font-size:.96rem}
+    .mode{padding:10px 16px;font-size:.86rem}.mode small{display:none}
+    .bar .wrap{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.bar .wrap::-webkit-scrollbar{display:none}
+    .specs,.lists{grid-template-columns:1fr}
+    .gmain img{aspect-ratio:1/1}
+    .duelarena{grid-template-columns:1fr;gap:10px}
+    .vsbadge{order:0;margin:2px 0}
+    .dcard .dimg{height:200px}
+    .btn{flex:1;text-align:center}
+    .row img{width:48px;height:48px}
+    .lb .nav{font-size:2rem;padding:0 8px}
+  }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">532B Bishan · Dining area · 餐桌</div>
+  <h1>The <em>half-moon</em> table duel</h1>
+  <p class="sub">Eleven travertine-look (洞石) sintered-stone (岩板) D-shape candidates from Taobao, inspected page-by-page. Browse the full specs, or rank them by picking <b>two side-by-side</b> until you have a complete order. Nothing is ever lost — every loser still lands in the final ladder.</p>
+  <div class="modes" id="modes">
+    <button class="mode on" data-m="browse">⊞ Browse <small>all specs &amp; photos</small></button>
+    <button class="mode" data-m="duel">⚔ Rank (Duel) <small>for Sopisa</small></button>
+  </div>
+</div></header>
+
+<!-- ============ BROWSE ============ -->
+<section class="panel on" id="p-browse">
+  <nav class="bar"><div class="wrap" id="chips">
+    <button class="chip on" data-f="all">All 11</button>
+    <button class="chip" data-f="dshape">True D-shape</button>
+    <button class="chip" data-f="direct">Direct to SG</button>
+    <button class="chip" data-f="fluted">Fluted / walnut</button>
+    <button class="chip" data-f="value">Best value</button>
+    <button class="chip" data-f="reject">Near-miss</button>
+  </div></nav>
+  <main class="wrap">
+    <!-- comfort reference injected here -->
+    <div id="refmount"></div>
+    <div id="cards"></div>
+  </main>
+</section>
+
+<!-- ============ DUEL ============ -->
+<section class="panel" id="p-duel">
+  <div class="wrap duelwrap">
+    <div id="duelstage"></div>
+  </div>
+</section>
+
+<div class="lb" id="lb">
+  <span class="x" onclick="closeLb()">✕</span>
+  <span class="nav prev" onclick="stepLb(-1)">‹</span>
+  <span class="nav next" onclick="stepLb(1)">›</span>
+  <img id="lbimg" src="" alt=""><div class="cap" id="lbcap"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<footer><div class="wrap">
+  <p style="margin-bottom:7px"><b>Prices</b> are after 618/coupon as Taobao showed them; <b>≈S$</b> is from the USD Taobao quote (×1.35). <b>Direct-to-SG</b> sellers ship sea freight in one payment (no forwarder, they own the fragile shipping). <b>Forwarder</b> = you consolidate + air-freight yourself.</p>
+  <p><b>Reference:</b> Comfort Design's Sintered Half-Stadium × Bex-Fluted (W1600) is the local design Sopisa liked — S$1,060, but only ~11mm top, no wood backing, W1600 not 1.4m. Everything here aims to match the look for less, with the 12mm+18mm wood-backed structure.</p>
+</div></footer>
+
+<script>
+/* ---------- translation helper (CN → EN gloss for variant chips) ---------- */
+const DICT=[
+ ["意大利工艺高端岩板","Italian-craft premium sintered"],["高端德利丰洞石优等板","premium Delifeng travertine top-grade slab"],
+ ["意大利工艺洞石优等板","Italian-craft travertine top-grade slab"],["12MM依诺岩板","12mm Yinuo sintered"],["18MM多层板托板","18mm multilayer backing board"],
+ ["18MM多层托板","18mm multilayer backing board"],["多层板托板","multilayer backing board"],["白蜡木脚","white-wax wood legs"],["3CM加厚","3cm thickened"],
+ ["白蜡木实木","white-wax solid wood"],["白蜡木椅子","white-wax wood chair"],["白蜡木","white-wax wood"],["实木岩板","solid-wood + sintered"],["岩板单桌","sintered table only"],["实木","solid wood"],
+ ["将军岩板","General-brand sintered"],["德利丰","Delifeng"],["依诺","Yinuo"],["洞石优等板","travertine top-grade slab"],["优等大板","top-grade slab"],["优等板","top-grade slab"],
+ ["洞石","travertine-look"],["岩板","sintered stone"],["餐桌","table"],["单桌","table only"],["配套餐椅","matching chairs"],["设计椅","designer chair"],["藤编椅","rattan chair"],
+ ["牛头椅","ox-horn chair"],["蝴蝶椅","butterfly chair"],["毛毛虫椅","caterpillar chair"],["羊角椅","ram-horn chair"],["钥匙椅","keyhole chair"],["人鱼椅","mermaid chair"],["河马椅","hippo chair"],["船桨椅","paddle chair"],["复古椅","retro chair"],
+ ["支持定制","custom"],["定制","custom"],["大板","slab"],["半圆","half-round"],["双圆","stadium (both ends round)"],["长方形","rectangular"],["椭圆","oval"],["半岛形","peninsula / D-shape"],
+ ["胡桃色","walnut"],["核桃色","walnut"],["白腿","white legs"],["黑腿","black legs"],["质保10年","10yr warranty"],["破损包退换","breakage replacement"],
+ ["近期热销","popular"],["多人加购","popular"],["店长主推","top pick"],["推荐","recommended"],["详询客服","ask seller"],
+ ["货比万家","best-price guarantee"],["货比1000家","best-price guarantee"],["品质为主","quality-first"],["品质为王","quality-first"],["不惧对比","compare freely"],
+ ["佛山源头工厂一站式服务品质有保障","Foshan factory-direct, quality assured"],["纯实木框架","solid-wood frame"],["4CM加厚框架","4cm thickened frame"],["框架","frame"],
+ ["品牌岩板-耐高温-耐磨-抗污-可裸用","sintered: heat/scratch/stain resistant"],["3A加厚碳素钢椅子婴儿级环保更放心","3A thick carbon-steel chair, eco-safe"],
+ ["定制-搭配-德利丰-依诺--形状-花色","custom: Delifeng/Yinuo, shape & pattern"],["一桌4椅","table + 4 chairs"],["一桌6椅","table + 6 chairs"],
+ ["+4张餐椅","+ 4 chairs"],["+4椅","+ 4 chairs"],["+6椅","+ 6 chairs"],["米","m"],["把","×"]
+];
+function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(e);});
+  o=o.replace(/【/g,'[').replace(/】/g,']').replace(/（/g,'(').replace(/）/g,')').replace(/\s+/g,' ').trim();return o;}
+/* best-fit score for ordering variant chips */
+function vScore(s){let x=0;
+  if(/1\.4米|140x|1\.4\*|1\.4 ?米/.test(s))x+=1000;
+  if(/130x|1\.3米|1\.3\*/.test(s))x+=300;
+  if(/椅|椅\*|\+4|\+6|一桌/.test(s))x-=600;
+  if(/单桌|^岩板餐桌|实木岩板餐桌|^餐桌1|^1\.4米餐桌|^1\.4米白蜡/.test(s)&&!/椅/.test(s))x+=180;
+  if(/托板|18MM|12MM/.test(s))x+=150;
+  if(/洞石/.test(s))x+=40;if(/德利丰|意大利/.test(s))x+=25;if(/定制|大板/.test(s))x+=15;
+  if(/双圆|长方形/.test(s))x-=900;
+  if(/^货比|^佛山|品质为|^品牌岩板|碳素钢|婴儿级|^定制-搭配/.test(s))x-=200; /* marketing rows */
+  return x;}
+
+/* ---------- DATA: 11 candidates + comfort reference ---------- */
+const COMFORT={
+  name:"Sintered Half-Stadium × Bex-Fluted Dining Table — W1600",
+  seller:"Comfort Design (comfortfurniture.com.sg)",
+  sg:"S$1,060", url:"https://www.comfortfurniture.com.sg/products/sintered-half-stadium-top-x-bex-fluted-dining-table-w1600",
+  note:"The local design Sopisa liked — half-stadium travertine top + Bex fluted leg. But: W1600 only (not 1.4m), top ~11mm, no wood backing board. Benchmark to beat on price & fit.",
+  pills:["Half-stadium D-shape","Travertine sintered ~11mm","Bex fluted leg","W1600 fixed","Local — easy returns"],
+  imgs:["https://www.comfortfurniture.com.sg/image/cache/catalog/ComfortFurniture/2024/sintered%20half-stadium%20x%20bex%20fluted%20dt%201600/Sintered_Half-Stadium_Bex-Fluted_Dining_Table-_2-1600x1600.jpg",
+    "https://www.comfortfurniture.com.sg/image/cache/catalog/ComfortFurniture/2024/sintered%20half-stadium%20x%20bex%20fluted%20dt%201600/Sintered_Half_Stadium_Top_x_Bex_Fluted_Dining_Table_W1600_Sustainability-1600x1600.jpg",
+    "https://www.comfortfurniture.com.sg/image/catalog/Portfolio/subpics%202025/The_Gardens_Bishan-Sintered_Half_Stadium_Travertine_Bex-Fluted_Dining_Table_W1800.jpg"]
+};
+
+const DATA=[
+{id:"892934018626",seed:1,tags:["dshape","direct"],verdict:"Top pick",vClass:"top",vid:false,
+ name:"中古风洞石半岛形餐桌",nameEn:"Mid-century travertine D-shape table · white-wax wood",
+ seller:"兰庭木作 (Lan Ting Mu Zuo)",trust:"4.8★ · 400+ added · 88VIP review: 「岩板很厚实」 stone is genuinely thick",
+ yen:"¥1,494 → ~¥1,270 after subsidy",sg:"≈ S$300",priceNote:"1.4m · incl. direct SG sea freight",
+ ship:"direct",shipTxt:"Direct to Singapore · one payment · no forwarder",
+ specs:[["Shape","半岛形 ½-round",1],["Surface","洞石 travertine",1],["Base","sculptural walnut",0],["Wood","白蜡木 white-wax solid",1],["1.4m","yes (1.3–2.0m)",1],["Custom","yes (650mm / slab)",1]],
+ why:["Travertine D-shape + white-wax solid wood, Italian high-end sintered","Ships direct to SG — seller owns the fragile shipping & returns","Customisable: spec 650mm depth + stone matching your counter","88VIP buyer confirms a genuinely thick top; installer comes"],
+ risks:["Base is sculptural arched walnut — not vertically fluted","Default depth 0.8m — confirm a 650mm custom first"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01dtMMPA2M8fr6n3tDN_!!2219344899783-0-picasso.jpg","https://img.alicdn.com/imgextra/i1/2219344899783/O1CN01h8j6bZ2M8fkg7xOUB_!!2219344899783.jpg","https://img.alicdn.com/imgextra/i4/2219344899783/O1CN01K6wAFf2M8fkihD7iu_!!2219344899783.jpg","https://img.alicdn.com/imgextra/i2/2219344899783/O1CN01u9i53p2M8fl2l8WgR_!!2219344899783.jpg","https://img.alicdn.com/imgextra/i4/2219344899783/O1CN01mDdNCw2M8fl2lATI6_!!2219344899783.jpg"],
+ variants:["1.3米白蜡木实木洞石餐桌【意大利工艺高端岩板】","1.4米白蜡木实木洞石餐桌【意大利工艺高端岩板】","1.6米白蜡木实木洞石餐桌【意大利工艺高端岩板】","1.8米白蜡木实木洞石餐桌【意大利工艺高端岩板】","2.0米白蜡木实木洞石餐桌【意大利工艺高端岩板】","配套餐椅【详询客服】","支持定制德利丰优等大板【详询客服】"]},
+
+{id:"898440291612",seed:2,tags:["dshape","fluted"],verdict:"Best looks",vClass:"looks",vid:false,
+ name:"洞石白蜡木半弧靠墙岛台餐桌",nameEn:"Travertine half-arc against-wall island table · fluted walnut columns",
+ seller:"巴赛博纳 / 韦纳德森 (Basaibona)",trust:"4.9★ · 100% logistics praise · 31 reviews/90d",
+ yen:"¥2,453 (USD 365)",sg:"≈ S$493",priceNote:"1.4×0.8m · + forwarder air freight",
+ ship:"fwd",shipTxt:"Forwarder air consolidation (集运-标准空运) — self-ship",
+ specs:[["Shape","半弧 ½-arc D",1],["Surface","加厚洞石 thick travertine",1],["Base","2× fluted walnut",1],["Wood","实木架 solid-wood frame",1],["1.4m","yes (fixed)",1],["Custom","no",0]],
+ why:["Nails Sopisa's look: half-moon top on fluted walnut columns","Highest trust here — 4.9★, 100% logistics, solid-wood frame","Thick travertine top; built as an against-wall island"],
+ risks:["~2× the top pick's price","Self-forwarded by air — more fragility & no seller-owned return","Fixed 0.8m depth; no customisation"],
+ photos:["https://img.alicdn.com/imgextra/i1/2207919043729/O1CN01BIj0OX1dPw0PpnOJ2_!!2207919043729.jpg","https://img.alicdn.com/imgextra/i1/2207919043729/O1CN019uCLw51dPw0Qk3Zo6_!!2207919043729.jpg","https://img.alicdn.com/imgextra/i1/2207919043729/O1CN01LO9grf1dPw0RHV2PR_!!2207919043729.jpg","https://img.alicdn.com/imgextra/i3/2207919043729/O1CN01G0Z2Dx1dPw0Pok0dh_!!2207919043729.jpg","https://img.alicdn.com/imgextra/i4/2207919043729/O1CN01q5gU101dPw0PpofOe_!!2207919043729.jpg"],
+ variants:["餐桌1.4*0.8m","餐桌1.6*0.8m","餐桌1.8*0.9m","餐桌2.0*0.9m","餐桌2.2*1.0m","1.4米餐桌+4椅","1.4米餐桌+6椅","1.6米餐桌+4椅","1.8米餐桌+4椅","2米餐桌+4椅","2.2米餐桌+4椅"]},
+
+{id:"988869150664",seed:3,tags:["dshape","value"],verdict:"Best value",vClass:"value",vid:false,
+ name:"德利丰半圆岛台餐桌 · 12MM岩板+18MM托板",nameEn:"Delifeng half-round island · 12mm sintered + 18mm backing board",
+ seller:"WSIsle 木屿石梭",trust:"4.9★ · 100% praise · 600+ added · 10-yr warranty + shipping insurance",
+ yen:"¥861.9 (USD 128)",sg:"≈ S$173",priceNote:"1.4m (12+18 variant) · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air — but 10yr warranty + large-item shipping insurance",
+ specs:[["Shape","半圆岛台 ½-round",1],["Surface","洞石 + colour options",1],["Base","walnut panel legs",0],["Structure","12mm + 18mm托板",1],["1.4m","yes (130–200cm)",1],["Custom","fixed sizes",0]],
+ why:["The exact 「12MM岩板 + 18MM托板」 structure from the prior note","Travertine colour choices (白色/黄色洞石) — can match the counter","Cheapest credible option + 10-yr warranty + shipping insurance","Verified 1.4m buyer: secure packaging, pro install, size enough"],
+ risks:["Forwarder air (heavy / fragile self-ship)","Legs are solid walnut panels — not fluted columns","Fixed 0.8m depth"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01V81XUb1rDwJtt3CGE_!!2350805598-0-picasso.jpg","https://img.alicdn.com/imgextra/i1/2350805598/O1CN01Iagysm1rDwHclEpES_!!2350805598.jpg","https://img.alicdn.com/imgextra/i2/2350805598/O1CN013TVsBp1rDwHYcGpq3_!!2350805598.jpg","https://img.alicdn.com/imgextra/i4/2350805598/O1CN01bIsYSM1rDwHZBKcXd_!!2350805598.jpg","https://img.alicdn.com/imgextra/i4/2350805598/O1CN01NQBfrt1rDwHcc8A3r_!!2350805598.jpg"],
+ variants:["140x80x75cm","130x70x75cm","160x80x75cm","180x90x75cm","200x80x75cm","单桌/12MM依诺岩板+18MM多层板托板","货比万家白蜡木脚3CM加厚","岩板单桌+4把实木羊角椅","岩板单桌+4把实木钥匙椅","岩板单桌+4把实木人鱼椅","白蜡木椅子-破损包退换-质保10年","定制-搭配-德利丰-依诺--形状-花色"]},
+
+{id:"937570801647",seed:4,tags:["dshape","direct"],verdict:"Strong mid",vClass:"mid",vid:false,
+ name:"德利丰洞石半圆餐桌 · 白蜡木实木",nameEn:"Delifeng travertine half-round · white-wax solid wood",
+ seller:"森格美居 (Sen Ge Mei Ju)",trust:"89 sold · Foshan · customisable",
+ yen:"¥1,418.7",sg:"≈ S$285",priceNote:"1.4m · 可定制 custom",
+ ship:"fwd",shipTxt:"Foshan seller — confirm shipping",
+ specs:[["Shape","半圆 ½-round",1],["Surface","洞石 travertine",1],["Base","walnut (verify)",0],["Wood","白蜡木 white-wax",1],["1.4m","yes (1.3–1.8m)",1],["Custom","yes",1]],
+ why:["White-wax + travertine, 1.4m available, customisable","Two stone grades (意大利工艺 / 高端德利丰)","Mid price, decent traction"],
+ risks:["Base style / structure not deeply verified","Lower sales volume than the leaders"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01p6CWWc2E4XLcxd6PB_!!2219505798691-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/2219505798691/O1CN01D5Ity12E4XIt73F3A_!!2219505798691.jpg","https://img.alicdn.com/imgextra/i2/2219505798691/O1CN01kGiptu2E4XIsHutPV_!!2219505798691.jpg","https://img.alicdn.com/imgextra/i4/2219505798691/O1CN01GDzDmV2E4XImfu1LI_!!2219505798691.jpg","https://img.alicdn.com/imgextra/i3/2219505798691/O1CN01o5lCDy2E4XIrz2oPI_!!2219505798691.jpg"],
+ variants:["1.4米白蜡木实木餐桌【意大利工艺洞石优等板】","1.3米白蜡木实木餐桌【意大利工艺洞石优等板】","1.6米白蜡木实木餐桌【意大利工艺洞石优等板】","1.8米白蜡木实木餐桌【意大利工艺洞石优等板】","1.4米白蜡木实木餐桌【高端德利丰洞石优等板】","1.3米白蜡木实木餐桌【高端德利丰洞石优等板】","定制材质/尺寸/颜色【不支持无理由退货】详询客服","配套餐椅【详询客服】"]},
+
+{id:"935159324806",seed:5,tags:["dshape"],verdict:"Backup",vClass:"mid",vid:false,
+ name:"德利丰洞石半圆餐桌 · 高端",nameEn:"Delifeng travertine half-round · premium grade",
+ seller:"SHUIMO 水墨之家",trust:"17 sold · 品质奢华型 luxury tier",
+ yen:"¥2,187",sg:"≈ S$440",priceNote:"半圆 · 可定制",
+ ship:"fwd",shipTxt:"Forwarder likely · Foshan",
+ specs:[["Shape","半圆 ½-round",1],["Surface","洞石 travertine",1],["Base","walnut (verify)",0],["Wood","白蜡木 white-wax",1],["1.4m","yes (1.3–1.8m)",1],["Custom","yes",1]],
+ why:["White-wax + premium Delifeng travertine, 1.4m, customisable","Luxury positioning"],
+ risks:["Pricey for the traction","Low sales volume"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01JNH6Rx23bY82jayzQ_!!2218334167274-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/2218334167274/O1CN01k8KuaZ23bY7OzKO8S_!!2218334167274.jpg","https://img.alicdn.com/imgextra/i3/2218334167274/O1CN01nht72P23bY7UDetoR_!!2218334167274.jpg","https://img.alicdn.com/imgextra/i1/2218334167274/O1CN01cyuH9d23bY7TrGWWH_!!2218334167274.jpg","https://img.alicdn.com/imgextra/i4/2218334167274/O1CN01B6XX1h23bY7doA9M5_!!2218334167274.jpg"],
+ variants:["1.4米白蜡木实木餐桌【高端德利丰洞石优等板】","1.3米白蜡木实木餐桌【高端德利丰洞石优等板】","1.6米白蜡木实木餐桌【高端德利丰洞石优等板】","1.8米白蜡木实木餐桌【高端德利丰洞石优等板】","配套餐椅【详询客服】"]},
+
+{id:"777587917841",seed:6,tags:["direct","fluted"],verdict:"Structure ref",vClass:"mid",vid:false,
+ name:"奶油风半椭圆折叠餐桌",nameEn:"Cream half-stadium table (prior find · white)",
+ seller:"富菲家居 (FuFei)",trust:"4.7★ · 400+ added to cart",
+ yen:"¥1,598 (USD 238)",sg:"≈ S$321",priceNote:"1.4m · incl. direct SG sea",
+ ship:"direct",shipTxt:"Direct to Singapore · one payment",
+ specs:[["Shape","半椭圆 full stadium",0],["Surface","cream / white",0],["Base","white fluted pedestal",0],["Structure","12mm + 18mm wood",1],["Stone","将军 / 德利丰",1],["1.4m","yes (1.4–2.0m)",1]],
+ why:["The original lead: 12mm 将军/德利丰 sintered + 18mm wood base","Direct SG shipping; two reputable stone brands","Solid, well-reviewed construction"],
+ risks:["WHITE / cream — not the travertine look (colour miss)","Full stadium (both ends round), not a half-moon"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN018SfQLZ1ccvh6siFOT_!!2216050623622-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01qiMeiq1ccveqPgqzJ_!!2216050623622.jpg","https://gw.alicdn.com/imgextra/O1CN01kfVL9P1ccveovr4In_!!2216050623622.jpg","https://gw.alicdn.com/imgextra/O1CN01uHQ7qQ1ccvepQETH4_!!2216050623622.jpg","https://gw.alicdn.com/imgextra/O1CN01XCtbto1ccvepfaj30_!!2216050623622.jpg"],
+ variants:["1.4米餐桌【将军岩板】","1.4米餐桌【德利丰岩板】","1.6米餐桌【将军岩板】","1.8米餐桌【将军岩板】","2.0米餐桌【将军岩板】","1.6米餐桌【德利丰岩板】","1.8米餐桌【德利丰岩板】","2.0米餐桌【德利丰岩板】","1.4米餐桌+4张餐椅【将军岩板】","1.4米餐桌+4张餐椅【德利丰岩板】"]},
+
+{id:"1024729155786",seed:7,tags:["dshape","fluted"],verdict:"Niche · full backing",vClass:"mid",vid:false,
+ name:"半圆全托靠墙岛台餐桌 · 黑",nameEn:"Half-round island · full wood backing (全托) · black",
+ seller:"巴赛博纳 (Basaibona)",trust:"4 sold · matte travertine",
+ yen:"¥2,509",sg:"≈ S$505",priceNote:"半圆 · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air consolidation",
+ specs:[["Shape","半圆 ½-round",1],["Surface","哑光洞石 matte travertine",1],["Base","wood (black)",0],["Structure","全托 full backing",1],["Against wall","靠墙 yes",1],["Custom","—",0]],
+ why:["Half-round + FULL wood backing board (全托) under the stone","Built as an against-wall island; matte travertine"],
+ risks:["Black colourway — not the warm walnut/cream tone","Very low traction; pricey; air freight"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01LnC4U61dPw4eBpVAj_!!2207919043729-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01rS1hHt1dPw3QbAEXX_!!2207919043729.jpg","https://gw.alicdn.com/imgextra/O1CN01aUdhcy1dPw3RVheRi_!!2207919043729.jpg","https://gw.alicdn.com/imgextra/O1CN01sXArAR1dPw3PaH7Vo_!!2207919043729.jpg","https://gw.alicdn.com/imgextra/O1CN018Bc8bW1dPw3QB10iu_!!2207919043729.jpg"],
+ variants:["餐桌1.4*0.8m","1.4米餐桌+4椅","1.4米餐桌+6椅","餐桌1.6*0.8m","餐桌1.8*0.8m","餐桌2.0*0.9m","1.6米餐桌+4椅","1.8米餐桌+4椅","2米餐桌+4椅"]},
+
+{id:"997450280312",seed:8,tags:[],verdict:"Cheaper alt",vClass:"mid",vid:false,
+ name:"飞雁靠墙椭圆餐桌 · 白蜡木",nameEn:"Fei-Yan against-wall oval · white-wax · walnut",
+ seller:"问道岩板家居 (Wen Dao)",trust:"25 sold",
+ yen:"¥1,004",sg:"≈ S$200",priceNote:"靠墙椭圆 · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air",
+ specs:[["Shape","椭圆 oval",0],["Surface","洞石 travertine",1],["Base","walnut",1],["Wood","白蜡木 white-wax",1],["Against wall","靠墙 yes",1],["1.4m","yes (130–220cm)",1]],
+ why:["White-wax + walnut, against-wall, travertine — cheaper"],
+ risks:["Oval — both ends round, not a clean straight side","Low traction"],
+ photos:["https://img.alicdn.com/imgextra/i2/720051533/O1CN01p2H2e71NCAH7hcDdj_!!720051533.jpg","https://img.alicdn.com/imgextra/i1/720051533/O1CN01afBiSP1NCAH7MaWti_!!720051533.jpg","https://img.alicdn.com/imgextra/i4/720051533/O1CN017eS4yN1NCAH709A18_!!720051533.jpg","https://img.alicdn.com/imgextra/i4/720051533/O1CN018TvaiO1NCAH7MXVnx_!!720051533.jpg","https://img.alicdn.com/imgextra/i3/720051533/O1CN01kQF5vS1NCAH775LbR_!!720051533.jpg"],
+ variants:["140x80x75cm","130x70x75cm","160x80x75cm","180x90x75cm","200x90x75cm","220x90x75cm","岩板餐桌","一桌4椅【实木船桨椅】","一桌4椅【实木羊角椅】","一桌4椅【实木钥匙椅】","一桌4椅【实木人鱼椅】"]},
+
+{id:"1005015650865",seed:9,tags:["value"],verdict:"Value oval",vClass:"mid",vid:true,
+ name:"洞石实木椭圆餐桌 · 胡桃色",nameEn:"Travertine solid-wood oval · walnut (has demo video)",
+ seller:"佛山昕枫家居 (Xin Feng)",trust:"200+ sold · demo video on listing",
+ yen:"¥849",sg:"≈ S$170",priceNote:"椭圆形 · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air · ▶ demo video on listing",
+ specs:[["Shape","椭圆 oval",0],["Surface","洞石 travertine",1],["Base","walnut",1],["Wood","实木框架 solid frame",1],["1.4m","yes (130–220cm)",1],["Custom","—",0]],
+ why:["Walnut + travertine, good traction, cheap","Solid-wood 4cm thick frame; demo video shows build"],
+ risks:["Oval, not a half-moon with a straight side","Forwarder air"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01tef0651qxuSaFxYPs_!!1603275563-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01RfpXes1qxuQViQC5S_!!1603275563.png","https://gw.alicdn.com/imgextra/O1CN01sUY9vy1qxuQVL31ob_!!1603275563.png","https://gw.alicdn.com/imgextra/O1CN01TlvEh91qxuQW6K09X_!!1603275563.png","https://gw.alicdn.com/imgextra/O1CN01I8y1vp1qxuQVyccOZ_!!1603275563.png"],
+ variants:["140x80x75cm","130x70x75cm","160x80x75cm","180x90x75cm","200x90x75cm","220x90x75cm","实木岩板餐桌","一桌4椅【实木羊角椅】","一桌4椅【实木船桨椅】","一桌4椅【实木钥匙椅】","货比1000家白蜡木纯实木框架+4CM加厚框架+品质为王"]},
+
+{id:"967772645143",seed:10,tags:["reject"],verdict:"Reject · shape",vClass:"reject",rejected:true,vid:false,
+ name:"洞石下挂胡桃色实木餐桌",nameEn:"Travertine + under-hung wood backing · walnut (great structure, wrong shape)",
+ seller:"奔逸岩板企业店 (Ben Yi)",trust:"100+ sold",
+ yen:"¥928.8",sg:"≈ S$185",priceNote:"长方形 rectangular · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air",
+ specs:[["Shape","长方形 rectangular",0],["Surface","洞石 travertine",1],["Base","walnut",1],["Structure","下挂 wood backing",1],["Wood","实木 solid",1],["Custom","—",0]],
+ why:["Excellent structure: walnut + 下挂 wood backing under stone","Genuine travertine sintered"],
+ risks:["RECTANGULAR — no rounded side, can't be a half-moon","Here only as a structure reference"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01zcnbFO1kDkqWm8gnu_!!2200825334650-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01bXRKlL1kDkocLuVyn_!!2200825334650.jpg","https://gw.alicdn.com/imgextra/O1CN01ARDuQD1kDkoiKfaVe_!!2200825334650.jpg","https://gw.alicdn.com/imgextra/O1CN01R8czuz1kDkoi3GmnX_!!2200825334650.jpg","https://gw.alicdn.com/imgextra/O1CN01vjNeGU1kDkoh2VVmw_!!2200825334650.jpg"],
+ variants:["140x80x75cm","130x70x75cm","160x80x75cm","180x90x75cm","200x90x75cm","220x90x75cm","岩板餐桌","一桌4椅（实木船桨椅）","一桌4椅（实木羊角椅）","一桌4椅（实木钥匙椅）"]},
+
+{id:"895854305473",seed:11,tags:["reject","dshape"],verdict:"Reject · too cheap",vClass:"reject",rejected:true,vid:false,
+ name:"法式半圆岛台餐桌 · 预算款",nameEn:"French half-round island — budget (structural risk)",
+ seller:"尊歌家居 (Zun Ge)",trust:"4.5★ · 88VIP 96% · 2000+ added",
+ yen:"¥270.7 (USD 40)",sg:"≈ S$54",priceNote:"140×80cm · + forwarder air",
+ ship:"fwd",shipTxt:"Forwarder air · ships from Hebei",
+ specs:[["Shape","半圆/双圆/长方 options",1],["Surface","cream (verify)",0],["Base","白腿/黑腿 white/black",0],["Wood","not walnut",0],["1.4m","yes (120–160cm)",1],["Custom","—",0]],
+ why:["Cheapest half-round by far; very high cart-adds","Offers 半圆 / 双圆 / 长方形 shape options"],
+ risks:["¥270 for a 1.4m sintered table is implausibly cheap → thin stone / light base","Legs white or black — not warm walnut; cream not travertine","Classic 'thin stone on weak legs' risk"],
+ photos:["https://img.alicdn.com/imgextra/i1/2219451967808/O1CN01PSRzoa27Y7ZAy9qtO_!!2219451967808.jpg","https://img.alicdn.com/imgextra/i3/2219451967808/O1CN01Gg4FVt27Y7WVUPo0G_!!2219451967808.jpg","https://img.alicdn.com/imgextra/i3/2219451967808/O1CN01Qtv83Y27Y7WWIaQD6_!!2219451967808.jpg","https://img.alicdn.com/imgextra/i2/2219451967808/O1CN01YFmDKp27Y7ZyK0mH9_!!2219451967808.jpg","https://img.alicdn.com/imgextra/i4/2219451967808/O1CN01wBnA8327Y7ZXmOmar_!!2219451967808.jpg"],
+ variants:["140x80x75cm","130x80x75cm","130x70x75cm","【半圆】白腿单桌","【半圆】黑腿单桌","【半圆】白腿单桌+牛头椅*4","【半圆】白腿单桌+蝴蝶椅*4","160x80x75cm","【双圆】白腿单桌","【长方形】白腿单桌"]},
+];
+const BY={};DATA.forEach(d=>BY[d.id]=d);
+
+/* ---------- mode switching ---------- */
+document.getElementById('modes').addEventListener('click',e=>{
+  const b=e.target.closest('.mode');if(!b)return;
+  document.querySelectorAll('.mode').forEach(m=>m.classList.toggle('on',m===b));
+  const m=b.dataset.m;
+  document.getElementById('p-browse').classList.toggle('on',m==='browse');
+  document.getElementById('p-duel').classList.toggle('on',m==='duel');
+  if(m==='duel')startDuel();
+});
+
+/* ---------- BROWSE render ---------- */
+function variantChips(d){
+  const sorted=d.variants.map(v=>({v,s:vScore(v)})).sort((a,b)=>b.s-a.s);
+  const bestS=sorted.length?sorted[0].s:0;
+  return sorted.map((o,i)=>{
+    const best=(i===0&&bestS>=900);
+    return `<span class="vchip${best?' best':''}"><span class="cn">${o.v.replace(/【/g,'[').replace(/】/g,']')}</span><span class="ve">${tr(o.v)}</span></span>`;
+  }).join('');
+}
+function renderBrowse(filter){
+  // comfort reference
+  document.getElementById('refmount').innerHTML=`
+    <div class="ref">
+      <img src="${COMFORT.imgs[0]}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(COMFORT.imgs).replace(/"/g,'&quot;')},0,'Comfort Design reference')">
+      <div>
+        <div class="reftag">◆ Reference · the design to beat</div>
+        <h3>${COMFORT.name}</h3>
+        <div class="seller">${COMFORT.seller} · <b style="color:var(--gold)">${COMFORT.sg}</b></div>
+        <div class="refrow">${COMFORT.pills.map(p=>`<span class="pill">${p}</span>`).join('')}</div>
+        <div class="sm" style="color:var(--ink-soft)">${COMFORT.note}</div>
+        <div class="refimgs">${COMFORT.imgs.map((u,i)=>`<img src="${u}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(COMFORT.imgs).replace(/"/g,'&quot;')},${i},'Comfort Design reference')">`).join('')}</div>
+        <div style="margin-top:10px"><a class="btn ghost" href="${COMFORT.url}" target="_blank" rel="noopener">View at Comfort Design ↗</a></div>
+      </div>
+    </div>`;
+  const root=document.getElementById('cards');root.innerHTML='';
+  const list=DATA.filter(d=>filter==='all'||(d.tags||[]).includes(filter));
+  list.forEach(d=>{
+    const urls=d.photos;
+    const card=document.createElement('article');
+    card.className='card'+(d.rejected?' rejected':'');
+    card.innerHTML=`
+     <div class="gallery">
+       <div class="rankbadge">${d.seed}</div>
+       <div class="verdict ${d.vClass}">${d.verdict}</div>
+       ${d.vid?`<a class="vid" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">▶ demo</a>`:''}
+       <div class="gmain"><img src="${urls[0]}" referrerpolicy="no-referrer" loading="lazy"
+          onclick="openLb(${JSON.stringify(urls).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')"></div>
+       <div class="thumbs">${urls.map((u,i)=>`<img src="${u}" referrerpolicy="no-referrer" loading="lazy" class="${i===0?'on':''}"
+          onerror="this.remove()"
+          onclick="this.closest('.gallery').querySelector('.gmain img').src='${u}';[...this.parentNode.children].forEach(t=>t.classList.remove('on'));this.classList.add('on')">`).join('')}</div>
+     </div>
+     <div class="body">
+       <div class="nm">${d.name}</div>
+       <div class="nm-en">${d.nameEn}</div>
+       <div class="seller">by <b>${d.seller}</b> · ${d.trust}</div>
+       <div class="price"><span class="y">${d.yen}</span><span class="sg">${d.sg}</span></div>
+       <div class="price"><span class="note">${d.priceNote}</span></div>
+       <span class="ship ${d.ship}">${d.shipTxt}</span>
+       <div class="specs">${d.specs.map(s=>`<div><dt>${s[0]}</dt><dd class="${s[2]?'hit':'miss'}">${s[1]}</dd></div>`).join('')}</div>
+       <div class="lists">
+         <div class="w"><h4>Why it fits</h4><ul>${d.why.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+         <div class="r"><h4>Risks</h4><ul>${d.risks.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+       </div>
+       <div class="vars"><h4>All variants · best-fit first (中文 / EN)</h4><div class="vchips">${variantChips(d)}</div></div>
+       <div class="foot">
+         <a class="btn" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">View on Taobao ↗</a>
+         <span class="sku">SKU ${d.id}</span>
+       </div>
+     </div>`;
+    root.appendChild(card);
+  });
+}
+renderBrowse('all');
+document.getElementById('chips').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  e.target.classList.add('on');renderBrowse(e.target.dataset.f);
+});
+
+/* ================= DUEL ENGINE (merge-sort + cached answers + undo) ================= */
+const DUEL_IDS=DATA.map(d=>d.id);            // all 11 ranked
+const LS='reno_table_rank_v1';
+let answers={};        // pairKey -> -1 (A wins) | 1 (B wins) | 0 tie
+let askOrder=[];       // pairKeys in the order they were first asked
+let pending=null;      // {a,b,resolve}
+let finalOrder=null;   // array of ids once sorted
+let estTotal=Math.ceil(DUEL_IDS.length*Math.log2(DUEL_IDS.length)); // ~38
+
+function pk(a,b){return [a,b].sort().join('|');}
+function loadLS(){try{const o=JSON.parse(localStorage.getItem(LS)||'{}');answers=o.answers||{};askOrder=o.askOrder||[];finalOrder=o.finalOrder||null;}catch(e){}}
+function saveLS(){localStorage.setItem(LS,JSON.stringify({answers,askOrder,finalOrder}));}
+
+function compare(a,b){
+  const key=pk(a,b);
+  if(key in answers){
+    const r=answers[key]; const k=[a,b].sort();
+    // stored relative to sorted key order; map to (a,b)
+    if(r===0)return Promise.resolve(0);
+    const winnerSortedFirst=(r<0);
+    const aIsSortedFirst=(k[0]===a);
+    return Promise.resolve(winnerSortedFirst===aIsSortedFirst?-1:1);
+  }
+  return new Promise(res=>{pending={a,b,resolve:res};renderDuel();});
+}
+function answer(a,b,choice){ // choice: 'a' | 'b' | 'tie'
+  const key=pk(a,b);const k=[a,b].sort();
+  let r;
+  if(choice==='tie')r=0;
+  else{const winner=(choice==='a')?a:b; r=(winner===k[0])?-1:1;}
+  answers[key]=r; if(!askOrder.includes(key))askOrder.push(key);
+  saveLS();
+  const ret=(choice==='tie')?0:((choice==='a')?-1:1);
+  const p=pending;pending=null;p.resolve(ret);
+}
+function undo(){
+  if(!askOrder.length)return;
+  const key=askOrder.pop();delete answers[key];finalOrder=null;saveLS();
+  runDuelSort();
+}
+async function mergeSort(arr){
+  if(arr.length<=1)return arr;
+  const mid=arr.length>>1;
+  const L=await mergeSort(arr.slice(0,mid)),R=await mergeSort(arr.slice(mid));
+  const out=[];let i=0,j=0;
+  while(i<L.length&&j<R.length){const c=await compare(L[i],R[j]);if(c<=0)out.push(L[i++]);else out.push(R[j++]);}
+  while(i<L.length)out.push(L[i++]);while(j<R.length)out.push(R[j++]);
+  return out;
+}
+let sortToken=0;
+async function runDuelSort(){
+  const my=++sortToken;
+  const ordered=await mergeSort(DUEL_IDS.slice());
+  if(my!==sortToken)return;          // superseded (undo)
+  finalOrder=ordered;saveLS();renderLadder();
+}
+function startDuel(){
+  loadLS();
+  if(finalOrder&&finalOrder.length===DUEL_IDS.length){renderLadder();return;}
+  pending=null;runDuelSort();
+}
+function resetDuel(){answers={};askOrder=[];finalOrder=null;pending=null;saveLS();sortToken++;runDuelSort();}
+
+function dCard(id,side){
+  const d=BY[id];
+  return `<div class="dcard" onclick="answer('${pending.a}','${pending.b}','${side}')">
+    <div class="dimg"><img src="${d.photos[0]}" referrerpolicy="no-referrer"></div>
+    <div class="dbody">
+      <div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
+      <div class="dmeta"><span class="p">${d.sg}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.specs[1][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+      <div class="pick">Choose this ▸</div>
+    </div></div>`;
+}
+function renderDuel(){
+  const done=askOrder.length;
+  const pct=Math.min(98,Math.round(done/estTotal*100));
+  document.getElementById('duelstage').innerHTML=`
+    <div class="duelhead">
+      <h2>Which do you prefer?</h2>
+      <p>Tap the table you'd rather have. Nothing is lost — losers still get ranked.</p>
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="progtxt">Duel ${done+1} · about ${estTotal} total</div>
+      <div class="duelctl">
+        <button class="tie" onclick="undo()" ${done?'':'disabled style="opacity:.4"'}>↶ Undo</button>
+        <button class="tie" onclick="if(confirm('Start ranking over?'))resetDuel()">⟲ Restart</button>
+      </div>
+    </div>
+    <div class="duelarena">
+      ${dCard(pending.a,'a')}
+      <div class="vsbadge">vs</div>
+      ${dCard(pending.b,'b')}
+    </div>
+    <div class="tierow"><button class="tie" onclick="answer('${pending.a}','${pending.b}','tie')">🤝 Too close — keep order</button></div>`;
+}
+
+/* ---------- LADDER / RESULT ---------- */
+function renderLadder(){
+  const order=finalOrder;
+  const rows=order.map((id,i)=>{
+    const d=BY[id];
+    return `<div class="row" data-id="${id}">
+      <div class="pos">${i+1}</div>
+      <img src="${d.photos[0]}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(d.photos).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')">
+      <div class="info"><div class="rn">${d.name}</div><div class="re">${d.nameEn} · <b>${d.sg}</b></div></div>
+      <div class="mv"><button onclick="moveRow(${i},-1)" ${i===0?'disabled':''}>▲</button><button onclick="moveRow(${i},1)" ${i===order.length-1?'disabled':''}>▼</button></div>
+      ${i<order.length-1?`<button class="reduel" onclick="reDuel(${i})">↔ vs #${i+2}</button>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('duelstage').innerHTML=`
+    <div class="ladder">
+      <div class="ladderhead"><h2>Sopisa's ranking</h2><p style="color:var(--ink-soft)">Drag with ▲▼, or re-duel close neighbours with ↔. Every table is here — nothing dropped.</p></div>
+      ${rows}
+      <div class="resbtns">
+        <button class="btn" onclick="confirmClose()">⚔ Confirm close calls (rematch neighbours)</button>
+        <button class="btn ghost" onclick="copyResult()">⧉ Copy ranking</button>
+        <button class="btn ghost" onclick="shareResult()">🔗 Copy share link</button>
+        <button class="btn ghost" onclick="if(confirm('Start ranking over?'))resetDuel()">⟲ Restart duel</button>
+      </div>
+    </div>`;
+}
+function moveRow(i,dir){
+  const j=i+dir;if(j<0||j>=finalOrder.length)return;
+  const t=finalOrder[i];finalOrder[i]=finalOrder[j];finalOrder[j]=t;saveLS();renderLadder();
+}
+let rematchQueue=[];
+function reDuel(i){rematchQueue=[i];runRematch();}
+function confirmClose(){rematchQueue=finalOrder.map((_,i)=>i).slice(0,-1);runRematch();}
+function runRematch(){
+  if(!rematchQueue.length){renderLadder();toast('Order updated');return;}
+  const i=rematchQueue.shift();
+  const a=finalOrder[i],b=finalOrder[i+1];
+  // show a one-off duel; on choice, reorder if needed, continue queue
+  document.getElementById('duelstage').innerHTML=`
+    <div class="duelhead"><h2>Re-check: #${i+1} vs #${i+2}</h2><p>Pick the one you prefer.</p></div>
+    <div class="duelarena">
+      <div class="dcard" onclick="rematchPick(${i},'a')">${cardInner(a)}</div>
+      <div class="vsbadge">vs</div>
+      <div class="dcard" onclick="rematchPick(${i},'b')">${cardInner(b)}</div>
+    </div>
+    <div class="tierow"><button class="tie" onclick="rematchPick(${i},'tie')">🤝 Keep as is</button></div>`;
+}
+function cardInner(id){const d=BY[id];return `<div class="dimg"><img src="${d.photos[0]}" referrerpolicy="no-referrer"></div>
+  <div class="dbody"><div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
+  <div class="dmeta"><span class="p">${d.sg}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+  <div class="pick">Choose this ▸</div></div>`;}
+function rematchPick(i,choice){
+  if(choice==='b'){const t=finalOrder[i];finalOrder[i]=finalOrder[i+1];finalOrder[i+1]=t;}
+  // record in answers too
+  const a=finalOrder[i],b=finalOrder[i+1];if(choice!=='tie'){answers[pk(a,b)]=(choice==='a')? ([a,b].sort()[0]===a?-1:1) : ([a,b].sort()[0]===finalOrder[i]?-1:1);}
+  saveLS();runRematch();
+}
+function rankText(){return finalOrder.map((id,i)=>{const d=BY[id];return `${i+1}. ${d.name} (${d.nameEn.split('·')[0].trim()}) — ${d.sg} — taobao.com/item?id=${id}`;}).join('\n');}
+function copyResult(){navigator.clipboard.writeText('Sopisa\'s dining-table ranking:\n'+rankText()).then(()=>toast('Ranking copied'));}
+function shareResult(){
+  const h=btoa(finalOrder.join(','));
+  const url=location.origin+location.pathname+'#r='+h;
+  navigator.clipboard.writeText(url).then(()=>toast('Share link copied'));
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800);}
+// load shared ranking from hash
+(function(){const m=location.hash.match(/r=([^&]+)/);if(m){try{const ids=atob(m[1]).split(',').filter(x=>BY[x]);if(ids.length===DUEL_IDS.length){finalOrder=ids;}}catch(e){}}})();
+
+/* ---------- lightbox ---------- */
+let cur={list:[],i:0,cap:''};
+function openLb(urls,i,cap){cur={list:urls,i:i,cap:cap||''};showLb()}
+function showLb(){document.getElementById('lbimg').src=cur.list[cur.i];document.getElementById('lbcap').textContent=cur.cap+' · '+(cur.i+1)+'/'+cur.list.length;document.getElementById('lb').classList.add('on')}
+function stepLb(n){cur.i=(cur.i+n+cur.list.length)%cur.list.length;showLb()}
+function closeLb(){document.getElementById('lb').classList.remove('on')}
+document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
+</script>
+</body>
+</html>

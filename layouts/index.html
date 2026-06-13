@@ -24,7 +24,7 @@
     <ul class="project-list">
         {{ range first 6 (where .Site.RegularPages "Section" "projects") }}
         <li class="project-row">
-            <a href="{{ with .Params.github }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}"{{ with .Params.github }} target="_blank"{{ end }}>
+            <a href="{{ with .Params.link }}{{ . }}{{ else }}{{ with .Params.github }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}{{ end }}"{{ with .Params.github }} target="_blank"{{ end }}>
                 <span class="project-name">{{ .Title }}</span>
                 <span class="project-dash">&mdash;</span>
                 <span class="project-desc">{{ .Description }}</span>
