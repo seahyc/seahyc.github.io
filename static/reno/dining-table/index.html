@@ -69,7 +69,19 @@
   .rankbadge{position:absolute;top:14px;left:14px;z-index:3;font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--walnut-deep);box-shadow:0 6px 16px rgba(0,0,0,.3)}
   .verdict{position:absolute;top:16px;right:14px;z-index:3;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:999px;color:#fff;background:var(--olive)}
   .verdict.top{background:var(--walnut)}.verdict.value{background:var(--good)}.verdict.looks{background:var(--gold)}.verdict.reject{background:var(--bad)}.verdict.mid{background:#8a7d68}
-  .vid{position:absolute;bottom:70px;right:14px;z-index:3;background:rgba(20,15,10,.78);color:#fff;font-size:.74rem;font-weight:700;padding:6px 11px;border-radius:999px;text-decoration:none}
+  .vid{position:absolute;bottom:70px;right:14px;z-index:3;background:rgba(20,15,10,.82);color:#fff;font-size:.76rem;font-weight:700;padding:7px 13px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;font-family:inherit}
+  .vid:hover{background:var(--walnut)}
+  .reviews{margin-bottom:14px;border-top:1px solid var(--line);padding-top:12px}
+  .reviews h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--walnut);margin-bottom:9px}
+  .vlink{font:inherit;font-size:.7rem;font-weight:700;color:var(--gold);background:none;border:none;cursor:pointer;text-transform:none;letter-spacing:0}
+  .vlink:hover{text-decoration:underline}
+  .rev{background:#f7f2e9;border-radius:10px;padding:9px 12px;margin-bottom:7px}
+  .revhead{font-size:.78rem;color:var(--ink-soft);margin-bottom:3px}
+  .revhead .revvar{font-size:.72rem;opacity:.8}
+  .vipbadge{background:var(--walnut);color:#fff;font-size:.62rem;font-weight:700;padding:1px 5px;border-radius:4px;vertical-align:middle}
+  .revcn{font-size:.86rem;color:var(--ink);line-height:1.4}
+  .reven{font-size:.82rem;color:var(--ink-soft);margin-top:2px;line-height:1.4}
+  .lb video{max-width:92vw;max-height:80vh;border-radius:8px;background:#000}
 
   .body{padding:22px 24px 24px;display:flex;flex-direction:column}
   .nm{font-family:"Fraunces",serif;font-size:1.32rem;line-height:1.14;font-weight:500}
@@ -231,7 +243,7 @@
   <span class="x" onclick="closeLb()">✕</span>
   <span class="nav prev" onclick="stepLb(-1)">‹</span>
   <span class="nav next" onclick="stepLb(1)">›</span>
-  <img id="lbimg" src="" alt=""><div class="cap" id="lbcap"></div>
+  <img id="lbimg" src="" alt=""><video id="lbvid" controls playsinline preload="auto" style="display:none"></video><div class="cap" id="lbcap"></div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -418,6 +430,22 @@ const DATA=[
  variants:["140x80x75cm","130x80x75cm","130x70x75cm","【半圆】白腿单桌","【半圆】黑腿单桌","【半圆】白腿单桌+牛头椅*4","【半圆】白腿单桌+蝴蝶椅*4","160x80x75cm","【双圆】白腿单桌","【长方形】白腿单桌"]},
 ];
 const BY={};DATA.forEach(d=>BY[d.id]=d);
+/* listings with a hosted demo video (videos/<id>.mp4) */
+const VIDEOS=new Set(["898440291612","988869150664","777587917841","937570801647","935159324806","1005015650865","895854305473"]);
+/* real buyer reviews (中文 + EN), scraped from each listing */
+const REVIEWS={
+"892934018626":[{who:"小江同学",vip:false,v:"1.3m",cn:"超级好看和家里的风格特别适配，质量也很好，有师傅上门安装，非常细心，推荐购买",en:"Gorgeous and matches our home style; great quality, installer came and was meticulous — recommend."},{who:"晴空",vip:true,v:"1.6m",cn:"性价比很高，岩板很厚实的，桌脚可以不同安法，安装师傅也比较专业",en:"Great value; the sintered stone is genuinely thick, legs assemble different ways, installer was professional."}],
+"898440291612":[{who:"t**w",vip:false,v:"custom 定制",cn:"按照我要求发货的，质感很不错",en:"Made to my custom spec; lovely texture."},{who:"爱吃开口板栗的北络",vip:false,v:"1.4×0.8m",cn:"桌子不错，很重，物流师傅安装很认真",en:"Nice table, very heavy; the delivery installer was careful."}],
+"988869150664":[{who:"禄禄家宝",vip:false,v:"12mm+18mm托板 / 130×70",cn:"桌子很沉，白洞石岩板还挺漂亮，桌腿居然是实木的…这个价格超值，客服也很好",en:"Heavy table; white travertine sintered is pretty, and the legs really are solid wood — super value, good service."},{who:"TB_70191935",vip:false,v:"12mm+18mm托板 / 140×80",cn:"物流很快，包装很严实，师傅安装很专业，桌子很好、尺寸量过了够的",en:"Fast shipping, very secure packaging, pro install; table is great and the size measured out as enough."}],
+"777587917841":[{who:"Fiona飛妃",vip:false,v:"1.8m 德利丰",cn:"桌子很漂亮，岩板超级重，安装师傅夸桌子很棒，客服超级耐心，五星好评",en:"Beautiful table, sintered top super heavy, installer praised it, very patient seller — 5 stars."},{who:"匿名买家 (台湾 Taiwan)",vip:false,v:"sea-shipped",cn:"海运来台也完好无损，岩板材料也很实在…两人生活不需要太大…唯一收到时桌脚木头处有些微破损，不到3mm，但不影响外观",en:"Shipped by sea to Taiwan undamaged; sintered material is solid; perfect size for two. Only nitpick: a <3mm chip on the wooden leg corner on arrival — doesn't affect the look."}],
+"937570801647":[{who:"And唧唧咕咕",vip:false,v:"1.6m",cn:"性价比超高，师傅装得很稳，颜色也正，随便拍都好看，预算不多完全可以冲",en:"Amazing value; installed very stable, color is accurate, photogenic — go for it if budget's tight."},{who:"糯米爱吃西瓜",vip:false,v:"1.4m",cn:"可以选择定制桌面，就是时间略长，老板如实告知桌腿材质，这个价格很合适",en:"Top is customizable (takes a bit longer); seller was honest about the leg material — good price."}],
+"935159324806":[],
+"1024729155786":[{who:"devil444",vip:false,v:"1.4×0.8m",cn:"质感很好，花纹也很好看，不愧是千挑万选中的餐桌，整屋最满意的单品",en:"Great texture and pattern — the table I picked after lots of searching; most satisfying item in the home."}],
+"997450280312":[{who:"t**2",vip:false,v:"160×80 +4椅",cn:"质量不错，颜值高",en:"Good quality, looks great."}],
+"1005015650865":[{who:"匿名买家",vip:false,v:"140×80 +4椅",cn:"桌子质量很好！木质部分超级沉，纹理也漂亮，安装师傅夸了桌子，桌面温润不冰冷，椅子坐感舒服",en:"Great quality! Wood parts super heavy with lovely grain; installer praised it, the top feels warm not cold, chairs comfy."},{who:"uniquen^-^",vip:false,v:"140×80 +6椅",cn:"很喜欢，是我想要的效果，椅子挺稳的，岩面很好打理",en:"Love it, exactly the look I wanted; chairs are stable and the sintered surface is easy to clean."}],
+"967772645143":[{who:"zh121212122",vip:false,v:"160×80",cn:"餐桌非常好，桌面有质感，有厚度，桌腿非常漂亮",en:"Excellent table; the top has real texture and thickness, and the legs are very pretty."},{who:"用户_54440051",vip:false,v:"+4椅",cn:"质量与颜值同在，座椅舒适",en:"Quality and looks both there; chairs comfortable."}],
+"895854305473":[{who:"匿名买家",vip:false,v:"半圆 white-leg + ox-horn chairs 120×60",cn:"大小尺寸刚好，白配黑牛头椅腿不单调，很好看，物流快还送货上门，价格超值",en:"Size just right; white top with black ox-horn chairs isn't dull, looks good, fast delivery to door — great value."},{who:"松江府有趣的馒头",vip:false,v:"半圆 white-leg 120×60",cn:"东西非常不错，看起来高端大气上档次，值得购买",en:"Very nice; looks high-end and classy, worth buying."}]
+};
 
 /* ---------- mode switching ---------- */
 document.getElementById('modes').addEventListener('click',e=>{
@@ -463,7 +491,7 @@ function renderBrowse(filter){
      <div class="gallery">
        <div class="rankbadge">${d.seed}</div>
        <div class="verdict ${d.vClass}">${d.verdict}</div>
-       ${d.vid?`<a class="vid" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">▶ demo</a>`:''}
+       ${VIDEOS.has(d.id)?`<button class="vid" onclick="openVid('videos/${d.id}.mp4')">▶ Demo video</button>`:''}
        <div class="gmain"><img src="${sized(urls[0],HERO)}" referrerpolicy="no-referrer" loading="lazy" decoding="async"
           onclick="openLb(${JSON.stringify(urls).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')"></div>
        <div class="thumbs">${urls.map((u,i)=>`<img src="${sized(u,THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" class="${i===0?'on':''}"
@@ -484,6 +512,7 @@ function renderBrowse(filter){
          <div class="r"><h4>Risks</h4><ul>${d.risks.map(r=>`<li>${r}</li>`).join('')}</ul></div>
        </div>
        <div class="vars"><h4>All variants · best-fit first (中文 / EN)</h4><div class="vchips">${variantChips(d)}</div></div>
+       ${(REVIEWS[d.id]||[]).length?`<div class="reviews"><h4>Buyer reviews · 买家评价 (中文 / EN)</h4>${REVIEWS[d.id].map(r=>`<div class="rev"><div class="revhead">${r.who}${r.vip?' <span class="vipbadge">88VIP</span>':''} <span class="revvar">bought: ${r.v}</span></div><div class="revcn">&ldquo;${r.cn}&rdquo;</div><div class="reven">${r.en}</div></div>`).join('')}</div>`:''}
        <div class="foot">
          <a class="btn" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">View on Taobao ↗</a>
          <span class="sku">SKU ${d.id}</span>
@@ -666,7 +695,12 @@ let cur={list:[],i:0,cap:''};
 function openLb(urls,i,cap){cur={list:urls,i:i,cap:cap||''};showLb()}
 function showLb(){document.getElementById('lbimg').src=cur.list[cur.i];document.getElementById('lbcap').textContent=cur.cap+' · '+(cur.i+1)+'/'+cur.list.length;document.getElementById('lb').classList.add('on')}
 function stepLb(n){cur.i=(cur.i+n+cur.list.length)%cur.list.length;showLb()}
-function closeLb(){document.getElementById('lb').classList.remove('on')}
+function openVid(src){const lb=document.getElementById('lb'),v=document.getElementById('lbvid');
+  document.getElementById('lbimg').style.display='none';document.querySelectorAll('#lb .nav').forEach(n=>n.style.display='none');
+  document.getElementById('lbcap').textContent='Demo video';v.style.display='block';v.src=src;lb.classList.add('on');v.play().catch(()=>{});}
+function closeLb(){const v=document.getElementById('lbvid');v.pause();v.removeAttribute('src');v.style.display='none';
+  document.getElementById('lbimg').style.display='';document.querySelectorAll('#lb .nav').forEach(n=>n.style.display='');
+  document.getElementById('lb').classList.remove('on')}
 document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
 document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
 </script>
