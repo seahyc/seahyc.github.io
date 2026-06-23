@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Standing Desk Duel · 升降桌 · Solid-Wood Sit-Stand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe7; --paper-2:#ebe3d6; --card:#fcfaf6; --ink:#2c2620; --ink-soft:#6f6354;
+    --travertine:#d8c7ac; --walnut:#7c4f2d; --walnut-deep:#5a3a20; --olive:#6e6b4a;
+    --line:#ddd2c0; --gold:#b08442;
+    --good:#5a7a4f; --warn:#b07a2a; --bad:#a8503f;
+    --shadow:0 18px 40px -22px rgba(60,42,24,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% 8%,rgba(216,199,172,.35),transparent 40%),radial-gradient(circle at 88% 96%,rgba(124,79,45,.07),transparent 45%);background-attachment:fixed;min-height:100dvh}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  .cn{font-weight:600}
+  .en{color:var(--ink-soft);font-weight:400}
+  .sm{font-size:.82rem}
+
+  header.hero{padding:54px 0 26px}
+  .eyebrow{font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--walnut);font-weight:600}
+  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.2rem,6vw,4rem);line-height:1.03;letter-spacing:-.01em;margin:.16em 0 .22em}
+  h1 em{font-style:italic;color:var(--walnut)}
+  .sub{max-width:64ch;color:var(--ink-soft);font-size:1.02rem}
+
+  /* mode toggle */
+  .modes{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+  .mode{font:inherit;font-weight:700;font-size:.92rem;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);padding:11px 22px;border-radius:999px;cursor:pointer;transition:.18s;display:flex;gap:8px;align-items:center}
+  .mode:hover{border-color:var(--walnut);color:var(--walnut)}
+  .mode.on{background:var(--walnut);color:#fff;border-color:var(--walnut)}
+  .mode small{font-weight:500;opacity:.8;font-size:.78rem}
+
+  /* ===== panels ===== */
+  .panel{display:none}
+  .panel.on{display:block}
+
+  /* ---- BROWSE ---- */
+  .bar{position:sticky;top:0;z-index:40;background:rgba(244,239,231,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0;margin:18px 0 0}
+  .bar .wrap{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .chip{font:inherit;font-size:.83rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);padding:7px 14px;border-radius:999px;cursor:pointer;transition:.18s;flex:0 0 auto}
+  .chip:hover{border-color:var(--walnut);color:var(--walnut)}
+  .chip.on{background:var(--walnut);color:#fff;border-color:var(--walnut)}
+
+  .ref{background:linear-gradient(180deg,#efe7d8,#f6f1e8);border:1px dashed var(--gold);border-radius:18px;padding:18px;margin:22px 0 8px;display:grid;grid-template-columns:260px 1fr;gap:20px}
+  .ref img{width:100%;height:190px;object-fit:cover;border-radius:12px;background:#1d1812;cursor:zoom-in}
+  .ref .reftag{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .ref h3{font-family:"Fraunces",serif;font-weight:500;font-size:1.3rem;margin:4px 0 2px}
+  .ref .refrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .ref .pill{font-size:.78rem;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+  .refimgs{display:flex;gap:6px;margin-top:8px}
+  .refimgs img{width:60px;height:60px;border-radius:8px;object-fit:cover;cursor:zoom-in}
+
+  main{padding:18px 0 80px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden;display:grid;grid-template-columns:1.04fr 1fr}
+  .card.rejected .gallery{filter:saturate(.72)}
+  .gallery{position:relative;background:#1d1812;display:flex;flex-direction:column}
+  .gmain{flex:1;position:relative;overflow:hidden;min-height:300px}
+  .gmain img{width:100%;height:100%;min-height:300px;object-fit:cover;display:block;cursor:zoom-in}
+  .thumbs{display:flex;gap:6px;padding:8px;background:#171310;overflow-x:auto}
+  .thumbs .pthumb,.thumbs .vthumb{position:relative;flex:0 0 auto;width:54px;height:54px;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.6;transition:.18s}
+  .thumbs .pthumb img,.thumbs .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumbs .pthumb.on,.thumbs .vthumb.on,.thumbs .pthumb:hover,.thumbs .vthumb:hover{opacity:1;border-color:var(--travertine)}
+  .thumbs .vthumb b{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.1rem;background:rgba(0,0,0,.4)}
+  .thumbs .pthumb.buyer i{position:absolute;bottom:0;left:0;right:0;font-size:.5rem;text-align:center;background:rgba(176,132,66,.9);color:#fff;line-height:1.4}
+  .gmain video{display:block}
+  .rankbadge{position:absolute;top:14px;left:14px;z-index:3;font-family:"Fraunces",serif;font-size:1.4rem;font-weight:600;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--walnut-deep);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+  .verdict{position:absolute;top:16px;right:14px;z-index:3;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:6px 11px;border-radius:999px;color:#fff;background:var(--olive)}
+  .verdict.top{background:var(--walnut)}.verdict.value{background:var(--good)}.verdict.looks{background:var(--gold)}.verdict.reject{background:var(--bad)}.verdict.mid{background:#8a7d68}
+  .vid{position:absolute;bottom:70px;right:14px;z-index:3;background:rgba(20,15,10,.82);color:#fff;font-size:.76rem;font-weight:700;padding:7px 13px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;font-family:inherit}
+  .vid:hover{background:var(--walnut)}
+  .reviews{margin-bottom:14px;border-top:1px solid var(--line);padding-top:12px}
+  .reviews h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--walnut);margin-bottom:9px}
+  .vlink{font:inherit;font-size:.7rem;font-weight:700;color:var(--gold);background:none;border:none;cursor:pointer;text-transform:none;letter-spacing:0}
+  .vlink:hover{text-decoration:underline}
+  .rev{background:#f7f2e9;border-radius:10px;padding:9px 12px;margin-bottom:7px}
+  .revhead{font-size:.78rem;color:var(--ink-soft);margin-bottom:3px}
+  .revhead .revvar{font-size:.72rem;opacity:.8}
+  .vipbadge{background:var(--walnut);color:#fff;font-size:.62rem;font-weight:700;padding:1px 5px;border-radius:4px;vertical-align:middle}
+  .revcn{font-size:.86rem;color:var(--ink);line-height:1.4}
+  .reven{font-size:.82rem;color:var(--ink-soft);margin-top:2px;line-height:1.4}
+  .lb video{max-width:92vw;max-height:80vh;border-radius:8px;background:#000}
+
+  .body{padding:22px 24px 24px;display:flex;flex-direction:column}
+  .nm{font-family:"Fraunces",serif;font-size:1.32rem;line-height:1.14;font-weight:500}
+  .nm-en{font-size:.92rem;color:var(--ink-soft);margin-top:2px}
+  .seller{font-size:.85rem;color:var(--ink-soft);margin-top:7px}
+  .seller b{color:var(--walnut)}
+  .price{margin:13px 0 3px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .price .y{font-family:"Fraunces",serif;font-size:1.6rem;font-weight:600}
+  .price .sg{font-size:1rem;font-weight:700;color:var(--walnut)}
+  .price .note{font-size:.77rem;color:var(--ink-soft)}
+  .allin{font-size:.84rem;color:var(--ink);background:#f2ebde;border-radius:8px;padding:6px 10px;margin:2px 0 10px;display:inline-block}
+  .allin b{color:var(--walnut-deep)}
+  .ship{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:7px;margin-bottom:12px}
+  .ship.direct{background:#e3eed9;color:var(--good)}.ship.fwd{background:#f3e6d2;color:var(--warn)}
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:.84rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:12px}
+  .specs div{display:flex;justify-content:space-between;gap:8px}
+  .specs dt{color:var(--ink-soft)}.specs dd{font-weight:600;text-align:right}
+  .hit{color:var(--good)}.miss{color:var(--bad)}
+  .lists{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:13px}
+  .lists h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .lists.w h4{color:var(--good)}.lists .r h4{color:var(--bad)}
+  .lists ul{list-style:none;font-size:.84rem}
+  .lists li{position:relative;padding-left:15px;margin-bottom:4px}
+  .lists .w li::before{content:"+";position:absolute;left:0;color:var(--good);font-weight:700}
+  .lists .r li::before{content:"–";position:absolute;left:0;color:var(--bad);font-weight:700}
+
+  .vars{margin-bottom:14px}
+  .vars h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--walnut);margin-bottom:7px}
+  .vchips{display:flex;flex-wrap:wrap;gap:6px}
+  .vchip{font-size:.76rem;border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;line-height:1.25}
+  .vchip .ve{display:block;color:var(--ink-soft);font-size:.7rem}
+  .vchip.best{border-color:var(--walnut);background:#f6ecde}
+  .vchip.best::before{content:"★ ";color:var(--gold)}
+
+  .foot{margin-top:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-top:4px}
+  .btn{font:inherit;font-weight:700;font-size:.86rem;text-decoration:none;padding:10px 17px;border-radius:10px;background:var(--walnut);color:#fff;transition:.18s;border:none;cursor:pointer}
+  .btn:hover{background:var(--walnut-deep)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+  .sku{font-size:.73rem;color:var(--ink-soft);font-family:ui-monospace,monospace}
+
+  /* ---- DUEL ---- */
+  .duelwrap{padding:14px 0 70px}
+  .duelhead{text-align:center;margin:6px 0 16px}
+  .duelhead h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.7rem}
+  .duelhead p{color:var(--ink-soft);font-size:.92rem;margin-top:3px}
+  .prog{height:8px;background:var(--paper-2);border-radius:99px;overflow:hidden;max-width:520px;margin:14px auto 4px}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--walnut),var(--gold));width:0;transition:width .3s}
+  .progtxt{text-align:center;font-size:.8rem;color:var(--ink-soft)}
+  .duelctl{display:flex;gap:10px;justify-content:center;margin:14px 0}
+  .duelarena{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;max-width:980px;margin:0 auto}
+  .vsbadge{align-self:center;font-family:"Fraunces",serif;font-style:italic;color:var(--walnut);font-size:1.3rem}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .12s,box-shadow .15s,border-color .15s}
+  .dcard:hover{transform:translateY(-3px);box-shadow:0 22px 44px -20px rgba(60,42,24,.55);border-color:var(--walnut)}
+  .dcard .dimg{height:240px;background:#1d1812;position:relative}
+  .dcard .dimg img{width:100%;height:100%;object-fit:cover}
+  .dcard .dswipe{position:absolute;inset:0;display:flex;flex-wrap:wrap;gap:3px;padding:3px;background:#171310}
+  .dcard .dbody{padding:16px 18px 18px}
+  .dcard .dnm{font-family:"Fraunces",serif;font-size:1.12rem;line-height:1.15}
+  .dcard .dnm-en{font-size:.82rem;color:var(--ink-soft);margin-top:2px}
+  .dcard .dmeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:.78rem}
+  .dcard .dmeta .p{font-weight:700;color:var(--walnut)}
+  .dcard .dtag{font-size:.72rem;border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:#fff}
+  .dcard .pick{margin-top:14px;text-align:center;font-weight:700;color:#fff;background:var(--walnut);border-radius:10px;padding:9px;font-size:.9rem}
+  .tierow{text-align:center;margin:16px 0}
+  .tie{font:inherit;font-weight:600;font-size:.85rem;color:var(--ink-soft);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 20px;cursor:pointer}
+  .tie:hover{border-color:var(--walnut);color:var(--walnut)}
+  .miniexpand{text-align:center;margin-top:6px}
+  .miniexpand a{font-size:.78rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer}
+
+  /* ladder / result */
+  .ladder{max-width:760px;margin:0 auto}
+  .ladderhead{text-align:center;margin-bottom:16px}
+  .ladderhead h2{font-family:"Fraunces",serif;font-weight:500;font-size:1.8rem}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+  .row .pos{font-family:"Fraunces",serif;font-size:1.3rem;font-weight:600;color:var(--walnut);width:30px;text-align:center}
+  .row img{width:60px;height:60px;border-radius:9px;object-fit:cover;background:#1d1812}
+  .row .info{flex:1;min-width:0}
+  .row .rn{font-weight:600;font-size:.95rem}
+  .row .re{font-size:.78rem;color:var(--ink-soft)}
+  .row .mv{display:flex;flex-direction:column;gap:2px}
+  .row .mv button,.row .reduel{font:inherit;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;color:var(--ink-soft);font-size:.8rem;padding:2px 8px}
+  .row .reduel{margin-left:6px;padding:6px 10px}
+  .row .mv button:hover,.row .reduel:hover{border-color:var(--walnut);color:var(--walnut)}
+  .resbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--walnut-deep);color:#fff;padding:11px 20px;border-radius:10px;font-size:.86rem;z-index:200;opacity:0;transition:.25s;pointer-events:none}
+  .toast.on{opacity:1}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(20,15,10,.94);z-index:120;display:none;align-items:center;justify-content:center;flex-direction:column;padding:30px}
+  .lb.on{display:flex}
+  .lb img{max-width:92vw;max-height:80vh;object-fit:contain;border-radius:8px}
+  .lb .x{position:absolute;top:18px;right:24px;color:#fff;font-size:2rem;cursor:pointer;font-family:"Fraunces",serif}
+  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:2.4rem;cursor:pointer;padding:0 18px;opacity:.7;user-select:none}
+  .lb .nav:hover{opacity:1}.lb .prev{left:4px}.lb .next{right:4px}
+  .lb .cap{color:#d8c7ac;margin-top:12px;font-size:.84rem}
+
+  footer{border-top:1px solid var(--line);padding:28px 0 60px;color:var(--ink-soft);font-size:.84rem}
+  footer b{color:var(--ink)}
+
+  /* responsive */
+  @media(max-width:860px){
+    .card{grid-template-columns:1fr}
+    .gmain,.gmain img{min-height:0}.gmain img{aspect-ratio:4/3;height:auto}
+    .ref{grid-template-columns:1fr}.ref img{height:200px}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 15px}
+    header.hero{padding:38px 0 20px}
+    .sub{font-size:.96rem}
+    .mode{padding:10px 16px;font-size:.86rem}.mode small{display:none}
+    .bar .wrap{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.bar .wrap::-webkit-scrollbar{display:none}
+    .specs,.lists{grid-template-columns:1fr}
+    .gmain img{aspect-ratio:1/1}
+    .duelarena{grid-template-columns:1fr;gap:10px}
+    .vsbadge{order:0;margin:2px 0}
+    .dcard .dimg{height:200px}
+    .btn{flex:1;text-align:center}
+    .row img{width:48px;height:48px}
+    .lb .nav{font-size:2rem;padding:0 8px}
+  }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">532B Bishan · Study · 升降桌 · his &amp; hers</div>
+  <h1>The <em>solid-wood</em> standing-desk duel</h1>
+  <p class="sub">Cheaper Taobao alternatives to the <b>Omnidesk Wildwood</b> (~S$1k each) — genuine solid-wood electric sit-stand desks, inspected page-by-page. Two go <b>side by side</b> on the study's <b>3294mm wall</b> (CP) → <b>max ~1.6m each</b> (2×1.6m = 3.2m, fits with ~9cm spare); 1.5m is the safe sweet spot. Depth budget 2036mm at 0.9m walkway → up to <b>~0.8m deep</b> is easy (your 0.6m leaves loads of room). Two different tones. Browse the specs, or duel them <b>two at a time</b> to rank.</p>
+  <div class="modes" id="modes">
+    <button class="mode on" data-m="browse">⊞ Browse <small>all specs &amp; photos</small></button>
+    <button class="mode" data-m="duel">⚔ Rank (Duel) <small>his &amp; hers</small></button>
+  </div>
+</div></header>
+
+<!-- ============ BROWSE ============ -->
+<section class="panel on" id="p-browse">
+  <nav class="bar"><div class="wrap" id="chips">
+    <button class="chip on" data-f="all">All 4</button>
+    <button class="chip" data-f="solid">Solid wood</button>
+    <button class="chip" data-f="dual">Dual-motor</button>
+    <button class="chip" data-f="twotone">Two-tone shop</button>
+    <button class="chip" data-f="brand">Brand</button>
+    <button class="chip" data-f="budget">Budget tier</button>
+  </div></nav>
+  <main class="wrap">
+    <!-- comfort reference injected here -->
+    <div id="refmount"></div>
+    <div id="cards"></div>
+  </main>
+</section>
+
+<!-- ============ DUEL ============ -->
+<section class="panel" id="p-duel">
+  <div class="wrap duelwrap">
+    <div id="duelstage"></div>
+  </div>
+</section>
+
+<div class="lb" id="lb">
+  <span class="x" onclick="closeLb()">✕</span>
+  <span class="nav prev" onclick="stepLb(-1)">‹</span>
+  <span class="nav next" onclick="stepLb(1)">›</span>
+  <img id="lbimg" src="" alt=""><video id="lbvid" controls playsinline preload="auto" style="display:none"></video><div class="cap" id="lbcap"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<footer><div class="wrap">
+  <p style="margin-bottom:7px"><b>Prices</b> are after-coupon as Taobao showed them; <b>≈S$</b> is from the USD quote (×1.35), <b>per desk</b>. These sellers ship China-domestic, so <b>+ forwarder</b> (集运): solid-wood desks are heavy (~30–45kg each) — sea LCL is cheaper than air, and buying both from one shop consolidates the freight. Stop-at-cart: payment (Alipay) + forwarder setup are yours.</p>
+  <p><b>Reference:</b> Omnidesk Wildwood (Ascent / Classic) is the desk you &amp; Sopisa were deciding on — genuine solid-hardwood top on an electric frame, but ~S$1k <b>each</b> and you need two. Everything here matches that look/feel for a fraction, sized to the study's 3294mm wall (max ~1.6m × 2).</p>
+</div></footer>
+
+<script>
+/* ---------- translation helper (CN → EN gloss for variant chips) ---------- */
+const DICT=[
+ ["送货入户整桌包安装","delivery + full assembly"],["整桌包安装","full assembly"],["送货入户","home delivery"],
+ ["实木橡胶木","solid rubberwood"],["实木-橡胶木","solid rubberwood"],["实木白蜡木","solid white-ash"],["实木-白蜡木","solid white-ash"],
+ ["进口实木","imported solid wood"],["纯实木","pure solid wood"],["实木生态板","eco-board"],["实木颗粒板","particle board"],["实木芯","solid-wood core"],["环保板材","eco board"],["环保板","eco board"],["生态板","eco board"],
+ ["南洋楹木","albizia (soft)"],["南洋楹","albizia"],["白蜡木","white-ash"],["橡胶木","rubberwood"],["橡木","oak"],["新西兰松木","NZ pine"],["实木","solid wood"],
+ ["捷昌隐藏式Pro双电机","Jiecang hidden Pro dual-motor"],["捷昌","Jiecang"],["隐藏式","hidden"],["Pro双电机","Pro dual-motor"],["双电机","dual-motor"],["单电机","single-motor"],["双横梁","twin crossbar"],["正装","standard"],
+ ["黑胡桃木色","walnut colour"],["黑胡桃色","walnut colour"],["胡桃色","walnut colour"],["黑胡桃木","black walnut"],["原木色","natural"],["荼白色","off-white"],["暖白色","warm white"],["雅白","ivory"],["枫木色","maple"],["灰木纹色","grey wood-grain"],["灰木纹","grey wood-grain"],["肤感白","matte white"],["肤感","matte-touch"],["清萃","Qingcui series"],
+ ["桌板尺寸","top size"],["桌板","table top"],["桌腿","legs"],["桌面颜色","top colour"],["颜色分类","colour"],["升降书桌","sit-stand desk"],["书桌","desk"],["尺寸","size"],
+ ["慕思白","pearl white"],["银灰","silver-grey"],["白腿","white legs"],["黑腿","black legs"],["白色","white"],
+ ["ENF级","ENF-grade (low-VOC)"],["ENF","ENF-grade"],["高性能","high-performance"],["3CM","3cm"],["1.8CM","1.8cm"],["加厚","thickened"],
+ ["品牌代言人","brand ambassador"],["售后有保障","warranty assured"],["品质有保障","quality assured"],["速度有保障","fast shipping"],["顺丰物流","SF Express"],["店长主推","top pick"],["推荐","recommended"],["千人加购","1k+ carted"],["米","m"]
+];
+function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(' '+e+' ');});
+  o=o.replace(/【/g,' [').replace(/】/g,'] ').replace(/（/g,' (').replace(/）/g,') ').replace(/\s+([,)\]])/g,'$1').replace(/\s+/g,' ').trim();return o;}
+/* alicdn on-the-fly resize: tiny fast images for cards/thumbs, full-res only in lightbox.
+   square presets only (non-square 404s). spec e.g. '_400x400q80.jpg' */
+function sized(u,spec){if(!u||!/alicdn\.com/.test(u))return u;return u+spec;}
+const HERO='_400x400q80.jpg', THUMB='_120x120q70.jpg', BIG='_800x800q90.jpg';
+/* progressive: show small instantly, then swap to a sharp larger version once it loads */
+function pimg(u,extra){const mid=sized(u,HERO),big=sized(u,BIG);
+  return `<img src="${mid}" referrerpolicy="no-referrer" decoding="async" loading="lazy" ${extra||''} onload="if(!this.dataset.up){this.dataset.up=1;var t=this,h=new Image();h.onload=function(){t.src='${big}'};h.referrerPolicy='no-referrer';h.src='${big}';}">`;}
+/* real buyer-review photos (中差评 with images), shown alongside product photos */
+const BUYERPHOTOS={};
+let MEDIA={};
+function buildMedia(d){const m=[];
+  if(VIDEOS.has(d.id))m.push({t:'vid',src:'videos/'+d.id+'.mp4',poster:sized(d.photos[0],HERO)});
+  d.photos.forEach(u=>m.push({t:'img',u:u,buyer:false}));
+  (BUYERPHOTOS[d.id]||[]).forEach(u=>m.push({t:'img',u:u,buyer:true}));
+  MEDIA[d.id]=m;return m;}
+function imgList(id){return MEDIA[id].filter(x=>x.t==='img').map(x=>x.u);}
+function galleryHTML(d){const m=buildMedia(d);const firstImg=m.findIndex(x=>x.t==='img');
+  return `<div class="gallery">
+    <div class="rankbadge">${d.seed}</div><div class="verdict ${d.vClass}">${d.verdict}</div>
+    <div class="gmain" data-id="${d.id}">${pimg(d.photos[0],`onclick="openLbList('${d.id}','${d.photos[0]}')"`)}</div>
+    <div class="thumbs">${m.map((x,i)=>x.t==='vid'
+      ? `<span class="vthumb" title="Demo video" onclick="showMedia('${d.id}',${i},this)"><img src="${x.poster}" referrerpolicy="no-referrer" loading="lazy"><b>▶</b></span>`
+      : `<span class="pthumb${x.buyer?' buyer':''}${i===firstImg?' on':''}" onclick="showMedia('${d.id}',${i},this)"><img src="${sized(x.u,THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.closest('.pthumb,.vthumb').remove()">${x.buyer?'<i>buyer</i>':''}</span>`
+    ).join('')}</div>
+  </div>`;}
+function showMedia(id,i,el){const m=MEDIA[id][i];const g=el.closest('.gallery').querySelector('.gmain');
+  el.parentNode.querySelectorAll('.pthumb,.vthumb').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  if(m.t==='vid'){g.innerHTML=`<video controls autoplay playsinline src="${m.src}" style="width:100%;height:100%;object-fit:cover;background:#000"></video>`;}
+  else{g.innerHTML=pimg(m.u,`onclick="openLbList('${id}','${m.u}')"`);}}
+function openLbList(id,full){const list=imgList(id);let i=list.indexOf(full);if(i<0)i=0;cur={list:list,i:i,cap:BY[id].seller};showLb();}
+/* all-in landed cost in SGD. direct-to-SG = delivered price; forwarder = item + est. sea-LCL freight band */
+function allInText(d){
+  const n=parseInt((d.sg.match(/([\d,]+)/)||['','0'])[1].replace(/,/g,''),10)||0;
+  if(d.ship==='direct')return 'S$'+n+' · delivered (sea freight in price)';
+  return 'S$'+(n+150)+'–'+(n+260)+' · item + sea LCL (~30–45kg @ ~S$4–6/kg, 65daigou/EZBuy)';
+}
+/* best-fit score for ordering variant chips */
+function vScore(s){let x=0;
+  if(/1\.5米|150x|1\.5\*/.test(s))x+=1300;
+  if(/1\.4米|140x|1\.4\*/.test(s))x+=1200;
+  if(/1\.6米|160x|1\.6\*/.test(s))x+=1100;
+  if(/120x|1\.2米|1\.2\*/.test(s))x+=300;
+  if(/x60|×60|\*0\.6|60x75/.test(s))x+=170;        /* 60cm depth target */
+  if(/x70|×70|\*0\.7|70x75/.test(s))x+=120;
+  if(/双电机|捷昌|Pro双电机|dual/i.test(s))x+=260;   /* dual motor */
+  if(/进口实木|白蜡木|橡胶木|橡木|3CM|纯实木|实木/.test(s)&&!/生态板|颗粒板|环保板|实木芯/.test(s))x+=140; /* genuine solid */
+  if(/生态板|颗粒板|环保板|实木芯|南洋楹/.test(s))x-=140;
+  if(/黑胡桃|胡桃色|原木色|橡木色|白蜡/.test(s))x+=30;
+  if(/单电机/.test(s))x-=40;
+  if(/品牌代言|售后有保障|物流|品质有保障|店长|推荐|千人/.test(s))x-=200; /* marketing rows */
+  return x;}
+
+
+/* ---------- DATA: 11 candidates + comfort reference ---------- */
+const COMFORT={
+  name:"Omnidesk Wildwood — Ascent / Classic (solid-hardwood top)",
+  seller:"Omnidesk (omnidesk.sg / theomnidesk.com)",
+  sg:"S$994–1,169 ea", url:"https://www.omnidesk.sg/products/ascent-wildwood",
+  note:"The desk you & Sopisa were deciding on — a genuine glued solid-hardwood top on an electric frame. But it's ~S$1k EACH and you need two for the study. Priorities (your order): the wood, its quality, the colour, then the size — only then motor speed / height, then accessories. Ascent (3-col, 60mm/s) is 76cm-deep only; Classic (2-col, 40mm/s) does 60 or 76cm. Benchmark to beat ×2.",
+  pills:["Wood: Hevea / Ash / Acacia / Walnut","Quality: glued solid-hardwood panel","Colour: 6 finishes (Natural → Richbrown)","Size: 122 / 153 / 183cm · Ascent 76cm · Classic 60+76cm","Motor: Ascent 60mm/s gen-3 · Classic 40mm/s · H 63–127cm","Accessories: cable bar, castors, drawer"],
+  imgs:["https://cdn.shopify.com/s/files/1/2661/6120/files/classic-banner-desktop.jpg","https://cdn.shopify.com/s/files/1/2661/6120/files/Classic_landing-_Laptop.jpg","https://cdn.shopify.com/s/files/1/2661/6120/files/Classic-landing-_Tablet.jpg"]
+};
+
+const DATA=[
+{id:"761514627340",seed:1,tags:["solid","dual","twotone","value"],verdict:"Best value",vClass:"value",vid:false,
+ name:"苏木源 3CM进口实木电动升降桌",nameEn:"Sumuyuan 3cm imported solid-wood sit-stand · 4 tones",
+ seller:"苏木源旗舰店 (Sumuyuan)",trust:"12-yr Tmall flagship · 700+ sold · 88VIP buyers confirm steel-stamped frame, solid wood",
+ yen:"¥589 (USD 83) · 3CM 实木 单电机",sg:"≈ S$112",priceNote:"100–180 × 60/70cm · single or 捷昌 Jiecang dual · per desk · + forwarder",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy ~35kg · sea LCL",
+ specs:[["Wood","进口实木 imported solid",1],["Quality","3CM thick · steel-stamped frame",1],["Colour","walnut / oak / off-white / natural",1],["Size","140–160 × 60/70 — exact 60cm depth",1],["Motor","捷昌 Jiecang dual (opt) · single base",1],["Accessories","height-memory panel; eco-board ver.",1]],
+ why:["Best value-for-genuine: a 3cm imported SOLID-wood top (thicker than Omnidesk's panel) from ~S$112 — a buyer confirms a steel-stamped frame, 'definitely not a no-name'","Hits your exact 60cm depth (140×60 / 160×60) and offers 4 tones in one shop → two different tones, consolidated freight","Optional 捷昌 Jiecang hidden dual-motor — buyers call it smooth, powerful and quiet (Jiecang OEMs for the big brands)","12-yr flagship; a cheaper eco-board version exists if you want to drop further"],
+ risks:["Single-motor base is wobblier — pay up for the Jiecang dual","Heavy solid wood + forwarder = real per-desk freight","No global-brand warranty like Omnidesk / Loctek"],
+ photos:["https://img.alicdn.com/imgextra/i2/1771287306/O1CN01LH2O1X23qCiCjyqBX_!!1771287306.jpg","https://img.alicdn.com/bao/uploaded/i1/1771287306/O1CN01GHYdrC23qCnxyV8f1_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN011gXRBv23qCmmH8ucX_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01TmDVjC23qCkqy4FKx_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01DKQY8023qClqVd7ox_!!1771287306.jpg","https://img.alicdn.com/imgextra/i1/1771287306/O1CN01nk8ncI23qCnYJjeLS_!!1771287306.jpg"],
+ variants:["140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm","120x60x75cm","180x70x75cm","3CM进口实木【正装单电机】黑胡桃色","3CM进口实木【正装单电机】橡木色","3CM进口实木【正装单电机】原木色","3CM进口实木【正装单电机】荼白色","3CM进口实木【捷昌隐藏式Pro双电机】黑胡桃色","3CM进口实木【捷昌隐藏式Pro双电机】原木色","3CM环保板材【正装单电机】黑胡桃色"]},
+
+{id:"840695689095",seed:2,tags:["solid","dual","twotone","brand"],verdict:"Safest · brand",vClass:"top",vid:false,
+ name:"乐歌 E8 实木电动升降桌",nameEn:"Loctek E8 solid-wood sit-stand · rubberwood / ash",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"4.8★ · 15-yr Tmall flagship · the global standing-desk maker (Loctek / FlexiSpot group)",
+ yen:"¥1,113 (USD 157) · 1.4×0.7 实木",sg:"≈ S$211",priceNote:"1.0–1.6m · solid rubberwood / ash · per desk · + forwarder",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy ~35kg · sea LCL",
+ specs:[["Wood","实木橡胶木 / 白蜡木 solid",1],["Quality","Loctek frame — global desk maker",1],["Colour","natural + walnut (per species)",1],["Size","1.0–1.6 × 0.6–0.8 — 1.4×0.7 fits",1],["Motor","E8 dual-motor · app + memory",1],["Accessories","cable mgmt · castors avail.",1]],
+ why:["Loctek is the category's global maker (Loctek / FlexiSpot group) — strongest motor & frame, 15-yr flagship: the closest thing to Omnidesk-grade reliability here","One listing covers both tiers & tones: solid rubberwood OR solid ash (白蜡木), each in natural or walnut-dark → two different tones from one shop","1.4×0.7m fits the wall (2×1.4 = 2.8m in your 3294mm); 1.6m available if you want bigger","Quiet dual-motor with app + height memory, just like Omnidesk"],
+ risks:["Priciest Taobao pick (still ~1/5 of Omnidesk ×2)","Heavy + forwarder freight","Pick the 【实木】 SKU — some colourways are 环保板 eco-board, not solid"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01f96x0c1XfbwAw4DMs_!!660242951-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01oucdfB1Xfbv2Wj3eY_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01gahIUK1Xfbv2wMKHa_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01fqsSvg1XfbvBJYYZi_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01pl19Nn1Xfbv2gxzrM_!!660242951.jpg"],
+ variants:["桌板尺寸1.4*0.7m 整桌包安装","桌板尺寸1.6*0.8m 整桌包安装","桌板尺寸1.2*0.6m 整桌包安装","桌板尺寸1.0*0.6m 整桌包安装","【实木橡胶木】原木色桌板+E8慕思白桌腿","【实木橡胶木】黑胡桃木色桌板+E8银灰桌腿","【实木-白蜡木】原木色桌板+E8慕思白桌腿","【实木-白蜡木】黑胡桃木色桌板+E8银灰桌腿","★肤感系列★【实木-橡胶木】肤感白桌板+E8慕思白桌腿","【环保板】原木色桌板+E8慕思白桌腿","【环保板】灰木纹色桌板+E8银灰桌腿","【环保板】雅白桌板+E8慕思白桌腿"]},
+
+{id:"703636655042",seed:3,tags:["solid","brand"],verdict:"Best wood",vClass:"looks",vid:false,
+ name:"源氏木语 实木电动升降桌 · 橡木/白蜡木",nameEn:"Yeswood solid-wood sit-stand · oak / white-ash",
+ seller:"源氏木语 (源氏木语官方旗舰店)",trust:"4.9★ · 300k+ repeat buyers · solid-wood furniture specialist · 88VIP-praised grain",
+ yen:"¥2,044 (USD 288) · 橡木 oak",sg:"≈ S$388",priceNote:"1.0–1.6m solid ash / oak · single-motor · per desk · + forwarder",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","白蜡木 / 橡木 furniture-grade solid",1],["Quality","Yeswood — solid-wood specialist",1],["Colour","natural ash / oak (light)",1],["Size","1.0–1.6m · ~62cm deep",1],["Motor","single-motor · H 72–121cm",0],["Accessories","minimalist · 300k repeat buyers",1]],
+ why:["The solid-wood furniture brand — best wood quality & finish here, closest to Omnidesk's craft; 88VIP buyers call the natural grain 'thick & premium'","Genuine white-ash (白蜡木) or oak (橡木), thick natural tops","4.9★ with 300k+ repeat buyers — the highest trust in this set"],
+ risks:["SINGLE motor — a buyer notes the connecting rod 'feels a bit thin' vs a dual","Priciest genuine option (~S$388) — nearing Omnidesk territory","Mostly light / natural tones — little walnut-dark choice"],
+ photos:["https://img.alicdn.com/imgextra/i4/1105025069/O1CN010fSQVa1nJed4rLsXx_!!1105025069.jpg","https://gw.alicdn.com/imgextra/O1CN01gCrSGF1nJeo1FT2HK_!!1105025069-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/1105025069/O1CN01kPXRBY1nJedmVV8MG_!!1105025069.jpg","https://img.alicdn.com/imgextra/i1/1105025069/O1CN01nEQoSj1nJedj6O2ym_!!1105025069.jpg","https://img.alicdn.com/imgextra/i4/1105025069/O1CN01GcY5IX1nJefTPvcyt_!!1105025069.jpg","https://img.alicdn.com/imgextra/i1/1105025069/O1CN01qfywro1nJedwPCUbL_!!1105025069.jpg"],
+ variants:["（白蜡木原木色）1.4米升降书桌（单电机）","（白蜡木原木色）1.0米升降书桌（单电机）","橡木色 1.4米 单电机","橡木色 1.6米 单电机","胡桃色 1.4米 单电机"]},
+
+{id:"726932517233",seed:4,tags:["twotone","budget"],verdict:"Budget look-alike",vClass:"mid",vid:false,
+ name:"凡积 南洋楹木电动升降桌 · 生态板",nameEn:"Fanji albizia-wood sit-stand · ENF eco-board (budget tier)",
+ seller:"凡积家居旗舰店 (Fanji)",trust:"11-yr Tmall · 500+ sold · 顺丰 SF Express · ENF low-VOC board",
+ yen:"¥295 (USD 42) · 1.8cm 南洋楹",sg:"≈ S$56",priceNote:"100–180 × 60/70/80 · single-motor · per desk · + forwarder",
+ ship:"fwd",shipTxt:"Forwarder (集运) · lighter · SF / sea",
+ specs:[["Wood","南洋楹木 albizia (soft, fast-grown)",0],["Quality","1.8CM ENF eco-board · thinner top",0],["Colour","walnut / warm-white / maple",1],["Size","100–180 × 60/70/80 — fits",1],["Motor","single-motor · twin crossbar",0],["Accessories","height-memory panel · SF express",1]],
+ why:["Cheapest path to the look — multiple tones (walnut / white / maple) at ~S$56; buyers say 'stable, no wobble, amazing for the price'","ENF low-formaldehyde board, fast SF express; fine for light home / kid use","Same 60cm depth + size range as the pricier picks"],
+ risks:["This is the engineered / soft-wood tier: 1.8cm 南洋楹 (albizia) is light, soft and a thinner top — NOT true hardwood like Omnidesk","Single-motor + twin crossbar — wobblier at full standing height","A look-alike, not a match — won't age or feel like the solid hardwood you saw at Omnidesk"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01BkaN0G1chVewDeVvn_!!2420983632-0-picasso.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01BhKiAx1chVbuLHy3P_!!2420983632.jpg","https://img.alicdn.com/imgextra/i3/2420983632/O1CN01GtyxpR1chVcJgZEe3_!!2420983632.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01DoeG1c1chVbuLIV9f_!!2420983632.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01v2QZ6l1chVbuedHCr_!!2420983632.jpg"],
+ variants:["140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm","120x60x75cm","180x80x75cm","1.8CM南洋楹木ENF级【单电机双横梁】胡桃色黑腿","1.8CM南洋楹木ENF级【单电机双横梁】胡桃色白腿","1.8CM南洋楹木ENF级【单电机双横梁】暖白色白腿","1.8CM南洋楹木ENF级【单电机双横梁】枫木色白色"]},
+];
+const BY={};DATA.forEach(d=>BY[d.id]=d);
+/* listings with a hosted demo video (videos/<id>.mp4) */
+const VIDEOS=new Set([]);
+/* real buyer reviews (中文 + EN), scraped from each listing */
+const REVIEWS={
+"761514627340":[{who:"一直在路上",vip:false,v:"3CM实木·捷昌Pro双电机·原木色 120×60",cn:"东西非常满意，架子上有钢印，厚度如描述，双电机丝滑有劲儿，声音也小。桌面如图，实木无疑，基本没有啥味道，绝对不是小厂的东西，师傅一小时装好",en:"Very satisfied — frame has a steel stamp, thickness as described; the dual-motor is smooth, powerful and quiet. Top is solid wood for sure, barely any smell — definitely not a no-name. Installed in ~1hr."},{who:"静雪",vip:false,v:"3CM实木·捷昌Pro双电机·荼白色 120×70",cn:"使用过程中很稳固，没有晃动或异响，质量没问题，桌面光滑，自由升降，满足孩子身高变化",en:"Very stable in use — no wobble or odd noises; quality is fine, smooth top, free height adjust, grows with the kid."}],
+"840695689095":[{who:"星座",vip:false,v:"环保板·原木色 1.0×0.6m",cn:"升降桌的质量很好，选的原木色的挺好看的，升降时桌子稳也很静音，家人都很喜欢",en:"Great quality; went with natural — looks good, stable and very quiet when raising / lowering, the family loves it."}],
+"703636655042":[{who:"用户_87743268",vip:false,v:"白蜡木原木色 1.0米 单电机",cn:"原木色质感非常的棒，很厚实，接待的小姐姐非常热情，感谢推荐的这款书桌，小孩很喜欢",en:"Natural finish feels superb and really thick; lovely service, glad she recommended it — the kid loves it."},{who:"匿名买家",vip:false,v:"白蜡木原木色 1.4米 单电机",cn:"收货挺满意，高度能调，坐着很舒服。单电机的链接杆显得有点单薄，目前用起来还可以，桌面光滑，升降灵活，挺稳的",en:"Happy with it — height adjusts, comfy. The single-motor connecting rod looks a bit thin, but works fine so far; smooth top, lifts easily, fairly stable."}],
+"726932517233":[{who:"人菜又爱玩",vip:false,v:"南洋楹·暖白色 120×60",cn:"桌脚很重很稳很结实，木板也很重很厚实，升降很平稳，最高档站着办公，最低档给小学生写作业，符合需求",en:"Legs are heavy, stable and solid; the board is heavy and thick too, raises smoothly — top height for standing, lowest for a kid's homework. Fits the need."},{who:"璃茉茉",vip:false,v:"南洋楹·枫木色 140×60",cn:"整体颜值和做工都在线，桌架很稳不晃，白色桌面很耐脏，控制面板能记忆高度，升降完全不卡顿，这个价格很惊喜！",en:"Looks and build both on point; frame is stable with no wobble, the white top hides marks, the panel has height memory, lifts without stutter — amazing for the price!"}]
+};
+
+/* ---------- mode switching ---------- */
+document.getElementById('modes').addEventListener('click',e=>{
+  const b=e.target.closest('.mode');if(!b)return;
+  document.querySelectorAll('.mode').forEach(m=>m.classList.toggle('on',m===b));
+  const m=b.dataset.m;
+  document.getElementById('p-browse').classList.toggle('on',m==='browse');
+  document.getElementById('p-duel').classList.toggle('on',m==='duel');
+  if(m==='duel')startDuel();
+});
+
+/* ---------- BROWSE render ---------- */
+function variantChips(d){
+  const sorted=d.variants.map(v=>({v,s:vScore(v)})).sort((a,b)=>b.s-a.s);
+  const bestS=sorted.length?sorted[0].s:0;
+  return sorted.map((o,i)=>{
+    const best=(i===0&&bestS>=900);
+    return `<span class="vchip${best?' best':''}"><span class="cn">${o.v.replace(/【/g,'[').replace(/】/g,']')}</span><span class="ve">${tr(o.v)}</span></span>`;
+  }).join('');
+}
+function renderBrowse(filter){
+  // comfort reference
+  document.getElementById('refmount').innerHTML=`
+    <div class="ref">
+      <img src="${COMFORT.imgs[0]}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(COMFORT.imgs).replace(/"/g,'&quot;')},0,'Omnidesk reference')">
+      <div>
+        <div class="reftag">◆ Reference · the design to beat</div>
+        <h3>${COMFORT.name}</h3>
+        <div class="seller">${COMFORT.seller} · <b style="color:var(--gold)">${COMFORT.sg}</b></div>
+        <div class="refrow">${COMFORT.pills.map(p=>`<span class="pill">${p}</span>`).join('')}</div>
+        <div class="sm" style="color:var(--ink-soft)">${COMFORT.note}</div>
+        <div class="refimgs">${COMFORT.imgs.map((u,i)=>`<img src="${u}" referrerpolicy="no-referrer" onclick="openLb(${JSON.stringify(COMFORT.imgs).replace(/"/g,'&quot;')},${i},'Omnidesk reference')">`).join('')}</div>
+        <div style="margin-top:10px"><a class="btn ghost" href="${COMFORT.url}" target="_blank" rel="noopener">View at Omnidesk ↗</a></div>
+      </div>
+    </div>`;
+  const root=document.getElementById('cards');root.innerHTML='';
+  const list=DATA.filter(d=>filter==='all'||(d.tags||[]).includes(filter));
+  list.forEach(d=>{
+    const card=document.createElement('article');
+    card.className='card'+(d.rejected?' rejected':'');
+    card.innerHTML=`
+     ${galleryHTML(d)}
+     <div class="body">
+       <div class="nm">${d.name}</div>
+       <div class="nm-en">${d.nameEn}</div>
+       <div class="seller">by <b>${d.seller}</b> · ${d.trust}</div>
+       <div class="price"><span class="y">${d.yen}</span><span class="sg">${d.sg}</span></div>
+       <div class="price"><span class="note">${d.priceNote}</span></div>
+       <div class="allin">📦 All-in to SG ≈ <b>${allInText(d)}</b></div>
+       <span class="ship ${d.ship}">${d.shipTxt}</span>
+       <div class="specs">${d.specs.map(s=>`<div><dt>${s[0]}</dt><dd class="${s[2]?'hit':'miss'}">${s[1]}</dd></div>`).join('')}</div>
+       <div class="lists">
+         <div class="w"><h4>Why it fits</h4><ul>${d.why.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+         <div class="r"><h4>Risks</h4><ul>${d.risks.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+       </div>
+       <div class="vars"><h4>All variants · best-fit first (中文 / EN)</h4><div class="vchips">${variantChips(d)}</div></div>
+       ${(REVIEWS[d.id]||[]).length?`<div class="reviews"><h4>Buyer reviews · 买家评价 (中文 / EN)</h4>${REVIEWS[d.id].map(r=>`<div class="rev"><div class="revhead">${r.who}${r.vip?' <span class="vipbadge">88VIP</span>':''} <span class="revvar">bought: ${r.v}</span></div><div class="revcn">&ldquo;${r.cn}&rdquo;</div><div class="reven">${r.en}</div></div>`).join('')}</div>`:''}
+       <div class="foot">
+         <a class="btn" href="https://item.taobao.com/item.htm?id=${d.id}" target="_blank" rel="noopener">View on Taobao ↗</a>
+         <span class="sku">SKU ${d.id}</span>
+       </div>
+     </div>`;
+    root.appendChild(card);
+  });
+}
+renderBrowse('all');
+document.getElementById('chips').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  e.target.classList.add('on');renderBrowse(e.target.dataset.f);
+});
+
+/* ================= DUEL ENGINE (merge-sort + cached answers + undo) ================= */
+const DUEL_IDS=DATA.map(d=>d.id);            // all 4 ranked
+const LS='reno_desk_rank_v1';
+let answers={};        // pairKey -> -1 (A wins) | 1 (B wins) | 0 tie
+let askOrder=[];       // pairKeys in the order they were first asked
+let pending=null;      // {a,b,resolve}
+let finalOrder=null;   // array of ids once sorted
+let estTotal=Math.ceil(DUEL_IDS.length*Math.log2(DUEL_IDS.length)); // ~38
+
+function pk(a,b){return [a,b].sort().join('|');}
+function loadLS(){try{const o=JSON.parse(localStorage.getItem(LS)||'{}');answers=o.answers||{};askOrder=o.askOrder||[];finalOrder=o.finalOrder||null;}catch(e){}}
+function saveLS(){localStorage.setItem(LS,JSON.stringify({answers,askOrder,finalOrder}));}
+
+function compare(a,b){
+  const key=pk(a,b);
+  if(key in answers){
+    const r=answers[key]; const k=[a,b].sort();
+    // stored relative to sorted key order; map to (a,b)
+    if(r===0)return Promise.resolve(0);
+    const winnerSortedFirst=(r<0);
+    const aIsSortedFirst=(k[0]===a);
+    return Promise.resolve(winnerSortedFirst===aIsSortedFirst?-1:1);
+  }
+  return new Promise(res=>{pending={a,b,resolve:res};renderDuel();});
+}
+function answer(a,b,choice){ // choice: 'a' | 'b' | 'tie'
+  const key=pk(a,b);const k=[a,b].sort();
+  let r;
+  if(choice==='tie')r=0;
+  else{const winner=(choice==='a')?a:b; r=(winner===k[0])?-1:1;}
+  answers[key]=r; if(!askOrder.includes(key))askOrder.push(key);
+  saveLS();
+  const ret=(choice==='tie')?0:((choice==='a')?-1:1);
+  const p=pending;pending=null;p.resolve(ret);
+}
+function undo(){
+  if(!askOrder.length)return;
+  const key=askOrder.pop();delete answers[key];finalOrder=null;saveLS();
+  runDuelSort();
+}
+async function mergeSort(arr){
+  if(arr.length<=1)return arr;
+  const mid=arr.length>>1;
+  const L=await mergeSort(arr.slice(0,mid)),R=await mergeSort(arr.slice(mid));
+  const out=[];let i=0,j=0;
+  while(i<L.length&&j<R.length){const c=await compare(L[i],R[j]);if(c<=0)out.push(L[i++]);else out.push(R[j++]);}
+  while(i<L.length)out.push(L[i++]);while(j<R.length)out.push(R[j++]);
+  return out;
+}
+let sortToken=0;
+async function runDuelSort(){
+  const my=++sortToken;
+  const ordered=await mergeSort(DUEL_IDS.slice());
+  if(my!==sortToken)return;          // superseded (undo)
+  finalOrder=ordered;saveLS();renderLadder();
+}
+function startDuel(){
+  loadLS();
+  if(finalOrder&&finalOrder.length===DUEL_IDS.length){renderLadder();return;}
+  pending=null;runDuelSort();
+}
+function resetDuel(){answers={};askOrder=[];finalOrder=null;pending=null;saveLS();sortToken++;runDuelSort();}
+
+function dCard(id,side){
+  const d=BY[id];
+  return `<div class="dcard" onclick="answer('${pending.a}','${pending.b}','${side}')">
+    <div class="dimg">${pimg(d.photos[0])}</div>
+    <div class="dbody">
+      <div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
+      <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.specs[1][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+      <div class="pick">Choose this ▸</div>
+    </div></div>`;
+}
+function renderDuel(){
+  const done=askOrder.length;
+  const pct=Math.min(98,Math.round(done/estTotal*100));
+  document.getElementById('duelstage').innerHTML=`
+    <div class="duelhead">
+      <h2>Which do you prefer?</h2>
+      <p>Tap the desk you'd rather have. Nothing is lost — losers still get ranked.</p>
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="progtxt">Duel ${done+1} · about ${estTotal} total</div>
+      <div class="duelctl">
+        <button class="tie" onclick="undo()" ${done?'':'disabled style="opacity:.4"'}>↶ Undo</button>
+        <button class="tie" onclick="if(confirm('Start ranking over?'))resetDuel()">⟲ Restart</button>
+      </div>
+    </div>
+    <div class="duelarena">
+      ${dCard(pending.a,'a')}
+      <div class="vsbadge">vs</div>
+      ${dCard(pending.b,'b')}
+    </div>
+    <div class="tierow"><button class="tie" onclick="answer('${pending.a}','${pending.b}','tie')">🤝 Too close — keep order</button></div>`;
+}
+
+/* ---------- LADDER / RESULT ---------- */
+function renderLadder(){
+  const order=finalOrder;
+  const rows=order.map((id,i)=>{
+    const d=BY[id];
+    return `<div class="row" data-id="${id}">
+      <div class="pos">${i+1}</div>
+      <img src="${sized(d.photos[0],THUMB)}" referrerpolicy="no-referrer" loading="lazy" decoding="async" onclick="openLb(${JSON.stringify(d.photos).replace(/"/g,'&quot;')},0,'${d.seller.replace(/'/g,'')}')">
+      <div class="info"><div class="rn">${d.name}</div><div class="re">${d.nameEn} · <b>${d.sg}</b></div></div>
+      <div class="mv"><button onclick="moveRow(${i},-1)" ${i===0?'disabled':''}>▲</button><button onclick="moveRow(${i},1)" ${i===order.length-1?'disabled':''}>▼</button></div>
+      ${i<order.length-1?`<button class="reduel" onclick="reDuel(${i})">↔ vs #${i+2}</button>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('duelstage').innerHTML=`
+    <div class="ladder">
+      <div class="ladderhead"><h2>His &amp; hers ranking</h2><p style="color:var(--ink-soft)">Drag with ▲▼, or re-duel close neighbours with ↔. Every desk is here — nothing dropped.</p></div>
+      ${rows}
+      <div class="resbtns">
+        <button class="btn" onclick="confirmClose()">⚔ Confirm close calls (rematch neighbours)</button>
+        <button class="btn ghost" onclick="copyResult()">⧉ Copy ranking</button>
+        <button class="btn ghost" onclick="shareResult()">🔗 Copy share link</button>
+        <button class="btn ghost" onclick="if(confirm('Start ranking over?'))resetDuel()">⟲ Restart duel</button>
+      </div>
+    </div>`;
+}
+function moveRow(i,dir){
+  const j=i+dir;if(j<0||j>=finalOrder.length)return;
+  const t=finalOrder[i];finalOrder[i]=finalOrder[j];finalOrder[j]=t;saveLS();renderLadder();
+}
+let rematchQueue=[];
+function reDuel(i){rematchQueue=[i];runRematch();}
+function confirmClose(){rematchQueue=finalOrder.map((_,i)=>i).slice(0,-1);runRematch();}
+function runRematch(){
+  if(!rematchQueue.length){renderLadder();toast('Order updated');return;}
+  const i=rematchQueue.shift();
+  const a=finalOrder[i],b=finalOrder[i+1];
+  // show a one-off duel; on choice, reorder if needed, continue queue
+  document.getElementById('duelstage').innerHTML=`
+    <div class="duelhead"><h2>Re-check: #${i+1} vs #${i+2}</h2><p>Pick the one you prefer.</p></div>
+    <div class="duelarena">
+      <div class="dcard" onclick="rematchPick(${i},'a')">${cardInner(a)}</div>
+      <div class="vsbadge">vs</div>
+      <div class="dcard" onclick="rematchPick(${i},'b')">${cardInner(b)}</div>
+    </div>
+    <div class="tierow"><button class="tie" onclick="rematchPick(${i},'tie')">🤝 Keep as is</button></div>`;
+}
+function cardInner(id){const d=BY[id];return `<div class="dimg">${pimg(d.photos[0])}</div>
+  <div class="dbody"><div class="dnm">${d.name}</div><div class="dnm-en">${d.nameEn}</div>
+  <div class="dmeta"><span class="p">${allInText(d).split('·')[0].trim()}</span><span class="dtag">${d.specs[0][1]}</span><span class="dtag">${d.ship==='direct'?'Direct SG':'Forwarder'}</span></div>
+  <div class="pick">Choose this ▸</div></div>`;}
+function rematchPick(i,choice){
+  if(choice==='b'){const t=finalOrder[i];finalOrder[i]=finalOrder[i+1];finalOrder[i+1]=t;}
+  // record in answers too
+  const a=finalOrder[i],b=finalOrder[i+1];if(choice!=='tie'){answers[pk(a,b)]=(choice==='a')? ([a,b].sort()[0]===a?-1:1) : ([a,b].sort()[0]===finalOrder[i]?-1:1);}
+  saveLS();runRematch();
+}
+function rankText(){return finalOrder.map((id,i)=>{const d=BY[id];return `${i+1}. ${d.name} (${d.nameEn.split('·')[0].trim()}) — ${d.sg} — taobao.com/item?id=${id}`;}).join('\n');}
+function copyResult(){navigator.clipboard.writeText('Standing-desk ranking (his & hers):\n'+rankText()).then(()=>toast('Ranking copied'));}
+function shareResult(){
+  const h=btoa(finalOrder.join(','));
+  const url=location.origin+location.pathname+'#r='+h;
+  navigator.clipboard.writeText(url).then(()=>toast('Share link copied'));
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800);}
+// load shared ranking from hash
+(function(){const m=location.hash.match(/r=([^&]+)/);if(m){try{const ids=atob(m[1]).split(',').filter(x=>BY[x]);if(ids.length===DUEL_IDS.length){finalOrder=ids;}}catch(e){}}})();
+
+/* ---------- lightbox ---------- */
+let cur={list:[],i:0,cap:''};
+function openLb(urls,i,cap){cur={list:urls,i:i,cap:cap||''};showLb()}
+function showLb(){document.getElementById('lbimg').src=cur.list[cur.i];document.getElementById('lbcap').textContent=cur.cap+' · '+(cur.i+1)+'/'+cur.list.length;document.getElementById('lb').classList.add('on')}
+function stepLb(n){cur.i=(cur.i+n+cur.list.length)%cur.list.length;showLb()}
+function openVid(src){const lb=document.getElementById('lb'),v=document.getElementById('lbvid');
+  document.getElementById('lbimg').style.display='none';document.querySelectorAll('#lb .nav').forEach(n=>n.style.display='none');
+  document.getElementById('lbcap').textContent='Demo video';v.style.display='block';v.src=src;lb.classList.add('on');v.play().catch(()=>{});}
+function closeLb(){const v=document.getElementById('lbvid');v.pause();v.removeAttribute('src');v.style.display='none';
+  document.getElementById('lbimg').style.display='';document.querySelectorAll('#lb .nav').forEach(n=>n.style.display='');
+  document.getElementById('lb').classList.remove('on')}
+document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
+</script>
+</body>
+</html>
