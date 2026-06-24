@@ -696,6 +696,7 @@ async function runDuelSort(){
 }
 function startDuel(){
   loadLS();
+  if(sharedOrder){finalOrder=sharedOrder.slice();sharedOrder=null;saveLS();try{history.replaceState(null,'',location.pathname+'#duel');}catch(e){}renderLadder();toast('Loaded shared ranking');return;}
   if(finalOrder&&finalOrder.length===DUEL_IDS.length){renderLadder();return;}
   pending=null;runDuelSort();
 }
@@ -793,12 +794,13 @@ function rankText(){return finalOrder.map((id,i)=>{const d=BY[id];return `${i+1}
 function copyResult(){navigator.clipboard.writeText('Standing-desk ranking (his & hers):\n'+rankText()).then(()=>toast('Ranking copied'));}
 function shareResult(){
   const h=btoa(finalOrder.join(','));
-  const url=location.origin+location.pathname+'#r='+h;
-  navigator.clipboard.writeText(url).then(()=>toast('Share link copied'));
+  const url=location.origin+location.pathname+'#duel&r='+h;
+  navigator.clipboard.writeText(url).then(()=>toast('Share link copied — paste it in chat')).catch(()=>{prompt('Copy this link:',url);});
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1800);}
-// load shared ranking from hash
-(function(){const m=location.hash.match(/r=([^&]+)/);if(m){try{const ids=atob(m[1]).split(',').filter(x=>BY[x]);if(ids.length===DUEL_IDS.length){finalOrder=ids;}}catch(e){}}})();
+// load shared ranking from hash (consumed by startDuel, so it wins over localStorage)
+let sharedOrder=null;
+(function(){const m=location.hash.match(/r=([^&]+)/);if(m){try{const ids=atob(m[1]).split(',').filter(x=>BY[x]);if(ids.length===DUEL_IDS.length){sharedOrder=ids;}}catch(e){}}})();
 
 /* ---------- lightbox ---------- */
 let cur={list:[],i:0,cap:''};
