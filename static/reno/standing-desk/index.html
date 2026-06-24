@@ -212,20 +212,21 @@
 <header class="hero"><div class="wrap">
   <div class="eyebrow">532B Bishan · Study · 升降桌 · his &amp; hers</div>
   <h1>The <em>solid-wood</em> standing-desk duel</h1>
-  <p class="sub">Cheaper Taobao alternatives to the <b>Omnidesk Wildwood</b> (~S$1k each) — genuine solid-wood electric sit-stand desks, inspected page-by-page. Two go <b>side by side</b> on the study's <b>3294mm wall</b> (CP) → <b>max ~1.6m each</b> (2×1.6m = 3.2m, fits with ~9cm spare); 1.5m is the safe sweet spot. Depth budget 2036mm at 0.9m walkway → up to <b>~0.8m deep</b> is easy (your 0.6m leaves loads of room). Two different tones. Browse the specs, or duel them <b>two at a time</b> to rank.</p>
+  <p class="sub">Cheaper Taobao alternatives to the <b>Omnidesk Wildwood</b> (~S$1k each) — <b>20</b> genuine solid-wood electric sit-stand desks, inspected page-by-page. Two go <b>side by side</b> on the study’s <b>3294mm wall</b> (CP) → <b>max ~1.6m each</b> (2×1.6m = 3.2m, ~9cm spare); 1.5m is the sweet spot. Depth up to <b>~0.8m</b> easy (your 0.6m is roomy). Light tones — <b>skip the dark walnut</b>. Default view is the <b>duel</b>: pick <b>two at a time</b> to rank; switch to Browse for full specs.</p>
   <div class="modes" id="modes">
-    <button class="mode on" data-m="browse">⊞ Browse <small>all specs &amp; photos</small></button>
-    <button class="mode" data-m="duel">⚔ Rank (Duel) <small>his &amp; hers</small></button>
+    <button class="mode" data-m="browse">⊞ Browse <small>all specs &amp; photos</small></button>
+    <button class="mode on" data-m="duel">⚔ Rank (Duel) <small>his &amp; hers</small></button>
   </div>
 </div></header>
 
 <!-- ============ BROWSE ============ -->
-<section class="panel on" id="p-browse">
+<section class="panel" id="p-browse">
   <nav class="bar"><div class="wrap" id="chips">
-    <button class="chip on" data-f="all">All 4</button>
+    <button class="chip on" data-f="all">All 20</button>
+    <button class="chip" data-f="value">Best value</button>
     <button class="chip" data-f="solid">Solid wood</button>
+    <button class="chip" data-f="light">Light tones</button>
     <button class="chip" data-f="dual">Dual-motor</button>
-    <button class="chip" data-f="twotone">Two-tone shop</button>
     <button class="chip" data-f="brand">Brand</button>
     <button class="chip" data-f="budget">Budget tier</button>
   </div></nav>
@@ -237,7 +238,7 @@
 </section>
 
 <!-- ============ DUEL ============ -->
-<section class="panel" id="p-duel">
+<section class="panel on" id="p-duel">
   <div class="wrap duelwrap">
     <div id="duelstage"></div>
   </div>
@@ -252,23 +253,22 @@
 <div class="toast" id="toast"></div>
 
 <footer><div class="wrap">
-  <p style="margin-bottom:7px"><b>Prices</b> are after-coupon as Taobao showed them; <b>≈S$</b> is from the USD quote (×1.35), <b>per desk</b>. These sellers ship China-domestic, so <b>+ forwarder</b> (集运): solid-wood desks are heavy (~30–45kg each) — sea LCL is cheaper than air, and buying both from one shop consolidates the freight. Stop-at-cart: payment (Alipay) + forwarder setup are yours.</p>
-  <p><b>Reference:</b> Omnidesk Wildwood (Ascent / Classic) is the desk you &amp; Sopisa were deciding on — genuine solid-hardwood top on an electric frame, but ~S$1k <b>each</b> and you need two. Everything here matches that look/feel for a fraction, sized to the study's 3294mm wall (max ~1.6m × 2).</p>
+  <p style="margin-bottom:7px"><b>Prices</b> are after-coupon as Taobao showed them; <b>≈S$</b> is from the USD quote (×1.35), <b>per desk</b>. All ship China-domestic, so <b>+ forwarder</b> (集运): solid-wood desks are heavy (~30–45kg each) — sea LCL beats air, and buying both from one shop consolidates freight. Stop-at-cart: Alipay + forwarder setup are yours.</p>
+  <p><b>Reference:</b> Omnidesk Wildwood (Ascent / Classic) is the desk you &amp; Sopisa were deciding on — genuine solid-hardwood top, but ~S$1k <b>each</b> and you need two. Everything here matches that look/feel for a fraction, sized to the study 3294mm wall (max ~1.6m × 2), in <b>lighter tones</b> (no dark walnut).</p>
 </div></footer>
 
 <script>
 /* ---------- translation helper (CN → EN gloss for variant chips) ---------- */
 const DICT=[
- ["送货入户整桌包安装","delivery + full assembly"],["整桌包安装","full assembly"],["送货入户","home delivery"],
- ["实木橡胶木","solid rubberwood"],["实木-橡胶木","solid rubberwood"],["实木白蜡木","solid white-ash"],["实木-白蜡木","solid white-ash"],
- ["进口实木","imported solid wood"],["纯实木","pure solid wood"],["实木生态板","eco-board"],["实木颗粒板","particle board"],["实木芯","solid-wood core"],["环保板材","eco board"],["环保板","eco board"],["生态板","eco board"],
- ["南洋楹木","albizia (soft)"],["南洋楹","albizia"],["白蜡木","white-ash"],["橡胶木","rubberwood"],["橡木","oak"],["新西兰松木","NZ pine"],["实木","solid wood"],
- ["捷昌隐藏式Pro双电机","Jiecang hidden Pro dual-motor"],["捷昌","Jiecang"],["隐藏式","hidden"],["Pro双电机","Pro dual-motor"],["双电机","dual-motor"],["单电机","single-motor"],["双横梁","twin crossbar"],["正装","standard"],
- ["黑胡桃木色","walnut colour"],["黑胡桃色","walnut colour"],["胡桃色","walnut colour"],["黑胡桃木","black walnut"],["原木色","natural"],["荼白色","off-white"],["暖白色","warm white"],["雅白","ivory"],["枫木色","maple"],["灰木纹色","grey wood-grain"],["灰木纹","grey wood-grain"],["肤感白","matte white"],["肤感","matte-touch"],["清萃","Qingcui series"],
- ["桌板尺寸","top size"],["桌板","table top"],["桌腿","legs"],["桌面颜色","top colour"],["颜色分类","colour"],["升降书桌","sit-stand desk"],["书桌","desk"],["尺寸","size"],
- ["慕思白","pearl white"],["银灰","silver-grey"],["白腿","white legs"],["黑腿","black legs"],["白色","white"],
- ["ENF级","ENF-grade (low-VOC)"],["ENF","ENF-grade"],["高性能","high-performance"],["3CM","3cm"],["1.8CM","1.8cm"],["加厚","thickened"],
- ["品牌代言人","brand ambassador"],["售后有保障","warranty assured"],["品质有保障","quality assured"],["速度有保障","fast shipping"],["顺丰物流","SF Express"],["店长主推","top pick"],["推荐","recommended"],["千人加购","1k+ carted"],["米","m"]
+ ["送货入户整桌包安装","delivery + full assembly"],["整桌包安装","full assembly"],["送货入户","home delivery"],["包安装","assembly incl."],
+ ["进口实木桌面","imported solid top"],["进口实木","imported solid wood"],["纯实木","pure solid wood"],["实木橡胶木","solid rubberwood"],["实木-橡胶木","solid rubberwood"],["实木白蜡木","solid white-ash"],["实木-白蜡木","solid white-ash"],["实木芯","solid-wood core"],
+ ["FAS级橡胶木","FAS-grade rubberwood"],["生态板","eco-board"],["颗粒板","particle board"],["环保板","eco board"],["环保桌板","eco board"],["南洋楹木","albizia (soft)"],["南洋楹","albizia"],["白蜡木","white-ash"],["橡胶木","rubberwood"],["橡木","oak"],["松木","pine"],["实木","solid wood"],
+ ["捷昌隐藏式Pro双电机","Jiecang hidden Pro dual-motor"],["捷昌","Jiecang"],["隐藏双电机","hidden dual-motor"],["三节正装双电机","3-stage dual-motor"],["3节正装双电机","3-stage dual-motor"],["2节正装双电机","2-stage dual-motor"],["静音双电机","silent dual-motor"],["双电机","dual-motor"],["单电机","single-motor"],["双横梁","twin crossbar"],["双梁","twin beam"],["正装","standard"],["三节","3-stage"],
+ ["原木色","natural"],["橡木色","oak tone"],["茶白色","tea-white"],["茶白","tea-white"],["典雅白","elegant white"],["雪山石白色","snow-stone white"],["雪山白","snow-white"],["奶油白色","cream"],["奶白色","cream"],["奶白","cream"],["雅白","ivory"],["肤感白","matte white"],["肤感","matte-touch"],["云白","cloud-white"],["枫木色","maple"],["浅胡桃色","light walnut"],["黑胡桃木色","walnut (dark)"],["黑胡桃色","walnut (dark)"],["胡桃色","walnut"],["深空灰","space-grey"],["星空黑","starry-black"],["暗夜黑","midnight-black"],["曜黑","obsidian"],["灰木纹","grey wood-grain"],
+ ["加厚桃板","thickened top"],["加厚","thickened"],["桌板尺寸","top size"],["桌板","table top"],["桌腿","legs"],["桌面颜色","top colour"],["颜色分类","colour"],["升降书桌","sit-stand desk"],["书桌","desk"],["尺寸","size"],["不靠墙","free-standing"],
+ ["公牛排插款","Bull power-strip"],["公牛","Bull"],["排插","power strip"],["升降理线箱","cable box"],["升级线盒","upgraded cable box"],["内嵌排插","inlaid socket"],["RGB灯","RGB light"],["白腿","white legs"],["黑腿","black legs"],["银灰","silver-grey"],["慕思白","pearl white"],
+ ["ENF级","ENF-grade (low-VOC)"],["ENF","ENF-grade"],["高性能","high-performance"],["3CM","3cm"],["2.5CM","2.5cm"],["5CM","5cm"],["4.5CM","4.5cm"],["1.8CM","1.8cm"],["18mm","18mm"],["25mm","25mm"],["双面上色","two-side finished"],["加宽","widened"],
+ ["未来max","Future-max"],["巡航max","Cruiser-max"],["性能猛兽","performance beast"],["全能旗舰","all-rounder flagship"],["一体板","one-piece board"],["加赠抽屉","free drawer"],["抽屉","drawer"],["升级","upgraded"],["推荐","recommended"],["米","m"]
 ];
 function tr(s){let o=s;DICT.forEach(([c,e])=>{o=o.split(c).join(' '+e+' ');});
   o=o.replace(/【/g,' [').replace(/】/g,'] ').replace(/（/g,' (').replace(/）/g,') ').replace(/\s+([,)\]])/g,'$1').replace(/\s+/g,' ').trim();return o;}
@@ -313,15 +313,15 @@ function vScore(s){let x=0;
   if(/1\.5米|150x|1\.5\*/.test(s))x+=1300;
   if(/1\.4米|140x|1\.4\*/.test(s))x+=1200;
   if(/1\.6米|160x|1\.6\*/.test(s))x+=1100;
-  if(/120x|1\.2米|1\.2\*/.test(s))x+=300;
-  if(/x60|×60|\*0\.6|60x75/.test(s))x+=170;        /* 60cm depth target */
-  if(/x70|×70|\*0\.7|70x75/.test(s))x+=120;
-  if(/双电机|捷昌|Pro双电机|dual/i.test(s))x+=260;   /* dual motor */
-  if(/进口实木|白蜡木|橡胶木|橡木|3CM|纯实木|实木/.test(s)&&!/生态板|颗粒板|环保板|实木芯/.test(s))x+=140; /* genuine solid */
-  if(/生态板|颗粒板|环保板|实木芯|南洋楹/.test(s))x-=140;
-  if(/黑胡桃|胡桃色|原木色|橡木色|白蜡/.test(s))x+=30;
+  if(/120x|1\.2米/.test(s))x+=300;
+  if(/x60|×60|\*0\.6|60x|60\*/.test(s))x+=170;
+  if(/x70|×70|\*0\.7|70x/.test(s))x+=120;
+  if(/双电机|捷昌|Pro双电机|dual/i.test(s))x+=260;
+  if((/进口实木|白蜡木|橡胶木|橡木|3CM|纯实木|实木/.test(s))&&!(/生态板|颗粒板|环保板|楹/.test(s)))x+=150;
+  if(/生态板|颗粒板|环保板|楹/.test(s))x-=140;
+  if(/原木色|雪山|典雅白|茶白|奶白|雅白|橡木色|白蜡|云白/.test(s))x+=60;
+  if(/黑胡桃|黑色|暗夜黑|曜黑/.test(s))x-=80;
   if(/单电机/.test(s))x-=40;
-  if(/品牌代言|售后有保障|物流|品质有保障|店长|推荐|千人/.test(s))x-=200; /* marketing rows */
   return x;}
 
 
@@ -330,75 +330,251 @@ const COMFORT={
   name:"Omnidesk Wildwood — Ascent / Classic (solid-hardwood top)",
   seller:"Omnidesk (omnidesk.sg / theomnidesk.com)",
   sg:"S$994–1,169 ea", url:"https://www.omnidesk.sg/products/ascent-wildwood",
-  note:"The desk you & Sopisa were deciding on — a genuine glued solid-hardwood top on an electric frame. But it's ~S$1k EACH and you need two for the study. Priorities (your order): the wood, its quality, the colour, then the size — only then motor speed / height, then accessories. Ascent (3-col, 60mm/s) is 76cm-deep only; Classic (2-col, 40mm/s) does 60 or 76cm. Benchmark to beat ×2.",
-  pills:["Wood: Hevea / Ash / Acacia / Walnut","Quality: glued solid-hardwood panel","Colour: 6 finishes (Natural → Richbrown)","Size: 122 / 153 / 183cm · Ascent 76cm · Classic 60+76cm","Motor: Ascent 60mm/s gen-3 · Classic 40mm/s · H 63–127cm","Accessories: cable bar, castors, drawer"],
+  note:"The desk you & Sopisa were deciding on — a genuine glued solid-hardwood top on an electric frame, ~S$1k EACH (you need two). Priorities, in your order: the wood, its quality, the colour, then the size — only then motor speed / height, then accessories. NOTE: skip the dark Walnut / Richbrown — too dark; favour the lighter Natural Hevea / Ash / Acacia. Benchmark to beat ×2.",
+  pills:["Wood: Hevea / Ash / Acacia (skip Walnut — too dark)","Quality: glued solid-hardwood panel","Colour: lighter finishes only (Natural / Ash / Acacia)","Size: 122 / 153 / 183cm · Ascent 76cm · Classic 60+76cm","Motor: Ascent 60mm/s gen-3 · Classic 40mm/s · H 63–127cm","Accessories: cable bar, castors, drawer"],
   imgs:["https://cdn.shopify.com/s/files/1/2661/6120/files/classic-banner-desktop.jpg","https://cdn.shopify.com/s/files/1/2661/6120/files/Classic_landing-_Laptop.jpg","https://cdn.shopify.com/s/files/1/2661/6120/files/Classic-landing-_Tablet.jpg"]
 };
 
 const DATA=[
-{id:"761514627340",seed:1,tags:["solid","dual","twotone","value"],verdict:"Best value",vClass:"value",vid:false,
- name:"苏木源 3CM进口实木电动升降桌",nameEn:"Sumuyuan 3cm imported solid-wood sit-stand · 4 tones",
- seller:"苏木源旗舰店 (Sumuyuan)",trust:"12-yr Tmall flagship · 700+ sold · 88VIP buyers confirm steel-stamped frame, solid wood",
- yen:"¥589 (USD 83) · 3CM 实木 单电机",sg:"≈ S$112",priceNote:"100–180 × 60/70cm · single or 捷昌 Jiecang dual · per desk · + forwarder",
- ship:"fwd",shipTxt:"Forwarder (集运) · heavy ~35kg · sea LCL",
- specs:[["Wood","进口实木 imported solid",1],["Quality","3CM thick · steel-stamped frame",1],["Colour","walnut / oak / off-white / natural",1],["Size","140–160 × 60/70 — exact 60cm depth",1],["Motor","捷昌 Jiecang dual (opt) · single base",1],["Accessories","height-memory panel; eco-board ver.",1]],
- why:["Best value-for-genuine: a 3cm imported SOLID-wood top (thicker than Omnidesk's panel) from ~S$112 — a buyer confirms a steel-stamped frame, 'definitely not a no-name'","Hits your exact 60cm depth (140×60 / 160×60) and offers 4 tones in one shop → two different tones, consolidated freight","Optional 捷昌 Jiecang hidden dual-motor — buyers call it smooth, powerful and quiet (Jiecang OEMs for the big brands)","12-yr flagship; a cheaper eco-board version exists if you want to drop further"],
- risks:["Single-motor base is wobblier — pay up for the Jiecang dual","Heavy solid wood + forwarder = real per-desk freight","No global-brand warranty like Omnidesk / Loctek"],
- photos:["https://img.alicdn.com/imgextra/i2/1771287306/O1CN01LH2O1X23qCiCjyqBX_!!1771287306.jpg","https://img.alicdn.com/bao/uploaded/i1/1771287306/O1CN01GHYdrC23qCnxyV8f1_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN011gXRBv23qCmmH8ucX_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01TmDVjC23qCkqy4FKx_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01DKQY8023qClqVd7ox_!!1771287306.jpg","https://img.alicdn.com/imgextra/i1/1771287306/O1CN01nk8ncI23qCnYJjeLS_!!1771287306.jpg"],
- variants:["140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm","120x60x75cm","180x70x75cm","3CM进口实木【正装单电机】黑胡桃色","3CM进口实木【正装单电机】橡木色","3CM进口实木【正装单电机】原木色","3CM进口实木【正装单电机】荼白色","3CM进口实木【捷昌隐藏式Pro双电机】黑胡桃色","3CM进口实木【捷昌隐藏式Pro双电机】原木色","3CM环保板材【正装单电机】黑胡桃色"]},
-
-{id:"840695689095",seed:2,tags:["solid","dual","twotone","brand"],verdict:"Safest · brand",vClass:"top",vid:false,
- name:"乐歌 E8 实木电动升降桌",nameEn:"Loctek E8 solid-wood sit-stand · rubberwood / ash",
- seller:"乐歌 Loctek (乐歌旗舰店)",trust:"4.8★ · 15-yr Tmall flagship · the global standing-desk maker (Loctek / FlexiSpot group)",
- yen:"¥1,113 (USD 157) · 1.4×0.7 实木",sg:"≈ S$211",priceNote:"1.0–1.6m · solid rubberwood / ash · per desk · + forwarder",
- ship:"fwd",shipTxt:"Forwarder (集运) · heavy ~35kg · sea LCL",
- specs:[["Wood","实木橡胶木 / 白蜡木 solid",1],["Quality","Loctek frame — global desk maker",1],["Colour","natural + walnut (per species)",1],["Size","1.0–1.6 × 0.6–0.8 — 1.4×0.7 fits",1],["Motor","E8 dual-motor · app + memory",1],["Accessories","cable mgmt · castors avail.",1]],
- why:["Loctek is the category's global maker (Loctek / FlexiSpot group) — strongest motor & frame, 15-yr flagship: the closest thing to Omnidesk-grade reliability here","One listing covers both tiers & tones: solid rubberwood OR solid ash (白蜡木), each in natural or walnut-dark → two different tones from one shop","1.4×0.7m fits the wall (2×1.4 = 2.8m in your 3294mm); 1.6m available if you want bigger","Quiet dual-motor with app + height memory, just like Omnidesk"],
- risks:["Priciest Taobao pick (still ~1/5 of Omnidesk ×2)","Heavy + forwarder freight","Pick the 【实木】 SKU — some colourways are 环保板 eco-board, not solid"],
- photos:["https://gw.alicdn.com/imgextra/O1CN01f96x0c1XfbwAw4DMs_!!660242951-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01oucdfB1Xfbv2Wj3eY_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01gahIUK1Xfbv2wMKHa_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01fqsSvg1XfbvBJYYZi_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01pl19Nn1Xfbv2gxzrM_!!660242951.jpg"],
- variants:["桌板尺寸1.4*0.7m 整桌包安装","桌板尺寸1.6*0.8m 整桌包安装","桌板尺寸1.2*0.6m 整桌包安装","桌板尺寸1.0*0.6m 整桌包安装","【实木橡胶木】原木色桌板+E8慕思白桌腿","【实木橡胶木】黑胡桃木色桌板+E8银灰桌腿","【实木-白蜡木】原木色桌板+E8慕思白桌腿","【实木-白蜡木】黑胡桃木色桌板+E8银灰桌腿","★肤感系列★【实木-橡胶木】肤感白桌板+E8慕思白桌腿","【环保板】原木色桌板+E8慕思白桌腿","【环保板】灰木纹色桌板+E8银灰桌腿","【环保板】雅白桌板+E8慕思白桌腿"]},
-
-{id:"703636655042",seed:3,tags:["solid","brand"],verdict:"Best wood",vClass:"looks",vid:false,
- name:"源氏木语 实木电动升降桌 · 橡木/白蜡木",nameEn:"Yeswood solid-wood sit-stand · oak / white-ash",
- seller:"源氏木语 (源氏木语官方旗舰店)",trust:"4.9★ · 300k+ repeat buyers · solid-wood furniture specialist · 88VIP-praised grain",
- yen:"¥2,044 (USD 288) · 橡木 oak",sg:"≈ S$388",priceNote:"1.0–1.6m solid ash / oak · single-motor · per desk · + forwarder",
+{id:"761514627340",seed:1,tags:["solid","dual","light","value"],verdict:"Best value",vClass:"value",vid:false,
+ name:"苏木源 3CM进口实木电动升降桌",nameEn:"Sumuyuan 3cm imported solid-wood · 4 tones",
+ seller:"苏木源旗舰店",trust:"12-yr Tmall flagship · 700+ sold · 88VIP buyers confirm steel-stamped frame + solid wood",
+ yen:"¥589 · 3CM 实木 单电机",sg:"≈ S$112",priceNote:"100–180 × 60/70cm · single or 捷昌 Jiecang dual · per desk",
  ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
- specs:[["Wood","白蜡木 / 橡木 furniture-grade solid",1],["Quality","Yeswood — solid-wood specialist",1],["Colour","natural ash / oak (light)",1],["Size","1.0–1.6m · ~62cm deep",1],["Motor","single-motor · H 72–121cm",0],["Accessories","minimalist · 300k repeat buyers",1]],
- why:["The solid-wood furniture brand — best wood quality & finish here, closest to Omnidesk's craft; 88VIP buyers call the natural grain 'thick & premium'","Genuine white-ash (白蜡木) or oak (橡木), thick natural tops","4.9★ with 300k+ repeat buyers — the highest trust in this set"],
- risks:["SINGLE motor — a buyer notes the connecting rod 'feels a bit thin' vs a dual","Priciest genuine option (~S$388) — nearing Omnidesk territory","Mostly light / natural tones — little walnut-dark choice"],
- photos:["https://img.alicdn.com/imgextra/i4/1105025069/O1CN010fSQVa1nJed4rLsXx_!!1105025069.jpg","https://gw.alicdn.com/imgextra/O1CN01gCrSGF1nJeo1FT2HK_!!1105025069-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/1105025069/O1CN01kPXRBY1nJedmVV8MG_!!1105025069.jpg","https://img.alicdn.com/imgextra/i1/1105025069/O1CN01nEQoSj1nJedj6O2ym_!!1105025069.jpg","https://img.alicdn.com/imgextra/i4/1105025069/O1CN01GcY5IX1nJefTPvcyt_!!1105025069.jpg","https://img.alicdn.com/imgextra/i1/1105025069/O1CN01qfywro1nJedwPCUbL_!!1105025069.jpg"],
- variants:["（白蜡木原木色）1.4米升降书桌（单电机）","（白蜡木原木色）1.0米升降书桌（单电机）","橡木色 1.4米 单电机","橡木色 1.6米 单电机","胡桃色 1.4米 单电机"]},
+ specs:[["Wood","进口实木 imported solid",1],["Quality","3CM thick · steel-stamped frame",1],["Colour","natural / off-white / oak (walnut avail.)",1],["Size","140–160 × 60/70 — exact 60cm",1],["Motor","捷昌 Jiecang dual (opt) · single base",1],["Extras","height-memory; eco-board ver. cheaper",1]],
+ why:["Best value-for-genuine: a 3cm imported SOLID top (thicker than Omnidesk's panel) from ~S$112 — buyer confirms a steel-stamped frame, 'definitely not a no-name'","Exact 60cm depth + 4 tones in one shop → two light tones (natural + off-white/oak), skip the walnut","捷昌 Jiecang dual-motor option — smooth, powerful, quiet (Jiecang OEMs for the big brands)"],risks:["Single-motor base wobblier — pay up for the Jiecang dual","Heavy solid wood + forwarder freight per desk","No global-brand warranty"],
+ photos:["https://img.alicdn.com/bao/uploaded/i1/1771287306/O1CN01GHYdrC23qCnxyV8f1_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN011gXRBv23qCmmH8ucX_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01TmDVjC23qCkqy4FKx_!!1771287306.jpg","https://img.alicdn.com/imgextra/i3/1771287306/O1CN01DKQY8023qClqVd7ox_!!1771287306.jpg","https://img.alicdn.com/imgextra/i1/1771287306/O1CN01nk8ncI23qCnYJjeLS_!!1771287306.jpg"],
+ variants:["140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm","3CM进口实木【正装单电机】原木色","3CM进口实木【正装单电机】橡木色","3CM进口实木【正装单电机】荼白色","3CM进口实木【捷昌隐藏式Pro双电机】原木色","3CM进口实木【捷昌隐藏式Pro双电机】橡木色","3CM环保板材【正装单电机】原木色"]},
 
-{id:"726932517233",seed:4,tags:["twotone","budget"],verdict:"Budget look-alike",vClass:"mid",vid:false,
- name:"凡积 南洋楹木电动升降桌 · 生态板",nameEn:"Fanji albizia-wood sit-stand · ENF eco-board (budget tier)",
- seller:"凡积家居旗舰店 (Fanji)",trust:"11-yr Tmall · 500+ sold · 顺丰 SF Express · ENF low-VOC board",
- yen:"¥295 (USD 42) · 1.8cm 南洋楹",sg:"≈ S$56",priceNote:"100–180 × 60/70/80 · single-motor · per desk · + forwarder",
- ship:"fwd",shipTxt:"Forwarder (集运) · lighter · SF / sea",
- specs:[["Wood","南洋楹木 albizia (soft, fast-grown)",0],["Quality","1.8CM ENF eco-board · thinner top",0],["Colour","walnut / warm-white / maple",1],["Size","100–180 × 60/70/80 — fits",1],["Motor","single-motor · twin crossbar",0],["Accessories","height-memory panel · SF express",1]],
- why:["Cheapest path to the look — multiple tones (walnut / white / maple) at ~S$56; buyers say 'stable, no wobble, amazing for the price'","ENF low-formaldehyde board, fast SF express; fine for light home / kid use","Same 60cm depth + size range as the pricier picks"],
- risks:["This is the engineered / soft-wood tier: 1.8cm 南洋楹 (albizia) is light, soft and a thinner top — NOT true hardwood like Omnidesk","Single-motor + twin crossbar — wobblier at full standing height","A look-alike, not a match — won't age or feel like the solid hardwood you saw at Omnidesk"],
+{id:"840695689095",seed:2,tags:["solid","dual","light","brand"],verdict:"Safest · brand",vClass:"top",vid:false,
+ name:"乐歌 E8 实木电动升降桌",nameEn:"Loctek E8 solid-wood · rubberwood / ash",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"4.8★ · 15-yr Tmall flagship · the global standing-desk maker (Loctek / FlexiSpot group)",
+ yen:"¥1,113 · 1.4×0.7 实木",sg:"≈ S$211",priceNote:"1.0–1.6m · solid rubberwood / ash · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木橡胶木 / 白蜡木 solid",1],["Quality","Loctek frame — global desk maker",1],["Colour","natural / ivory (walnut avail.)",1],["Size","1.0–1.6 × 0.6–0.8 — 1.4×0.7 fits",1],["Motor","E8 dual-motor · app + memory",1],["Extras","cable mgmt · castors avail.",1]],
+ why:["Loctek is the category's global maker (Loctek / FlexiSpot group) — strongest motor & frame, 15-yr flagship: closest to Omnidesk-grade reliability","Solid rubberwood OR solid ash (白蜡木), each in natural / ivory → two light tones from one shop","1.4×0.7m fits the wall (2×1.4 = 2.8m in your 3294mm); app + height memory like Omnidesk"],risks:["Priciest of the value tier (still ~1/5 of Omnidesk ×2)","Heavy + forwarder freight","Pick the 【实木】 SKU — some colourways are 环保板 eco-board"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01f96x0c1XfbwAw4DMs_!!660242951-0-picasso.jpg","https://gw.alicdn.com/imgextra/O1CN01oucdfB1Xfbv2Wj3eY_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01gahIUK1Xfbv2wMKHa_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01fqsSvg1XfbvBJYYZi_!!660242951.jpg","https://gw.alicdn.com/imgextra/O1CN01pl19Nn1Xfbv2gxzrM_!!660242951.jpg"],
+ variants:["桌板尺寸1.4*0.7m 整桌包安装","桌板尺寸1.6*0.8m 整桌包安装","桌板尺寸1.2*0.6m 整桌包安装","【实木橡胶木】原木色桌板+E8慕思白桌腿","【实木-白蜡木】原木色桌板+E8慕思白桌腿","★肤感系列★【实木-橡胶木】肤感白桌板+E8慕思白桌腿","【环保板】原木色桌板+E8慕思白桌腿","【环保板】雅白桌板+E8慕思白桌腿"]},
+
+{id:"923172771590",seed:3,tags:["solid","dual","light","value"],verdict:"FAS rubberwood",vClass:"value",vid:false,
+ name:"木艺生 进口橡胶木纯实木升降桌",nameEn:"Muyisheng FAS-grade rubberwood solid · natural/white",
+ seller:"木艺生旗舰店",trust:"15-yr Tmall · 'lowest-price' badge · 88VIP: stable & finely made",
+ yen:"¥587 · 3CM 纯实木",sg:"≈ S$112",priceNote:"100–180 × 60/70 · 2.5/3CM · single or dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","进口 FAS 级橡胶木 纯实木",1],["Quality","FAS-grade, non-veneer · 2.5–3CM",1],["Colour","tea-white / e-sport coffee (walnut avail.)",1],["Size","100–180 × 60/70 — fits",1],["Motor","single or twin-crossbar dual",1],["Extras","upgraded cable box",1]],
+ why:["FAS-grade (top knot-free grade) imported rubberwood, explicitly 不贴皮 (no veneer) — genuine solid at ~S$112","Tea-white (茶白) is a clean light tone close to Omnidesk's lighter Heveas; avoids walnut","2.5cm or 3cm top, single or twin-crossbar dual-motor — pick your sturdiness"],risks:["Mid-size shop (vs Loctek's brand weight)","Forwarder + heavy","Light tones photograph yellower than listing"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01KuNTOK1mrie1sSyrW_!!474615008-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/474615008/O1CN016T2ATk1mridF3FWSY_!!474615008.jpg","https://img.alicdn.com/imgextra/i3/474615008/O1CN013bzTD61mridExaO6k_!!474615008.jpg","https://img.alicdn.com/imgextra/i3/474615008/O1CN01U1AOaq1mridFe4hoV_!!474615008.jpg","https://img.alicdn.com/imgextra/i3/474615008/O1CN01xZuo0n1mridFaAMoi_!!474615008.jpg"],
+ variants:["100x60x75cm","140x60x75cm","140x70x75cm","160x60x75cm","3CM进口橡胶木纯实木【正装单电机】茶白色-升级线盒","3CM进口橡胶木纯实木【2节正装双电机】茶白色-升级线盒","2.5CM桌面【加固双横梁-双电机】茶白色","3CM进口橡胶木纯实木【正装单电机】电竞咖-升级线盒"]},
+
+{id:"1003939665894",seed:4,tags:["solid","dual","light","value"],verdict:"Value · 3-stage dual",vClass:"value",vid:false,
+ name:"桐菲 实木电动升降桌",nameEn:"Tongfei solid-wood · white / walnut",
+ seller:"桐菲旗舰店",trust:"6-yr Tmall · 200+ sold · buyer: no burrs, flat smooth top, sturdy",
+ yen:"¥513 · 实木 单电机",sg:"≈ S$98",priceNote:"100–180 × 60/70 · single / dual / 3-stage dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木 solid",1],["Quality","upgraded cable box · 包安装",1],["Colour","雪山石白 snow-white (walnut/black avail.)",1],["Size","100–180 × 60/70 — fits",1],["Motor","single / dual / 3-stage dual",1],["Extras","line box · home assembly",1]],
+ why:["Cheapest genuine-solid here (~S$98) with a real dual / 3-stage-dual option","雪山石白 (snow-stone white) is a clean light tone — no walnut needed","Buyer: 'no burrs, flat smooth top, sturdy frame, great value'"],risks:["Smaller shop, fewer reviews","Forwarder + heavy","Confirm the 实木 (solid) SKU vs any board option"],
+ photos:["https://img.alicdn.com/imgextra/i1/2204176692726/O1CN01jVLhzh1W0YmsI3vi2_!!4611686018427385334-0-item_pic.jpg","https://img.alicdn.com/imgextra/i2/2204176692726/O1CN01v89X5f1W0YmqrcOmE_!!2204176692726.jpg","https://img.alicdn.com/imgextra/i1/2204176692726/O1CN01S7eH7o1W0Ymrt2ZYV_!!2204176692726.jpg","https://img.alicdn.com/imgextra/i4/2204176692726/O1CN01twogWU1W0YmqAiZi9_!!2204176692726.jpg","https://img.alicdn.com/imgextra/i3/2204176692726/O1CN01ATVVZ51W0Ymps4mcE_!!2204176692726.jpg"],
+ variants:["100x60x75cm","140x60x75cm","140x70x75cm","160x70x75cm","【升级线盒】单电机实木雪山石白色-包安装","【升级线盒】双电机实木雪山石白色-包安装","【升级线盒】三节双电机实木雪山石白色-包安装","【升级线盒】双电机实木胡桃色-包安装"]},
+
+{id:"809324918847",seed:5,tags:["solid","dual","light","value"],verdict:"3cm solid · greys",vClass:"value",vid:false,
+ name:"3CM进口实木电动升降桌",nameEn:"3cm imported solid-wood · white / grey",
+ seller:"百亿补贴品牌优选 (徐州)",trust:"百亿补贴 listing · 300+ sold · 2-stage dual option",
+ yen:"¥687 · 3CM 实木",sg:"≈ S$131",priceNote:"100–180 × 60/70 (3cm) · single / 2-stage dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","进口实木 imported solid",1],["Quality","3CM top",1],["Colour","雪山白 snow-white / 深空灰 grey (walnut avail.)",1],["Size","100–180 × 60/70 — fits",1],["Motor","single / 2-stage dual",1],["Extras","subsidised price",1]],
+ why:["3cm imported solid in a clean snow-white or space-grey — both lighter than walnut","Full 60/70cm depth range; 2-stage dual option for stability","百亿补贴 (platform subsidy) keeps it cheap"],risks:["Generic shop name — less brand trust","No reviews captured yet","Forwarder + heavy"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01cFCNlv1ena8reu13j_!!2216956503916-0-picasso.jpg","https://img.alicdn.com/imgextra/i2/2216956503916/O1CN01gCDtgi1ena6sGVXXu_!!2216956503916.jpg","https://img.alicdn.com/imgextra/i4/2216956503916/O1CN013jT9R81ena8bc4Ukb_!!2216956503916.jpg","https://img.alicdn.com/imgextra/i2/2216956503916/O1CN01x8T5fl1ena7Mn3eTj_!!2216956503916.jpg","https://img.alicdn.com/imgextra/i2/2216956503916/O1CN019R5AkK1ena5udTu3H_!!2216956503916.jpg"],
+ variants:["100x60x3cm","140x60x3cm","140x70x3cm","160x60x3cm","160x70x3cm","3CM进口实木桌面【正装单电机】雪山白","3CM进口实木桌面【正装单电机】深空灰","3CM进口实木桌面【2节正装双电机】雪山白","3CM进口实木桌面【2节正装双电机】深空灰"]},
+
+{id:"999389464508",seed:6,tags:["solid","dual","light","value"],verdict:"Value · Bull socket",vClass:"value",vid:false,
+ name:"三梦 S300 实木电动升降桌",nameEn:"Samedream S300 solid-wood · elegant white",
+ seller:"samedream三梦官方旗舰店",trust:"回头客60万 (600k repeat) · 200+ sold · 88VIP: solid wood, firm, premium feel",
+ yen:"¥649 · 3CM 实木",sg:"≈ S$123",priceNote:"100–160 × 60/70 · single / dual / 3-stage · 公牛 socket · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","3CM 实木 solid",1],["Quality","公牛 Bull power-strip built in",1],["Colour","典雅白 elegant white (walnut avail.)",1],["Size","100–160 × 60/70 — fits",1],["Motor","single / hidden dual / 3-stage dual",1],["Extras","Bull socket · home assembly",1]],
+ why:["Big-traction value brand (600k repeat buyers); 88VIP buyer: 'solid wood is firm, looks high-end'","典雅白 (elegant white) is a clean light top — avoids walnut","Built-in 公牛 (Bull) power strip + hidden/3-stage dual motor options"],risks:["Maxes at 1.6m (still fits 2×1.6 = 3.2m wall)","Forwarder + heavy","Most photos show the walnut — confirm white stock"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01aNmN2u1x8nZcueYMR_!!2097666399-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/2097666399/O1CN01rNpjoa1x8nZBBXugA_!!2097666399.jpg","https://img.alicdn.com/imgextra/i1/2097666399/O1CN01H0AsMb1x8nYC63Xkl_!!2097666399.jpg","https://img.alicdn.com/imgextra/i1/2097666399/O1CN01kgDpvo1x8nYmXPJtL_!!2097666399.jpg","https://img.alicdn.com/imgextra/i2/2097666399/O1CN01ZOdwoD1x8nZFIFMCU_!!2097666399.jpg"],
+ variants:["100x60x75cm","140x60x75cm","140x70x75cm","160x70x75cm","【公牛排插款】3CM实木【3节正装双电机】典雅白","【公牛排插款】3CM实木【隐藏双电机】典雅白","【公牛排插款】3CM实木【单电机】典雅白","3CM实木【3节正装双电机】典雅白"]},
+
+{id:"818564142295",seed:7,tags:["solid","light","brand"],verdict:"Brand · ergonomic",vClass:"looks",vid:false,
+ name:"西昊 D03 实木电动升降桌",nameEn:"Sihoo D03 solid-wood · natural / cream",
+ seller:"sihoo西昊官方旗舰店",trust:"回头客1万 · 300+ sold · Sihoo = major ergonomic-chair/desk brand",
+ yen:"¥1,118 · 纯实木桌板",sg:"≈ S$212",priceNote:"纯实木 or 25mm thick or eco · natural / cream · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","纯实木 solid (or eco option)",1],["Quality","25mm thickened top option",1],["Colour","原木 natural / 奶白 cream (walnut avail.)",1],["Size","~1.2m shown (confirm range)",1],["Motor","quiet electric · ergonomic brand",1],["Extras","good after-sales (brand)",1]],
+ why:["西昊 Sihoo is a well-known ergonomic brand (chairs + desks) — brand warranty/service like Omnidesk","纯实木 (pure solid) top in 原木 natural or 奶白 cream — clean light tones","25mm thickened-top option for a more substantial feel"],risks:["Pricier (brand premium)","Size range not fully captured — confirm 1.4/1.5m stock","Some SKUs are 环保 eco-board, not solid"],
+ photos:["https://img.alicdn.com/imgextra/i3/712310169/O1CN01N8BLox1D7S5Ev2qu7_!!4611686018427387289-0-item_pic.jpg","https://img.alicdn.com/imgextra/i4/712310169/O1CN01eFJHy61D7S0h04VNN_!!712310169.jpg","https://img.alicdn.com/imgextra/i1/712310169/O1CN012W4lbn1D7S0gpfGnw_!!712310169.jpg","https://img.alicdn.com/imgextra/i3/712310169/O1CN01Ay0tdS1D7S0aJb68q_!!712310169.jpg","https://img.alicdn.com/imgextra/i4/712310169/O1CN01SstMn31D7S0h02tbP_!!712310169.jpg"],
+ variants:["【纯实木桌板+桌腿】原木色","【纯实木桌板+桌腿】胡桃木色","【高配加厚桌板25mm+桌腿】原木色","【高配加厚桌板25mm+桌腿】奶白色","【环保桌板+桌腿】奶白色","【环保桌板+桌腿】原木色"]},
+
+{id:"754906133742",seed:8,tags:["solid","dual","light","brand"],verdict:"Brand · E2S",vClass:"looks",vid:false,
+ name:"乐歌 E2S 实木电动升降桌",nameEn:"Loctek E2S solid-wood · rubberwood",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"15-yr flagship · 200+ sold · solid-rubberwood option on a Loctek frame",
+ yen:"¥857 · 加厚桌板",sg:"≈ S$163",priceNote:"1.0–1.6m · solid rubberwood / eco · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木橡胶木 solid (or eco)",1],["Quality","Loctek E2S frame · thickened top",1],["Colour","natural / matte-white (walnut avail.)",1],["Size","1.0–1.6 × 0.6–0.8 — 1.4×0.7 fits",1],["Motor","E2S single (E2S high-perf)",0],["Extras","cable mgmt",1]],
+ why:["Cheaper Loctek entry to genuine solid rubberwood, brand frame & 15-yr flagship trust","原木 natural or 肤感白 matte-white — light tones, skip walnut","Thickened top; clean 1.4×0.7 fit"],risks:["E2S is single-motor — less rigid than E8/dual at full height","Base SKUs are eco-board; pick 实木橡胶木","Forwarder + heavy"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01cf8zaG1XfbwFJmy3T_!!660242951-0-picasso.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01sdq3tF1XfbvBVhjTG_!!660242951.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01alm94x1XfbuvOKkS0_!!660242951.jpg","https://img.alicdn.com/imgextra/i4/660242951/O1CN01txcsb01Xfbmun3IMw_!!0-item_pic.jpg","https://img.alicdn.com/imgextra/i2/660242951/O1CN01GrLwFE1Xfbiv5q08t_!!660242951.jpg"],
+ variants:["桌板尺寸:1.4*0.7m 整桌包安装","桌板尺寸:1.6*0.8m 整桌包安装","桌板尺寸:1.2*0.6m 整桌包安装","【实木橡胶木】原木色加厚桌板+E2S雅白桌腿","★肤感工艺★【实木-橡胶木】肤感白色加厚桌板+E2S雅白桌腿","【环保板】原木色加厚桌板+E2S雅白桌腿"]},
+
+{id:"534111989574",seed:9,tags:["solid","light","brand"],verdict:"Brand · cheapest Loctek",vClass:"mid",vid:false,
+ name:"乐歌 E2 实木电动升降桌",nameEn:"Loctek E2 · eco-board (solid option)",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"15-yr flagship · 200+ sold · the cheapest Loctek frame",
+ yen:"¥679 · 加厚桌板",sg:"≈ S$129",priceNote:"1.0–1.6m · mostly eco-board (one solid SKU) · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","环保板 eco (one 实木橡胶木 SKU)",0],["Quality","Loctek E2 frame · thickened top",1],["Colour","natural / ivory / grey-grain",1],["Size","1.0–1.6 × 0.6–0.8 — 1.4×0.7 fits",1],["Motor","E2 single-motor",0],["Extras","cable mgmt",1]],
+ why:["Cheapest way onto a genuine Loctek frame with 15-yr flagship support","Light tones (原木 / 雅白 / 灰木纹); repeat-buyer: 'bought two for the house'","1.4×0.7 fits; reliable brand basics"],risks:["MOSTLY eco-board — only one 实木橡胶木 walnut SKU is solid (and it's dark)","Single-motor; least rigid","If you want a light solid top, E8 / E2S are better here"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01heVrCU1XfbwFhINT1_!!660242951-0-picasso.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01sdq3tF1XfbvBVhjTG_!!660242951.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01uXqMBv1XfbpryzZb9_!!660242951.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01e77qBu1XfbiotgCg1_!!660242951.jpg","https://img.alicdn.com/imgextra/i4/660242951/O1CN01LjxCXs1Xfbila6KOd_!!660242951.jpg"],
+ variants:["桌板尺寸:1.4*0.7m 整桌包安装","桌板尺寸:1.6*0.8m 整桌包安装","桌板尺寸:1.2*0.6m 整桌包安装","【环保板】原木色加厚桌板+E2雅白桌腿","【环保板】雅白加厚桌板+E2雅白桌腿","【环保板】灰木纹色加厚桌板+E2银灰桌腿"]},
+
+{id:"563793760254",seed:10,tags:["solid","dual","light","brand"],verdict:"Brand · dual creator",vClass:"looks",vid:false,
+ name:"乐歌 创作者 E5X/EM3 双电机实木升降桌",nameEn:"Loctek Creator E5X/EM3 dual-motor solid",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"15-yr flagship · 200+ sold · dual-motor + solid rubberwood",
+ yen:"¥1,323 · 双电机实木",sg:"≈ S$251",priceNote:"1.2–1.8m · solid rubberwood · dual-motor · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木橡胶木 solid",1],["Quality","Loctek dual-motor 'Creator' frame",1],["Colour","natural / matte-white (walnut avail.)",1],["Size","1.2–1.8 × 0.6–0.8 — fits",1],["Motor","E5X/EM3 DUAL-motor",1],["Extras","optional inlaid power strip",1]],
+ why:["Loctek's dual-motor 'Creator' frame with a genuine solid rubberwood top — brand sturdiness","原木 natural or 肤感白 matte-white light tops; inlaid power-strip option","Goes to 1.8m if you want bigger; buyer: 'for stability, quality, service — pick Loctek'"],risks:["Pricier than E8 for similar wood","Forwarder + heavy","Inlaid-socket SKU costs more"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01qSpbpS1XfbwG1V9Jl_!!660242951-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/660242951/O1CN01cO03Yj1XfbuetWvDF_!!660242951.jpg","https://img.alicdn.com/imgextra/i3/660242951/O1CN01HqeXKN1XfbjarCClv_!!660242951.jpg","https://img.alicdn.com/imgextra/i4/660242951/O1CN01b250f91Xfbi6XbYJv_!!660242951.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01sdq3tF1XfbvBVhjTG_!!660242951.jpg"],
+ variants:["桌板尺寸:1.4*0.7m 整桌包安装","桌板尺寸:1.6*0.8m 整桌包安装","桌板尺寸:1.8*0.8m 整桌包安装","★肤感工艺★【实木-橡胶木】白色加厚桌板+E5X雅白桌腿","【实木橡胶木】原木色加厚桌板+E5X雅白桌腿","【实木-内嵌排插橡胶木】原木色加厚桌板+E5X雅白桌腿"]},
+
+{id:"658665703412",seed:11,tags:["solid","light","brand"],verdict:"Brand · ash option",vClass:"looks",vid:false,
+ name:"乐歌 E6/EM5 实木电动升降桌",nameEn:"Loctek E6/EM5 solid · rubberwood / ASH",
+ seller:"乐歌 Loctek (乐歌旗舰店)",trust:"15-yr flagship · 200+ sold · offers solid white-ASH (白蜡木)",
+ yen:"¥2,129 · 实木加厚",sg:"≈ S$405",priceNote:"1.2–1.8m · solid rubberwood / ash · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木橡胶木 / 白蜡木 ASH solid",1],["Quality","Loctek E6/EM5 frame",1],["Colour","natural ash / white (walnut avail.)",1],["Size","1.2–1.8 × 0.6–0.8 — fits",1],["Motor","EM5 (single/dual variants)",1],["Extras","inlaid power strip option",1]],
+ why:["One of the few here with genuine white-ASH (白蜡木) — Omnidesk's Ash look, in 原木 natural","Loctek premium frame; buyer: top 128 / bottom 62cm, 'from kid to adult, great value'","Height range matches Omnidesk; brand support"],risks:["Premium price (~S$405) — nears Omnidesk Classic territory","Forwarder + heavy","Confirm single vs dual on the SKU you pick"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01nMgXf01XfbwFaH8Kr_!!660242951-0-picasso.jpg","https://img.alicdn.com/imgextra/i4/660242951/O1CN01FrLfuS1Xfbuex7p4m_!!660242951.jpg","https://img.alicdn.com/imgextra/i2/660242951/O1CN01ttBMrx1XfblEPe5r7_!!660242951.jpg","https://img.alicdn.com/imgextra/i2/660242951/O1CN01SvEwuZ1XfbmuLmegu_!!0-item_pic.jpg","https://img.alicdn.com/imgextra/i1/660242951/O1CN01sdq3tF1XfbvBVhjTG_!!660242951.jpg"],
+ variants:["桌板尺寸:1.4*0.7m 整桌包安装","桌板尺寸:1.6*0.8m 整桌包安装","桌板尺寸:1.8*0.8m 整桌包安装","【实木-白蜡木】原木色加厚桌板+EM5白色桌腿","【实木橡胶木】原木色加厚桌板+EM5白色桌腿","★肤感工艺★【实木-橡胶木】白色加厚桌板+EM5白色桌腿"]},
+
+{id:"703636655042",seed:12,tags:["solid","light","brand"],verdict:"Best wood",vClass:"looks",vid:false,
+ name:"源氏木语 实木升降桌 · 橡木/白蜡木",nameEn:"Yeswood solid · oak / white-ASH",
+ seller:"源氏木语官方旗舰店",trust:"4.9★ · 300k+ repeat buyers · solid-wood furniture specialist · 88VIP-praised grain",
+ yen:"¥2,044 · 橡木 oak",sg:"≈ S$388",priceNote:"1.0–1.6m solid ash / oak · single-motor · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","白蜡木 / 橡木 furniture-grade solid",1],["Quality","Yeswood — solid-wood specialist",1],["Colour","natural ash / oak (light)",1],["Size","1.0–1.6m · ~62cm deep",1],["Motor","single-motor · H 72–121cm",0],["Extras","minimalist · 300k repeat",1]],
+ why:["The solid-wood furniture brand — best wood quality & finish here, closest to Omnidesk's craft","Genuine white-ash (白蜡木) or oak in light natural tones — exactly your no-walnut brief","4.9★, 300k repeat buyers; 88VIP buyers call the grain 'thick & premium'"],risks:["SINGLE motor — buyer: connecting rod 'feels a bit thin' vs dual","Priciest genuine (~S$388) — near Omnidesk","Forwarder + heavy"],
+ photos:["https://img.alicdn.com/imgextra/i4/1105025069/O1CN010fSQVa1nJed4rLsXx_!!1105025069.jpg","https://gw.alicdn.com/imgextra/O1CN01gCrSGF1nJeo1FT2HK_!!1105025069-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/1105025069/O1CN01kPXRBY1nJedmVV8MG_!!1105025069.jpg","https://img.alicdn.com/imgextra/i1/1105025069/O1CN01nEQoSj1nJedj6O2ym_!!1105025069.jpg","https://img.alicdn.com/imgextra/i4/1105025069/O1CN01GcY5IX1nJefTPvcyt_!!1105025069.jpg"],
+ variants:["（白蜡木原木色）1.4米升降书桌（单电机）","（白蜡木原木色）1.0米升降书桌（单电机）","橡木色 1.4米 单电机","橡木色 1.6米 单电机"]},
+
+{id:"750096205295",seed:13,tags:["solid","dual","light"],verdict:"Thickest top · 5cm",vClass:"looks",vid:false,
+ name:"韦露姿 W1 5CM实木电动升降桌",nameEn:"Weiluzi W1 5cm solid-wood · cream",
+ seller:"韦露姿旗舰店",trust:"5-yr Tmall · 200+ sold · 5cm thick solid top; secure packaging praised",
+ yen:"¥883 · 5CM 实木",sg:"≈ S$168",priceNote:"100–160 × 60/70/80 (5cm) · single / 2–3-stage dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木 solid (chunky)",1],["Quality","5CM top — thickest here · double-beam",1],["Colour","奶油白 cream (walnut/black avail.)",1],["Size","100–160 × 60/70/80 — fits",1],["Motor","single / 2- / 3-stage dual · white or black legs",1],["Extras","heavy multi-layer packaging",1]],
+ why:["5cm solid top — the thickest, most substantial slab here (Omnidesk's is a thinner panel)","奶油白 (cream) with white legs = clean light look; black or walnut also offered","2-/3-stage dual-motor + white-leg option; buyer praises the protective packaging"],risks:["5cm = very heavy → highest forwarder freight","Smaller 5-yr shop","Cream can yellow under warm light"],
+ photos:["https://img.alicdn.com/imgextra/i1/2208423370112/O1CN01g0YDlF1ChLTNXJTRe_!!4611686018427387264-2-item_pic.png","https://img.alicdn.com/imgextra/i4/2208423370112/O1CN0123Jogk1ChLPsRMU22_!!2208423370112.jpg","https://img.alicdn.com/imgextra/i2/2208423370112/O1CN016BvlFP1ChLPtmzdKM_!!2208423370112.jpg","https://img.alicdn.com/imgextra/i4/2208423370112/O1CN01H32rcj1ChLPrURgjB_!!2208423370112.jpg","https://img.alicdn.com/imgextra/i3/2208423370112/O1CN01abAxwW1ChLPrYfeRL_!!2208423370112.jpg"],
+ variants:["100x60x5cm","140x60x5cm","140x70x5cm","160x60x5cm","160x70x5cm","W1【5CM实木桌面】单电机双梁-奶油白色-白腿","W1【5CM实木桌面】双电机两节-奶油白色-黑腿","W1【5CM实木桌面】双电机三节-奶油白色-白腿"]},
+
+{id:"845517905828",seed:14,tags:["solid","dual","light"],verdict:"Thick solid · silent dual",vClass:"mid",vid:false,
+ name:"凡辰星河 4.5CM实木电动升降桌",nameEn:"FCXH 4.5cm solid-wood · silent dual-motor",
+ seller:"FCXH凡辰星河工厂官方店",trust:"工厂店 (factory-direct) · 500+ sold · 4.5cm dual-side-coloured solid top",
+ yen:"¥873 · 4.5CM 实木",sg:"≈ S$166",priceNote:"100–160 × 60/70 (4.5cm) · single / 2–3-stage silent dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木 solid (double-side coloured)",1],["Quality","4.5CM thick · two-side finished",1],["Colour","浅胡桃 light-walnut / 星空黑 (dark avail.)",1],["Size","100–160 × 60/70 — fits",1],["Motor","silent single / 2- / 3-stage dual",1],["Extras","Bull power-strip option",1]],
+ why:["4.5cm two-side-finished solid top — chunky and factory-direct cheap","浅胡桃 (LIGHT walnut) is a warm mid tone, much lighter than Omnidesk's dark walnut","Silent 2-/3-stage dual-motor; built-in Bull socket option"],risks:["Factory shop (less brand recourse than Loctek/Sihoo)","Tones skew warm/dark — 浅胡桃 is the lightest; no true pale option","Forwarder + very heavy"],
+ photos:["https://gw.alicdn.com/imgextra/O1CN01hdoW7B2KAqVD0KG6Z_!!2214211699517-0-picasso.jpg","https://img.alicdn.com/imgextra/i3/2214211699517/O1CN0131rJJy2KAqU3FfDZ5_!!2214211699517.jpg","https://img.alicdn.com/imgextra/i3/2214211699517/O1CN01wOg5R52KAqU3yCkF0_!!2214211699517.jpg","https://img.alicdn.com/imgextra/i2/2214211699517/O1CN01hYZBOI2KAqUUCs2M1_!!2214211699517.jpg","https://img.alicdn.com/imgextra/i1/2214211699517/O1CN014uKO1G2KAqT9qTgJv_!!2214211699517.jpg"],
+ variants:["实木桌面：140*60*4.6CM厚","实木桌面：140*70*4.6CM厚","实木桌面：160*60*4.6CM厚","双节正装静音双电机+浅胡桃色+双面上色4.5CM厚","三节正装静音双电机+浅胡桃色+双面上色4.5CM厚","正装双节静音单电机+浅胡桃色+双面上色4.5CM厚"]},
+
+{id:"1001234184257",seed:15,tags:["solid","light","value"],verdict:"Value · simple",vClass:"mid",vid:false,
+ name:"有闪 实木电动升降桌",nameEn:"Youshan solid-wood · simple value",
+ seller:"有闪旗舰店",trust:"Tmall · 100+ sold · buyer: good looks, sturdy, easy assembly",
+ yen:"¥532 · 实木",sg:"≈ S$101",priceNote:"100–160 × 60/70 · single · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","实木 solid",1],["Quality","simple build · home delivery",1],["Colour","natural tones (confirm with shop)",1],["Size","100–160 × 60/70 — fits",1],["Motor","single-motor",0],["Extras","home delivery",1]],
+ why:["Cheap genuine-solid backup at ~S$101","Standard 60/70cm depths that fit the study wall","Buyer: 'good looks, strong, simple to assemble, lifts easily'"],risks:["Thin variant data — confirm tone & SKU with the shop","Single-motor only","Smaller shop / fewer reviews"],
+ photos:["https://img.alicdn.com/imgextra/i2/2218656271783/O1CN01AsWq4p1P2fISrU8KM_!!4611686018427383207-0-item_pic.jpg","https://img.alicdn.com/imgextra/i2/2218656271783/O1CN01xsHVG61P2fISs8Zmm_!!2218656271783.jpg","https://img.alicdn.com/imgextra/i4/2218656271783/O1CN01LJgKK01P2fJRJOWxc_!!2218656271783.jpg","https://img.alicdn.com/imgextra/i2/2218656271783/O1CN01UHkQJU1P2fITL6tcV_!!2218656271783.jpg","https://img.alicdn.com/imgextra/i1/2218656271783/O1CN012OARsG1P2fIJE8nTU_!!2218656271783.jpg"],
+ variants:["100x60x75cm","140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm"]},
+
+{id:"710585450824",seed:16,tags:["solid","dual","light"],verdict:"Gaming · dual beast",vClass:"mid",vid:false,
+ name:"傲风 A4 Pro 双电机实木电竞升降桌",nameEn:"AutoFull A4 Pro dual-motor solid · gaming",
+ seller:"autofull傲风官方旗舰店",trust:"9-yr flagship · 600+ sold · gaming brand · dual-motor 'performance beast'",
+ yen:"¥2,090 · 进口实木芯",sg:"≈ S$397",priceNote:"1.2–2.0m · imported solid-wood core · dual · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","进口实木芯 imported solid-wood core",1],["Quality","gaming-grade dual-motor frame",1],["Colour","云白 cloud-white (walnut/black avail.)",1],["Size","1.2–2.0 × 0.6–0.8 — fits (to 2.0m)",1],["Motor","DUAL · very rigid · RGB option",1],["Extras","cable box · optional RGB lighting",1]],
+ why:["Heavy-duty dual-motor gaming frame — rock-solid even at full height; buyer: 'sturdy, no wobble, silent'","云白 (cloud-white) is a clean light top; rubberwood/walnut also offered","Sizes up to 2.0m if you ever want a wider single desk"],risks:["Gaming styling (RGB) may not suit a calm study","Premium price (~S$397)","Forwarder + heavy"],
+ photos:["https://img.alicdn.com/imgextra/i2/3242073845/O1CN01eKSlzk1eH41NdMoBo_!!4611686018427387637-0-item_pic.jpg","https://img.alicdn.com/imgextra/i1/3242073845/O1CN01X907NX1eH40qcDNWP_!!3242073845.jpg","https://img.alicdn.com/imgextra/i1/3242073845/O1CN01oKRNJ81eH40qXrWTb_!!3242073845.jpg","https://img.alicdn.com/imgextra/i4/3242073845/O1CN019Ak9971eH41Dx5lH5_!!3242073845.jpg","https://img.alicdn.com/imgextra/i3/3242073845/O1CN01lOFIE91eH41OeXsxg_!!3242073845.jpg"],
+ variants:["桌板尺寸：140*70CM","桌板尺寸：160*70CM","桌板尺寸：180*80CM","A4 Pro云白【双电机性能猛兽 进口实木芯】","A4pro+橡胶木实木整幅桌板【升降理线箱 1.8米加宽2cm】","A4 Pro曜黑【双电机性能猛兽 进口实木芯】"]},
+
+{id:"658987603430",seed:17,tags:["solid","dual"],verdict:"Gaming · slim solid",vClass:"mid",vid:false,
+ name:"安德斯特 未来战士 max 双电机实木电竞桌",nameEn:"AndaSeat Future-Warrior max dual-motor solid",
+ seller:"andaseat旗舰店",trust:"9-yr flagship · 200+ sold · gaming brand · thickened solid + inlaid wiring",
+ yen:"¥1,398 · 加厚实木",sg:"≈ S$266",priceNote:"100–180 × 60/70/82 · dual · black/white · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","加厚实木 thickened solid",1],["Quality","gaming dual-motor · inlaid wiring",1],["Colour","white / black (no light wood tone)",0],["Size","100–180 × 60/70/82 — fits",1],["Motor","DUAL · PowerLeg socket option · RGB",1],["Extras","inlaid cable channel · RGB option",1]],
+ why:["Thickened solid top on a rigid gaming dual-motor frame; buyer: 'spacious, sturdy, no wobble'","Inlaid cable management + optional PowerLeg socket legs","Sizes to 1.8m"],risks:["Only white/black tops — NOT a natural wood-grain look (misses the Omnidesk vibe)","Gaming/RGB styling","Forwarder + heavy"],
+ photos:["https://img.alicdn.com/imgextra/i1/2933768650/O1CN011YS4bp2Dll7LDDktu_!!4611686018427380170-0-item_pic.jpg","https://img.alicdn.com/imgextra/i4/2933768650/O1CN01Y7Tmwf2Dll73Gt2js_!!2933768650.jpg","https://img.alicdn.com/imgextra/i3/2933768650/O1CN01gQqw8T2Dll71YawxR_!!2933768650.jpg","https://img.alicdn.com/imgextra/i2/2933768650/O1CN01Y8pScF2Dll6x9NhnH_!!2933768650.jpg","https://img.alicdn.com/imgextra/i1/2933768650/O1CN014tl03n2Dll71nktxR_!!2933768650.jpg"],
+ variants:["100x60x74cm","140x70x74cm","160x70x74cm","180x82x74cm","未来max黑色【加厚实木-内嵌式走线】","未来max白色【加厚实木-内嵌式走线】","未来max黑色【加厚实木-内嵌式走线】RGB灯"]},
+
+{id:"764407511902",seed:18,tags:["solid","dual"],verdict:"Gaming · flagship",vClass:"mid",vid:false,
+ name:"安德斯特 巡航战士 max 双电机实木电竞桌",nameEn:"AndaSeat Cruiser max dual-motor solid · flagship",
+ seller:"andaseat旗舰店",trust:"9-yr flagship · #1 in '800+ desks' chart · 400+ sold · one-piece board flagship",
+ yen:"¥2,648 · 一体板",sg:"≈ S$503",priceNote:"1.2–2.0m · one-piece solid · dual · black/white · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","加厚实木 一体板 one-piece solid",1],["Quality","top-tier gaming dual frame",1],["Colour","white / black (no light wood tone)",0],["Size","1.2–2.0 × 0.72–0.82 — fits",1],["Motor","DUAL · all-rounder flagship · RGB",1],["Extras","cable box · RGB controller · 麒麟 chair bundle",1]],
+ why:["Flagship one-piece solid top + strongest gaming dual frame in this set","Sizes to 2.0m; chart-topping sales/trust","Bundle option with a gaming chair"],risks:["Most expensive (~S$503) — above Omnidesk Classic","White/black only — not a wood-grain look; surface shows fingerprints","Gaming/RGB styling; forwarder + heavy"],
+ photos:["https://img.alicdn.com/imgextra/i3/2933768650/O1CN01x72XH82Dll7Nc7Y03_!!4611686018427380170-0-item_pic.jpg","https://img.alicdn.com/imgextra/i1/2933768650/O1CN019QEJXy2Dll33pOv6b_!!2933768650.jpg","https://img.alicdn.com/imgextra/i1/2933768650/O1CN0153XxN92Dll31kf0FK_!!2933768650.jpg","https://img.alicdn.com/imgextra/i3/2933768650/O1CN01ZfbHPz2Dll33pMRFK_!!2933768650.jpg","https://img.alicdn.com/imgextra/i3/2933768650/O1CN01Bx1a2L2Dll32Nthj3_!!2933768650.jpg"],
+ variants:["120x72x73cm","140x72x73cm","160x72x73cm","180x82x73cm","巡航max白色【双电机丨一体板全能旗舰】RGB灯","巡航max黑色【双电机丨一体板全能旗舰】RGB灯"]},
+
+{id:"726932517233",seed:19,tags:["light","budget"],verdict:"Budget look-alike",vClass:"mid",vid:false,
+ name:"凡积 南洋楹木电动升降桌 · 生态板",nameEn:"Fanji albizia · ENF eco-board (budget)",
+ seller:"凡积家居旗舰店",trust:"11-yr Tmall · 500+ sold · 顺丰 SF Express · ENF low-VOC board",
+ yen:"¥295 · 1.8cm 南洋楹",sg:"≈ S$56",priceNote:"100–180 × 60/70/80 · single-motor · per desk",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","南洋楹木 albizia (soft, fast-grown)",0],["Quality","1.8CM ENF eco-board · thinner top",0],["Colour","warm-white / maple (walnut avail.)",1],["Size","100–180 × 60/70/80 — fits",1],["Motor","single-motor · twin crossbar",0],["Extras","height-memory · SF express",1]],
+ why:["Cheapest path to the look — light tones (warm-white / maple) at ~S$56; buyer: 'stable, no wobble, amazing for the price'","ENF low-formaldehyde board, fast SF express; fine for light/kid use","Same 60cm depth + sizes as the pricier picks"],risks:["Engineered/soft-wood tier: 1.8cm 南洋楹 (albizia) is light, soft, thinner — NOT true hardwood","Single-motor + twin crossbar — wobblier at full height","A look-alike, not a match for Omnidesk's solid hardwood"],
  photos:["https://gw.alicdn.com/imgextra/O1CN01BkaN0G1chVewDeVvn_!!2420983632-0-picasso.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01BhKiAx1chVbuLHy3P_!!2420983632.jpg","https://img.alicdn.com/imgextra/i3/2420983632/O1CN01GtyxpR1chVcJgZEe3_!!2420983632.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01DoeG1c1chVbuLIV9f_!!2420983632.jpg","https://img.alicdn.com/imgextra/i4/2420983632/O1CN01v2QZ6l1chVbuedHCr_!!2420983632.jpg"],
- variants:["140x60x75cm","140x70x75cm","160x60x75cm","160x70x75cm","120x60x75cm","180x80x75cm","1.8CM南洋楹木ENF级【单电机双横梁】胡桃色黑腿","1.8CM南洋楹木ENF级【单电机双横梁】胡桃色白腿","1.8CM南洋楹木ENF级【单电机双横梁】暖白色白腿","1.8CM南洋楹木ENF级【单电机双横梁】枫木色白色"]},
+ variants:["140x60x75cm","140x70x75cm","160x60x75cm","1.8CM南洋楹木ENF级【单电机双横梁】暖白色白腿","1.8CM南洋楹木ENF级【单电机双横梁】枫木色白色","1.8CM南洋楹木ENF级【双电机双横梁】暖白色白腿"]},
+
+{id:"734686516854",seed:20,tags:["light","budget"],verdict:"Cheapest · particle/albizia",vClass:"reject",vid:false,rejected:true,
+ name:"美迪丝 南洋楹木升降桌 · 加赠抽屉",nameEn:"Medisi albizia · with drawer (cheapest)",
+ seller:"美迪丝旗舰店",trust:"Tmall · 500+ sold · 18–25mm albizia · free drawer",
+ yen:"¥239 · 18mm 南洋楹",sg:"≈ S$45",priceNote:"single / dual twin-crossbar · white / maple (walnut avail.)",
+ ship:"fwd",shipTxt:"Forwarder (集运) · heavy · sea LCL",
+ specs:[["Wood","南洋楹木 albizia (soft)",0],["Quality","18–25mm board · thinnest here",0],["Colour","white / natural / maple (walnut avail.)",1],["Size","various (confirm 60cm)",1],["Motor","single / dual twin-crossbar",0],["Extras","free drawer included",1]],
+ why:["Absolute cheapest (~S$45) with a free drawer; light white/maple tones","Dual twin-crossbar option for a bit more stability","Fine as a kid's/secondary desk"],risks:["Thinnest top (18mm) + soft albizia — furthest from solid hardwood","Cheapest-of-cheap — corners cut on frame/finish","Here mainly as the bottom-of-market reference"],
+ photos:["https://img.alicdn.com/imgextra/i3/2453196644/O1CN01743CN01yx0YVsucgX_!!4611686018427383652-0-item_pic.jpg","https://img.alicdn.com/imgextra/i4/2453196644/O1CN01Bx78MN1yx0Y6outZh_!!2453196644.jpg","https://img.alicdn.com/imgextra/i1/2453196644/O1CN01ChWY6g1yx0KdPE0ET_!!2453196644.jpg","https://img.alicdn.com/imgextra/i4/2453196644/O1CN01sdJYNj1yx0KWEBfWD_!!2453196644.jpg","https://img.alicdn.com/imgextra/i3/2453196644/O1CN01n5hmIM1yx0UjFZbrC_!!2453196644.png"],
+ variants:["加赠抽屉18mm南洋楹木白色/白腿【单电机双横梁】","加赠抽屉18mm南洋楹木原木色/白腿【单电机双横梁】","加赠抽屉18mm南洋楹木白色/白腿【双电机双横梁】","25mm南洋楹木白色/白腿【单电机双横梁】"]}
 ];
 const BY={};DATA.forEach(d=>BY[d.id]=d);
 /* listings with a hosted demo video (videos/<id>.mp4) */
 const VIDEOS=new Set([]);
 /* real buyer reviews (中文 + EN), scraped from each listing */
 const REVIEWS={
-"761514627340":[{who:"一直在路上",vip:false,v:"3CM实木·捷昌Pro双电机·原木色 120×60",cn:"东西非常满意，架子上有钢印，厚度如描述，双电机丝滑有劲儿，声音也小。桌面如图，实木无疑，基本没有啥味道，绝对不是小厂的东西，师傅一小时装好",en:"Very satisfied — frame has a steel stamp, thickness as described; the dual-motor is smooth, powerful and quiet. Top is solid wood for sure, barely any smell — definitely not a no-name. Installed in ~1hr."},{who:"静雪",vip:false,v:"3CM实木·捷昌Pro双电机·荼白色 120×70",cn:"使用过程中很稳固，没有晃动或异响，质量没问题，桌面光滑，自由升降，满足孩子身高变化",en:"Very stable in use — no wobble or odd noises; quality is fine, smooth top, free height adjust, grows with the kid."}],
-"840695689095":[{who:"星座",vip:false,v:"环保板·原木色 1.0×0.6m",cn:"升降桌的质量很好，选的原木色的挺好看的，升降时桌子稳也很静音，家人都很喜欢",en:"Great quality; went with natural — looks good, stable and very quiet when raising / lowering, the family loves it."}],
-"703636655042":[{who:"用户_87743268",vip:false,v:"白蜡木原木色 1.0米 单电机",cn:"原木色质感非常的棒，很厚实，接待的小姐姐非常热情，感谢推荐的这款书桌，小孩很喜欢",en:"Natural finish feels superb and really thick; lovely service, glad she recommended it — the kid loves it."},{who:"匿名买家",vip:false,v:"白蜡木原木色 1.4米 单电机",cn:"收货挺满意，高度能调，坐着很舒服。单电机的链接杆显得有点单薄，目前用起来还可以，桌面光滑，升降灵活，挺稳的",en:"Happy with it — height adjusts, comfy. The single-motor connecting rod looks a bit thin, but works fine so far; smooth top, lifts easily, fairly stable."}],
-"726932517233":[{who:"人菜又爱玩",vip:false,v:"南洋楹·暖白色 120×60",cn:"桌脚很重很稳很结实，木板也很重很厚实，升降很平稳，最高档站着办公，最低档给小学生写作业，符合需求",en:"Legs are heavy, stable and solid; the board is heavy and thick too, raises smoothly — top height for standing, lowest for a kid's homework. Fits the need."},{who:"璃茉茉",vip:false,v:"南洋楹·枫木色 140×60",cn:"整体颜值和做工都在线，桌架很稳不晃，白色桌面很耐脏，控制面板能记忆高度，升降完全不卡顿，这个价格很惊喜！",en:"Looks and build both on point; frame is stable with no wobble, the white top hides marks, the panel has height memory, lifts without stutter — amazing for the price!"}]
+"761514627340":[{who:"一直在路上",vip:false,v:"3CM实木·捷昌Pro双电机·原木色 120×60",cn:"东西非常满意，架子上有钢印，厚度如描述，双电机丝滑有劲儿，声音也小，桌面实木无疑，绝对不是小厂的东西，师傅一小时装好",en:"Very satisfied — steel-stamped frame, thickness as described; dual-motor smooth, powerful and quiet. Solid wood for sure, not a no-name. Installed in ~1hr."},{who:"静雪",vip:false,v:"3CM实木·捷昌Pro双电机·荼白色 120×70",cn:"使用很稳固，没有晃动或异响，桌面光滑，自由升降，满足孩子身高变化",en:"Very stable, no wobble or noise; smooth top, free height adjust, grows with the kid."}],
+"840695689095":[{who:"星座",vip:false,v:"环保板·原木色 1.0×0.6m",cn:"升降桌质量很好，选的原木色挺好看的，升降时桌子稳也很静音，家人都很喜欢",en:"Great quality; natural looks good, stable and very quiet raising/lowering, family loves it."},{who:"匿名买家",vip:false,v:"环保板·雅白 1.2×0.6m",cn:"整体不错，送到家门口，安装也及时",en:"Solid overall; delivered to the door, prompt assembly."}],
+"923172771590":[{who:"睿呀哈哈",vip:false,v:"3CM橡胶木·单电机 120×60",cn:"挺好的，很适合办公，外观材质很好，结实稳定，工艺很细致",en:"Nice, great for work; good material, sturdy and stable, finely made."}],
+"1003939665894":[{who:"爱吃烤鱼的北野正阳",vip:false,v:"单电机实木雪山石白 160×70",cn:"做工精细没有毛刺，桌面平整光滑无异味，支架稳固不摇晃，性价比很高，整体特别满意",en:"Finely made, no burrs; flat smooth top, no smell; frame sturdy, no wobble — great value, very satisfied."}],
+"809324918847":[],
+"999389464508":[{who:"t**2",vip:false,v:"3CM实木·隐藏双电机·黑胡桃 120×60",cn:"师傅上门耐心包安装，桌子厚实平整很稳不晃，实木扎实，质感高级，工艺很好",en:"Patient pro install; thick flat top, no wobble, solid wood feels premium, well made."}],
+"818564142295":[{who:"辣条小宝宝",vip:false,v:"环保桌板·胡桃色 1.2m×0.6m【包安装】",cn:"很实用的电动学习桌，可以自由调节高度，升降几乎没声音，适合长久学习，客服售后特别好",en:"Very practical electric desk; free height adjust, almost silent, good for long study; great after-sales."}],
+"754906133742":[{who:"大**4",vip:false,v:"环保板·雅白 1.2×0.6m",cn:"618挑了半天最后选乐歌，安装使用挺满意，升降方便，不到一小时装好；美中不足靠墙后有空隙",en:"Picked Loctek after much deliberation; happy in use, easy lift, assembled in <1hr. Minor: a gap when pushed to the wall."}],
+"534111989574":[{who:"很乖1111",vip:false,v:"环保板·雅白 1.4×0.7m",cn:"尺寸合适，会继续回购，已推荐给朋友，家里两个桌子都是这个品牌",en:"Right size, will rebuy and recommended to friends — both our desks are this brand."}],
+"563793760254":[{who:"家境贫寒怎么办",vip:false,v:"实木橡胶木·1.2×0.6m",cn:"乐歌的升降桌没得说，中间桌面有磕碰，和店家沟通后完美解决；追求稳定品质服务选乐歌",en:"Loctek's desk is excellent; a top scuff was resolved perfectly after contacting them — for stability/quality/service pick Loctek."}],
+"658665703412":[{who:"爱吃粉丝蛋花的富翁",vip:false,v:"实木白蜡木·原木 1.4×0.7m",cn:"做工精细，安装师傅服务很好，桌子最高128最低62cm，从娃娃用到成人，性价比特别高",en:"Finely made, great install service; 128cm top / 62cm bottom — from kid to adult, great value."}],
+"703636655042":[{who:"用户_87743268",vip:false,v:"白蜡木原木色 1.0米 单电机",cn:"原木色质感非常棒，很厚实，客服热情，感谢推荐，小孩很喜欢",en:"Natural finish feels superb and thick; warm service, kid loves it."},{who:"匿名买家",vip:false,v:"白蜡木原木色 1.4米 单电机",cn:"收货满意，高度能调坐着舒服。单电机链接杆有点单薄，目前还可以，桌面光滑升降灵活挺稳",en:"Happy; height adjusts, comfy. Single-motor rod a bit thin but fine so far; smooth top, lifts easily, fairly stable."}],
+"750096205295":[{who:"匿名买家",vip:false,v:"5CM实木·双电机三节·奶油白 180×80",cn:"包装防护做得很好，多层缓冲确保运输安全，实物厚实",en:"Excellent protective packaging, multi-layer cushioning for safe transit; the slab is genuinely thick."}],
+"845517905828":[],
+"1001234184257":[{who:"jason@taobao",vip:false,v:"实木单电机 160×70",cn:"外观好看，稳定性强，安装简单，质量很好，升降很方便颜值也很高",en:"Good-looking, very stable, easy to assemble, great quality, lifts easily and looks great."}],
+"710585450824":[{who:"霸气王宝宝",vip:false,v:"A4 Pro曜黑·进口实木芯 180×80",cn:"傲风A4PRO电竞桌稳固不晃，升降静音顺滑，桌面宽敞，久坐不累，体验超赞，办公效率都高了",en:"Sturdy, no wobble; silent smooth lift; spacious top, comfy for long sits — superb, boosts productivity."}],
+"658987603430":[{who:"匿名买家",vip:false,v:"未来max黑色·单电机 140×70",cn:"电竞桌质感超棒，桌面宽敞稳固，承重不晃，走线设计合理，打理方便，客服态度超好",en:"Premium feel; spacious sturdy top, no wobble, sensible wiring, easy to clean; great service."}],
+"764407511902":[{who:"喜躲",vip:false,v:"巡航max黑色·双电机 140×72",cn:"安装挺快，质量不错，理线盒和RGB控制器有点潦草无伤大雅，表面容易留手印，铺大垫就好",en:"Quick assembly, good quality; cable box/RGB controller a bit rough but minor; surface shows fingerprints — a big mat fixes it."}],
+"726932517233":[{who:"人菜又爱玩",vip:false,v:"南洋楹·暖白色 120×60",cn:"桌脚很重很稳很结实，木板也很重很厚实，升降很平稳，符合需求",en:"Legs heavy/stable/solid, board heavy and thick, raises smoothly — meets the need."},{who:"璃茉茉",vip:false,v:"南洋楹·枫木色 140×60",cn:"整体颜值和做工都在线，桌架很稳不晃，控制面板能记忆高度，升降不卡顿，这个价格很惊喜",en:"Looks and build on point; stable frame, height memory, no stutter — amazing for the price."}],
+"734686516854":[]
 };
 
 /* ---------- mode switching ---------- */
-document.getElementById('modes').addEventListener('click',e=>{
-  const b=e.target.closest('.mode');if(!b)return;
-  document.querySelectorAll('.mode').forEach(m=>m.classList.toggle('on',m===b));
-  const m=b.dataset.m;
+function setMode(m){
+  document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
   document.getElementById('p-browse').classList.toggle('on',m==='browse');
   document.getElementById('p-duel').classList.toggle('on',m==='duel');
   if(m==='duel')startDuel();
+  const r=(location.hash.match(/r=([^&]+)/)||[])[1];
+  const h='#'+m+(r?('&r='+r):'');
+  try{history.replaceState(null,'',location.pathname+location.search+h);}catch(e){location.hash=h;}
+}
+document.getElementById('modes').addEventListener('click',e=>{
+  const b=e.target.closest('.mode');if(!b)return;setMode(b.dataset.m);
 });
 
 /* ---------- BROWSE render ---------- */
@@ -463,7 +639,7 @@ document.getElementById('chips').addEventListener('click',e=>{
 });
 
 /* ================= DUEL ENGINE (merge-sort + cached answers + undo) ================= */
-const DUEL_IDS=DATA.map(d=>d.id);            // all 4 ranked
+const DUEL_IDS=DATA.map(d=>d.id);            // all 20 ranked
 const LS='reno_desk_rank_v1';
 let answers={};        // pairKey -> -1 (A wins) | 1 (B wins) | 0 tie
 let askOrder=[];       // pairKeys in the order they were first asked
@@ -637,6 +813,9 @@ function closeLb(){const v=document.getElementById('lbvid');v.pause();v.removeAt
   document.getElementById('lb').classList.remove('on')}
 document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
 document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
+
+/* default view = Duel; reflect mode in the URL (#duel / #browse) */
+setMode(/(^|#|&)browse/.test(location.hash)?'browse':'duel');
 </script>
 </body>
 </html>
