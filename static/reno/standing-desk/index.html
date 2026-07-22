@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/reno/decision-tree.css">
 <style>
   :root{
     --paper:#f4efe7; --paper-2:#ebe3d6; --card:#fcfaf6; --ink:#2c2620; --ink-soft:#6f6354;
@@ -211,11 +212,12 @@
 <body>
 <header class="hero"><div class="wrap">
   <div class="eyebrow">532B Bishan · Study · 升降桌 · his &amp; hers</div>
-  <h1>The <em>solid-wood</em> standing-desk duel</h1>
-  <p class="sub">Cheaper Taobao alternatives to the <b>Omnidesk Wildwood</b> (~S$1k each) — <b>20</b> genuine solid-wood electric sit-stand desks, inspected page-by-page. Two go <b>side by side</b> on the study’s <b>3294mm wall</b> (CP) → <b>max ~1.6m each</b> (2×1.6m = 3.2m, ~9cm spare); 1.5m is the sweet spot. Depth up to <b>~0.8m</b> easy (your 0.6m is roomy). Light tones — <b>skip the dark walnut</b>. Default view is the <b>duel</b>: pick <b>two at a time</b> to rank; switch to Browse for full specs.</p>
+  <h1>The <em>solid-wood</em> standing-desk decision</h1>
+  <p class="sub">Cheaper Taobao alternatives to the <b>Omnidesk Wildwood</b> (~S$1k each) — <b>20</b> electric sit-stand desks, inspected page-by-page. Two go <b>side by side</b> on the study’s <b>3294mm wall</b> (CP) → <b>max ~1.6m each</b>; 1.5m is the sweet spot. Use the guided tree to choose wood authenticity, motor stability, finish, budget and after-sales yourself.</p>
   <div class="modes" id="modes">
     <button class="mode" data-m="browse">⊞ Browse <small>all specs &amp; photos</small></button>
-    <button class="mode on" data-m="duel">⚔ Rank (Duel) <small>his &amp; hers</small></button>
+    <button class="mode on" data-m="decision">⌁ Decide <small>guided tree · all 20</small></button>
+    <button class="mode" data-m="duel">⚔ Rank <small>legacy duel</small></button>
   </div>
 </div></header>
 
@@ -237,8 +239,11 @@
   </main>
 </section>
 
-<!-- ============ DUEL ============ -->
-<section class="panel on" id="p-duel">
+<!-- ============ GUIDED DECISION TREE ============ -->
+<section class="panel on" id="p-decision"><div class="wrap decision-wrap"><div id="decision-root"></div></div></section>
+
+<!-- ============ LEGACY DUEL ============ -->
+<section class="panel" id="p-duel">
   <div class="wrap duelwrap">
     <div id="duelstage"></div>
   </div>
@@ -568,6 +573,7 @@ function setMode(m){
   document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
   document.getElementById('p-browse').classList.toggle('on',m==='browse');
   document.getElementById('p-duel').classList.toggle('on',m==='duel');
+  document.getElementById('p-decision').classList.toggle('on',m==='decision');
   if(m==='duel')startDuel();
   const r=(location.hash.match(/r=([^&]+)/)||[])[1];
   const h='#'+m+(r?('&r='+r):'');
@@ -816,8 +822,9 @@ function closeLb(){const v=document.getElementById('lbvid');v.pause();v.removeAt
 document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
 document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight')stepLb(1);if(e.key==='ArrowLeft')stepLb(-1)});
 
-/* default view = Duel; reflect mode in the URL (#duel / #browse) */
-setMode(/(^|#|&)browse/.test(location.hash)?'browse':'duel');
+/* guided decision tree is default; browse and legacy duel remain available */
+setMode(/(^|#|&)browse/.test(location.hash)?'browse':/(^|#|&)duel/.test(location.hash)?'duel':'decision');
 </script>
+<script src="/reno/decision-tree.js"></script>
 </body>
 </html>
