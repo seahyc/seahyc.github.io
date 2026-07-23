@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4efe7">
+<title>Bomb shelter · Rack &amp; fan clearance</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe7;--card:#fcfaf6;--ink:#2c2620;--muted:#716556;--line:#ddd2c0;--walnut:#7c4f2d;--gold:#b08442;--blue:#3478b8;--rack:#6d7781;--box:#d3a35d;--good:#54774c;--warn:#b07a2a;--bad:#a8503f;--shadow:0 18px 40px -22px rgba(60,42,24,.45)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",sans-serif}
+body{background-image:radial-gradient(circle at 8% 5%,rgba(216,199,172,.38),transparent 38%),radial-gradient(circle at 92% 95%,rgba(124,79,45,.08),transparent 42%)}
+.wrap{max-width:1460px;margin:auto;padding:0 22px}
+header{padding:34px 0 20px}.back{display:inline-block;color:var(--walnut);font-size:.82rem;font-weight:700;text-decoration:none;margin-bottom:16px}
+.eyebrow{font-size:.71rem;letter-spacing:.24em;text-transform:uppercase;color:var(--walnut);font-weight:700}
+h1,h2,h3{font-family:"Fraunces",serif;font-weight:500}h1{font-size:clamp(2.2rem,5vw,3.9rem);line-height:1.03;margin:.12em 0}.sub{max-width:78ch;color:var(--muted)}
+.measured{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.chip{border:1px solid var(--line);background:rgba(252,250,246,.75);padding:6px 9px;border-radius:8px;font-size:.78rem}
+.layout{display:grid;grid-template-columns:260px minmax(500px,1fr) 290px;gap:14px;align-items:start;padding-bottom:40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.controls,.analysis{padding:18px}.controls h2,.analysis h2{font-size:1.35rem;margin-bottom:14px}
+.field{margin-bottom:14px}.field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:5px}
+select{width:100%;border:1px solid #cfc4b3;background:#fffdf9;color:var(--ink);border-radius:9px;padding:9px 10px;font:inherit}
+.hint{font-size:.72rem;color:var(--muted);line-height:1.4;margin-top:5px}
+.view{overflow:hidden}.viewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:7px}.tab,.camera{font:inherit;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:9px;padding:7px 10px;cursor:pointer;font-weight:700;font-size:.78rem}
+.tab.on{background:var(--walnut);border-color:var(--walnut);color:#fff}.camera{color:var(--ink);background:#fff}.camera[hidden]{display:none}
+.stage{position:relative;min-height:650px;background:#eee9e0}.top-plan{width:100%;height:650px;display:block}.scene{width:100%;height:650px;display:none}
+.mode-3d .top-plan{display:none}.mode-3d .scene{display:block}
+.legend{display:flex;gap:12px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font-size:.72rem;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.status{display:inline-block;font-size:.72rem;font-weight:700;padding:5px 9px;border-radius:999px;margin-bottom:12px}.safe{background:#e1eee0;color:#3e6338}.tight{background:#faecd2;color:#815817}.collision{background:#f5dfda;color:#8a392d}
+.metric{padding:11px 0;border-top:1px solid var(--line)}.metric:first-of-type{border-top:0}.mlabel{font-size:.7rem;color:var(--muted)}.mvalue{font-size:1.7rem;font-weight:700;line-height:1.05;margin:3px 0}.mnote{font-size:.76rem;color:var(--muted);line-height:1.38}
+.trade{margin:10px 0 0;padding-left:18px}.trade li{font-size:.79rem;line-height:1.42;margin-bottom:8px}
+.source{border-top:1px solid var(--line);margin-top:15px;padding-top:12px;color:var(--muted);font-size:.69rem;line-height:1.45}
+@media(max-width:1100px){.layout{grid-template-columns:250px 1fr}.analysis{grid-column:1/-1}.stage,.top-plan,.scene{min-height:600px;height:600px}}
+@media(max-width:760px){.wrap{padding:0 12px}.layout{grid-template-columns:1fr}.stage,.top-plan,.scene{min-height:520px;height:520px}.viewbar{align-items:flex-start;flex-direction:column}.controls{order:2}.view{order:1}.analysis{order:3}header{padding-top:24px}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <a class="back" href="/reno/">← Reno Hub</a>
+  <div class="eyebrow">532B Bishan · measured onsite 23 Jul 2026</div>
+  <h1>Rack &amp; fan clearance</h1>
+  <p class="sub">Start from the top view: every important dimension is drawn in the room. Change rack and fan options to see the real blade sweep, the 10cm working buffer, and any overlap with ceiling-high storage.</p>
+  <div class="measured">
+    <span class="chip">Room 229.5 × 124cm</span><span class="chip">Ceiling 263–265cm</span>
+    <span class="chip">E27 116cm from left</span><span class="chip">E27 64cm from far wall</span><span class="chip">Socket stop 5cm below ceiling</span>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <section class="panel controls">
+    <h2>Configure</h2>
+    <div class="field"><label for="depth">Rack depth</label><select id="depth"><option value="0">No rack</option><option value="30">30cm shallow</option><option value="45" selected>45cm Ark standard</option><option value="60">60cm deep</option></select><div class="hint">Ark’s named residential sizes use 45cm depth; 30 and 60cm are also available.</div></div>
+    <div class="field"><label for="height">Rack height</label><select id="height"><option value="180">180cm · 4 tier</option><option value="210" selected>210cm · 5 tier</option></select></div>
+    <div class="field"><label for="layout">Rack layout</label><select id="layout"><option value="far" selected>Far wall only</option><option value="left">Far + left wall</option><option value="right">Far + right wall</option><option value="three">Far + both sides</option></select></div>
+    <div class="field"><label for="storage">Top storage</label><select id="storage"><option value="ceiling" selected>Stack to 5cm below ceiling</option><option value="low">Keep below 230cm</option><option value="none">Top shelf empty</option></select></div>
+    <div class="field"><label for="fan">Ceiling option</label><select id="fan"><option value="none">Normal E27 bulb</option><option value="26" selected>26cm fan · 30W listed</option><option value="40">40cm fan · 30–40W listings</option><option value="52">52cm fan · 40W listed</option></select><div class="hint">Diameter is confirmed from listings. Exact blade-plane height and lumens are not seller-verified.</div></div>
+  </section>
+
+  <section class="panel view" id="view">
+    <div class="viewbar">
+      <div class="tabs"><button class="tab on" data-mode="top">Top clearance</button><button class="tab" data-mode="3d">3D room</button></div>
+      <div><button class="camera" id="reset" hidden>Reset camera</button><button class="camera" id="topCamera" hidden>Camera overhead</button></div>
+    </div>
+    <div class="stage">
+      <svg id="topPlan" class="top-plan" viewBox="0 0 900 650" role="img" aria-label="Top-down dimensioned bomb shelter fan and rack clearance"></svg>
+      <canvas id="scene" class="scene" aria-label="Rotatable 3D bomb shelter fan and rack model"></canvas>
+    </div>
+    <div class="legend"><span><i class="dot" style="background:#6d7781"></i>rack</span><span><i class="dot" style="background:#f2ca64"></i>blade sweep</span><span><i class="dot" style="background:#d99a3d"></i>10cm working buffer</span><span><i class="dot" style="background:#a8503f"></i>physical overlap</span></div>
+  </section>
+
+  <aside class="panel analysis">
+    <h2>Trade-offs</h2><div id="status" class="status tight">Tight clearance</div>
+    <div class="metric"><div class="mlabel">Blade edge → nearest rack front</div><div id="clearance" class="mvalue">6cm</div><div id="clearanceNote" class="mnote"></div></div>
+    <div class="metric"><div class="mlabel">Open room depth after far rack</div><div id="aisle" class="mvalue">79cm</div><div id="aisleNote" class="mnote"></div></div>
+    <div class="metric"><div class="mlabel">Rack top → ceiling</div><div id="headroom" class="mvalue">54cm</div><div id="headroomNote" class="mnote"></div></div>
+    <ul id="trade" class="trade"></ul>
+    <div class="source"><b>Measured:</b> room, E27 position and socket offset. <b>Seller-listed:</b> fan diameter, wattage and overall height. <b>Estimated:</b> exact blade plane and airflow. Keep SS1 isolated until the holder is inspected.</div>
+  </aside>
+</main>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+
+const R={w:229.5,d:124,h:264,leftReturn:99,rightReturn:59,lx:116,lz:64,socket:5};
+const $=id=>document.getElementById(id);
+const els={depth:$("depth"),height:$("height"),layout:$("layout"),storage:$("storage"),fan:$("fan")};
+const state=()=>({depth:+els.depth.value,height:+els.height.value,layout:els.layout.value,storage:els.storage.value,fan:+els.fan.value});
+const cm=n=>`${Math.round(n)}cm`;
+function nearest(s){if(!s.depth||!s.fan)return null;const r=s.fan/2,g=[R.lz-s.depth-r];if(s.layout==="left"||s.layout==="three")g.push(R.lx-s.depth-r);if(s.layout==="right"||s.layout==="three")g.push(R.w-R.lx-s.depth-r);return Math.min(...g)}
+function severity(s,c){if(!s.fan||!s.depth)return"safe";if(s.storage!=="ceiling")return c<10?"tight":"safe";return c<0?"collision":c<10?"tight":"safe"}
+
+function renderTop(s,c,sev){
+ const svg=$("topPlan"),mobile=innerWidth<760,fs=mobile?28:17,small=mobile?21:14,fanFs=mobile?25:16,S=2.72,x0=105,y0=105,W=R.w*S,D=R.d*S,cx=x0+R.lx*S,cy=y0+R.lz*S,rd=s.depth*S,fr=s.fan/2*S,buffer=fr+10*S;
+ const doorA=x0+R.leftReturn*S,doorB=x0+(R.w-R.rightReturn)*S;
+ const rackFar=s.depth?`<rect x="${x0}" y="${y0}" width="${W}" height="${rd}" rx="5" fill="#6d7781" opacity=".82"/>`:"";
+ const rackLeft=s.depth&&(s.layout==="left"||s.layout==="three")?`<rect x="${x0}" y="${y0+rd}" width="${rd}" height="${D-rd}" fill="#6d7781" opacity=".82"/>`:"";
+ const rackRight=s.depth&&(s.layout==="right"||s.layout==="three")?`<rect x="${x0+W-rd}" y="${y0+rd}" width="${rd}" height="${D-rd}" fill="#6d7781" opacity=".82"/>`:"";
+ const fanCircle=s.fan?`<circle cx="${cx}" cy="${cy}" r="${fr}" fill="#f2ca64" fill-opacity=".48" stroke="#9a7626" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="${buffer}" fill="none" stroke="#d99a3d" stroke-width="2" stroke-dasharray="8 7"/>`:`<circle cx="${cx}" cy="${cy}" r="8" fill="#f2ca64" stroke="#2c2620" stroke-width="3"/>`;
+ const overlap=s.depth&&s.fan?`<defs><clipPath id="blade"><circle cx="${cx}" cy="${cy}" r="${fr}"/></clipPath><clipPath id="buffer"><circle cx="${cx}" cy="${cy}" r="${buffer}"/></clipPath></defs><g clip-path="url(#buffer)" opacity=".34">${rackFar.replace("#6d7781","#d99a3d")}${rackLeft.replace("#6d7781","#d99a3d")}${rackRight.replace("#6d7781","#d99a3d")}</g>${s.storage==="ceiling"?`<g clip-path="url(#blade)" opacity=".88">${rackFar.replace("#6d7781","#a8503f")}${rackLeft.replace("#6d7781","#a8503f")}${rackRight.replace("#6d7781","#a8503f")}</g>`:""}`:"";
+ const fanDim=s.fan?`<line x1="${cx-fr}" y1="${cy+fr+35}" x2="${cx+fr}" y2="${cy+fr+35}" class="fanDim"/><text x="${cx}" y="${cy+fr+57}" class="fanText" text-anchor="middle">fan Ø ${s.fan}cm</text>`:"";
+ const rackDim=s.depth?`<line x1="${x0+W+36}" y1="${y0}" x2="${x0+W+36}" y2="${y0+rd}" class="rackDim"/><text x="${x0+W+58}" y="${y0+rd/2}" class="rackText" transform="rotate(90 ${x0+W+58} ${y0+rd/2})" text-anchor="middle">rack ${s.depth}cm</text>`:"";
+ let gap="";
+ if(c!==null){const edgeY=cy-fr,front=y0+rd;if(c>=0)gap=`<line x1="${cx-45}" y1="${front}" x2="${cx-45}" y2="${edgeY}" class="gapDim"/><text x="${cx-58}" y="${(front+edgeY)/2}" class="gapText" transform="rotate(-90 ${cx-58} ${(front+edgeY)/2})" text-anchor="middle">${Math.round(c)}cm clear</text>`;else gap=`<text x="${cx+fr+18}" y="${y0+rd-10}" class="badText">${Math.round(Math.abs(c))}cm overlap</text>`}
+ svg.innerHTML=`<style>
+ .wall{stroke:#2c2620;stroke-width:16;stroke-linecap:square}.dim{stroke:#3478b8;stroke-width:2;marker-start:url(#a);marker-end:url(#a)}.dimText{fill:#3478b8;font:700 ${fs}px "Hanken Grotesk"}.subText{fill:#716556;font:600 ${small}px "Hanken Grotesk"}.fanDim{stroke:#9a7626;stroke-width:2;marker-start:url(#g);marker-end:url(#g)}.fanText{fill:#7b5b19;font:700 ${fanFs}px "Hanken Grotesk"}.rackDim{stroke:#6d7781;stroke-width:2;marker-start:url(#r);marker-end:url(#r)}.rackText{fill:#59636d;font:700 ${small}px "Hanken Grotesk"}.gapDim{stroke:#54774c;stroke-width:3;marker-start:url(#ok);marker-end:url(#ok)}.gapText{fill:#46683f;font:700 ${small}px "Hanken Grotesk"}.badText{fill:#8d382d;font:700 ${fanFs}px "Hanken Grotesk"}
+ </style><defs><marker id="a" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#3478b8"/></marker><marker id="g" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#9a7626"/></marker><marker id="r" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#6d7781"/></marker><marker id="ok" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#54774c"/></marker></defs>
+ <rect width="900" height="650" fill="#eee9e0"/>
+ <line x1="${x0}" y1="${y0}" x2="${x0+W}" y2="${y0}" class="wall"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0+D}" class="wall"/><line x1="${x0+W}" y1="${y0}" x2="${x0+W}" y2="${y0+D}" class="wall"/><line x1="${x0}" y1="${y0+D}" x2="${doorA}" y2="${y0+D}" class="wall"/><line x1="${doorB}" y1="${y0+D}" x2="${x0+W}" y2="${y0+D}" class="wall"/>
+ ${rackFar}${rackLeft}${rackRight}${fanCircle}${overlap}
+ <circle cx="${cx}" cy="${cy}" r="5" fill="#2c2620"/><line x1="${cx-12}" y1="${cy}" x2="${cx+12}" y2="${cy}" stroke="#2c2620"/><line x1="${cx}" y1="${cy-12}" x2="${cx}" y2="${cy+12}" stroke="#2c2620"/>
+ <line x1="${x0}" y1="65" x2="${x0+W}" y2="65" class="dim"/><text x="${x0+W/2}" y="50" text-anchor="middle" class="dimText">room 229.5cm</text>
+ <line x1="${x0+W+82}" y1="${y0}" x2="${x0+W+82}" y2="${y0+D}" class="dim"/><text x="${x0+W+105}" y="${y0+D/2}" class="dimText" transform="rotate(90 ${x0+W+105} ${y0+D/2})" text-anchor="middle">room 124cm</text>
+ <line x1="${x0}" y1="${y0+D+48}" x2="${cx}" y2="${y0+D+48}" class="dim"/><text x="${(x0+cx)/2}" y="${y0+D+75}" text-anchor="middle" class="dimText">E27 from left = 116cm</text>
+ <line x1="${x0-45}" y1="${y0}" x2="${x0-45}" y2="${cy}" class="dim"/><text x="${x0-67}" y="${(y0+cy)/2}" class="dimText" transform="rotate(-90 ${x0-67} ${(y0+cy)/2})" text-anchor="middle">E27 from far wall = 64cm</text>
+ ${rackDim}${fanDim}${gap}
+ <text x="${x0+W/2}" y="${y0+D+112}" text-anchor="middle" class="subText">Door opening ≈ 71.5cm (derived from C 59cm + D 99cm)</text>
+ <text x="450" y="625" text-anchor="middle" class="subText">${sev==="collision"?"Red = blades physically enter ceiling-high storage":sev==="tight"?"Amber dashed circle = 10cm working buffer; current clearance is tight":"Fan and 10cm buffer clear the selected racks"}</text>`;
+}
+
+function updateAnalysis(s,c,sev){
+ const st=$("status");st.className=`status ${sev}`;st.textContent=sev==="collision"?"Physical overlap":sev==="tight"?"Tight clearance":"Clear";
+ $("clearance").textContent=!s.fan?"No blade":!s.depth?"No rack":c<0?`${cm(Math.abs(c))} overlap`:cm(c);
+ $("clearanceNote").textContent=!s.fan?"No rotating envelope; maximum freedom for ceiling-high storage.":c<0?(s.storage==="ceiling"?"Blades physically enter the ceiling-high storage footprint.":"Horizontal footprints overlap, but current objects are below the estimated blade plane."):c<10?"Below the recommended 10cm working buffer.":`${cm(c-10)} remains after a 10cm buffer.`;
+ const open=R.d-s.depth;$("aisle").textContent=cm(open);$("aisleNote").textContent=open<70?"Cramped for luggage and turning with boxes.":open<85?"Usable, but bulky luggage will make access feel narrow.":"Comfortable access for this compact shelter.";
+ const hr=R.h-s.height;$("headroom").textContent=s.depth?cm(hr):"No rack";$("headroomNote").textContent=s.depth?`About ${cm(hr-5)} stack height while retaining 5cm below the ceiling.`:"The full room volume remains open.";
+ const t=[];if(!s.depth)t.push("No rack maximises movement and fan clearance, but loses organised vertical storage.");else if(s.depth===30)t.push("30cm racks preserve 94cm open depth, but luggage and deep boxes may overhang.");else if(s.depth===45)t.push("45cm is Ark’s standard compromise: useful box depth with 79cm open room depth.");else t.push("60cm racks maximise shelf depth but leave only 64cm open room depth.");
+ t.push(s.height===180?"180cm / 4-tier leaves 84cm above the rack and suits tall floor items, but offers fewer shelves.":"210cm / 5-tier gives more separated shelving; its top shelf is 53–55cm below the ceiling.");
+ if(s.storage==="ceiling")t.push("Ceiling-high objects sit at blade height, so the red overlap and edge-clearance measurement are decisive.");else if(s.storage==="low")t.push("Keeping objects below 230cm separates them vertically from the estimated blade plane.");else t.push("An empty top shelf removes the immediate blade/object conflict but wastes upper storage.");
+ if(!s.fan)t.push("A normal bulb is the safest storage-first choice, but provides no forced air movement.");else if(s.fan===26)t.push("The 26cm fan is compact; with a 45cm far rack it still leaves only 6cm nominal edge clearance.");else if(s.fan===40)t.push("A 40cm fan overlaps a 45cm far-rack footprint by about 1cm when objects reach blade height.");else t.push("The 52cm fan overlaps a 45cm rack by 7cm; even a 30cm rack leaves only 8cm.");
+ if(s.layout!=="far")t.push("Side racks add capacity without becoming the limiting edge; the far-wall rack remains closest to the fan.");
+ $("trade").innerHTML=t.map(x=>`<li>${x}</li>`).join("");
+}
+
+let renderer,scene,camera,controls,dynamic;
+function init3d(){
+ if(renderer)return;
+ const canvas=$("scene");scene=new THREE.Scene();scene.background=new THREE.Color(0xeee9e0);camera=new THREE.PerspectiveCamera(42,1,.01,30);camera.position.set(3.5,3.1,4.3);
+ renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;
+ controls=new OrbitControls(camera,canvas);controls.target.set(R.w/200,1.15,R.d/200);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*.495;
+ scene.add(new THREE.HemisphereLight(0xffffff,0xb9c0c8,1.8));const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(4,6,4);scene.add(light);
+ const room=new THREE.Group(),wall=new THREE.MeshStandardMaterial({color:0xe7e5df,transparent:true,opacity:.48,side:THREE.DoubleSide}),floor=new THREE.MeshStandardMaterial({color:0xd5cec1});
+ box(room,R.w/100,.035,R.d/100,R.w/200,-.018,R.d/200,floor);box(room,R.w/100,R.h/100,.035,R.w/200,R.h/200,0,wall);box(room,.035,R.h/100,R.d/100,0,R.h/200,R.d/200,wall);box(room,.035,R.h/100,R.d/100,R.w/100,R.h/200,R.d/200,wall);
+ box(room,R.leftReturn/100,R.h/100,.035,R.leftReturn/200,R.h/200,R.d/100,wall);box(room,R.rightReturn/100,R.h/100,.035,R.w/100-R.rightReturn/200,R.h/200,R.d/100,wall);scene.add(room);dynamic=new THREE.Group();scene.add(dynamic);
+ resize3d();new ResizeObserver(resize3d).observe(canvas.parentElement);animate();
+}
+function box(parent,w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);parent.add(m);return m}
+function clear3d(){while(dynamic.children.length){const c=dynamic.children.pop();c.traverse?.(n=>n.geometry?.dispose?.())}}
+function levels(h){return h<2?[.8,1.15,1.5,1.8]:[.2,.67,1.14,1.61,2.1]}
+function rack3d(s,side="far"){
+ const d=s.depth/100,h=s.height/100,mat=new THREE.MeshStandardMaterial({color:0x6d7781,metalness:.45,roughness:.55}),shelf=new THREE.MeshStandardMaterial({color:0x89939c,metalness:.4}),boxes=new THREE.MeshStandardMaterial({color:0xd3a35d,roughness:.85});
+ if(side==="far"){for(const x of [.04,R.w/100-.04])for(const z of [.04,d-.04])box(dynamic,.025,h,.025,x,h/2,z,mat);for(const y of levels(h))box(dynamic,R.w/100-.08,.025,d-.06,R.w/200,y,d/2,shelf);if(s.storage!=="none"){const top=s.storage==="low"?2.3:R.h/100-.05,sh=Math.max(.05,top-h);for(const x of [.35,R.lx/100,R.w/100-.34])box(dynamic,.48,sh,d-.015,x,h+sh/2,d/2,boxes)}}
+ else{const left=side==="left",x=left?d/2:R.w/100-d/2,start=d+.03,len=R.d/100-start-.08;for(const xx of left?[.04,d-.04]:[R.w/100-d+.04,R.w/100-.04])for(const z of [start+.04,start+len-.04])box(dynamic,.025,h,.025,xx,h/2,z,mat);for(const y of levels(h))box(dynamic,d-.06,.025,len-.06,x,y,start+len/2,shelf)}
+}
+function fan3d(s,sev){const y=R.h/100-R.socket/100;if(!s.fan){const m=new THREE.Mesh(new THREE.SphereGeometry(.07,20,14),new THREE.MeshStandardMaterial({color:0xffd766,emissive:0xffc94c,emissiveIntensity:.5}));m.position.set(R.lx/100,y-.07,R.lz/100);dynamic.add(m);return}const r=s.fan/200,bladeY=y-(s.fan===26?.045:.09),col=sev==="collision"?0xa8503f:sev==="tight"?0xd99a3d:0x54774c,sweep=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.018,64),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.3}));sweep.position.set(R.lx/100,bladeY,R.lz/100);dynamic.add(sweep);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.05,.07,.07,24),new THREE.MeshStandardMaterial({color:0xf2ca64}));hub.position.set(R.lx/100,bladeY,R.lz/100);dynamic.add(hub)}
+function render3d(s,sev){if(!renderer)return;clear3d();if(s.depth){rack3d(s);if(s.layout==="left"||s.layout==="three")rack3d(s,"left");if(s.layout==="right"||s.layout==="three")rack3d(s,"right")}fan3d(s,sev)}
+function resize3d(){if(!renderer)return;const c=$("scene"),r=c.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+function animate(){if(!renderer)return;controls.update();renderer.render(scene,camera);requestAnimationFrame(animate)}
+
+function update(){
+ const s=state(),c=nearest(s),sev=severity(s,c);renderTop(s,c,sev);updateAnalysis(s,c,sev);render3d(s,sev);localStorage.setItem("reno_shelter_model",JSON.stringify(s));
+}
+for(const el of Object.values(els))el.addEventListener("change",update);
+try{const saved=JSON.parse(localStorage.getItem("reno_shelter_model")||"null");if(saved)for(const[k,v]of Object.entries(saved))if(els[k])els[k].value=String(v)}catch(e){}
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b===btn));const is3d=btn.dataset.mode==="3d";$("view").classList.toggle("mode-3d",is3d);$("reset").hidden=!is3d;$("topCamera").hidden=!is3d;if(is3d){init3d();render3d(state(),severity(state(),nearest(state())));resize3d()}}));
+$("reset").addEventListener("click",()=>{camera.position.set(3.5,3.1,4.3);controls.target.set(R.w/200,1.15,R.d/200);controls.update()});
+$("topCamera").addEventListener("click",()=>{camera.position.set(R.w/200,5.2,R.d/200+.001);controls.target.set(R.w/200,0,R.d/200);controls.update()});
+addEventListener("resize",()=>{update();resize3d()});
+update();
+</script>
+</body>
+</html>
