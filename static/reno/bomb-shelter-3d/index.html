@@ -26,10 +26,13 @@ h1,h2,h3{font-family:"Fraunces",serif;font-weight:500}h1{font-size:clamp(2.2rem,
 select{width:100%;border:1px solid #cfc4b3;background:#fffdf9;color:var(--ink);border-radius:9px;padding:9px 10px;font:inherit}
 .hint{font-size:.72rem;color:var(--muted);line-height:1.4;margin-top:5px}
 .view{overflow:hidden}.viewbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.viewbar>div:last-child{display:flex;gap:6px;flex-wrap:wrap}
 .tabs{display:flex;gap:7px}.tab,.camera{font:inherit;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:9px;padding:7px 10px;cursor:pointer;font-weight:700;font-size:.78rem}
 .tab.on{background:var(--walnut);border-color:var(--walnut);color:#fff}.camera{color:var(--ink);background:#fff}.camera[hidden]{display:none}
 .stage{position:relative;min-height:650px;background:#eee9e0}.top-plan{width:100%;height:650px;display:block}.scene{width:100%;height:650px;display:none}
 .mode-3d .top-plan{display:none}.mode-3d .scene{display:block}
+.camera-hint{display:none;position:absolute;left:14px;bottom:14px;z-index:2;max-width:330px;padding:8px 10px;border:1px solid rgba(221,210,192,.9);border-radius:9px;background:rgba(252,250,246,.9);box-shadow:0 8px 22px -14px rgba(44,38,32,.55);color:var(--muted);font-size:.7rem;line-height:1.35;pointer-events:none;backdrop-filter:blur(7px)}
+.mode-3d .camera-hint{display:block}
 .legend{display:flex;gap:12px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font-size:.72rem;color:var(--muted)}
 .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .status{display:inline-block;font-size:.72rem;font-weight:700;padding:5px 9px;border-radius:999px;margin-bottom:12px}.safe{background:#e1eee0;color:#3e6338}.tight{background:#faecd2;color:#815817}.collision{background:#f5dfda;color:#8a392d}
@@ -70,8 +73,9 @@ select{width:100%;border:1px solid #cfc4b3;background:#fffdf9;color:var(--ink);b
     <div class="stage">
       <svg id="topPlan" class="top-plan" viewBox="0 0 900 650" role="img" aria-label="Top-down dimensioned bomb shelter fan and rack clearance"></svg>
       <canvas id="scene" class="scene" aria-label="Rotatable 3D bomb shelter fan and rack model"></canvas>
+      <div class="camera-hint"><b>360° camera:</b> drag to orbit · right-drag or Shift-drag to pan · scroll/pinch to zoom · two-finger drag to pan</div>
     </div>
-    <div class="legend"><span><i class="dot" style="background:#6d7781"></i>rack</span><span><i class="dot" style="background:#f2ca64"></i>blade sweep</span><span><i class="dot" style="background:#d99a3d"></i>10cm working buffer</span><span><i class="dot" style="background:#a8503f"></i>physical overlap</span></div>
+    <div class="legend"><span><i class="dot" style="background:#3478b8"></i>measured dimension</span><span><i class="dot" style="background:#6d7781"></i>rack</span><span><i class="dot" style="background:#f2ca64"></i>blade sweep</span><span><i class="dot" style="background:#d99a3d"></i>10cm working buffer</span><span><i class="dot" style="background:#a8503f"></i>physical overlap</span></div>
   </section>
 
   <aside class="panel analysis">
@@ -142,26 +146,61 @@ function updateAnalysis(s,c,sev){
 let renderer,scene,camera,controls,dynamic;
 function init3d(){
  if(renderer)return;
- const canvas=$("scene");scene=new THREE.Scene();scene.background=new THREE.Color(0xeee9e0);camera=new THREE.PerspectiveCamera(42,1,.01,30);camera.position.set(3.5,3.1,4.3);
+ const canvas=$("scene");scene=new THREE.Scene();scene.background=new THREE.Color(0xeee9e0);camera=new THREE.PerspectiveCamera(42,1,.01,30);camera.position.set(4.25,3.55,4.85);
  renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;
- controls=new OrbitControls(camera,canvas);controls.target.set(R.w/200,1.15,R.d/200);controls.enableDamping=true;controls.maxPolarAngle=Math.PI*.495;
+ controls=new OrbitControls(camera,canvas);controls.target.set(R.w/200,1.15,R.d/200);controls.enableDamping=true;controls.dampingFactor=.07;controls.enableRotate=true;controls.enablePan=true;controls.enableZoom=true;controls.screenSpacePanning=true;controls.minPolarAngle=.01;controls.maxPolarAngle=Math.PI-.01;controls.minDistance=.45;controls.maxDistance=10;controls.rotateSpeed=.72;controls.panSpeed=.78;
+ const syncCameraState=()=>{canvas.dataset.cameraX=camera.position.x.toFixed(3);canvas.dataset.cameraY=camera.position.y.toFixed(3);canvas.dataset.cameraZ=camera.position.z.toFixed(3);canvas.dataset.targetX=controls.target.x.toFixed(3);canvas.dataset.targetY=controls.target.y.toFixed(3);canvas.dataset.targetZ=controls.target.z.toFixed(3);canvas.dataset.polar=controls.getPolarAngle().toFixed(3)};
+ controls.addEventListener("change",syncCameraState);syncCameraState();
  scene.add(new THREE.HemisphereLight(0xffffff,0xb9c0c8,1.8));const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(4,6,4);scene.add(light);
- const room=new THREE.Group(),wall=new THREE.MeshStandardMaterial({color:0xe7e5df,transparent:true,opacity:.48,side:THREE.DoubleSide}),floor=new THREE.MeshStandardMaterial({color:0xd5cec1});
+ const room=new THREE.Group(),wall=new THREE.MeshStandardMaterial({color:0xe7e5df,transparent:true,opacity:.48,side:THREE.DoubleSide}),floor=new THREE.MeshStandardMaterial({color:0xd5cec1,transparent:true,opacity:.3,depthWrite:false,side:THREE.DoubleSide});
  box(room,R.w/100,.035,R.d/100,R.w/200,-.018,R.d/200,floor);box(room,R.w/100,R.h/100,.035,R.w/200,R.h/200,0,wall);box(room,.035,R.h/100,R.d/100,0,R.h/200,R.d/200,wall);box(room,.035,R.h/100,R.d/100,R.w/100,R.h/200,R.d/200,wall);
  box(room,R.leftReturn/100,R.h/100,.035,R.leftReturn/200,R.h/200,R.d/100,wall);box(room,R.rightReturn/100,R.h/100,.035,R.w/100-R.rightReturn/200,R.h/200,R.d/100,wall);scene.add(room);dynamic=new THREE.Group();scene.add(dynamic);
- resize3d();new ResizeObserver(resize3d).observe(canvas.parentElement);animate();
+ resize3d();resetCamera3d();new ResizeObserver(resize3d).observe(canvas.parentElement);animate();
 }
 function box(parent,w,h,d,x,y,z,mat){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);parent.add(m);return m}
-function clear3d(){while(dynamic.children.length){const c=dynamic.children.pop();c.traverse?.(n=>n.geometry?.dispose?.())}}
+function clear3d(){for(const c of [...dynamic.children]){dynamic.remove(c);c.traverse?.(n=>{n.geometry?.dispose?.();const mats=Array.isArray(n.material)?n.material:[n.material];for(const m of mats){m?.map?.dispose?.();m?.dispose?.()}})}}
 function levels(h){return h<2?[.8,1.15,1.5,1.8]:[.2,.67,1.14,1.61,2.1]}
+function label3d(text,color=0x3478b8){
+ const canvas=document.createElement("canvas"),ctx=canvas.getContext("2d"),font=34,pad=24;ctx.font=`700 ${font}px "Hanken Grotesk",sans-serif`;const width=Math.ceil(ctx.measureText(text).width+pad*2);canvas.width=Math.max(256,width);canvas.height=82;
+ ctx.fillStyle="rgba(252,250,246,.94)";ctx.strokeStyle="#d9cebd";ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(2,2,canvas.width-4,canvas.height-4,14);ctx.fill();ctx.stroke();ctx.font=`700 ${font}px "Hanken Grotesk",sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=`#${new THREE.Color(color).getHexString()}`;ctx.fillText(text,canvas.width/2,canvas.height/2+1);
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.minFilter=THREE.LinearFilter;const material=new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false});const sprite=new THREE.Sprite(material);const h=.13;sprite.scale.set(h*(canvas.width/canvas.height),h,1);sprite.renderOrder=30;return sprite
+}
+function dimension3d(parent,a,b,text,color=0x3478b8,labelOffset=new THREE.Vector3()){
+ const material=new THREE.LineBasicMaterial({color,depthTest:false,transparent:true,opacity:.95}),geometry=new THREE.BufferGeometry().setFromPoints([a,b]),line=new THREE.Line(geometry,material);line.renderOrder=25;parent.add(line);
+ const dir=new THREE.Vector3().subVectors(b,a).normalize(),arrowGeo=new THREE.ConeGeometry(.024,.07,10),arrowMat=new THREE.MeshBasicMaterial({color,depthTest:false});
+ for(const [point,direction] of [[a,dir],[b,dir.clone().negate()]]){const arrow=new THREE.Mesh(arrowGeo,arrowMat);arrow.position.copy(point).addScaledVector(direction,.035);arrow.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction);arrow.renderOrder=26;parent.add(arrow)}
+ const label=label3d(text,color);label.position.copy(a).lerp(b,.5).add(labelOffset);parent.add(label);return line
+}
 function rack3d(s,side="far"){
  const d=s.depth/100,h=s.height/100,mat=new THREE.MeshStandardMaterial({color:0x6d7781,metalness:.45,roughness:.55}),shelf=new THREE.MeshStandardMaterial({color:0x89939c,metalness:.4}),boxes=new THREE.MeshStandardMaterial({color:0xd3a35d,roughness:.85});
  if(side==="far"){for(const x of [.04,R.w/100-.04])for(const z of [.04,d-.04])box(dynamic,.025,h,.025,x,h/2,z,mat);for(const y of levels(h))box(dynamic,R.w/100-.08,.025,d-.06,R.w/200,y,d/2,shelf);if(s.storage!=="none"){const top=s.storage==="low"?2.3:R.h/100-.05,sh=Math.max(.05,top-h);for(const x of [.35,R.lx/100,R.w/100-.34])box(dynamic,.48,sh,d-.015,x,h+sh/2,d/2,boxes)}}
  else{const left=side==="left",x=left?d/2:R.w/100-d/2,start=d+.03,len=R.d/100-start-.08;for(const xx of left?[.04,d-.04]:[R.w/100-d+.04,R.w/100-.04])for(const z of [start+.04,start+len-.04])box(dynamic,.025,h,.025,xx,h/2,z,mat);for(const y of levels(h))box(dynamic,d-.06,.025,len-.06,x,y,start+len/2,shelf)}
 }
 function fan3d(s,sev){const y=R.h/100-R.socket/100;if(!s.fan){const m=new THREE.Mesh(new THREE.SphereGeometry(.07,20,14),new THREE.MeshStandardMaterial({color:0xffd766,emissive:0xffc94c,emissiveIntensity:.5}));m.position.set(R.lx/100,y-.07,R.lz/100);dynamic.add(m);return}const r=s.fan/200,bladeY=y-(s.fan===26?.045:.09),col=sev==="collision"?0xa8503f:sev==="tight"?0xd99a3d:0x54774c,sweep=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.018,64),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.3}));sweep.position.set(R.lx/100,bladeY,R.lz/100);dynamic.add(sweep);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.05,.07,.07,24),new THREE.MeshStandardMaterial({color:0xf2ca64}));hub.position.set(R.lx/100,bladeY,R.lz/100);dynamic.add(hub)}
-function render3d(s,sev){if(!renderer)return;clear3d();if(s.depth){rack3d(s);if(s.layout==="left"||s.layout==="three")rack3d(s,"left");if(s.layout==="right"||s.layout==="three")rack3d(s,"right")}fan3d(s,sev)}
+function dimensions3d(s){
+ const dims=new THREE.Group(),w=R.w/100,d=R.d/100,h=R.h/100,lx=R.lx/100,lz=R.lz/100,blue=0x3478b8,rack=0x59636d,gold=0x9a7626;
+ dynamic.add(dims);
+ dimension3d(dims,new THREE.Vector3(0,.05,d+.15),new THREE.Vector3(w,.05,d+.15),`Room 229.5cm`,blue,new THREE.Vector3(0,.11,0));
+ dimension3d(dims,new THREE.Vector3(w+.15,.05,0),new THREE.Vector3(w+.15,.05,d),`Room 124cm`,blue,new THREE.Vector3(0,.11,0));
+ dimension3d(dims,new THREE.Vector3(w+.15,0,0),new THREE.Vector3(w+.15,h,0),`Ceiling 263–265cm`,blue,new THREE.Vector3(.12,0,0));
+ dimension3d(dims,new THREE.Vector3(0,h+.05,lz),new THREE.Vector3(lx,h+.05,lz),`E27 ← left 116cm`,blue,new THREE.Vector3(0,.1,0));
+ dimension3d(dims,new THREE.Vector3(lx,h+.14,0),new THREE.Vector3(lx,h+.14,lz),`E27 ← far wall 64cm`,blue,new THREE.Vector3(0,.1,0));
+ dimension3d(dims,new THREE.Vector3(lx+.12,h,lz),new THREE.Vector3(lx+.12,h-R.socket/100,lz),`Socket 5cm`,blue,new THREE.Vector3(.12,0,0));
+ if(s.depth){
+  const rd=s.depth/100,rh=s.height/100;
+  dimension3d(dims,new THREE.Vector3(w-.25,.07,0),new THREE.Vector3(w-.25,.07,rd),`Rack D${s.depth}cm`,rack,new THREE.Vector3(0,.1,0));
+  dimension3d(dims,new THREE.Vector3(.1,0,Math.max(.12,rd-.1)),new THREE.Vector3(.1,rh,Math.max(.12,rd-.1)),`Rack H${s.height}cm`,rack,new THREE.Vector3(.13,0,0));
+ }
+ if(s.fan){
+  const r=s.fan/200,fy=h-R.socket/100-(s.fan===26?.045:.09);
+  dimension3d(dims,new THREE.Vector3(lx-r,fy+.04,lz),new THREE.Vector3(lx+r,fy+.04,lz),`Fan Ø${s.fan}cm`,gold,new THREE.Vector3(0,.11,0));
+  const listed={26:8,52:19}[s.fan];if(listed)dimension3d(dims,new THREE.Vector3(lx-.12,h-R.socket/100,lz),new THREE.Vector3(lx-.12,h-(R.socket+listed)/100,lz),`Listed H${listed}cm`,gold,new THREE.Vector3(-.13,0,0));
+ }
+}
+function render3d(s,sev){if(!renderer)return;clear3d();if(s.depth){rack3d(s);if(s.layout==="left"||s.layout==="three")rack3d(s,"left");if(s.layout==="right"||s.layout==="three")rack3d(s,"right")}fan3d(s,sev);dimensions3d(s)}
 function resize3d(){if(!renderer)return;const c=$("scene"),r=c.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+function cameraFit(){const r=$("scene").getBoundingClientRect(),aspect=r.width/Math.max(1,r.height);return Math.max(1,.9/aspect)}
+function resetCamera3d(){const fit=cameraFit();camera.position.set(4.25*fit,3.55*fit,4.85*fit);controls.target.set(R.w/200,1.15,R.d/200);controls.update()}
 function animate(){if(!renderer)return;controls.update();renderer.render(scene,camera);requestAnimationFrame(animate)}
 
 function update(){
@@ -170,8 +209,8 @@ function update(){
 for(const el of Object.values(els))el.addEventListener("change",update);
 try{const saved=JSON.parse(localStorage.getItem("reno_shelter_model")||"null");if(saved)for(const[k,v]of Object.entries(saved))if(els[k])els[k].value=String(v)}catch(e){}
 document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b===btn));const is3d=btn.dataset.mode==="3d";$("view").classList.toggle("mode-3d",is3d);$("reset").hidden=!is3d;$("topCamera").hidden=!is3d;if(is3d){init3d();render3d(state(),severity(state(),nearest(state())));resize3d()}}));
-$("reset").addEventListener("click",()=>{camera.position.set(3.5,3.1,4.3);controls.target.set(R.w/200,1.15,R.d/200);controls.update()});
-$("topCamera").addEventListener("click",()=>{camera.position.set(R.w/200,5.2,R.d/200+.001);controls.target.set(R.w/200,0,R.d/200);controls.update()});
+$("reset").addEventListener("click",resetCamera3d);
+$("topCamera").addEventListener("click",()=>{const fit=cameraFit();camera.position.set(R.w/200,5.2*fit,R.d/200+.001);controls.target.set(R.w/200,0,R.d/200);controls.update()});
 addEventListener("resize",()=>{update();resize3d()});
 update();
 </script>
