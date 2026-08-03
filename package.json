@@ -3,11 +3,14 @@
   "scripts": {
     "build:retirement-planning": "node projects-src/retirement-planning/build.mjs",
     "build:reno-field-notes": "vite build --config projects-src/reno-field-notes/vite.config.mjs",
+    "build:reno-twin": "vite build --config projects-src/reno-twin/vite.config.mjs",
     "typecheck:reno-field-notes": "tsc -p projects-src/reno-field-notes/tsconfig.json --noEmit",
+    "typecheck:reno-twin": "tsc -p projects-src/reno-twin/tsconfig.json --noEmit",
     "typecheck:retirement-planning": "tsc -p projects-src/retirement-planning/tsconfig.json --noEmit",
     "verify:retirement-planning": "node projects-src/retirement-planning/verify.mjs",
     "verify:retirement-futures": "node projects-src/retirement-planning/verify-futures.mjs",
-    "verify:reno-field-notes": "node projects-src/reno-field-notes/verify.mjs"
+    "verify:reno-field-notes": "node projects-src/reno-field-notes/verify.mjs",
+    "verify:reno-twin": "node projects-src/reno-twin/verify.mjs"
   },
   "devDependencies": {
     "@types/react": "^19.2.2",

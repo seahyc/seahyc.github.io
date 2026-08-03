@@ -45,6 +45,12 @@ jobs:
         run: npm run build:reno-field-notes
       - name: Verify renovation field-note assets
         run: npm run verify:reno-field-notes
+      - name: Typecheck renovation digital twin
+        run: npm run typecheck:reno-twin
+      - name: Build renovation digital twin
+        run: npm run build:reno-twin
+      - name: Verify renovation digital twin
+        run: npm run verify:reno-twin
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5

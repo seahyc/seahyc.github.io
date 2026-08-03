@@ -48,6 +48,15 @@
     .section-heading h2 { margin: 0; font: 500 clamp(27px, 4vw, 42px)/1 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
     .section-heading p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; text-align: right; }
     .record-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .twin-banner { position: relative; display: grid; min-height: 186px; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); gap: 34px; align-items: end; margin-bottom: 12px; padding: 26px; overflow: hidden; border: 1px solid rgba(28,102,85,.24); border-radius: 22px; color: #edf4f0; background: #17352e; text-decoration: none; box-shadow: 0 18px 40px rgba(22,53,46,.13); }
+    .twin-banner::after { position: absolute; width: 320px; height: 320px; right: -90px; top: -190px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; box-shadow: 0 0 0 34px rgba(255,255,255,.025), 0 0 0 72px rgba(255,255,255,.018); content: ""; }
+    .twin-banner-copy, .twin-features { position: relative; z-index: 1; }
+    .twin-banner small { display: block; margin-bottom: 22px; color: #e5b672; font-size: 8px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .twin-banner h3 { max-width: 560px; margin: 0; font: 500 clamp(27px, 3.5vw, 39px)/1 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
+    .twin-banner h3 span { color: #e8b46c; }
+    .twin-features { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .twin-features span { padding: 10px; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; color: rgba(237,244,240,.77); background: rgba(255,255,255,.04); font-size: 9px; }
+    .twin-features b { display: block; margin-bottom: 2px; color: #fff; font-size: 10px; }
     .record { display: flex; min-height: 280px; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 21px; background: rgba(255,255,255,.52); box-shadow: 0 8px 25px rgba(49,44,34,.035); }
     .record-head { padding: 20px 20px 17px; border-bottom: 1px solid var(--line); }
     .record-head .icon { margin-bottom: 28px; }
@@ -103,6 +112,8 @@
       .section-heading { display: block; }
       .section-heading p { margin-top: 8px; text-align: left; }
       .record-grid, .card-grid, .case-grid { grid-template-columns: 1fr; }
+      .twin-banner { min-height: 0; grid-template-columns: 1fr; gap: 24px; padding: 22px; }
+      .twin-banner small { margin-bottom: 16px; }
       .record { min-height: 0; }
       .record-head .icon { margin-bottom: 20px; }
       .case-card { grid-template-columns: 105px 1fr; min-height: 150px; }
@@ -125,12 +136,17 @@
 
     <section class="section">
       <div class="section-heading"><h2>Project record</h2><p>The whole-home source of truth: governing plans and systems first, with individual investigations filed beneath the part of the project they affect.</p></div>
+      <a class="twin-banner" href="/reno/twin/">
+        <div class="twin-banner-copy"><small>Interactive whole-home record · public MVP</small><h3>Walk the renovation. Inspect every object. <span>Keep the asset history attached.</span></h3></div>
+        <div class="twin-features"><span><b>Orbit + walkthrough</b>Room waypoints and collision-aware movement</span><span><b>Design variants</b>Materials, furniture and cabinet states</span><span><b>Semantic inventory</b>Search, update and export assets</span><span><b>Field issues</b>Boba light and shower notes in place</span></div>
+      </a>
       <div class="record-grid">
         <article class="record">
           <div class="record-head"><span class="icon">📐</span><small>Comfort Home Interior · CP</small><h3>Design &amp; construction</h3></div>
           <div class="record-list">
             <div class="record-row"><div><b>Plans &amp; drawings</b><span>3D visual, detailed carpentry and revision history</span></div><span class="status-chip">Private soon</span></div>
-            <a class="record-row" href="/reno/living-room-3d/"><div><b>Spatial models</b><span>Room layouts and measured clearances</span></div><span class="arrow">↗</span></a>
+            <a class="record-row" href="/reno/twin/"><div><b>Whole-home digital twin</b><span>Spatial scene graph, systems and asset register</span></div><span class="arrow">↗</span></a>
+            <a class="record-row" href="/reno/living-room-3d/"><div><b>Legacy room models</b><span>Focused layouts and measured clearances</span></div><span class="arrow">↗</span></a>
           </div>
         </article>
         <article class="record">
