@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "title": "532B lighting purchase register",
+  "vendor": "Focus De Lightings",
+  "currency": "SGD",
+  "total": 980,
+  "gst": 0,
+  "pricingAccepted": "2026-06-01",
+  "deliveryConfirmed": "2026-06-06",
+  "sourceDocumentVisibility": "private",
+  "notes": [
+    "The source PDF remains private because it contains address, phone and payment details.",
+    "The total excludes separately sourced Boba wall lights, fans and the bomb-shelter fan light."
+  ],
+  "items": [
+    { "line": 1, "category": "profile", "description": "Aluminium profile for LED strip", "specification": "W18 × H43 mm; 3 m length only", "location": "Master bedroom", "quantity": 1, "unitPrice": 58, "amount": 58 },
+    { "line": 2, "category": "fixture", "description": "Recessed spotlight 1345", "specification": "Round; matt white; GU10; Ø95 mm; cut-out 80 mm", "location": "Dining", "quantity": 3, "unitPrice": 15, "amount": 45 },
+    { "line": 3, "category": "lamp", "description": "Philips Master / CorePro LED GU10", "specification": "4.9 W; 120°; 3000 K; 550 lm; CRI >80", "location": "Dining", "quantity": 3, "unitPrice": 8, "amount": 24 },
+    { "line": 4, "category": "fixture", "description": "Ceiling-mounted spotlight 357", "specification": "Round; matt white; GU10; Ø95 × H100 mm", "location": "Living ×4; foyer ×1; common bath ×1; outside common bath ×1; master bath ×1", "quantity": 8, "unitPrice": 25, "amount": 200 },
+    { "line": 5, "category": "lamp", "description": "Philips Master / CorePro LED GU10", "specification": "4.9 W; 120°; 3000 K; 550 lm; CRI >80", "location": "Surface spotlights", "quantity": 8, "unitPrice": 8, "amount": 64 },
+    { "line": 6, "category": "track", "description": "White lighting track", "specification": "1.5 m", "location": "Kitchen", "quantity": 1, "unitPrice": 16, "amount": 16 },
+    { "line": 7, "category": "fixture", "description": "Linear track fitting TH1771", "specification": "90 cm; CCT selectable; white frame", "location": "Kitchen", "quantity": 1, "unitPrice": 45, "amount": 45 },
+    { "line": 8, "category": "fixture", "description": "Aluminium bulb holder", "specification": "E27; white; Ø100 mm", "location": "Bomb shelter", "quantity": 1, "unitPrice": 9, "amount": 9 },
+    { "line": 9, "category": "strip", "description": "Philips COB LED strip", "specification": "12 W/m; 320-24V as printed; 5 m/packet; customized; referred to as LS161 in vendor chat", "location": "Six rooms", "quantity": 7, "unitPrice": 30, "amount": 210 },
+    { "line": 10, "category": "driver", "description": "Mean Well LED driver", "specification": "35 W; 24 V", "location": "LED-strip circuits", "quantity": 5, "unitPrice": 24, "amount": 120 },
+    { "line": 11, "category": "driver", "description": "Mean Well LED driver", "specification": "50 W; 24 V", "location": "LED-strip circuits", "quantity": 4, "unitPrice": 29, "amount": 116 },
+    { "line": 12, "category": "driver", "description": "Mean Well LED driver", "specification": "75 W; 24 V", "location": "Kitchen", "quantity": 1, "unitPrice": 34, "amount": 34 },
+    { "line": 13, "category": "driver", "description": "Mean Well LED driver", "specification": "100 W; 24 V", "location": "Kitchen", "quantity": 1, "unitPrice": 39, "amount": 39 }
+  ],
+  "ledStripSchedule": [
+    { "room": "Living", "runs": [{ "lengthM": 3, "driverW": 50 }, { "lengthM": 0.8, "count": 4, "driverW": 50 }, { "lengthM": 1.2, "driverW": 35 }], "totalM": 7.4 },
+    { "room": "Kitchen", "runs": [{ "lengthM": 6, "driverW": 100 }, { "lengthM": 2, "count": 2, "driverW": 75 }], "totalM": 10 },
+    { "room": "Master bedroom", "runs": [{ "lengthM": 1, "driverW": 35 }, { "lengthM": 3, "driverW": 50 }], "totalM": 4 },
+    { "room": "Study", "runs": [{ "lengthM": 0.8, "count": 4, "driverW": 50 }], "totalM": 3.2 },
+    { "room": "Common bath", "runs": [{ "lengthM": 1, "count": 2, "driverW": 35 }], "totalM": 2 },
+    { "room": "Master bath", "runs": [{ "lengthM": 2, "driverW": 35 }, { "lengthM": 1, "count": 2, "driverW": 35 }], "totalM": 4 }
+  ],
+  "driverCount": { "35W": 5, "50W": 4, "75W": 1, "100W": 1 }
+}

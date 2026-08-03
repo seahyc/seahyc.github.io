@@ -88,6 +88,8 @@
     .arrow { color: var(--green); font-size: 23px; }
     .card h3 { margin: auto 0 4px; font-size: 15px; letter-spacing: -.015em; }
     .card p { margin: 0; color: var(--muted); font-size: 11px; }
+    .card.private { border-color: rgba(196,94,66,.28); background: rgba(255,246,240,.68); }
+    .access { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; border-radius: 999px; color: var(--coral); background: rgba(196,94,66,.09); font-size: 8px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
     .archive { display: flex; flex-wrap: wrap; gap: 8px; }
     .archive span { padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.38); font-size: 10px; }
     footer { display: flex; justify-content: space-between; gap: 20px; margin-top: 52px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
@@ -148,7 +150,16 @@
       <div class="card-grid">
         <a class="card" href="/reno/living-room-3d/"><div class="card-top"><span class="icon">🛋️</span><span class="arrow">↗</span></div><h3>Living room · 3D layout</h3><p>Paludarium, sump, furniture and full dimensions.</p></a>
         <a class="card" href="/reno/bomb-shelter-3d/"><div class="card-top"><span class="icon">📦</span><span class="arrow">↗</span></div><h3>Bomb shelter · rack clearance</h3><p>Measured top view, fan sweep and storage scenarios.</p></a>
+        <a class="card" href="/reno/standing-desk/"><div class="card-top"><span class="icon">🖥️</span><span class="arrow">↗</span></div><h3>Study · standing-desk fit</h3><p>Two desks against the confirmed 3294 mm usable wall.</p></a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><h2>Systems &amp; records</h2><p>Useful public registers sit beside a private source archive. Personal, financial and security-relevant documents never enter this public repository.</p></div>
+      <div class="card-grid">
+        <a class="card" href="/reno/lighting/"><div class="card-top"><span class="icon">💡</span><span class="arrow">↗</span></div><h3>Lighting · fixture register</h3><p>13 final line items, every SKU and unit price, plus the 30.6 m LED-strip schedule.</p></a>
         <a class="card" href="/reno/electrical/"><div class="card-top"><span class="icon">⚡</span><span class="arrow">↗</span></div><h3>Electrical · smart switches</h3><p>17 Aqara plates, floor-plan map, BOM and vendor pricing.</p></a>
+        <a class="card private" href="https://private-reno.seahyingcong.com/"><div class="card-top"><span class="icon">🔐</span><span class="access">Google sign-in</span></div><h3>Private project archive</h3><p>Source drawings, invoices, budget, warranties and handover records—owner access only.</p></a>
       </div>
     </section>
 
@@ -156,14 +167,14 @@
       <div class="section-heading"><h2>Selections &amp; procurement</h2><p>Shortlists retain the evidence and trade-offs behind each choice.</p></div>
       <div class="card-grid">
         <a class="card" href="/reno/dining-table/"><div class="card-top"><span class="icon">🪑</span><span class="arrow">↗</span></div><h3>Dining table</h3><p>11 travertine candidates and guided decision tree.</p></a>
-        <a class="card" href="/reno/standing-desk/"><div class="card-top"><span class="icon">🖥️</span><span class="arrow">↗</span></div><h3>Study standing desks</h3><p>20 sit–stand desks with all options retained.</p></a>
         <a class="card" href="/reno/fan-light/"><div class="card-top"><span class="icon">💨</span><span class="arrow">↗</span></div><h3>Bomb-shelter fan light</h3><p>E27 decision tree and seven inspected Shopee variants.</p></a>
+        <a class="card" href="/reno/standing-desk/"><div class="card-top"><span class="icon">🪵</span><span class="arrow">↗</span></div><h3>Study desk shortlist</h3><p>20 sit–stand desks with product evidence and all options retained.</p></a>
       </div>
     </section>
 
     <section class="section">
-      <div class="section-heading"><h2>Reference shelf</h2><p>Planned records, retained here without pretending they are finished.</p></div>
-      <div class="archive"><span>Lighting BOM</span><span>Floor plans</span><span>Budget &amp; running total</span><span>Furniture wishlist</span></div>
+      <div class="section-heading"><h2>Next records</h2><p>The remaining high-value handover knowledge to extract from chats, drawings, invoices and site photos.</p></div>
+      <div class="archive"><span>Finish &amp; paint schedule</span><span>Warranty and manual index</span><span>Defect / remedy log</span><span>As-built services map</span><span>Maintenance calendar</span><span>Furniture wishlist</span></div>
     </section>
 
     <footer><b>seahyingcong.com/reno</b><span>Last reorganized · August 2026</span></footer>
