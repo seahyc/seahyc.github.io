@@ -504,6 +504,8 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Mobile */
 @media (max-width: 640px) {
+    .nav-inner { align-items: flex-start; gap: 1.2rem; }
+    .nav-links { flex-wrap: wrap; justify-content: flex-end; gap: 0.8rem 1.4rem; }
     .hero { padding-top: 4rem; }
     .hero-name { font-size: 3.6rem; }
     .hero-tagline { font-size: 2rem; }
