@@ -38,7 +38,7 @@
     a { color: inherit; }
     .page { width: min(1120px, calc(100% - 36px)); margin: 0 auto; padding: max(28px, env(safe-area-inset-top)) 0 max(70px, env(safe-area-inset-bottom)); }
     header { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); gap: 48px; align-items: end; padding: 56px 0 46px; border-bottom: 1px solid var(--line); }
-    header > *, .feature, .card { min-width: 0; }
+    header > *, .record, .case-card, .card { min-width: 0; }
     .kicker { color: var(--coral); font-size: 11px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
     h1 { max-width: 720px; margin: 10px 0 0; font: 500 clamp(42px, 7vw, 86px)/.94 Georgia, "Times New Roman", serif; letter-spacing: -.055em; }
     header p { margin: 0; color: var(--muted); font-size: 14px; }
@@ -47,28 +47,21 @@
     .section-heading { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 17px; }
     .section-heading h2 { margin: 0; font: 500 clamp(27px, 4vw, 42px)/1 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
     .section-heading p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; text-align: right; }
-    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .feature {
-      position: relative;
-      display: grid;
-      min-height: 380px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.17);
-      border-radius: 24px;
-      color: white;
-      text-decoration: none;
-      box-shadow: var(--shadow);
-      isolation: isolate;
-    }
-    .feature::before { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--image) center/cover no-repeat; transition: transform .45s cubic-bezier(.2,.75,.25,1); }
-    .feature::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(5,12,13,.06), rgba(5,12,13,.88)); }
-    .feature:hover::before { transform: scale(1.035); }
-    .feature-content { align-self: end; padding: 25px; }
-    .feature-meta { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 11px; }
-    .pill { padding: 5px 8px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; background: rgba(8,14,14,.3); backdrop-filter: blur(8px); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .feature h3 { max-width: 490px; margin: 0; overflow-wrap: anywhere; font: 500 clamp(27px, 4vw, 43px)/1 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
-    .feature p { max-width: 490px; margin: 9px 0 0; color: rgba(255,255,255,.78); font-size: 12px; }
-    .feature .go { position: absolute; top: 18px; right: 18px; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: rgba(8,14,14,.3); font-size: 23px; backdrop-filter: blur(8px); }
+    .record-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .record { display: flex; min-height: 280px; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 21px; background: rgba(255,255,255,.52); box-shadow: 0 8px 25px rgba(49,44,34,.035); }
+    .record-head { padding: 20px 20px 17px; border-bottom: 1px solid var(--line); }
+    .record-head .icon { margin-bottom: 28px; }
+    .record-head small { display: block; margin-bottom: 5px; color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .record-head h3 { margin: 0; font: 500 25px/1.05 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
+    .record-list { display: flex; flex: 1; flex-direction: column; }
+    .record-row { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; min-height: 68px; padding: 13px 20px; border-bottom: 1px solid var(--line); text-decoration: none; }
+    .record-row:last-child { border-bottom: 0; }
+    a.record-row { transition: background .18s ease; }
+    a.record-row:hover { background: rgba(28,102,85,.06); }
+    .record-row b { display: block; margin-bottom: 2px; font-size: 12px; }
+    .record-row span { display: block; color: var(--muted); font-size: 9px; }
+    .record-row .arrow { font-size: 18px; }
+    .status-chip { padding: 4px 7px; border-radius: 999px; color: var(--coral)!important; background: rgba(196,94,66,.09); font-size: 7px!important; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
     .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .card {
       display: flex;
@@ -90,6 +83,15 @@
     .card p { margin: 0; color: var(--muted); font-size: 11px; }
     .card.private { border-color: rgba(196,94,66,.28); background: rgba(255,246,240,.68); }
     .access { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; border-radius: 999px; color: var(--coral); background: rgba(196,94,66,.09); font-size: 8px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .issue-section { margin-top: 34px; padding-top: 34px; border-top: 1px solid var(--line); }
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .case-card { display: grid; grid-template-columns: 145px 1fr; min-height: 180px; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.42); text-decoration: none; transition: transform .18s ease, border-color .18s ease; }
+    .case-card:hover { transform: translateY(-2px); border-color: rgba(196,94,66,.38); }
+    .case-card img { width: 100%; height: 100%; object-fit: cover; }
+    .case-copy { display: flex; min-width: 0; flex-direction: column; padding: 17px; }
+    .case-meta { color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .case-copy h3 { margin: auto 0 5px; font-size: 14px; letter-spacing: -.012em; }
+    .case-copy p { margin: 0; color: var(--muted); font-size: 10px; }
     .archive { display: flex; flex-wrap: wrap; gap: 8px; }
     .archive span { padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.38); font-size: 10px; }
     footer { display: flex; justify-content: space-between; gap: 20px; margin-top: 52px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
@@ -100,9 +102,10 @@
       .section { padding-top: 34px; }
       .section-heading { display: block; }
       .section-heading p { margin-top: 8px; text-align: left; }
-      .feature-grid, .card-grid { grid-template-columns: 1fr; }
-      .feature { min-height: 320px; border-radius: 19px; }
-      .feature-content { padding: 19px; }
+      .record-grid, .card-grid, .case-grid { grid-template-columns: 1fr; }
+      .record { min-height: 0; }
+      .record-head .icon { margin-bottom: 20px; }
+      .case-card { grid-template-columns: 105px 1fr; min-height: 150px; }
       .card { min-height: 148px; }
       footer { display: block; }
       footer span { display: block; margin-top: 4px; }
@@ -117,31 +120,33 @@
         <div class="kicker">532B · Bishan Street 14</div>
         <h1>Renovation fieldbook</h1>
       </div>
-      <p><b>Decisions, dimensions and things that went sideways.</b> Interactive records built from site photos, contractor conversations, product drawings and room models.</p>
+      <p><b>Decisions, dimensions and things that went sideways.</b> Interactive records built from site photos, contractor conversations, product drawings and room models. Project delivery by Comfort Home Interior (CP); electrical works by Voltz Solution (Ah Wen).</p>
     </header>
 
     <section class="section">
-      <div class="section-heading">
-        <h2>Site issues &amp; fixes</h2>
-        <p>Observed symptoms are kept separate from inferred causes, with geometry you can inspect and a non-destructive check order.</p>
-      </div>
-      <div class="feature-grid">
-        <a class="feature" style="--image:url('/reno/field-notes/shower-fitting/observed-master-bath.jpg')" href="/reno/field-notes/shower-fitting/">
-          <span class="go">↗</span>
-          <div class="feature-content">
-            <div class="feature-meta"><span class="pill">Interactive 3D</span><span class="pill">Master bathroom</span><span class="pill">New</span></div>
-            <h3>Why the shower mixer sits slanted</h3>
-            <p>Reveal the concealed outlets, compare four possible geometries, and see what must be checked before accepting silicone as the answer.</p>
+      <div class="section-heading"><h2>Project record</h2><p>The whole-home source of truth: governing plans and systems first, with individual investigations filed beneath the part of the project they affect.</p></div>
+      <div class="record-grid">
+        <article class="record">
+          <div class="record-head"><span class="icon">📐</span><small>Comfort Home Interior · CP</small><h3>Design &amp; construction</h3></div>
+          <div class="record-list">
+            <div class="record-row"><div><b>Plans &amp; drawings</b><span>3D visual, detailed carpentry and revision history</span></div><span class="status-chip">Private soon</span></div>
+            <a class="record-row" href="/reno/living-room-3d/"><div><b>Spatial models</b><span>Room layouts and measured clearances</span></div><span class="arrow">↗</span></a>
           </div>
-        </a>
-        <a class="feature" style="--image:url('/reno/field-notes/boba-light/installed.jpg')" href="/reno/field-notes/boba-light/">
-          <span class="go">↗</span>
-          <div class="feature-content">
-            <div class="feature-meta"><span class="pill">Interactive 3D</span><span class="pill">Living room</span><span class="pill">Tool concept</span></div>
-            <h3>Freeing the jammed Boba light</h3>
-            <p>Model the cross-thread bind, compare strap-wrench ergonomics, and build a modular tool that reaches around the globe without sweeping the limewash.</p>
+        </article>
+        <article class="record">
+          <div class="record-head"><span class="icon">⚡</span><small>Whole-home systems</small><h3>Electrical &amp; lighting</h3></div>
+          <div class="record-list">
+            <a class="record-row" href="/reno/electrical/"><div><b>Electrical plan &amp; controls</b><span>Voltz Solution · current floor-plan map, circuits and 17 smart-switch plates</span></div><span class="arrow">↗</span></a>
+            <a class="record-row" href="/reno/lighting/"><div><b>Lighting fixture register</b><span>Focus de Lightings · 13 line items, SKU pricing and 30.6 m strip schedule</span></div><span class="arrow">↗</span></a>
           </div>
-        </a>
+        </article>
+        <article class="record">
+          <div class="record-head"><span class="icon">🗂️</span><small>Owner-only records</small><h3>Commercial &amp; handover</h3></div>
+          <div class="record-list">
+            <div class="record-row"><div><b>Private source archive</b><span>Quotations, invoices, warranties and payment records</span></div><span class="status-chip">Coming soon</span></div>
+            <div class="record-row"><div><b>As-built &amp; close-out</b><span>Defects, remedies, manuals and maintenance</span></div><span class="status-chip">In progress</span></div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -155,20 +160,25 @@
     </section>
 
     <section class="section">
-      <div class="section-heading"><h2>Systems &amp; records</h2><p>Useful public registers sit beside a private source archive. Personal, financial and security-relevant documents never enter this public repository.</p></div>
-      <div class="card-grid">
-        <a class="card" href="/reno/lighting/"><div class="card-top"><span class="icon">💡</span><span class="arrow">↗</span></div><h3>Lighting · fixture register</h3><p>13 final line items, every SKU and unit price, plus the 30.6 m LED-strip schedule.</p></a>
-        <a class="card" href="/reno/electrical/"><div class="card-top"><span class="icon">⚡</span><span class="arrow">↗</span></div><h3>Electrical · smart switches</h3><p>17 Aqara plates, floor-plan map, BOM and vendor pricing.</p></a>
-        <a class="card private" href="https://private-reno.seahyingcong.com/"><div class="card-top"><span class="icon">🔐</span><span class="access">Google sign-in</span></div><h3>Private project archive</h3><p>Source drawings, invoices, budget, warranties and handover records—owner access only.</p></a>
-      </div>
-    </section>
-
-    <section class="section">
       <div class="section-heading"><h2>Selections &amp; procurement</h2><p>Shortlists retain the evidence and trade-offs behind each choice.</p></div>
       <div class="card-grid">
         <a class="card" href="/reno/dining-table/"><div class="card-top"><span class="icon">🪑</span><span class="arrow">↗</span></div><h3>Dining table</h3><p>11 travertine candidates and guided decision tree.</p></a>
         <a class="card" href="/reno/fan-light/"><div class="card-top"><span class="icon">💨</span><span class="arrow">↗</span></div><h3>Bomb-shelter fan light</h3><p>E27 decision tree and seven inspected Shopee variants.</p></a>
         <a class="card" href="/reno/standing-desk/"><div class="card-top"><span class="icon">🪵</span><span class="arrow">↗</span></div><h3>Study desk shortlist</h3><p>20 sit–stand desks with product evidence and all options retained.</p></a>
+      </div>
+    </section>
+
+    <section class="section issue-section">
+      <div class="section-heading"><h2>Site issue log</h2><p>Individual faults and remedies live here as case notes—not as governing whole-home plans.</p></div>
+      <div class="case-grid">
+        <a class="case-card" href="/reno/field-notes/shower-fitting/">
+          <img src="/reno/field-notes/shower-fitting/observed-master-bath.jpg" alt="Master bathroom shower mixer sitting away from the tiled wall">
+          <div class="case-copy"><span class="case-meta">Case note 01 · Master bathroom</span><h3>Slanted shower mixer</h3><p>Four possible geometries, contractor explanation and a non-destructive check order.</p></div>
+        </a>
+        <a class="case-card" href="/reno/field-notes/boba-light/">
+          <img src="/reno/field-notes/boba-light/installed.jpg" alt="Boba wall light installed close to the limewash wall">
+          <div class="case-copy"><span class="case-meta">Case note 02 · Living room</span><h3>Jammed Boba-light collar</h3><p>Cross-thread diagnosis, tight-clearance tool ergonomics and a printable tool concept.</p></div>
+        </a>
       </div>
     </section>
 
