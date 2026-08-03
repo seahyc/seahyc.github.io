@@ -43,6 +43,8 @@ jobs:
         run: npm run build:retirement-planning
       - name: Build renovation field notes
         run: npm run build:reno-field-notes
+      - name: Verify renovation field-note assets
+        run: npm run verify:reno-field-notes
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
