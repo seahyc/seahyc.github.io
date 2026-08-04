@@ -12,9 +12,9 @@ export default defineConfig({
   publicDir: path.join(root, "public"),
   build: {
     outDir: path.join(root, "../../static/reno/field-notes"),
-    // Vite restores photos and fabrication downloads from publicDir after
-    // clearing the output, which prevents stale hashed bundles accumulating.
-    emptyOutDir: true,
+    // Photos and downloadable fabrication files share this public directory
+    // with Vite's generated bundles, so the build must preserve them.
+    emptyOutDir: false,
     sourcemap: false,
     chunkSizeWarningLimit: 560,
     rollupOptions: {
