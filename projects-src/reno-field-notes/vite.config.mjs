@@ -20,6 +20,7 @@ export default defineConfig({
       input: {
         "shower-fitting": path.join(root, "shower-fitting/index.html"),
         "boba-light": path.join(root, "boba-light/index.html"),
+        "under-bed-cleaner": path.join(root, "under-bed-cleaner/index.html"),
       },
     },
   },

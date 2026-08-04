@@ -19,6 +19,14 @@ const TwinScene = lazy(() => import("./TwinScene").then((module) => ({ default: 
 const STORAGE_KEY = "reno_twin_state_v1";
 const DEFAULT_OPEN: Record<string, boolean> = {};
 const DEFAULT_LAYERS = Object.fromEntries(LAYERS.map(({ id }) => [id, id !== "references"])) as Record<TwinLayer, boolean>;
+const BOBA_PATH = "/World/Electrical/Living/BobaLight_Upper";
+const BED_PATH = "/World/Furniture/MasterBedroom/Bed_A";
+const FOCUS_PATHS: Record<string, string> = { boba: BOBA_PATH, bed: BED_PATH, cleaner: BED_PATH };
+const initialFocusKey = new URLSearchParams(window.location.search).get("focus") ?? "";
+const INITIAL_FOCUS_PATH = FOCUS_PATHS[initialFocusKey] ?? null;
+const INITIAL_WAYPOINT = INITIAL_FOCUS_PATH
+  ? WAYPOINTS.find((candidate) => candidate.room === NODE_BY_PATH.get(INITIAL_FOCUS_PATH)?.room)?.id ?? "overview"
+  : "overview";
 
 interface RemoteTwinState {
   payload: PersistedTwinState | null;
@@ -68,9 +76,9 @@ export function TwinApp() {
   const [openObjects, setOpenObjects] = useState(initial.openObjects);
   const [hiddenObjects, setHiddenObjects] = useState(initial.hiddenObjects);
   const [assetOverrides, setAssetOverrides] = useState(initial.assetOverrides);
-  const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [selectedPath, setSelectedPath] = useState<string | null>(INITIAL_FOCUS_PATH);
   const [movement, setMovement] = useState<Movement[]>([]);
-  const [waypointRequest, setWaypointRequest] = useState({ id: "overview", sequence: 0 });
+  const [waypointRequest, setWaypointRequest] = useState({ id: INITIAL_WAYPOINT, sequence: INITIAL_FOCUS_PATH ? 1 : 0 });
   const [query, setQuery] = useState("");
   const [roomFilter, setRoomFilter] = useState("All rooms");
   const [savedNotice, setSavedNotice] = useState(false);
@@ -243,7 +251,7 @@ export function TwinApp() {
   return (
     <main className="twin-app">
       <header className="topbar">
-        <a className="back-link" href="/reno/" aria-label="Back to renovation fieldbook">← <span>Reno hub</span></a>
+        <a className="back-link" href="/reno/orientation/?view=home" aria-label="Zoom out to the neighbourhood globe">← <span>Neighbourhood</span></a>
         <div className="topbar-title">
           <span className="eyebrow">Private-home · spatial operations model</span>
           <h1>Renovation twin <sup>MVP</sup></h1>
@@ -253,6 +261,12 @@ export function TwinApp() {
 
       <section className="workspace">
         <div className="viewport-shell">
+          <nav className="scale-rail" aria-label="Model scale">
+            <a href="/reno/orientation/?view=home"><span>01</span><b>Neighbourhood</b><small>Weather globe</small></a>
+            <button className="active" type="button" onClick={() => { setSelectedPath(null); visitWaypoint("overview"); }}><span>02</span><b>Apartment</b><small>Whole-home twin</small></button>
+            <a href="/reno/field-notes/boba-light/"><span>03</span><b>Boba light</b><small>Thread mechanism</small></a>
+            <a href="/reno/field-notes/under-bed-cleaner/"><span>03</span><b>Bed cleaner</b><small>V6 mechanism</small></a>
+          </nav>
           <Suspense fallback={null}>
             <TwinScene
               layers={layers}

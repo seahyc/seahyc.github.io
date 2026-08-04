@@ -178,6 +178,12 @@ export const TWIN_NODES: TwinNode[] = [
       provisional,
     ],
     inventory: asset("/World/Furniture/MasterBedroom/Bed_A", "Master bedroom", "Bed", "TBC", "Render-intent bed envelope", "TBC", "planned"),
+    issue: {
+      title: "Under-bed cleaner mechanism",
+      href: "/reno/field-notes/under-bed-cleaner/",
+      summary: "Fold-out 540 mm head, low-clearance stack, tendon steering and coverage study for the 10 mm bed gap.",
+    },
+    interactive: "select",
   },
   {
     path: "/World/Carpentry/Kitchen/SinkServiceRun",

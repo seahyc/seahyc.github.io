@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Master-bedroom under-bed cleaner V6</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #071014;
+      --panel: rgba(9, 20, 25, .92);
+      --line: rgba(255, 255, 255, .12);
+      --text: #f2f8f9;
+      --muted: #9db0b5;
+      --teal: #4ce0ce;
+      --orange: #ff815f;
+      --yellow: #f6cc68;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--bg); }
+    body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    canvas { display: block; touch-action: none; }
+    #scaleBack { display: flex; gap: 13px; align-items: center; margin-bottom: 10px; pointer-events: auto; }
+    #scaleBack a { color: #d4e2e6; font-size: 10px; font-weight: 850; letter-spacing: .06em; text-decoration: none; }
+    #scaleBack a + a { color: #72868d; }
+    #scaleBack a + a::before { margin-right: 10px; color: #45565c; content: "·"; }
+    #wash {
+      position: fixed; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(circle at 49% 45%, transparent 25%, rgba(3, 8, 11, .18) 67%, rgba(3, 8, 11, .62) 100%),
+        linear-gradient(90deg, rgba(3, 8, 11, .34), transparent 30%, transparent 72%, rgba(3, 8, 11, .4));
+    }
+    #brand { position: fixed; left: 32px; top: 28px; pointer-events: none; max-width: 560px; }
+    #eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; padding: 8px 13px; border-radius: 999px;
+      color: #06100f; background: var(--teal); font-size: 12px; font-weight: 900;
+      letter-spacing: .13em; text-transform: uppercase;
+    }
+    #eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #06100f; }
+    h1 { margin: 15px 0 6px; color: var(--text); font-size: clamp(30px, 4.2vw, 62px); line-height: .98; letter-spacing: -.035em; }
+    #subtitle { color: var(--muted); font-size: 15px; font-weight: 650; letter-spacing: .01em; }
+    #panel {
+      position: fixed; right: 24px; top: 24px; width: min(350px, calc(100vw - 48px)); max-height: calc(100vh - 48px);
+      overflow: auto; padding: 20px; border: 1px solid var(--line); border-radius: 20px;
+      background: var(--panel); box-shadow: 0 24px 80px rgba(0, 0, 0, .42); backdrop-filter: blur(16px);
+    }
+    #modeTitle { margin: 0; color: var(--text); font-size: 25px; line-height: 1.05; letter-spacing: -.02em; }
+    #modeCopy { margin: 10px 0 16px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    #metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 17px; }
+    .metric { padding: 11px 12px; border-radius: 12px; background: rgba(255, 255, 255, .055); border: 1px solid rgba(255, 255, 255, .065); }
+    .metric b { display: block; color: var(--teal); font-size: 18px; line-height: 1.05; }
+    .metric span { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    #viewButtons { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    button {
+      appearance: none; border: 1px solid rgba(255, 255, 255, .11); border-radius: 11px; padding: 10px 11px;
+      color: var(--text); background: rgba(255, 255, 255, .04); font: inherit; font-size: 12px; font-weight: 780;
+      text-align: left; cursor: pointer;
+    }
+    button:hover { background: rgba(255, 255, 255, .09); }
+    button.active { color: #06100f; background: var(--teal); border-color: var(--teal); }
+    #controls { margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line); }
+    .control { display: grid; grid-template-columns: 86px 1fr 44px; align-items: center; gap: 9px; margin-top: 10px; }
+    .control label { color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
+    .control output { color: var(--text); font-size: 11px; font-weight: 800; text-align: right; }
+    input[type="range"] { width: 100%; accent-color: var(--teal); }
+    #risk {
+      margin-top: 16px; padding: 12px 13px; border-radius: 12px; color: #ffded5;
+      border: 1px solid rgba(255, 129, 95, .42); background: rgba(255, 129, 95, .105);
+      font-size: 11px; line-height: 1.42; font-weight: 670;
+    }
+    #legend {
+      position: fixed; left: 28px; bottom: 24px; display: flex; flex-wrap: wrap; gap: 8px 14px;
+      max-width: calc(100vw - 430px); padding: 11px 14px; border-radius: 13px;
+      background: rgba(5, 12, 15, .78); border: 1px solid rgba(255, 255, 255, .08);
+      color: var(--muted); font-size: 11px; font-weight: 760; pointer-events: none;
+    }
+    .key { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); }
+    .dot.orange { background: var(--orange); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.white { background: #d5e0e3; }
+    #captureStamp { display: none; }
+    body.capture #panel { width: 330px; }
+    body.capture #controls { display: none; }
+    body.capture #captureStamp {
+      display: block; position: fixed; left: 30px; bottom: 76px; color: rgba(255,255,255,.56);
+      font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase;
+    }
+    @media (max-width: 820px) {
+      #brand { left: 18px; top: max(14px, env(safe-area-inset-top)); max-width: calc(100vw - 36px); }
+      h1 { font-size: 35px; }
+      #panel { left: 12px; right: 12px; top: auto; bottom: 12px; width: auto; max-height: 46vh; padding: 15px; }
+      #legend { display: none; }
+      #metrics { grid-template-columns: repeat(4, 1fr); }
+      .metric { padding: 8px; }
+      .metric b { font-size: 14px; }
+      #viewButtons { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+  <script type="module" crossorigin src="/reno/field-notes/assets/under-bed-cleaner-gCs-4Hz3.js"></script>
+  <link rel="modulepreload" crossorigin href="/reno/field-notes/assets/OrbitControls-BqdHUNcK.js">
+</head>
+<body>
+  <div id="wash"></div>
+  <header id="brand">
+    <nav id="scaleBack" aria-label="Model scale navigation">
+      <a href="/reno/twin/?focus=cleaner">← Apartment twin</a>
+      <a href="/reno/orientation/?view=home">Neighbourhood globe</a>
+    </nav>
+    <div id="eyebrow">Concept V6 · pre-prototype</div>
+    <h1>Wide-head under-bed cleaner</h1>
+    <div id="subtitle">Master-bedroom mechanism study for a 10 mm Woosa bed gap</div>
+  </header>
+  <aside id="panel">
+    <h2 id="modeTitle"></h2>
+    <p id="modeCopy"></p>
+    <div id="metrics"></div>
+    <div id="viewButtons">
+      <button data-mode="overview">Mechanism</button>
+      <button data-mode="stowed">Folded entry</button>
+      <button data-mode="deployed">Wide pass</button>
+      <button data-mode="steer">Steered wrist</button>
+      <button data-mode="clearance">10 mm section</button>
+      <button data-mode="exploded">Exploded BOM</button>
+      <button data-mode="coverage">Coverage</button>
+      <button data-mode="robot">Robotic option</button>
+    </div>
+    <div id="controls">
+      <div class="control">
+        <label for="deploy">Head fold</label>
+        <input id="deploy" type="range" min="0" max="90" value="90" />
+        <output id="deployOut">90°</output>
+      </div>
+      <div class="control">
+        <label for="steer">Wrist yaw</label>
+        <input id="steer" type="range" min="-60" max="60" value="0" />
+        <output id="steerOut">0°</output>
+      </div>
+    </div>
+    <div id="risk"></div>
+  </aside>
+  <div id="legend">
+    <span class="key"><i class="dot"></i>Left tendon / washable head</span>
+    <span class="key"><i class="dot orange"></i>Right tendon / blocked edge</span>
+    <span class="key"><i class="dot yellow"></i>Fold-control line</span>
+    <span class="key"><i class="dot white"></i>Spring-steel spine / structure</span>
+  </div>
+  <div id="captureStamp">V6 engineering schematic · dimensions are design targets</div>
+</body>
+</html>

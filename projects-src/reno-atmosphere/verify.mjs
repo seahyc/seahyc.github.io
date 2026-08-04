@@ -46,6 +46,9 @@ for (const expected of [
   "2.9–3.1 km",
   "pressure-driven",
   "data.gov.sg",
+  "/reno/twin/?entry=window",
+  "zoom-neighbourhood",
+  "focusNeighbourhood",
 ]) assert.ok(sourceBundle.includes(expected), `Atmosphere source should include ${expected}`);
 
 assert.ok((source.match(/new THREE\.InstancedMesh/g) ?? []).length >= 4, "Repeated windows, trees, wind and rain should use instancing");

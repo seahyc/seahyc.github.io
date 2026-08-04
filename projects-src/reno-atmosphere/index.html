@@ -33,6 +33,11 @@
       <button class="world-label depot-label" id="depot-label" type="button"><i></i><b>Train depot</b><span>NE exposure</span></button>
       <button class="world-label station-label" id="station-label" type="button"><i></i><b>Rain gauge S217</b><span>0.30–0.40 km away</span></button>
 
+      <nav class="home-portal" id="home-portal" aria-label="Home scale navigation" hidden>
+        <button id="zoom-neighbourhood" type="button"><span>Zoom out</span><b>Neighbourhood globe</b></button>
+        <a href="/reno/twin/?entry=window"><span>Step through the window</span><b>Enter our home twin →</b></a>
+      </nav>
+
       <aside class="insight" aria-live="polite">
         <span class="insight-kicker" id="insight-kicker">Window note</span>
         <h2 id="window-call">Reading the sky…</h2>
@@ -133,7 +138,7 @@
         </div>
       </section>
 
-      <div class="gesture-hint" id="gesture-hint">Drag to orbit · pinch to zoom · tap a label</div>
+      <div class="gesture-hint" id="gesture-hint">Drag to orbit · pinch to zoom · tap our window to enter</div>
 
       <div class="loading" id="loading"><div class="orb"></div><span>Building the neighbourhood…</span></div>
       <div class="webgl-fallback" id="webgl-fallback" hidden><b>The weather globe needs WebGL.</b><span>Your live recommendation is still shown above.</span></div>

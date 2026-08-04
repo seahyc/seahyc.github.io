@@ -15,6 +15,7 @@ const required = [
   "boba-light/installed.jpg",
   "boba-light/downloads/deep-collar-socket.scad",
   "boba-light/downloads/tool-build-guide.md",
+  "under-bed-cleaner/index.html",
 ];
 
 for (const relative of required) await access(path.join(output, relative));
@@ -24,6 +25,12 @@ for (const relative of ["shower-fitting/index.html", "boba-light/index.html"]) {
   assert.match(html, /<script[^>]+type="module"[^>]+src="\/reno\/field-notes\/assets\//, `${relative} should reference the shared Vite bundle`);
   assert.match(html, /<link[^>]+stylesheet[^>]+\/reno\/field-notes\/assets\//, `${relative} should reference built CSS`);
 }
+
+const cleanerHtml = await readFile(path.join(output, "under-bed-cleaner/index.html"), "utf8");
+assert.match(cleanerHtml, /<script[^>]+type="module"[^>]+src="\/reno\/field-notes\/assets\//, "Cleaner should reference a bundled Three.js module");
+assert.match(cleanerHtml, /Apartment twin/);
+const cleanerSource = await readFile(path.join(root, "under-bed-cleaner/scene_v6.js"), "utf8");
+for (const fact of ["540 mm", "10 mm", "steerable wrist", "Robotic side track", "compact ? 1.35"]) assert.ok(cleanerSource.includes(fact), `Cleaner source should retain ${fact}`);
 
 const showerSource = await readFile(path.join(root, "src/ShowerPage.tsx"), "utf8");
 assert.match(showerSource, /150 ±12mm/);
@@ -39,4 +46,4 @@ for (const relative of required.filter((item) => item.endsWith(".jpg"))) {
   assert.ok(size < 1_200_000, `${relative} should remain mobile-friendly (${size} bytes)`);
 }
 
-console.log(`Verified ${required.length} field-note outputs and source caveats.`);
+console.log(`Verified ${required.length} field-note outputs, scale navigation and source caveats.`);

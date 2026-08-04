@@ -30,6 +30,13 @@ button { color: inherit; }
 .workspace { display: grid; height: calc(100dvh - 74px); grid-template-columns: minmax(0, 1fr) clamp(340px, 29vw, 430px); }
 .viewport-shell { position: relative; min-width: 0; min-height: 0; overflow: hidden; background: #cad2cb; }
 .twin-canvas, .twin-canvas canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+.scale-rail { position: absolute; z-index: 5; bottom: 14px; left: 14px; display: flex; max-width: calc(100% - 400px); gap: 5px; padding: 5px; border: 1px solid rgba(255,255,255,.34); border-radius: 14px; background: rgba(15,24,21,.82); box-shadow: 0 10px 34px rgba(0,0,0,.16); backdrop-filter: blur(14px); }
+.scale-rail a, .scale-rail button { display: grid; min-width: 96px; min-height: 48px; align-content: center; padding: 7px 10px; border: 0; border-radius: 10px; color: #9fb0a8; background: transparent; text-align: left; text-decoration: none; cursor: pointer; }
+.scale-rail a:hover, .scale-rail button:hover { color: #f3e9d9; background: rgba(255,255,255,.055); }
+.scale-rail .active { color: #17201d; background: #e7ece8; }
+.scale-rail span { color: var(--accent); font: 800 6px/1 ui-monospace, monospace; }
+.scale-rail b { margin-top: 3px; font-size: 8px; }
+.scale-rail small { margin-top: 2px; font-size: 6px; opacity: .7; }
 .viewport-tools { position: absolute; z-index: 3; top: 14px; left: 14px; display: flex; gap: 8px; }
 .segmented { display: flex; padding: 4px; border: 1px solid rgba(255,255,255,.34); border-radius: 12px; background: rgba(15,24,21,.78); box-shadow: 0 8px 28px rgba(0,0,0,.12); backdrop-filter: blur(14px); }
 .segmented button, .icon-button { min-height: 39px; border: 0; border-radius: 8px; background: transparent; cursor: pointer; }
@@ -179,6 +186,11 @@ i.confirmed { background: #72b493; } i.reference { background: #d3a75f; } i.prov
   .segmented button { min-width: 59px; min-height: 37px; }
   .icon-button { width: 42px; min-height: 42px; }
   .model-caveat { right: 8px; bottom: 8px; left: 8px; max-width: none; padding: 7px 9px; font-size: 7px; }
+  .scale-rail { right: 8px; bottom: 8px; left: 8px; max-width: none; gap: 3px; padding: 4px; }
+  .scale-rail a, .scale-rail button { min-width: 0; min-height: 50px; flex: 1; padding: 6px 7px; }
+  .scale-rail small { display: none; }
+  .model-caveat { display: none; }
+  .viewport-shell:has(.walk-controls) .scale-rail { display: none; }
   .walk-controls { bottom: 9px; gap: 6px; }
   .walk-controls button { width: 44px; height: 44px; border-radius: 12px; }
   .move-pad { grid-template-columns: repeat(3,44px); }

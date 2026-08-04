@@ -91,6 +91,9 @@ button { -webkit-tap-highlight-color: transparent; }
 }
 
 .site-back:hover { color: var(--blue); }
+.scale-backlinks { display: flex; gap: 13px; align-items: center; pointer-events: auto; }
+.scale-backlinks .secondary { color: #8192a7; }
+.scale-backlinks .secondary::before { margin-right: 10px; color: #536276; content: "·"; }
 
 .eyebrow {
   color: var(--blue);

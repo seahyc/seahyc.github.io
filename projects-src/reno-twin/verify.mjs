@@ -73,6 +73,10 @@ for (const assertion of [
   "Robot vacuum dock",
   "Paludarium",
   "/reno/field-notes/boba-light/",
+  "/reno/field-notes/under-bed-cleaner/",
+  "/reno/orientation/?view=home",
+  "scale-rail",
+  "Under-bed cleaner mechanism",
   "/reno/field-notes/shower-fitting/",
   "/World/Electrical/Living/BobaLight_Upper",
   "/World/Plumbing/MasterBath/ShowerMixer",
@@ -104,4 +108,4 @@ for (const file of assets) {
   assert.ok(size < 1_000_000, `${file} should remain below the 1 MB public runtime cap`);
 }
 
-console.log(`Verified ${paths.length} authored twin nodes, ${modelPaths.length} registered scene objects, source stitching, public boundary and production assets.`);
+console.log(`Verified ${paths.length} authored twin nodes, ${modelPaths.length} registered scene objects, scale navigation, source stitching, public boundary and production assets.`);

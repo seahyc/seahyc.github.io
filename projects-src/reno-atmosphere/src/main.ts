@@ -590,6 +590,9 @@ async function loadPrivateHomeMarker() {
     if (!marker || !Number.isFinite(marker.heightRatio) || !Number.isFinite(marker.bayIndex) || !["east", "west"].includes(marker.side)) throw new Error("Invalid private marker");
     privateHomeMarker = marker;
     createHomeVignette(marker);
+    if (new URLSearchParams(window.location.search).get("view") === "home") {
+      window.setTimeout(focusHome, reducedMotion ? 0 : 380);
+    }
   } catch {
     $("private-model-state").textContent = "Home is shown at block level in this preview";
   }
@@ -956,6 +959,9 @@ function updateLabels() {
 
 function focusOn(anchor: THREE.Vector3, distance = 14) {
   homeLabel.classList.remove("focused");
+  $("home-portal").classList.remove("visible");
+  $("home-portal").hidden = true;
+  $("app").classList.remove("home-focus");
   controls.minDistance = compact ? 15 : 13;
   const direction = camera.position.clone().sub(controls.target).normalize();
   controls.target.copy(anchor.clone().setY(Math.max(.6, anchor.y * .36)));
@@ -971,6 +977,9 @@ function focusHome() {
   }
   controls.autoRotate = false;
   homeLabel.classList.add("focused");
+  $("home-portal").hidden = false;
+  $("home-portal").classList.add("visible");
+  $("app").classList.add("home-focus");
   controls.minDistance = 2.15;
   controls.target.copy(worldAnchors.home);
   const outwardBearing = privateHomeMarker.side === "east" ? 55 : 235;
@@ -979,6 +988,21 @@ function focusHome() {
   camera.position.y += compact ? .48 : .36;
   controls.update();
   $("gesture-hint").classList.add("hidden");
+}
+
+function focusNeighbourhood() {
+  controls.autoRotate = !reducedMotion;
+  controls.minDistance = compact ? 15 : 13;
+  controls.target.set(0, 3.1, 0);
+  camera.position.set(compact ? 16 : 17, compact ? 11.5 : 10.8, compact ? 18 : 19);
+  controls.update();
+  homeLabel.classList.remove("focused");
+  $("home-portal").classList.remove("visible");
+  $("home-portal").hidden = true;
+  $("app").classList.remove("home-focus");
+  const url = new URL(window.location.href);
+  url.searchParams.delete("view");
+  window.history.replaceState({}, "", url);
 }
 
 function initialiseWorld() {
@@ -1117,6 +1141,7 @@ $("wind-toggle").addEventListener("click", () => {
 homeLabel.addEventListener("click", focusHome);
 depotLabel.addEventListener("click", () => focusOn(worldAnchors.depot, 13));
 stationLabel.addEventListener("click", () => focusOn(worldAnchors.station, 11));
+$("zoom-neighbourhood").addEventListener("click", focusNeighbourhood);
 
 const intelSheet = $("intel-sheet");
 const intelScrim = $("intel-scrim");

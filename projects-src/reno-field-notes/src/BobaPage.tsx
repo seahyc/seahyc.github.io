@@ -121,7 +121,10 @@ export function BobaPage() {
         </div>
 
         <header className="stage-header">
-          <a className="site-back" href="/reno/">← Renovation hub</a>
+          <nav className="scale-backlinks" aria-label="Model scale navigation">
+            <a className="site-back" href="/reno/twin/?focus=boba">← Apartment twin</a>
+            <a className="site-back secondary" href="/reno/orientation/?view=home">Neighbourhood globe</a>
+          </nav>
           <div className="eyebrow">Field note 02 · mobile 3D reconstruction</div>
           <h1>Jammed Boba wall light</h1>
           <p>Drag to orbit. The glass and collar rotate together; the proposed tool grips the collar while moving your hands forward of the globe and ledges.</p>

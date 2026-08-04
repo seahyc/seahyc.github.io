@@ -468,6 +468,7 @@ export function TwinScene(props: TwinSceneProps) {
     };
     addMarker([2.58, 2.35, 4.55], "/World/Electrical/Living/BobaLight_Upper", "issue");
     addMarker([9.62, 1.72, 5.72], "/World/Plumbing/MasterBath/ShowerMixer", "issue");
+    addMarker([11.38, 0.92, 1.55], "/World/Furniture/MasterBedroom/Bed_A", "issue");
     addMarker([4.15, 1.15, 2.35], "/World/Furniture/Study/DeskPair", "inventory");
     addMarker([6.15, 2.58, 6.87], CABINET_PATH, "inventory");
     addMarker([12.34, 2.78, 3.55], WARDROBE_PATH, "inventory");
