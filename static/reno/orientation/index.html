@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#102f2a">
-  <meta name="description" content="Privacy-safe site orientation, window bearings, seasonal winds and ventilation notes for a Bishan Ridges home.">
+  <meta name="description" content="Site orientation, window bearings, live weather, seasonal winds and ventilation guidance for a Bishan Ridges home.">
   <title>Site orientation &amp; airflow · renovation</title>
   <style>
     :root {
@@ -248,20 +248,20 @@
     </header>
 
     <section class="section" hidden aria-hidden="true">
-      <div class="section-head"><h2>Precinct satellite context</h2><p>The public map is intentionally precinct-level. Exact block, unit, postal code and registration coordinates stay in the private archive.</p></div>
+      <div class="section-head"><h2>Precinct satellite context</h2><p>The north-up map registers the home model against the surrounding depot, river and landmark geometry.</p></div>
       <div class="map-grid">
         <article class="map-card">
           <div class="map-frame">
             <iframe title="Area-level satellite map around Bishan MRT and the train depot" loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-src="https://maps.google.com/maps?q=Bishan+MRT+Station,+Singapore&amp;t=k&amp;z=15&amp;output=embed"></iframe>
           </div>
-          <div class="map-caption"><b>Precinct context only</b><span>Google satellite · north is up · exact home datum withheld</span></div>
+          <div class="map-caption"><b>Precinct context</b><span>Google satellite · north is up</span></div>
         </article>
         <div class="fact-stack">
           <article class="card fact">
-            <small>Privacy boundary</small>
-            <h3>Exact address withheld</h3>
-            <p>The official OneMap address and coordinate were checked against the HDB source plan, then retained only in the private local renovation archive.</p>
-            <code>Public record: Bishan Ridges precinct only</code>
+            <small>Coordinate basis</small>
+            <h3>OneMap and HDB alignment</h3>
+            <p>The official OneMap coordinate was registered against the HDB source plan and surrounding landmark geometry.</p>
+            <code>Model datum: Bishan Ridges precinct</code>
           </article>
           <article class="card fact warn">
             <small>Corrected exposure</small>
@@ -315,7 +315,7 @@
             <line x1="433" y1="397" x2="505" y2="475" stroke="#c46348" stroke-width="4" marker-end="url(#head)"/>
             <text x="474" y="503" fill="#e5a08c" font-size="13" font-weight="800">SE ≈ 145°</text>
           </svg>
-          <div class="diagram-note">Simplified massing only. Window positions and rotation were registered from private HDB source plans; the identifying block and stack are intentionally omitted.</div>
+          <div class="diagram-note">Simplified massing only. Window positions and rotation were registered from the HDB source plans.</div>
         </article>
         <div class="bearing-list">
           <article class="card bearing"><div class="deg">055°</div><div><h3>Bedroom / study window bank · NE–ENE</h3><p>The longest glazed facade looks broadly toward Bishan train depot. It is the most plausible direct receiver during the northeast monsoon—and the opening most directly exposed to depot-side outdoor conditions.</p></div></article>
@@ -344,7 +344,7 @@
             <div class="model-reading"><span>Humidity</span><b id="humidity-reading">—</b><em>24h range</em></div>
           </div>
 
-          <canvas id="airflow-canvas" width="920" height="650" role="img" aria-label="Unified animated north-up model overlaying the home's exterior openings, live wind and rain, station directions and privacy-safe distance bands"></canvas>
+          <canvas id="airflow-canvas" width="920" height="650" role="img" aria-label="Unified animated north-up model overlaying the home's exterior openings, live wind and rain, station directions and distance allowance bands"></canvas>
 
           <div class="model-overlay model-call-overlay">
             <small class="overlay-kicker">Open-window call</small>
@@ -379,15 +379,15 @@
     </section>
 
     <section class="section" id="sensor-provenance" hidden aria-hidden="true">
-      <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products. The real home point sits inside the published location envelope, and distance bands add privacy allowance without inventing a false location.</p></div>
+      <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products, with distance bands reflecting the model's spatial allowance.</p></div>
       <div class="sensor-shell">
         <article class="card sensor-map-card">
           <div class="sensor-map-top">
-            <div><small>Privacy-safe sensor geometry</small><h3>Nearest useful station points</h3></div>
-            <span>North-up schematic · official station positions · containing home envelope</span>
+            <div><small>Sensor geometry</small><h3>Nearest useful station points</h3></div>
+            <span>North-up schematic · official station positions · home reference area</span>
           </div>
-          <canvas id="sensor-map" width="920" height="650" role="img" aria-label="North-up schematic showing a home location envelope that contains the real point, south of wind station S109 and northwest of rain gauge S217, with distance allowance bands"></canvas>
-          <div class="sensor-map-caption"><b>Lines show direction, not a pollution or wind trajectory</b><span>The model uses the private point; the public map shows a containing envelope and distance bands.</span></div>
+          <canvas id="sensor-map" width="920" height="650" role="img" aria-label="North-up schematic showing the home reference area south of wind station S109 and northwest of rain gauge S217, with distance allowance bands"></canvas>
+          <div class="sensor-map-caption"><b>Lines show direction, not a pollution or wind trajectory</b><span>Distance bands communicate the model allowance without implying station-level indoor accuracy.</span></div>
         </article>
 
         <aside class="sensor-panel">
@@ -424,7 +424,7 @@
           </article>
         </aside>
       </div>
-      <p class="data-note">Height method: HDB's Bishan Ridges record confirms conventional residential blocks of 22–39 storeys. The owner-confirmed high-floor level (exact storey withheld) is combined with HDB's published typical 2.8 m floor-to-floor height. The public 80–90 m band avoids false precision because station terrain and instrument heights are not supplied in the realtime feed.</p>
+      <p class="data-note">Height method: HDB's Bishan Ridges record confirms conventional residential blocks of 22–39 storeys. The observed high-floor level is combined with HDB's published typical 2.8 m floor-to-floor height. The 80–90 m band avoids false precision because station terrain and instrument heights are not supplied in the realtime feed.</p>
     </section>
 
     <section class="section">
@@ -449,10 +449,10 @@
     </section>
 
     <section class="section">
-      <div class="section-head"><h2>Evidence register</h2><p>The raw purchaser PDF remains in the private canonical archive. This public page carries only the non-sensitive, derived orientation record.</p></div>
+      <div class="section-head"><h2>Evidence register</h2><p>Primary map, HDB and weather sources behind the orientation and airflow model.</p></div>
       <div class="source-grid">
-        <a class="card source" href="https://www.onemap.gov.sg/" target="_blank" rel="noreferrer"><span>01</span><div><b>OneMap · official map record</b><span>Exact address result checked privately; identifying query omitted here</span></div><span class="out">↗</span></a>
-        <a class="card source" href="https://www.google.com/maps/search/?api=1&amp;query=Bishan+Ridges+Singapore" target="_blank" rel="noreferrer"><span>02</span><div><b>Google Maps · precinct satellite geometry</b><span>Public link stops at project level; exact home coordinate is withheld</span></div><span class="out">↗</span></a>
+        <a class="card source" href="https://www.onemap.gov.sg/" target="_blank" rel="noreferrer"><span>01</span><div><b>OneMap · official map record</b><span>Coordinate registration and north-up context</span></div><span class="out">↗</span></a>
+        <a class="card source" href="https://www.google.com/maps/search/?api=1&amp;query=Bishan+Ridges+Singapore" target="_blank" rel="noreferrer"><span>02</span><div><b>Google Maps · precinct satellite geometry</b><span>Landmark alignment and surrounding urban form</span></div><span class="out">↗</span></a>
         <a class="card source" href="https://assets.hdb.gov.sg/community/bishan_ridges/index.html" target="_blank" rel="noreferrer"><span>03</span><div><b>HDB · Bishan Ridges project view</b><span>Official project context; archived HDB plan supplies the north arrow and stack</span></div><span class="out">↗</span></a>
         <a class="card source" href="https://www.weather.gov.sg/climate-climate-of-singapore/" target="_blank" rel="noreferrer"><span>04</span><div><b>Meteorological Service Singapore</b><span>Monsoon timing and prevailing wind directions</span></div><span class="out">↗</span></a>
         <a class="card source" href="https://www.nea.gov.sg/our-services/pollution-control/air-pollution/faqs" target="_blank" rel="noreferrer"><span>05</span><div><b>NEA · air pollution FAQ</b><span>Haze, indoor air and portable air-cleaner context</span></div><span class="out">↗</span></a>
@@ -464,7 +464,7 @@
       </div>
     </section>
 
-    <footer><b>Renovation fieldbook</b><span>Privacy-safe derived orientation record · last checked 4 Aug 2026</span></footer>
+    <footer><b>Renovation fieldbook</b><span>Derived orientation record · last checked 4 Aug 2026</span></footer>
   </main>
   <script>
     (() => {
@@ -918,10 +918,10 @@
           mapCtx.stroke();
           mapCtx.fillStyle = "#eef6f2";
           mapCtx.font = "800 14px Inter, system-ui, sans-serif";
-          mapCtx.fillText("Home location envelope", 260, 452);
+          mapCtx.fillText("Home reference area", 260, 452);
           mapCtx.fillStyle = "rgba(238,246,242,.58)";
           mapCtx.font = "500 11px Inter, system-ui, sans-serif";
-          mapCtx.fillText("actual model point is inside", 260, 470);
+          mapCtx.fillText("spatial allowance shown", 260, 470);
           mapCtx.restore();
         };
 
