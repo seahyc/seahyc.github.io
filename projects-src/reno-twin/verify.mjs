@@ -25,7 +25,10 @@ const appSource = await readFile(path.join(root, "src/TwinApp.tsx"), "utf8");
 const dataSource = await readFile(path.join(root, "src/twinData.ts"), "utf8");
 const sceneSource = await readFile(path.join(root, "src/TwinScene.tsx"), "utf8");
 const sceneModelSource = await readFile(path.join(root, "src/sceneModel.ts"), "utf8");
+const cssSource = await readFile(path.join(root, "src/twin.css"), "utf8");
 const sourceBundle = `${appSource}\n${dataSource}\n${sceneSource}\n${sceneModelSource}`;
+
+assert.match(cssSource, /html, body, #root \{ min-width: 0;/, "Twin shell should shrink without horizontal overflow on narrow phones");
 
 for (const assertion of [
   "localStorage",

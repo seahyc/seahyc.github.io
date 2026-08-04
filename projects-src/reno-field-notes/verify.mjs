@@ -20,15 +20,25 @@ const required = [
 
 for (const relative of required) await access(path.join(output, relative));
 
+const builtHtmlByPage = new Map();
 for (const relative of ["shower-fitting/index.html", "boba-light/index.html"]) {
   const html = await readFile(path.join(output, relative), "utf8");
+  builtHtmlByPage.set(relative, html);
   assert.match(html, /<script[^>]+type="module"[^>]+src="\/reno\/field-notes\/assets\//, `${relative} should reference the shared Vite bundle`);
   assert.match(html, /<link[^>]+stylesheet[^>]+\/reno\/field-notes\/assets\//, `${relative} should reference built CSS`);
 }
 
 const cleanerHtml = await readFile(path.join(output, "under-bed-cleaner/index.html"), "utf8");
+builtHtmlByPage.set("under-bed-cleaner/index.html", cleanerHtml);
 assert.match(cleanerHtml, /<script[^>]+type="module"[^>]+src="\/reno\/field-notes\/assets\//, "Cleaner should reference a bundled Three.js module");
 assert.match(cleanerHtml, /Apartment twin/);
+assert.match(cleanerHtml, /overflow-x:\s*hidden/, "Cleaner controls should not create horizontal overflow");
+assert.match(cleanerHtml, /@media \(max-width:\s*480px\)/, "Cleaner should include a narrow-phone layout");
+assert.match(cleanerHtml, /grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/, "Cleaner grids should shrink safely on narrow phones");
+for (const [page, html] of builtHtmlByPage) {
+  const assets = [...html.matchAll(/\/reno\/field-notes\/(assets\/[^"']+)/g)].map((match) => match[1]);
+  for (const asset of new Set(assets)) await access(path.join(output, asset));
+}
 const cleanerSource = await readFile(path.join(root, "under-bed-cleaner/scene_v6.js"), "utf8");
 for (const fact of ["540 mm", "10 mm", "steerable wrist", "Robotic side track", "compact ? 1.35"]) assert.ok(cleanerSource.includes(fact), `Cleaner source should retain ${fact}`);
 
