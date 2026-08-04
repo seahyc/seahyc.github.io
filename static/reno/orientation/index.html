@@ -88,6 +88,34 @@
     .scenario-button { appearance: none; padding: 8px 10px; border: 1px solid rgba(238,246,242,.18); border-radius: 999px; color: rgba(238,246,242,.72); background: transparent; font: 750 9px/1 inherit; cursor: pointer; }
     .scenario-button:hover, .scenario-button:focus-visible { border-color: rgba(223,178,111,.7); color: #fff; outline: 0; }
     .scenario-button.active { color: var(--deep); border-color: var(--sand); background: var(--sand); }
+    .model-card { overflow: hidden; color: #eef6f2; background: var(--deep); }
+    .model-head { display: flex; justify-content: space-between; gap: 20px; align-items: start; padding: 20px 20px 13px; border-bottom: 1px solid rgba(238,246,242,.1); }
+    .model-head small, .overlay-kicker { color: var(--sand); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .model-head h3 { margin: 5px 0 4px; font: 500 30px/1.05 Georgia, serif; letter-spacing: -.03em; }
+    .model-head p { max-width: 620px; margin: 0; color: rgba(238,246,242,.58); font-size: 9px; }
+    .model-stage { position: relative; min-height: 650px; }
+    .model-stage #airflow-canvas { margin: 0; }
+    .model-readings { position: absolute; z-index: 2; inset: 14px 14px auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; pointer-events: none; }
+    .model-reading { min-width: 0; padding: 10px 11px; border: 1px solid rgba(238,246,242,.12); border-radius: 12px; background: rgba(7,31,27,.78); backdrop-filter: blur(12px); }
+    .model-reading span { display: block; color: rgba(238,246,242,.52); font-size: 7px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .model-reading b { display: block; margin-top: 5px; color: #eef6f2; font: 500 18px/1 Georgia, serif; overflow-wrap: anywhere; }
+    .model-reading em { display: block; margin-top: 4px; color: rgba(238,246,242,.48); font-size: 7px; font-style: normal; }
+    .model-overlay { position: absolute; z-index: 2; bottom: 14px; padding: 14px; border: 1px solid rgba(238,246,242,.13); border-radius: 15px; background: rgba(7,31,27,.84); backdrop-filter: blur(14px); }
+    .model-call-overlay { left: 14px; width: min(390px, calc(50% - 21px)); }
+    .model-sensor-overlay { right: 14px; width: min(390px, calc(50% - 21px)); }
+    .model-overlay h3 { margin: 5px 0 6px; font-size: 14px; }
+    .model-overlay p { margin: 0; color: rgba(238,246,242,.59); font-size: 8px; }
+    .model-sensor-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; padding: 7px 0; border-top: 1px solid rgba(238,246,242,.1); font-size: 8px; }
+    .model-sensor-row:first-of-type { margin-top: 8px; }
+    .model-sensor-row b { color: #eef6f2; }
+    .model-sensor-row span { color: #a8dccc; text-align: right; }
+    .model-controls { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 13px 16px; border-top: 1px solid rgba(238,246,242,.1); }
+    .model-controls .data-note { max-width: 420px; margin: 0; color: rgba(238,246,242,.46); text-align: right; }
+    .model-forecast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 9px; }
+    .model-forecast .forecast-line { display: block; padding: 7px 0 0; border-color: rgba(238,246,242,.1); }
+    .model-forecast .forecast-line:nth-child(n+3) { display: none; }
+    .model-forecast .forecast-line time { display: block; color: rgba(238,246,242,.42); }
+    .model-forecast .forecast-line b { display: block; margin-top: 2px; color: #eef6f2; }
     .weather-panel { display: grid; gap: 12px; }
     .weather-card { padding: 18px; }
     .weather-card > small { display: block; margin-bottom: 13px; color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
@@ -165,6 +193,8 @@
       .compass-card { min-height: 0; }
       .wind-grid { grid-template-columns: 1fr; }
       .sim-card { min-height: 0; }
+      .model-readings { grid-template-columns: repeat(3, 1fr); }
+      .model-call-overlay, .model-sensor-overlay { width: calc(50% - 21px); }
     }
     @media (max-width: 560px) {
       .page { width: min(100% - 24px, 520px); }
@@ -180,6 +210,14 @@
       .sim-top { display: block; }
       .live-label { margin-top: 13px; }
       .sim-caption { grid-template-columns: 1fr; }
+      .model-head { display: block; }
+      .model-head .live-label { margin-top: 12px; }
+      .model-stage { min-height: 0; }
+      .model-readings, .model-overlay { position: static; width: auto; margin: 12px; }
+      .model-readings { grid-template-columns: 1fr 1fr; }
+      .model-stage #airflow-canvas { margin: 0; }
+      .model-controls { display: block; }
+      .model-controls .data-note { margin-top: 10px; text-align: left; }
       .sensor-map-top { display: block; }
       .sensor-map-top span { display: block; max-width: none; margin-top: 8px; text-align: left; }
       .sensor-map-caption { display: block; }
@@ -209,12 +247,12 @@
       </div>
     </header>
 
-    <section class="section">
+    <section class="section" hidden aria-hidden="true">
       <div class="section-head"><h2>Precinct satellite context</h2><p>The public map is intentionally precinct-level. Exact block, unit, postal code and registration coordinates stay in the private archive.</p></div>
       <div class="map-grid">
         <article class="map-card">
           <div class="map-frame">
-            <iframe title="Area-level satellite map around Bishan MRT and the train depot" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Bishan+MRT+Station,+Singapore&amp;t=k&amp;z=15&amp;output=embed"></iframe>
+            <iframe title="Area-level satellite map around Bishan MRT and the train depot" loading="lazy" referrerpolicy="no-referrer-when-downgrade" data-src="https://maps.google.com/maps?q=Bishan+MRT+Station,+Singapore&amp;t=k&amp;z=15&amp;output=embed"></iframe>
           </div>
           <div class="map-caption"><b>Precinct context only</b><span>Google satellite · north is up · exact home datum withheld</span></div>
         </article>
@@ -239,7 +277,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" hidden aria-hidden="true">
       <div class="section-head"><h2>Window bearings</h2><p>Bearings are diagrammatic estimates from the HDB site-plan north arrow and the north-up satellite footprint. Allow roughly ±10° until checked at the windows with a calibrated compass.</p></div>
       <div class="orientation-grid">
         <article class="card compass-card">
@@ -289,59 +327,58 @@
     </section>
 
     <section class="section" id="live-airflow">
-      <div class="section-head"><h2>Live air &amp; airflow</h2><p>Outdoor observations drive a privacy-safe, qualitative flow model. Choose a seasonal scenario to see how direction, speed and rain change the likely inlet and outlet.</p></div>
-      <div class="live-shell">
-        <article class="card sim-card">
-          <div class="sim-top">
-            <div><small id="sim-kicker">Live outdoor model</small><h3 id="sim-title">Loading Singapore readings…</h3></div>
-            <div class="live-label stale" id="live-status">Connecting</div>
-          </div>
-          <canvas id="airflow-canvas" width="920" height="650" role="img" aria-label="Animated north-up plan showing live wind and rain flowing past the home's three exterior window directions"></canvas>
-          <div class="sim-caption">
-            <p><b id="flow-summary">Reading area conditions</b><span id="flow-detail">The arrows show probable pressure-driven flow, not measured indoor velocity.</span></p>
-            <div class="scenario-row" aria-label="Airflow scenario">
-              <button class="scenario-button active" type="button" data-scenario="live">Live</button>
-              <button class="scenario-button" type="button" data-scenario="ne">NE monsoon</button>
-              <button class="scenario-button" type="button" data-scenario="sw">SW monsoon</button>
-              <button class="scenario-button" type="button" data-scenario="storm">Storm</button>
-              <button class="scenario-button" type="button" data-scenario="calm">Calm</button>
-            </div>
-          </div>
-        </article>
+      <div class="section-head"><h2>One environmental model</h2><p>Home orientation, live wind and rain, air quality, station provenance, distance allowance and the window decision now share one layered view.</p></div>
+      <article class="card model-card">
+        <div class="model-head">
+          <div><small id="sim-kicker">Live outdoor model</small><h3 id="sim-title">Loading Singapore readings…</h3><p><b id="flow-summary">Reading area conditions</b> · <span id="flow-detail">The arrows show probable pressure-driven flow, not measured indoor velocity.</span></p></div>
+          <div class="live-label stale" id="live-status">Connecting</div>
+        </div>
 
-        <aside class="weather-panel">
-          <article class="card weather-card">
-            <small>Area-level readings</small>
-            <div class="weather-metrics">
-              <div class="metric"><span>Wind from</span><b id="wind-reading">—</b><em id="wind-speed">—</em></div>
-              <div class="metric"><span>Rain now</span><b id="rain-reading">—</b><em>Bishan-area gauge</em></div>
-              <div class="metric"><span>PM2.5 · 24h</span><b id="pm25-reading">—</b><em>Central region · µg/m³</em></div>
-              <div class="metric"><span>PSI · 24h</span><b id="psi-reading">—</b><em id="psi-band">Central region</em></div>
-              <div class="metric"><span>24h temperature</span><b id="temp-reading">—</b><em>Forecast range</em></div>
-              <div class="metric"><span>24h humidity</span><b id="humidity-reading">—</b><em>Forecast range</em></div>
-            </div>
-            <p class="data-note" id="reading-time">Waiting for NEA/data.gov.sg…</p>
-          </article>
+        <div class="model-stage">
+          <div class="model-readings" aria-label="Live area-level readings">
+            <div class="model-reading"><span>Wind from</span><b id="wind-reading">—</b><em id="wind-speed">—</em></div>
+            <div class="model-reading"><span>Rain now</span><b id="rain-reading">—</b><em>S217 · nearby gauge</em></div>
+            <div class="model-reading"><span>PM2.5 · 24h</span><b id="pm25-reading">—</b><em>Central · µg/m³</em></div>
+            <div class="model-reading"><span>PSI · 24h</span><b id="psi-reading">—</b><em id="psi-band">Central region</em></div>
+            <div class="model-reading"><span>Temperature</span><b id="temp-reading">—</b><em>24h range</em></div>
+            <div class="model-reading"><span>Humidity</span><b id="humidity-reading">—</b><em>24h range</em></div>
+          </div>
 
-          <article class="card weather-decision">
-            <small>Open-window call</small>
+          <canvas id="airflow-canvas" width="920" height="650" role="img" aria-label="Unified animated north-up model overlaying the home's exterior openings, live wind and rain, station directions and privacy-safe distance bands"></canvas>
+
+          <div class="model-overlay model-call-overlay">
+            <small class="overlay-kicker">Open-window call</small>
             <h3 id="window-call">Loading live recommendation…</h3>
             <p id="window-reason">This combines outdoor air quality, rain and wind alignment. It does not sense the home indoors.</p>
-          </article>
-
-          <article class="card weather-card">
-            <small>Rain &amp; weather pattern</small>
-            <div class="forecast-strip" id="forecast-strip">
+            <div class="model-forecast" id="forecast-strip">
               <div class="forecast-line"><time>Next 2 hours</time><b>Loading Bishan forecast…</b></div>
               <div class="forecast-line"><time>Next period</time><b>Loading central forecast…</b></div>
             </div>
-            <p class="data-note">Live station data can have gaps and reflects outdoor conditions at the reporting station, not this home or its high-floor wind amplification.</p>
-          </article>
-        </aside>
-      </div>
+          </div>
+
+          <div class="model-overlay model-sensor-overlay">
+            <small class="overlay-kicker">Sensor + height overlay</small>
+            <div class="model-sensor-row"><b>S217 · rain</b><span>0.30–0.40 km horizontal · 0.31–0.41 km 3D</span></div>
+            <div class="model-sensor-row"><b>S109 · wind</b><span>2.9–3.1 km · height adds &lt;2 m</span></div>
+            <div class="model-sensor-row"><b>High-floor range</b><span>80–90 m vertical separation</span></div>
+            <p>PSI and forecasts are regional products, not point sensors. Tower wakes and facade pressure remain more important than the small 3D-distance correction.</p>
+          </div>
+        </div>
+
+        <div class="model-controls">
+          <div class="scenario-row" aria-label="Airflow scenario">
+            <button class="scenario-button active" type="button" data-scenario="live">Live</button>
+            <button class="scenario-button" type="button" data-scenario="ne">NE monsoon</button>
+            <button class="scenario-button" type="button" data-scenario="sw">SW monsoon</button>
+            <button class="scenario-button" type="button" data-scenario="storm">Storm</button>
+            <button class="scenario-button" type="button" data-scenario="calm">Calm</button>
+          </div>
+          <p class="data-note" id="reading-time">Waiting for NEA/data.gov.sg…</p>
+        </div>
+      </article>
     </section>
 
-    <section class="section" id="sensor-provenance">
+    <section class="section" id="sensor-provenance" hidden aria-hidden="true">
       <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products. The real home point sits inside the published location envelope, and distance bands add privacy allowance without inventing a false location.</p></div>
       <div class="sensor-shell">
         <article class="card sensor-map-card">
@@ -654,6 +691,36 @@
         ctx.restore();
       }
 
+      function drawCanvasPill(x, y, label, color) {
+        ctx.save();
+        ctx.font = "750 12px Inter, system-ui, sans-serif";
+        const textWidth = ctx.measureText(label).width;
+        ctx.fillStyle = "rgba(7,31,27,.9)";
+        ctx.fillRect(x - 8, y - 15, textWidth + 16, 24);
+        ctx.fillStyle = color;
+        ctx.fillText(label, x, y + 1);
+        ctx.restore();
+      }
+
+      function drawStation(point, color, title, subtitle, labelX, labelY) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 16, 0, Math.PI * 2);
+        ctx.fillStyle = `${color}26`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.fillStyle = "#eef6f2";
+        ctx.font = "800 13px Inter, system-ui, sans-serif";
+        ctx.fillText(title, labelX, labelY);
+        ctx.fillStyle = "rgba(238,246,242,.5)";
+        ctx.font = "500 10px Inter, system-ui, sans-serif";
+        ctx.fillText(subtitle, labelX, labelY + 16);
+        ctx.restore();
+      }
+
       function drawFrame(time) {
         const width = canvas.width;
         const height = canvas.height;
@@ -671,6 +738,35 @@
         sky.addColorStop(1, "#0b2723");
         ctx.fillStyle = sky;
         ctx.fillRect(0, 0, width, height);
+
+        const windStation = { x: width * .17, y: height * .24 };
+        const rainStation = { x: width * .83, y: height * .7 };
+        ctx.save();
+        ctx.strokeStyle = "rgba(238,246,242,.04)";
+        ctx.lineWidth = 1;
+        for (let x = 45; x < width; x += 76) { ctx.beginPath(); ctx.moveTo(x, 88); ctx.lineTo(x, height - 45); ctx.stroke(); }
+        for (let y = 100; y < height; y += 68) { ctx.beginPath(); ctx.moveTo(28, y); ctx.lineTo(width - 28, y); ctx.stroke(); }
+        ctx.beginPath();
+        ctx.moveTo(width * .08, height * .31);
+        ctx.bezierCurveTo(width * .29, height * .38, width * .53, height * .26, width * .92, height * .36);
+        ctx.strokeStyle = "rgba(126,182,196,.13)";
+        ctx.lineWidth = 24;
+        ctx.stroke();
+        ctx.strokeStyle = "rgba(126,182,196,.28)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+
+        drawLine(windStation, center, "rgba(126,182,196,.38)", 2, [7, 8]);
+        drawLine(rainStation, center, "rgba(223,178,111,.48)", 2, [7, 8]);
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(center.x, center.y, span + 36, depth + 48, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(168,220,204,.24)";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([8, 8]);
+        ctx.stroke();
+        ctx.restore();
 
         particles.forEach((particle) => {
           particle.x += windTo.x * speed * 1.7;
@@ -726,6 +822,14 @@
         ctx.fillText("simplified north-up home mass", center.x, center.y - 5);
         ctx.font = "500 11px Inter, system-ui, sans-serif";
         ctx.fillText("interior doors assumed open", center.x, center.y + 15);
+
+        drawStation(windStation, "#7eb6c4", "S109 · wind", "2.9–3.1 km band", windStation.x + 24, windStation.y - 4);
+        drawStation(rainStation, "#dfb26f", "S217 · rain", "0.30–0.40 km band", rainStation.x - 132, rainStation.y - 4);
+        drawCanvasPill(width * .23, height * .39, "wind-station direction", "#a9d5df");
+        drawCanvasPill(width * .69, height * .65, "rain-gauge direction", "#efca92");
+        ctx.fillStyle = "rgba(223,178,111,.52)";
+        ctx.font = "800 10px Inter, system-ui, sans-serif";
+        ctx.fillText("TRAIN DEPOT · NE EXPOSURE", width * .66, height * .27);
 
         const north = { x: width - 58, y: 56 };
         drawArrow({ x: north.x, y: north.y + 31 }, north, "rgba(238,246,242,.75)", 2);
@@ -878,7 +982,6 @@
       }
 
       setScenario("live");
-      drawSensorMap();
       drawFrame(0);
       loadLive().catch(() => {
         $("live-status").textContent = "Live feed unavailable";
