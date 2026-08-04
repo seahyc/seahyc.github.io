@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { REGISTERED_SOURCES, SOURCE_COUNTS } from "./sceneModel";
 import {
   DEFAULT_MATERIALS,
@@ -19,6 +19,13 @@ const TwinScene = lazy(() => import("./TwinScene").then((module) => ({ default: 
 const STORAGE_KEY = "reno_twin_state_v1";
 const DEFAULT_OPEN: Record<string, boolean> = {};
 const DEFAULT_LAYERS = Object.fromEntries(LAYERS.map(({ id }) => [id, id !== "references"])) as Record<TwinLayer, boolean>;
+
+interface RemoteTwinState {
+  payload: PersistedTwinState | null;
+  revision: number;
+  updatedAt: string | null;
+  updatedBy: string | null;
+}
 
 const loadPersisted = (): PersistedTwinState => {
   try {
@@ -67,6 +74,46 @@ export function TwinApp() {
   const [query, setQuery] = useState("");
   const [roomFilter, setRoomFilter] = useState("All rooms");
   const [savedNotice, setSavedNotice] = useState(false);
+  const [remoteRevision, setRemoteRevision] = useState(0);
+  const [remoteReady, setRemoteReady] = useState(false);
+  const [remoteAvailable, setRemoteAvailable] = useState(false);
+  const [syncLabel, setSyncLabel] = useState("Local workspace");
+  const lastRemotePayload = useRef("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    void (async () => {
+      try {
+        const response = await fetch("/reno/api/twin-state", { signal: controller.signal, credentials: "same-origin" });
+        if (!response.ok) throw new Error("Private state API unavailable");
+        const remote = await response.json() as RemoteTwinState;
+        if (remote.payload?.version === 1) {
+          const payload: PersistedTwinState = {
+            version: 1,
+            materials: { ...DEFAULT_MATERIALS, ...remote.payload.materials },
+            scenario: remote.payload.scenario,
+            openObjects: remote.payload.openObjects ?? {},
+            hiddenObjects: remote.payload.hiddenObjects ?? {},
+            assetOverrides: remote.payload.assetOverrides ?? {},
+          };
+          lastRemotePayload.current = JSON.stringify(payload);
+          setMaterials(payload.materials);
+          setScenario(payload.scenario);
+          setOpenObjects(payload.openObjects);
+          setHiddenObjects(payload.hiddenObjects);
+          setAssetOverrides(payload.assetOverrides);
+        }
+        setRemoteRevision(remote.revision);
+        setRemoteAvailable(true);
+        setSyncLabel(remote.revision ? `Private revision ${remote.revision}` : "Private workspace ready");
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) setSyncLabel("Saved locally");
+      } finally {
+        if (!controller.signal.aborted) setRemoteReady(true);
+      }
+    })();
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -77,6 +124,52 @@ export function TwinApp() {
     }, 180);
     return () => window.clearTimeout(timer);
   }, [assetOverrides, hiddenObjects, materials, openObjects, scenario]);
+
+  useEffect(() => {
+    if (!remoteReady || !remoteAvailable) return;
+    const payload: PersistedTwinState = { version: 1, materials, scenario, openObjects, hiddenObjects, assetOverrides };
+    const serialized = JSON.stringify(payload);
+    if (serialized === lastRemotePayload.current) return;
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => {
+      setSyncLabel("Saving privately…");
+      void (async () => {
+        try {
+          const response = await fetch("/reno/api/twin-state", {
+            method: "PUT",
+            credentials: "same-origin",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ expectedRevision: remoteRevision, payload }),
+            signal: controller.signal,
+          });
+          const saved = await response.json() as RemoteTwinState & { error?: string; current?: RemoteTwinState };
+          const conflictPayload = saved.current?.payload;
+          if (response.status === 409 && conflictPayload?.version === 1 && saved.current) {
+            const current = saved.current;
+            lastRemotePayload.current = JSON.stringify(conflictPayload);
+            setMaterials({ ...DEFAULT_MATERIALS, ...conflictPayload.materials });
+            setScenario(conflictPayload.scenario);
+            setOpenObjects(conflictPayload.openObjects ?? {});
+            setHiddenObjects(conflictPayload.hiddenObjects ?? {});
+            setAssetOverrides(conflictPayload.assetOverrides ?? {});
+            setRemoteRevision(current.revision);
+            setSyncLabel(`Updated from revision ${current.revision}`);
+            return;
+          }
+          if (!response.ok) throw new Error("Unable to save private state");
+          lastRemotePayload.current = serialized;
+          setRemoteRevision(saved.revision);
+          setSyncLabel(`Saved privately · r${saved.revision}`);
+        } catch (error) {
+          if (!(error instanceof DOMException && error.name === "AbortError")) setSyncLabel("Private save paused · local copy kept");
+        }
+      })();
+    }, 650);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [assetOverrides, hiddenObjects, materials, openObjects, remoteAvailable, remoteReady, remoteRevision, scenario]);
 
   const selectedNode = selectedPath ? NODE_BY_PATH.get(selectedPath) : undefined;
   const inventory = useMemo(
@@ -155,7 +248,7 @@ export function TwinApp() {
           <span className="eyebrow">Private-home · spatial operations model</span>
           <h1>Renovation twin <sup>MVP</sup></h1>
         </div>
-        <div className="save-state" role="status"><i className={savedNotice ? "saved" : ""} />{savedNotice ? "Saved locally" : "Local workspace"}</div>
+        <div className="save-state" role="status"><i className={savedNotice || remoteAvailable ? "saved" : ""} />{remoteAvailable ? syncLabel : savedNotice ? "Saved locally" : syncLabel}</div>
       </header>
 
       <section className="workspace">
