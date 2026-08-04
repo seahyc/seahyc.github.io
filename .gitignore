@@ -4,6 +4,8 @@ resources/
 .DS_Store
 subscribers.txt
 node_modules/
+.dev.vars*
+projects-src/reno-atmosphere/.env.local
 
 .superpowers/
 .gstack/

@@ -5,6 +5,7 @@ import "./style.css";
 
 type ScenarioName = "live" | "ne" | "sw" | "storm" | "calm";
 type ForecastPeriod = { time: string; forecast: string };
+type OutlookDay = { day: string; forecast: string; low: number; high: number; wind: string };
 type WeatherModel = {
   windFrom: number;
   speed: number;
@@ -18,6 +19,23 @@ type WeatherModel = {
   updated: string | null;
   twoHourLabel?: string;
   centralPeriods?: ForecastPeriod[];
+};
+
+type SupplementalWeather = {
+  currentTemperature: number | null;
+  currentHumidity: number | null;
+  uv: number | null;
+  wbgt: number | null;
+  heatStress: string | null;
+  lightningCount: number | null;
+  outlook: OutlookDay[];
+  updated: string | null;
+};
+
+type PrivateHomeMarker = {
+  heightRatio: number;
+  side: "east" | "west";
+  bayIndex: number;
 };
 
 type TowerObstacle = { x: number; z: number; radius: number; height: number };
@@ -37,6 +55,15 @@ const API = {
   twoHour: `${API_ROOT}two-hr-forecast`,
   day: `${API_ROOT}twenty-four-hr-forecast`,
 };
+const SUPPLEMENTAL_API = {
+  airTemperature: `${API_ROOT}air-temperature`,
+  relativeHumidity: `${API_ROOT}relative-humidity`,
+  uv: `${API_ROOT}uv`,
+  outlook: `${API_ROOT}four-day-outlook`,
+  lightning: `${API_ROOT}weather?api=lightning`,
+  wbgt: `${API_ROOT}weather?api=wbgt`,
+};
+const PRIVATE_HOME_ENDPOINT = "/reno/api/private-home-marker";
 const STATIONS = { weather: "S109", rain: "S217" };
 const OPENINGS = [
   { bearing: 55, short: "NE", name: "bedroom / study window bank" },
@@ -67,6 +94,19 @@ let model = { ...fallback };
 let selected: ScenarioName = "live";
 let forecastRain = false;
 let windVisible = true;
+let supplementalLoading = false;
+let supplementalLoaded = false;
+let lastPrimaryFetchAt = 0;
+let supplemental: SupplementalWeather = {
+  currentTemperature: null,
+  currentHumidity: null,
+  uv: null,
+  wbgt: null,
+  heatStress: null,
+  lightningCount: null,
+  outlook: [],
+  updated: null,
+};
 
 const last = <T>(items: T[] | undefined): T | null => Array.isArray(items) && items.length ? items[items.length - 1] : null;
 const fmt = (value: number | null, digits = 0) => value == null ? "—" : Number(value).toFixed(digits);
@@ -116,7 +156,9 @@ function renderHUD() {
   $("air-band").textContent = `${psiBand(model.psi)} · central region`;
   $("temp-value").textContent = model.temperature ?? "—";
   $("humidity-value").textContent = model.humidity ? `${model.humidity} humidity` : "24h range";
-  $("home-label-detail").textContent = `${inlet.short} side windward now`;
+  $("home-label-detail").textContent = privateHomeMarker
+    ? `Yingcong + Sopisa · ${inlet.short} windward`
+    : `${inlet.short} side windward now`;
   $("weather-story").textContent = `${compass(model.windFrom)} wind reaches the ${inlet.name} first. The globe shows the likely path toward the ${outlet.short} side.`;
 
   let call = "A good moment to keep the windows open";
@@ -188,9 +230,102 @@ async function loadLive() {
   };
   forecastRain = rainyText(liveData.forecast);
   const usable = settled.filter((result) => result.status === "fulfilled").length;
+  lastPrimaryFetchAt = Date.now();
   const updateTime = liveData.updated ? new Intl.DateTimeFormat("en-SG", { timeZone: "Asia/Singapore", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(liveData.updated)) : "now";
   setLiveState(usable === keys.length ? `Live ${updateTime}` : `Partial · ${usable}/${keys.length}`, usable < keys.length);
   if (selected === "live") setScenario("live");
+  renderIntelligence();
+}
+
+function renderIntelligence() {
+  $("intel-pm25").textContent = liveData.pm25 == null ? "—" : `${fmt(liveData.pm25)} µg/m³`;
+  $("intel-psi").textContent = liveData.psi == null ? "—" : `${fmt(liveData.psi)} · ${psiBand(liveData.psi)}`;
+  $("intel-temperature").textContent = supplemental.currentTemperature == null ? (liveData.temperature ?? "—") : `${fmt(supplemental.currentTemperature, 1)}°C`;
+  $("intel-humidity").textContent = supplemental.currentHumidity == null ? (liveData.humidity ?? "—") : `${fmt(supplemental.currentHumidity, 0)}%`;
+  $("intel-uv").textContent = supplemental.uv == null ? "Load live detail" : `${fmt(supplemental.uv)} · ${supplemental.uv < 3 ? "low" : supplemental.uv < 6 ? "moderate" : supplemental.uv < 8 ? "high" : "very high"}`;
+  $("intel-wbgt").textContent = supplemental.wbgt == null ? "Load live detail" : `${fmt(supplemental.wbgt, 1)}°C · ${supplemental.heatStress ?? "—"}`;
+  $("intel-lightning").textContent = supplemental.lightningCount == null ? "Load live detail" : supplemental.lightningCount === 0 ? "No strokes in latest frame" : `${supplemental.lightningCount} in latest frame`;
+
+  const timeline = $("intel-forecast");
+  timeline.replaceChildren();
+  const periods = [
+    { time: liveData.twoHourLabel ?? "Next 2 hours", forecast: liveData.forecast },
+    ...(liveData.centralPeriods ?? []).slice(0, 3),
+  ];
+  periods.forEach((period) => {
+    const row = document.createElement("div");
+    row.className = "intel-forecast-row";
+    const time = document.createElement("span");
+    time.textContent = period.time;
+    const forecast = document.createElement("b");
+    forecast.textContent = period.forecast;
+    row.append(time, forecast);
+    timeline.append(row);
+  });
+
+  const outlook = $("intel-outlook");
+  outlook.replaceChildren();
+  if (!supplemental.outlook.length) {
+    const awaiting = document.createElement("p");
+    awaiting.className = "intel-awaiting";
+    awaiting.textContent = "Open this field note to retrieve the four-day outlook.";
+    outlook.append(awaiting);
+  } else {
+    supplemental.outlook.forEach((day) => {
+      const card = document.createElement("article");
+      card.className = "outlook-day";
+      const label = document.createElement("span");
+      label.textContent = day.day;
+      const temperature = document.createElement("b");
+      temperature.textContent = `${day.low}–${day.high}°C`;
+      const forecast = document.createElement("p");
+      forecast.textContent = day.forecast;
+      const wind = document.createElement("em");
+      wind.textContent = day.wind;
+      card.append(label, temperature, forecast, wind);
+      outlook.append(card);
+    });
+  }
+}
+
+async function loadSupplemental() {
+  if (supplementalLoaded || supplementalLoading) return;
+  supplementalLoading = true;
+  $("intel-load-state").textContent = "Gathering station detail…";
+  const cooldown = Math.max(0, 10_200 - (Date.now() - lastPrimaryFetchAt));
+  if (cooldown) await pause(cooldown);
+
+  const keys = Object.keys(SUPPLEMENTAL_API) as (keyof typeof SUPPLEMENTAL_API)[];
+  const results = await Promise.allSettled(keys.map((key) => getJSON(SUPPLEMENTAL_API[key])));
+  const data: Record<string, any> = {};
+  results.forEach((result, index) => { if (result.status === "fulfilled") data[keys[index]] = result.value; });
+
+  const uvRecord = last<any>(data.uv?.data?.records);
+  const outlookRecord = last<any>(data.outlook?.data?.records);
+  const lightningRecord = last<any>(data.lightning?.data?.records);
+  const wbgtRecord = last<any>(data.wbgt?.data?.records);
+  const wbgtBishan = wbgtRecord?.item?.readings?.find((reading: any) => reading.station?.id === "S128");
+  supplemental = {
+    currentTemperature: stationValue(data.airTemperature, STATIONS.weather),
+    currentHumidity: stationValue(data.relativeHumidity, STATIONS.weather),
+    uv: uvRecord?.index?.[0]?.value ?? null,
+    wbgt: wbgtBishan?.wbgt == null ? null : Number(wbgtBishan.wbgt),
+    heatStress: wbgtBishan?.heatStress ?? null,
+    lightningCount: Array.isArray(lightningRecord?.item?.readings) ? lightningRecord.item.readings.length : null,
+    outlook: (outlookRecord?.forecasts ?? []).slice(0, 4).map((item: any) => ({
+      day: item.day,
+      forecast: item.forecast?.summary ?? item.forecast?.text ?? "—",
+      low: item.temperature?.low,
+      high: item.temperature?.high,
+      wind: `${item.wind?.direction ?? "—"} ${item.wind?.speed?.low ?? "—"}–${item.wind?.speed?.high ?? "—"} km/h`,
+    })),
+    updated: wbgtRecord?.updatedTimestamp ?? uvRecord?.updatedTimestamp ?? outlookRecord?.updatedTimestamp ?? null,
+  };
+  supplementalLoaded = results.some((result) => result.status === "fulfilled");
+  supplementalLoading = false;
+  $("intel-load-state").textContent = supplementalLoaded ? "Live detail loaded" : "Some detail feeds are resting";
+  renderIntelligence();
+  if (scene) updateWeatherLook();
 }
 
 let renderer: THREE.WebGLRenderer;
@@ -203,13 +338,24 @@ let globeMaterial: THREE.MeshPhysicalMaterial;
 let sunLight: THREE.DirectionalLight;
 let ambientLight: THREE.HemisphereLight;
 let windRibbons: THREE.Group;
+let homeBlock: THREE.Group;
+let homeMarker: THREE.Group | null = null;
+let homePulseMaterial: THREE.MeshBasicMaterial | null = null;
+let privateHomeMarker: PrivateHomeMarker | null = null;
 const towerObstacles: TowerObstacle[] = [];
 const windParticles: WindParticle[] = [];
 const rainParticles: RainParticle[] = [];
 const clouds: THREE.Group[] = [];
+const residentGroups: THREE.Group[] = [];
 const facadePanes: { bearing: number; mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial> }[] = [];
+const HOME_BLOCK_HEIGHT = 8.2;
+const HOME_BLOCK_ROTATION = THREE.MathUtils.degToRad(35);
+const HOME_BAYS = {
+  east: [-1.25, -.42, .42, 1.25],
+  west: [-1.18, 0, 1.18],
+};
 const worldAnchors = {
-  home: new THREE.Vector3(0, 8.9, .2),
+  home: new THREE.Vector3(0, 8.45, .2),
   depot: new THREE.Vector3(6.9, 1.15, -5.4),
   station: new THREE.Vector3(7.4, 1.25, 3.5),
 };
@@ -265,20 +411,188 @@ function addTower(options: { x: number; z: number; width: number; depth: number;
   rooftop.position.set(width * .2, height + .55, -depth * .1);
   group.add(rooftop);
 
-  if (options.highlighted) {
-    const homeBand = new THREE.Mesh(new THREE.BoxGeometry(width + .08, .34, depth + .08), new THREE.MeshStandardMaterial({ color: 0x59d8c1, emissive: 0x2d8f80, emissiveIntensity: .5, transparent: true, opacity: .92 }));
-    homeBand.position.y = height * .76;
-    group.add(homeBand);
-    const halo = new THREE.Mesh(new THREE.TorusGeometry(Math.max(width, depth) * .62, .035, 6, 48), new THREE.MeshBasicMaterial({ color: 0x63d8c3, transparent: true, opacity: .65 }));
-    halo.rotation.x = Math.PI / 2;
-    halo.position.y = height * .76;
-    group.add(halo);
-  }
-
   scene.add(group);
   towerObstacles.push({ x, z, radius: Math.max(width, depth) * .68, height });
   registerWindows(x, z, width, depth, height, rotation, Boolean(options.highlighted));
   return group;
+}
+
+function createHomeBlock() {
+  homeBlock = new THREE.Group();
+  homeBlock.position.set(0, 0, .2);
+  homeBlock.rotation.y = HOME_BLOCK_ROTATION;
+  homeBlock.name = "home-block-massing";
+
+  const corridor = new THREE.Mesh(
+    new RoundedBoxGeometry(.28, HOME_BLOCK_HEIGHT, 3.5, 3, .08),
+    material(0xf4d9c7, .78),
+  );
+  corridor.position.y = HOME_BLOCK_HEIGHT / 2 + .22;
+  corridor.castShadow = true;
+  corridor.receiveShadow = true;
+  homeBlock.add(corridor);
+
+  const moduleGeometry = new RoundedBoxGeometry(.84, HOME_BLOCK_HEIGHT, .66, 3, .08);
+  const moduleMaterial = material(0xffe8d5, .76);
+  const windowTransforms: THREE.Matrix4[] = [];
+  const windowColor = new THREE.Color();
+  const windowColors: THREE.Color[] = [];
+  const windowQuaternion = new THREE.Quaternion();
+  const windowScale = new THREE.Vector3(1, 1, 1);
+
+  (["east", "west"] as const).forEach((sideName) => {
+    const side = sideName === "east" ? 1 : -1;
+    HOME_BAYS[sideName].forEach((z, bayIndex) => {
+      const module = new THREE.Mesh(moduleGeometry, moduleMaterial);
+      module.position.set(side * .55, HOME_BLOCK_HEIGHT / 2 + .22, z);
+      module.castShadow = true;
+      module.receiveShadow = true;
+      homeBlock.add(module);
+
+      for (let storey = 3; storey <= 33; storey += 1) {
+        const y = .22 + HOME_BLOCK_HEIGHT * ((storey - .5) / 33);
+        for (const offset of [-.13, .13]) {
+          const position = new THREE.Vector3(side * (.55 + .84 / 2 + .016), y, z + offset);
+          windowTransforms.push(new THREE.Matrix4().compose(position, windowQuaternion, windowScale));
+          const warmth = ((storey * 11 + bayIndex * 7 + (offset > 0 ? 3 : 0)) % 13) < 3;
+          windowColors.push(windowColor.set(warmth ? 0xffd39b : 0x9bd7dc).clone());
+        }
+      }
+    });
+  });
+
+  const windows = new THREE.InstancedMesh(
+    new THREE.BoxGeometry(.026, .12, .17),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x315f68, emissiveIntensity: .22, roughness: .4 }),
+    windowTransforms.length,
+  );
+  windowTransforms.forEach((matrix, index) => {
+    windows.setMatrixAt(index, matrix);
+    windows.setColorAt(index, windowColors[index]);
+  });
+  windows.instanceMatrix.needsUpdate = true;
+  if (windows.instanceColor) windows.instanceColor.needsUpdate = true;
+  homeBlock.add(windows);
+
+  const ledges = new THREE.InstancedMesh(
+    new THREE.BoxGeometry(1.6, .012, 3.48),
+    material(0xf8eee1, .82),
+    32,
+  );
+  const ledgeDummy = new THREE.Object3D();
+  for (let storey = 1; storey <= 32; storey += 1) {
+    ledgeDummy.position.set(0, .22 + HOME_BLOCK_HEIGHT * (storey / 33), 0);
+    ledgeDummy.updateMatrix();
+    ledges.setMatrixAt(storey - 1, ledgeDummy.matrix);
+  }
+  ledges.instanceMatrix.needsUpdate = true;
+  homeBlock.add(ledges);
+
+  const roof = new THREE.Mesh(new RoundedBoxGeometry(1.32, .18, 3.1, 2, .05), material(0x63bfae, .68));
+  roof.position.y = HOME_BLOCK_HEIGHT + .34;
+  roof.castShadow = true;
+  homeBlock.add(roof);
+
+  scene.add(homeBlock);
+  towerObstacles.push({ x: 0, z: .2, radius: 2.05, height: HOME_BLOCK_HEIGHT });
+}
+
+function createResident(color: number, hair: number, z: number, scale = 1) {
+  const person = new THREE.Group();
+  // Sit the miniature portraits just proud of the glass so they remain legible
+  // through the translucent facade at both desktop and phone pixel densities.
+  person.position.set(.038, -.08, z);
+  person.scale.setScalar(scale);
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(.027, .038, .09, 8), material(color, .78));
+  body.position.y = .065;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.034, 10, 8), material(0xd79a74, .88));
+  head.position.set(.012, .132, 0);
+  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(.036, 10, 6, 0, Math.PI * 2, 0, Math.PI * .52), material(hair, .9));
+  hairCap.position.set(.012, .142, 0);
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(.009, .011, .075, 6), material(0xd79a74, .86));
+  arm.position.set(.012, .088, -.04);
+  arm.rotation.x = -.62;
+  person.add(body, head, hairCap, arm);
+  residentGroups.push(person);
+  return person;
+}
+
+function createHomeVignette(marker: PrivateHomeMarker) {
+  if (!homeBlock) return;
+  if (homeMarker) homeBlock.remove(homeMarker);
+  residentGroups.length = 0;
+  const sideName = marker.side;
+  const bays = HOME_BAYS[sideName];
+  const bayIndex = THREE.MathUtils.clamp(Math.round(marker.bayIndex), 0, bays.length - 1);
+  const side = sideName === "east" ? 1 : -1;
+  const z = bays[bayIndex];
+  const y = .22 + HOME_BLOCK_HEIGHT * THREE.MathUtils.clamp(marker.heightRatio, .1, .985);
+  const facadeX = side * (.55 + .84 / 2 + .035);
+
+  homeMarker = new THREE.Group();
+  homeMarker.position.set(facadeX, y, z);
+  homeMarker.name = "private-home-window";
+  const room = new THREE.Mesh(
+    new THREE.BoxGeometry(.018, .23, .48),
+    new THREE.MeshStandardMaterial({ color: 0x35535c, emissive: 0xf4b77f, emissiveIntensity: .7, roughness: .45 }),
+  );
+  room.position.x = -side * .16;
+  homeMarker.add(room);
+
+  const glass = new THREE.Mesh(
+    new THREE.BoxGeometry(.018, .22, .46),
+    new THREE.MeshPhysicalMaterial({ color: 0xcff4f4, transparent: true, opacity: .5, transmission: .25, roughness: .08 }),
+  );
+  glass.position.x = side * .012;
+  homeMarker.add(glass);
+
+  const frameMaterial = material(0xfff8e9, .5);
+  for (const frameZ of [-.23, 0, .23]) {
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(.024, .24, .012), frameMaterial);
+    frame.position.set(side * .026, 0, frameZ);
+    homeMarker.add(frame);
+  }
+  for (const frameY of [-.12, .12]) {
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(.024, .012, .47), frameMaterial);
+    frame.position.set(side * .026, frameY, 0);
+    homeMarker.add(frame);
+  }
+
+  const couple = new THREE.Group();
+  couple.scale.x = side;
+  couple.add(createResident(0x65c7b4, 0x304047, -.09, 1.03));
+  couple.add(createResident(0xf2a68a, 0x3b2d34, .09, .96));
+  homeMarker.add(couple);
+
+  homePulseMaterial = new THREE.MeshBasicMaterial({ color: 0x70ead2, transparent: true, opacity: .72, depthWrite: false });
+  const pulse = new THREE.Mesh(new THREE.TorusGeometry(.32, .018, 6, 48), homePulseMaterial);
+  pulse.rotation.y = Math.PI / 2;
+  pulse.position.x = side * .045;
+  homeMarker.add(pulse);
+
+  const heart = new THREE.Mesh(new THREE.SphereGeometry(.018, 8, 6), new THREE.MeshBasicMaterial({ color: 0xf38f96 }));
+  heart.position.set(side * .055, .15, 0);
+  homeMarker.add(heart);
+  homeBlock.add(homeMarker);
+  homeBlock.updateMatrixWorld(true);
+  worldAnchors.home.copy(homeBlock.localToWorld(homeMarker.position.clone()));
+  $("home-label").querySelector("b")!.textContent = "Our window";
+  $("home-label-detail").textContent = "Yingcong + Sopisa · tap to visit";
+  $("private-model-state").textContent = "Exact storey and window bank loaded";
+}
+
+async function loadPrivateHomeMarker() {
+  try {
+    const response = await fetch(PRIVATE_HOME_ENDPOINT, { credentials: "same-origin", cache: "no-store" });
+    if (!response.ok) throw new Error(`Private marker ${response.status}`);
+    const payload = await response.json();
+    const marker = payload?.marker as PrivateHomeMarker;
+    if (!marker || !Number.isFinite(marker.heightRatio) || !Number.isFinite(marker.bayIndex) || !["east", "west"].includes(marker.side)) throw new Error("Invalid private marker");
+    privateHomeMarker = marker;
+    createHomeVignette(marker);
+  } catch {
+    $("private-model-state").textContent = "Home is shown at block level in this preview";
+  }
 }
 
 function createFacadePane(bearing: number, width: number, height: number, towerHeight: number) {
@@ -354,7 +668,7 @@ function createNeighbourhood() {
   road.receiveShadow = true;
   scene.add(road);
 
-  addTower({ x: 0, z: .2, width: 1.7, depth: 1.35, height: 8.2, rotation: -.17, color: 0xffe8d5, highlighted: true });
+  createHomeBlock();
   addTower({ x: -3.4, z: 1.8, width: 1.6, depth: 1.25, height: 6.7, rotation: .28, color: 0xe8d8ef });
   addTower({ x: 3.0, z: 2.2, width: 1.55, depth: 1.25, height: 7.25, rotation: -.22, color: 0xd5e8f0 });
   addTower({ x: -2.4, z: -2.4, width: 1.45, depth: 1.15, height: 5.8, rotation: -.36, color: 0xf3dfbd });
@@ -570,7 +884,8 @@ function updateWeatherLook() {
   scene.background = new THREE.Color(storm ? 0x9ebcc5 : rainy ? 0xc8dce2 : 0xdceff0);
   scene.fog = new THREE.Fog(storm ? 0x9ebcc5 : 0xdceff0, 16, storm ? 35 : 42);
   sunLight.color.set(storm ? 0xc4d4e2 : 0xffefcf);
-  sunLight.intensity = storm ? 1.1 : rainy ? 1.7 : 2.7;
+  const uvLift = supplemental.uv == null ? 0 : Math.min(.65, supplemental.uv * .07);
+  sunLight.intensity = storm ? 1.1 : rainy ? 1.7 : 2.45 + uvLift;
   ambientLight.intensity = storm ? 1.25 : 1.8;
   globeMaterial.opacity = storm ? .16 : .11;
   clouds.forEach((cloud, index) => {
@@ -640,9 +955,28 @@ function updateLabels() {
 }
 
 function focusOn(anchor: THREE.Vector3, distance = 14) {
+  homeLabel.classList.remove("focused");
+  controls.minDistance = compact ? 15 : 13;
   const direction = camera.position.clone().sub(controls.target).normalize();
   controls.target.copy(anchor.clone().setY(Math.max(.6, anchor.y * .36)));
   camera.position.copy(controls.target).addScaledVector(direction, distance);
+  controls.update();
+  $("gesture-hint").classList.add("hidden");
+}
+
+function focusHome() {
+  if (!privateHomeMarker || !homeMarker) {
+    focusOn(worldAnchors.home, 12);
+    return;
+  }
+  controls.autoRotate = false;
+  homeLabel.classList.add("focused");
+  controls.minDistance = 2.15;
+  controls.target.copy(worldAnchors.home);
+  const outwardBearing = privateHomeMarker.side === "east" ? 55 : 235;
+  const outward = bearingVector(outwardBearing);
+  camera.position.copy(worldAnchors.home).addScaledVector(outward, compact ? 3.2 : 2.75);
+  camera.position.y += compact ? .48 : .36;
   controls.update();
   $("gesture-hint").classList.add("hidden");
 }
@@ -736,6 +1070,11 @@ function initialiseWorld() {
     } else if (windVisible) {
       updateWind(0, elapsed);
     }
+    residentGroups.forEach((resident, index) => {
+      resident.rotation.z = reducedMotion ? 0 : Math.sin(elapsed * 1.25 + index * .9) * .055;
+      resident.rotation.y = reducedMotion ? 0 : Math.sin(elapsed * .72 + index) * .04;
+    });
+    if (homePulseMaterial) homePulseMaterial.opacity = reducedMotion ? .62 : .46 + Math.sin(elapsed * 2.1) * .22;
     controls.update();
     updateLabels();
     renderer.render(scene, camera);
@@ -775,12 +1114,31 @@ $("wind-toggle").addEventListener("click", () => {
   if (windRibbons) windRibbons.visible = windVisible;
 });
 
-homeLabel.addEventListener("click", () => focusOn(worldAnchors.home, 12));
+homeLabel.addEventListener("click", focusHome);
 depotLabel.addEventListener("click", () => focusOn(worldAnchors.depot, 13));
 stationLabel.addEventListener("click", () => focusOn(worldAnchors.station, 11));
 
+const intelSheet = $("intel-sheet");
+const intelScrim = $("intel-scrim");
+function setIntelOpen(open: boolean) {
+  intelSheet.classList.toggle("open", open);
+  intelSheet.setAttribute("aria-hidden", String(!open));
+  intelScrim.classList.toggle("open", open);
+  $("intel-toggle").setAttribute("aria-expanded", String(open));
+  if (open) loadSupplemental().catch(() => {
+    supplementalLoading = false;
+    $("intel-load-state").textContent = "Some detail feeds are resting";
+  });
+}
+$("intel-toggle").addEventListener("click", () => setIntelOpen(true));
+$("intel-close").addEventListener("click", () => setIntelOpen(false));
+intelScrim.addEventListener("click", () => setIntelOpen(false));
+window.addEventListener("keydown", (event) => { if (event.key === "Escape") setIntelOpen(false); });
+
 setScenario("live");
 initialiseWorld();
+renderIntelligence();
+loadPrivateHomeMarker();
 loadLive().catch(() => {
   setLiveState("Live feed unavailable", true);
   $("weather-story").textContent = "The live feed is resting. Try a weather scene while we reconnect.";

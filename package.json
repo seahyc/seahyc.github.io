@@ -12,6 +12,7 @@
     "verify:retirement-planning": "node projects-src/retirement-planning/verify.mjs",
     "verify:retirement-futures": "node projects-src/retirement-planning/verify-futures.mjs",
     "verify:reno-field-notes": "node projects-src/reno-field-notes/verify.mjs",
+    "verify:reno-private-api": "node worker/reno-private-api/test.mjs",
     "verify:reno-atmosphere": "node projects-src/reno-atmosphere/verify.mjs",
     "verify:reno-twin": "node projects-src/reno-twin/verify.mjs"
   },

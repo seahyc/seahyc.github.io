@@ -29,7 +29,7 @@
         <div class="metric"><span>Today</span><b id="temp-value">—</b><em id="humidity-value">—</em></div>
       </section>
 
-      <button class="world-label home-label" id="home-label" type="button"><i></i><b>Home</b><span id="home-label-detail">high-floor facade</span></button>
+      <button class="world-label home-label" id="home-label" type="button"><i></i><b>Our block</b><span id="home-label-detail">loading our window…</span></button>
       <button class="world-label depot-label" id="depot-label" type="button"><i></i><b>Train depot</b><span>NE exposure</span></button>
       <button class="world-label station-label" id="station-label" type="button"><i></i><b>Rain gauge S217</b><span>0.30–0.40 km away</span></button>
 
@@ -51,12 +51,89 @@
         <button class="layer-toggle active" id="wind-toggle" type="button" aria-pressed="true">Wind trails</button>
       </nav>
 
-      <div class="gesture-hint" id="gesture-hint">Drag to orbit · pinch to zoom · tap a label</div>
+      <button class="intel-toggle" id="intel-toggle" type="button" aria-controls="intel-sheet" aria-expanded="false"><span>Field intelligence</span><b>What this globe knows</b></button>
+      <div class="intel-scrim" id="intel-scrim"></div>
+      <section class="intel-sheet" id="intel-sheet" aria-hidden="true" aria-label="Weather and home intelligence">
+        <header class="intel-head">
+          <div><span>Live context, not another dashboard</span><h2>What this globe knows</h2><p id="intel-load-state">Core weather is live · open detail loads the remaining feeds</p></div>
+          <button id="intel-close" type="button" aria-label="Close field intelligence">×</button>
+        </header>
+        <div class="intel-scroll">
+          <section class="intel-section">
+            <div class="intel-section-head"><span>01</span><div><b>Outdoor observations</b><p>Point stations and regional products are labelled separately.</p></div></div>
+            <div class="intel-metrics">
+              <article><span>PM2.5 · central 24h</span><b id="intel-pm25">—</b></article>
+              <article><span>PSI · central 24h</span><b id="intel-psi">—</b></article>
+              <article><span>Temperature · S109</span><b id="intel-temperature">—</b></article>
+              <article><span>Humidity · S109</span><b id="intel-humidity">—</b></article>
+              <article><span>UV index · islandwide</span><b id="intel-uv">Load live detail</b></article>
+              <article><span>WBGT · Bishan Stadium</span><b id="intel-wbgt">Load live detail</b></article>
+              <article><span>Lightning · latest frame</span><b id="intel-lightning">Load live detail</b></article>
+            </div>
+          </section>
 
-      <details class="method-note">
-        <summary>What this globe knows</summary>
-        <p><b>Live:</b> NEA/data.gov.sg wind, rain, PSI, temperature, humidity and Bishan forecast. Wind comes from S109 about 2.9–3.1 km away; rain comes from S217 about 0.30–0.40 km away. <b>Derived:</b> facade bearings and high-floor context. <b>Illustrative:</b> the cute neighbourhood massing and pressure-driven airflow. It preserves orientation, not survey geometry, and is not indoor sensing or engineering CFD.</p>
-      </details>
+          <section class="intel-section">
+            <div class="intel-section-head"><span>02</span><div><b>Forecast timeline</b><p>Bishan nowcast, central 24-hour periods and the national four-day outlook.</p></div></div>
+            <div class="intel-forecast" id="intel-forecast"></div>
+            <div class="intel-outlook" id="intel-outlook"></div>
+          </section>
+
+          <section class="intel-section">
+            <div class="intel-section-head"><span>03</span><div><b>Our home in the flow</b><p>Tap the glowing window in the world to visit the exact modelled position.</p></div></div>
+            <p class="private-model-state" id="private-model-state">Locating our window…</p>
+            <div class="bearing-grid">
+              <article><b>055°</b><span>Bedroom + study bank</span><p>Broadly NE–ENE toward the depot; first receiver in a northeast breeze.</p></article>
+              <article><b>325°</b><span>Living glazing</span><p>NW relief opening that can support a cross-flat airflow path.</p></article>
+              <article><b>145°</b><span>Bedroom side</span><p>SE exposure that becomes useful in southerly and southeasterly flow.</p></article>
+            </div>
+            <p class="cabinet-note"><b>Real obstruction:</b> the deeper study cabinet blocks part of the study window, reducing effective opening area even when the facade is well aligned.</p>
+          </section>
+
+          <section class="intel-section">
+            <div class="intel-section-head"><span>04</span><div><b>Sensor geometry</b><p>Distance is useful provenance—not a claim that a ground instrument measures the flat.</p></div></div>
+            <div class="sensor-lines">
+              <article><span>S217 · rain</span><b>0.30–0.40 km horizontal</b><em>0.31–0.41 km including height</em></article>
+              <article><span>S109 · wind / temperature / humidity</span><b>2.9–3.1 km horizontal</b><em>height changes the line by less than 2 m</em></article>
+              <article><span>High-floor separation</span><b>about 80–90 m vertically</b><em>tower wakes and facade pressure dominate that small distance correction</em></article>
+            </div>
+            <p class="source-caveat">PSI, PM2.5 and forecasts are regional products. They do not have an honest point-sensor distance from the home. The animated pressure-driven airflow is illustrative—not indoor sensing or engineering CFD.</p>
+          </section>
+
+          <section class="intel-section split-section">
+            <div>
+              <div class="intel-section-head"><span>05</span><div><b>Seasonal fit</b><p>Bearings create an opportunity; open doors and a real outlet still decide the indoor path.</p></div></div>
+              <div class="season-list">
+                <article><span>Dec–Mar</span><b>NE monsoon</b><p>Best alignment with the bedroom/study bank.</p></article>
+                <article><span>Jun–Sep</span><b>SW monsoon period</b><p>Southerly–southeasterly flow favours the SE and yard side.</p></article>
+                <article><span>Apr–May · Oct–Nov</span><b>Inter-monsoon</b><p>Light variable winds make cross-openings and fans more important.</p></article>
+              </div>
+            </div>
+            <div>
+              <div class="intel-section-head"><span>06</span><div><b>Purifier call</b><p>No purchase is indicated by the depot orientation alone.</p></div></div>
+              <div class="purifier-list">
+                <p><b>Normal open-window day:</b> natural ventilation remains the default.</p>
+                <p><b>Haze or unhealthy PSI:</b> close the occupied room, then run correctly sized HEPA.</p>
+                <p><b>Closed air-conditioned bedroom:</b> use HEPA if allergies or measured particles justify it.</p>
+                <p><b>Cooking or renovation dust:</b> capture and ventilate at source first.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="intel-section sources-section">
+            <div class="intel-section-head"><span>07</span><div><b>Evidence register</b><p>The geometry, weather and health guidance behind the world.</p></div></div>
+            <div class="source-links">
+              <a href="https://www.onemap.gov.sg/" target="_blank" rel="noreferrer">OneMap <span>coordinate context ↗</span></a>
+              <a href="https://assets.hdb.gov.sg/community/bishan_ridges/index.html" target="_blank" rel="noreferrer">HDB <span>project and source plans ↗</span></a>
+              <a href="https://www.weather.gov.sg/climate-climate-of-singapore/" target="_blank" rel="noreferrer">MSS <span>seasonal wind climate ↗</span></a>
+              <a href="https://data.gov.sg/collections/1459/view" target="_blank" rel="noreferrer">data.gov.sg <span>realtime weather stations ↗</span></a>
+              <a href="https://guide.data.gov.sg/developer-guide/real-time-apis" target="_blank" rel="noreferrer">Realtime APIs <span>PSI and PM2.5 ↗</span></a>
+              <a href="https://www.nea.gov.sg/our-services/pollution-control/air-pollution/faqs" target="_blank" rel="noreferrer">NEA <span>air-quality guidance ↗</span></a>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <div class="gesture-hint" id="gesture-hint">Drag to orbit · pinch to zoom · tap a label</div>
 
       <div class="loading" id="loading"><div class="orb"></div><span>Building the neighbourhood…</span></div>
       <div class="webgl-fallback" id="webgl-fallback" hidden><b>The weather globe needs WebGL.</b><span>Your live recommendation is still shown above.</span></div>
