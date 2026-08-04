@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.156.0
+      GIT_CONFIG_COUNT: 1
+      GIT_CONFIG_KEY_0: init.defaultBranch
+      GIT_CONFIG_VALUE_0: main
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -84,6 +87,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    # deploy-pages v5 currently inherits DEP0040 from @actions/artifact.
+    # Suppress only that upstream warning until actions/deploy-pages#433 lands.
+    env:
+      NODE_OPTIONS: --disable-warning=DEP0040
     needs: build
     steps:
       - name: Deploy to GitHub Pages
