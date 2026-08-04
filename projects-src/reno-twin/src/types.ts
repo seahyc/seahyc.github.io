@@ -5,7 +5,8 @@ export type TwinLayer =
   | "plumbing"
   | "furniture"
   | "inventory"
-  | "issues";
+  | "issues"
+  | "references";
 
 export type RecordState = "design" | "installed" | "as-built";
 

@@ -126,6 +126,14 @@ i.confirmed { background: #72b493; } i.reference { background: #d3a75f; } i.prov
 .source-card dl div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .source-card dt { color: var(--muted); font-size: 8px; }
 .source-card dd { margin: 0; text-align: right; font-size: 8px; font-weight: 750; }
+.source-register article { display: grid; grid-template-columns: 9px 1fr; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.source-register article:last-child { border-bottom: 0; }
+.source-register article > i { width: 8px; height: 8px; margin-top: 3px; border-radius: 50%; }
+.source-register b, .source-register small, .source-register code { display: block; }
+.source-register b { font-size: 9px; }
+.source-register small { margin-top: 2px; color: var(--muted); font-size: 7px; line-height: 1.4; }
+.source-register p { margin-top: 5px; }
+.source-register code { margin-top: 6px; color: #75877e; font-size: 6px; }
 .object-inspector { position: absolute; z-index: 8; right: 12px; bottom: 12px; left: 12px; max-height: min(57%, 480px); overflow: auto; padding: 18px; border: 1px solid rgba(215,165,94,.24); border-radius: 15px; background: rgba(13,21,18,.97); box-shadow: 0 18px 45px rgba(0,0,0,.3); backdrop-filter: blur(18px); }
 .inspector-close { position: absolute; top: 9px; right: 9px; width: 36px; height: 36px; border: 0; color: var(--muted); background: transparent; font-size: 20px; cursor: pointer; }
 .object-inspector h3 { margin: 7px 34px 5px 0; font: 500 20px Georgia, serif; }

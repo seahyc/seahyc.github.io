@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#1a1a1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>532B Bishan — Smart Switches</title>
+<title>Bishan home — Smart Switches</title>
 <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
 <style>
 :root {
@@ -487,7 +487,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
 <body>
 
 <header>
-  <h1>532B Bishan — Smart Switches</h1>
+  <h1>Bishan home — Smart Switches</h1>
   <div class="subtitle">16 switch locations · 4 curtain power points · 3 first-batch sensors · 20 Aqara plates + 3 sensors · Zigbee 3.0 · Home Assistant via Z2M</div>
   <div class="progress">
     <span id="progress-text">0/16 done</span>
@@ -506,7 +506,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
     <div class="map-wrap">
       <div class="map-scroll" id="map-scroll">
         <div class="map-inner">
-          <img src="532B-Electrical-Plan-2026-05-25-page1.jpg" class="map-image" id="floorplan-img" alt="532B Bishan electrical plan, updated 2026-05-25" draggable="false">
+          <img src="electrical-plan-2026-05-25-page1.jpg" class="map-image" id="floorplan-img" alt="Bishan home electrical plan, updated 2026-05-25" draggable="false">
           <svg id="presence-overlays" class="presence-overlays" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
           <div id="power-markers"></div>
           <div id="sensor-markers"></div>
@@ -520,7 +520,7 @@ footer { text-align: center; padding: 14px 12px; color: var(--muted); font-size:
       </div>
       <div class="map-controls">
         <button id="calibrate-toggle">📍 Calibrate</button>
-        <a class="hint" id="map-hint" href="532B-Electrical-Plan-2026-05-25.pdf">Latest PDF · 2026-05-25</a>
+        <a class="hint" id="map-hint" href="electrical-plan-2026-05-25.pdf">Latest PDF · 2026-05-25</a>
       </div>
       <div class="map-legend" id="map-legend">
         <span><i class="legend-dot"></i>switch</span>
@@ -930,7 +930,7 @@ const VENDOR_OFFERS = [
   { name: 'TTG · William', discount: 0.10, terms: 'William catalogue · 10% off everything' },
 ];
 
-const STORAGE_KEY = '532b_switch_done';
+const STORAGE_KEY = 'reno_switch_done';
 function loadDone() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; } }
 function saveDone(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 let done = loadDone();

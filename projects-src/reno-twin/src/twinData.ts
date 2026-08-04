@@ -1,4 +1,5 @@
-import type { MaterialSelection, TwinLayer, TwinNode } from "./types";
+import { CARPENTRY_ASSEMBLIES, ELECTRICAL_FIXTURES, EQUIPMENT_ASSETS, REGISTERED_SOURCES } from "./sceneModel";
+import type { MaterialSelection, ProvenanceRecord, TwinLayer, TwinNode } from "./types";
 
 export const LAYERS: Array<{ id: TwinLayer; label: string; short: string }> = [
   { id: "shell", label: "Shell", short: "Walls & floors" },
@@ -8,6 +9,7 @@ export const LAYERS: Array<{ id: TwinLayer; label: string; short: string }> = [
   { id: "furniture", label: "Furniture", short: "Moveable pieces" },
   { id: "inventory", label: "Inventory", short: "Asset markers" },
   { id: "issues", label: "Issue markers", short: "Field notes" },
+  { id: "references", label: "Source registration", short: "Drawing overlays" },
 ];
 
 export const MATERIAL_PRESETS = {
@@ -43,8 +45,8 @@ export const DEFAULT_MATERIALS: MaterialSelection = {
 
 const comfortHome = {
   kind: "canonical-record" as const,
-  label: "Comfort Home current records",
-  detail: "Spatial intent referenced from the current Comfort Home 3D visual and detailed drawings; this web shell is not a measured as-built survey.",
+  label: "CP · 25 May 2026",
+  detail: "Actual room topology traced from the current formal Comfort Home electrical plan. Its 12,650 mm × 9,235 mm dimension chains are drawing references, not a measured as-built survey.",
   confidence: "reference" as const,
 };
 
@@ -54,6 +56,24 @@ const provisional = {
   detail: "Position and scale are diagrammatic pending a chat-confirmed or measured as-built value.",
   confidence: "provisional" as const,
 };
+
+const renderIntent = {
+  kind: "canonical-record" as const,
+  label: "Comfort Home Interior · current 3D visual",
+  detail: "Loose furniture shown in the visual set is design intent only. Exact product, dimensions, purchase status and installed position are not confirmed.",
+  confidence: "reference" as const,
+};
+
+const provenanceForRefs = (sourceRefs: readonly string[]): ProvenanceRecord[] => sourceRefs.flatMap((id) => {
+  const source = REGISTERED_SOURCES.find((candidate) => candidate.id === id);
+  if (!source) return [];
+  return [{
+    kind: source.confidence === "confirmed" ? "chat" as const : "canonical-record" as const,
+    label: `${source.issuedBy} · ${source.issuedAt}`,
+    detail: `${source.label}; ${source.scope}. ${source.pages}.`,
+    confidence: source.confidence === "confirmed" ? "confirmed" as const : "reference" as const,
+  }];
+});
 
 const asset = (
   semanticPath: string,
@@ -85,31 +105,31 @@ export const TWIN_NODES: TwinNode[] = [
     category: "Spatial shell",
     layer: "shell",
     recordState: "design",
-    reference: "comfort-home:3d-visual",
+    reference: "comfort-home:electrical-plan:2026-05-25",
     provenance: [comfortHome, provisional],
   },
   {
     path: "/World/Furniture/Living/Sofa_A",
-    name: "Living-room sofa",
+    name: "Render-intent sofa (provisional)",
     room: "Living room",
     category: "Seating",
     layer: "furniture",
     recordState: "design",
     reference: "furniture:sofa",
     variants: ["Sofa_A", "Sofa_B", "Hidden"],
-    provenance: [comfortHome, provisional],
+    provenance: [renderIntent, provisional],
     inventory: asset("/World/Furniture/Living/Sofa_A", "Living room", "Seating", "TBC", "Scenario sofa", "TBC", "planned"),
   },
   {
     path: "/World/Furniture/Living/DiningTable_A",
-    name: "Dining table",
+    name: "Render-intent dining table (provisional)",
     room: "Living room",
     category: "Table",
     layer: "furniture",
     recordState: "design",
     reference: "selection:dining-table",
     variants: ["Dining", "Open circulation"],
-    provenance: [comfortHome, provisional],
+    provenance: [renderIntent, provisional],
     inventory: asset("/World/Furniture/Living/DiningTable_A", "Living room", "Table", "SHORTLIST", "Travertine candidate", "TBC", "planned"),
   },
   {
@@ -139,14 +159,35 @@ export const TWIN_NODES: TwinNode[] = [
     inventory: { ...asset("/World/Furniture/Study/DeskPair", "Study", "Workstation", "TBC", "Dual-motor standing desk", "TBC", "planned"), quantity: 2 },
   },
   {
-    path: "/World/Carpentry/Kitchen/CabinetSet_A",
-    name: "Kitchen cabinet set",
+    path: "/World/Furniture/MasterBedroom/Bed_A",
+    name: "Master-bedroom bed (render intent)",
+    room: "Master bedroom",
+    category: "Bed",
+    layer: "furniture",
+    recordState: "design",
+    reference: "comfort-home:electrical-plan-and-3d-visual",
+    variants: ["Plan / render orientation"],
+    provenance: [
+      {
+        kind: "canonical-record",
+        label: "CP / Comfort Home · 25 May 2026",
+        detail: "The electrical plan registers the headboard against the right-hand exterior wall, with the bed projecting left into the master bedroom.",
+        confidence: "reference",
+      },
+      renderIntent,
+      provisional,
+    ],
+    inventory: asset("/World/Furniture/MasterBedroom/Bed_A", "Master bedroom", "Bed", "TBC", "Render-intent bed envelope", "TBC", "planned"),
+  },
+  {
+    path: "/World/Carpentry/Kitchen/SinkServiceRun",
+    name: "Kitchen sink and service run",
     room: "Kitchen",
     category: "Base cabinet",
     layer: "carpentry",
     recordState: "design",
     reference: "comfort-home:detailed-drawings:2026-05-30",
-    variants: ["Closed", "Doors open", "Drawer open"],
+    variants: ["Registered assembly", "Doors open", "Drawer open"],
     provenance: [
       {
         kind: "canonical-record",
@@ -156,12 +197,12 @@ export const TWIN_NODES: TwinNode[] = [
       },
       provisional,
     ],
-    inventory: asset("/World/Carpentry/Kitchen/CabinetSet_A", "Kitchen", "Base cabinet", "CUSTOM", "Comfort Home carpentry", "Comfort Home"),
+    inventory: asset("/World/Carpentry/Kitchen/SinkServiceRun", "Kitchen", "Base cabinet", "CUSTOM", "Comfort Home 4.882 m sink/service run", "Comfort Home"),
     interactive: "cabinet",
   },
   {
-    path: "/World/Carpentry/MasterBedroom/Wardrobe_A",
-    name: "Master-bedroom wardrobe",
+    path: "/World/Carpentry/MasterBedroom/WardrobeReturn",
+    name: "Master-bedroom return wardrobe",
     room: "Master bedroom",
     category: "Wardrobe",
     layer: "carpentry",
@@ -169,7 +210,7 @@ export const TWIN_NODES: TwinNode[] = [
     reference: "comfort-home:detailed-drawings:2026-05-30",
     variants: ["Closed", "Doors open"],
     provenance: [comfortHome, provisional],
-    inventory: asset("/World/Carpentry/MasterBedroom/Wardrobe_A", "Master bedroom", "Wardrobe", "CUSTOM", "Comfort Home carpentry", "Comfort Home"),
+    inventory: asset("/World/Carpentry/MasterBedroom/WardrobeReturn", "Master bedroom", "Wardrobe", "CUSTOM", "Comfort Home 2.393 m return wardrobe", "Comfort Home"),
     interactive: "cabinet",
   },
   {
@@ -246,21 +287,63 @@ export const TWIN_NODES: TwinNode[] = [
     ],
     inventory: asset("/World/Electrical/WholeHome/Controls", "Whole home", "Electrical system", "PLAN-2026-05-25", "Electrical controls", "Voltz Solution"),
   },
+  ...CARPENTRY_ASSEMBLIES.filter(({ path }) => ![
+    "/World/Carpentry/Kitchen/SinkServiceRun",
+    "/World/Carpentry/MasterBedroom/WardrobeReturn",
+  ].includes(path)).map((assembly): TwinNode => ({
+    path: assembly.path,
+    name: assembly.name,
+    room: assembly.room,
+    category: assembly.kind === "wardrobe" ? "Wardrobe" : assembly.kind === "vanity" ? "Vanity" : "Built-in carpentry",
+    layer: "carpentry",
+    recordState: "design",
+    reference: assembly.sourceRefs.join(" + "),
+    variants: ["Drawing registration", "Source overlay"],
+    provenance: [...provenanceForRefs(assembly.sourceRefs), provisional],
+    inventory: asset(assembly.path, assembly.room, "Built-in carpentry", "CUSTOM", assembly.name, "Comfort Home"),
+    interactive: "select",
+  })),
+  ...ELECTRICAL_FIXTURES.filter(({ path }) => path !== "/World/Electrical/Living/BobaLight_Upper").map((fixture): TwinNode => ({
+    path: fixture.path,
+    name: `${fixture.room} ${fixture.kind} · ${fixture.circuit}`,
+    room: fixture.room,
+    category: fixture.kind === "socket" || fixture.kind === "switch" ? "Electrical point" : "Lighting fixture",
+    layer: "electrical",
+    recordState: "design",
+    reference: fixture.sourceRefs.join(" + "),
+    provenance: provenanceForRefs(fixture.sourceRefs),
+    inventory: asset(fixture.path, fixture.room, fixture.kind, fixture.circuit, `${fixture.kind} point ${fixture.circuit}`, fixture.kind === "socket" || fixture.kind === "switch" ? "Voltz Solution" : "Focus de Lightings", "planned"),
+    interactive: "select",
+  })),
+  ...EQUIPMENT_ASSETS.map((equipment): TwinNode => ({
+    path: equipment.path,
+    name: equipment.name,
+    room: equipment.room,
+    category: equipment.category,
+    layer: "inventory",
+    recordState: "design",
+    reference: equipment.sourceRefs.join(" + "),
+    provenance: provenanceForRefs(equipment.sourceRefs),
+    inventory: asset(equipment.path, equipment.room, equipment.category, "REFERENCE", equipment.model, equipment.supplier, "planned"),
+    interactive: "select",
+  })),
 ];
 
 export const NODE_BY_PATH = new Map(TWIN_NODES.map((node) => [node.path, node]));
 
 export const WAYPOINTS = [
-  { id: "overview", label: "Overview", room: "Whole home", position: [13.5, 11, 14] as const, target: [5.8, 0, 4.5] as const },
-  { id: "living", label: "Living", room: "Living room", position: [2.5, 1.6, 3.8] as const, target: [4.5, 1.3, 2.5] as const },
-  { id: "kitchen", label: "Kitchen", room: "Kitchen", position: [7.4, 1.6, 2.4] as const, target: [7.2, 1.1, 1] as const },
-  { id: "study", label: "Study", room: "Study", position: [2.5, 1.6, 7.2] as const, target: [3.5, 1.1, 7.2] as const },
-  { id: "bedroom", label: "Bedroom", room: "Master bedroom", position: [8.2, 1.6, 6.4] as const, target: [10.4, 1.2, 7.5] as const },
-  { id: "bath", label: "Bath", room: "Master bathroom", position: [10.1, 1.6, 2.1] as const, target: [11.5, 1.3, 1.3] as const },
+  { id: "overview", label: "Overview", room: "Whole home", position: [6.325, 15, 15.5] as const, target: [6.325, 0, 4.6175] as const },
+  { id: "living", label: "Living", room: "Living room", position: [2.15, 1.6, 3.35] as const, target: [2.95, 1.45, 4.55] as const },
+  { id: "study", label: "Study", room: "Study", position: [5.1, 1.6, 3.65] as const, target: [4.05, 1.1, 2.35] as const },
+  { id: "bedroom-2", label: "Bedroom 2", room: "Bedroom 2", position: [8.05, 1.6, 3.7] as const, target: [8.05, 1.1, 1.8] as const },
+  { id: "master", label: "Master", room: "Master bedroom", position: [10.3, 1.6, 3.65] as const, target: [11.25, 1.15, 1.55] as const },
+  { id: "bath", label: "Baths", room: "Master bathroom", position: [9.05, 1.6, 6.1] as const, target: [9.85, 1.2, 5.7] as const },
+  { id: "kitchen", label: "Kitchen", room: "Kitchen", position: [5.15, 1.6, 7.65] as const, target: [6.15, 1.05, 6.87] as const },
+  { id: "foyer", label: "Foyer", room: "Foyer", position: [2.55, 1.6, 7.25] as const, target: [2.55, 1.25, 5.6] as const },
 ];
 
 export const SCENARIOS = [
-  { id: "installed", label: "Installed intent", description: "Default furniture arrangement" },
-  { id: "open", label: "Open circulation", description: "Dining table tucked, secondary seat hidden" },
-  { id: "work", label: "Work mode", description: "Study desks emphasized" },
+  { id: "installed", label: "Registered base", description: "No unconfirmed loose furniture" },
+  { id: "render", label: "Comfort Home render", description: "Show provisional sofa and dining intent" },
+  { id: "work", label: "Work mode", description: "Chat-confirmed study desks emphasized" },
 ];

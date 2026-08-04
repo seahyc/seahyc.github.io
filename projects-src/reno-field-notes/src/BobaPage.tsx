@@ -121,7 +121,7 @@ export function BobaPage() {
         </div>
 
         <header className="stage-header">
-          <a className="site-back" href="/reno/">← 532B renovation hub</a>
+          <a className="site-back" href="/reno/">← Renovation hub</a>
           <div className="eyebrow">Field note 02 · mobile 3D reconstruction</div>
           <h1>Jammed Boba wall light</h1>
           <p>Drag to orbit. The glass and collar rotate together; the proposed tool grips the collar while moving your hands forward of the globe and ledges.</p>

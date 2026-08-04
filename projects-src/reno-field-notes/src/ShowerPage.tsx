@@ -41,7 +41,7 @@ export function ShowerPage() {
     <section className="shower-stage" aria-label="Interactive three-dimensional shower fitting mechanism">
       <div className="shower-scene"><ShowerScene mode={mode} config={config} sequence={sequence} onSequenceUpdate={setHud} registerReset={registerReset} /></div>
       <header className="shower-header">
-        <a className="site-back" href="/reno/">← 532B renovation hub</a>
+        <a className="site-back" href="/reno/">← Renovation hub</a>
         <div className="eyebrow">Field note 01 · master bathroom · 3 Aug 2026</div>
         <h1>Why the shower mixer sits slanted</h1>
         <p>Drag to orbit. Fade the tiled wall to inspect the two rigid water connections that actually determine whether the 362mm mixer can sit flush.</p>

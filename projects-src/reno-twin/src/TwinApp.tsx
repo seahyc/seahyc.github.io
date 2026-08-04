@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { REGISTERED_SOURCES, SOURCE_COUNTS } from "./sceneModel";
 import {
   DEFAULT_MATERIALS,
   LAYERS,
@@ -17,7 +18,7 @@ const TwinScene = lazy(() => import("./TwinScene").then((module) => ({ default: 
 
 const STORAGE_KEY = "reno_twin_state_v1";
 const DEFAULT_OPEN: Record<string, boolean> = {};
-const DEFAULT_LAYERS = Object.fromEntries(LAYERS.map(({ id }) => [id, true])) as Record<TwinLayer, boolean>;
+const DEFAULT_LAYERS = Object.fromEntries(LAYERS.map(({ id }) => [id, id !== "references"])) as Record<TwinLayer, boolean>;
 
 const loadPersisted = (): PersistedTwinState => {
   try {
@@ -119,7 +120,7 @@ export function TwinApp() {
 
   const exportInventory = (format: "json" | "csv") => {
     if (format === "json") {
-      downloadText("532b-reno-twin-inventory.json", JSON.stringify({ schemaVersion: 1, exportedAt: new Date().toISOString(), assets: inventory }, null, 2), "application/json");
+      downloadText("reno-twin-inventory.json", JSON.stringify({ schemaVersion: 1, exportedAt: new Date().toISOString(), assets: inventory }, null, 2), "application/json");
       return;
     }
     const fields: Array<keyof InventoryRecord> = [
@@ -136,7 +137,7 @@ export function TwinApp() {
       "maintenance",
     ];
     const rows = [fields.map(csvCell).join(","), ...inventory.map((item) => fields.map((field) => csvCell(item[field])).join(","))];
-    downloadText("532b-reno-twin-inventory.csv", rows.join("\n"), "text/csv;charset=utf-8");
+    downloadText("reno-twin-inventory.csv", rows.join("\n"), "text/csv;charset=utf-8");
   };
 
   const beginMovement = (direction: Movement) => setMovement((current) => (current.includes(direction) ? current : [...current, direction]));
@@ -151,7 +152,7 @@ export function TwinApp() {
       <header className="topbar">
         <a className="back-link" href="/reno/" aria-label="Back to renovation fieldbook">← <span>Reno hub</span></a>
         <div className="topbar-title">
-          <span className="eyebrow">532B · spatial operations model</span>
+          <span className="eyebrow">Private-home · spatial operations model</span>
           <h1>Renovation twin <sup>MVP</sup></h1>
         </div>
         <div className="save-state" role="status"><i className={savedNotice ? "saved" : ""} />{savedNotice ? "Saved locally" : "Local workspace"}</div>
@@ -166,8 +167,8 @@ export function TwinApp() {
               scenario={scenario}
               navigationMode={navigationMode}
               selectedPath={selectedPath}
-            openObjects={openObjects}
-            hiddenObjects={hiddenObjects}
+              openObjects={openObjects}
+              hiddenObjects={hiddenObjects}
               movement={movement}
               waypointRequest={waypointRequest}
               onSelect={setSelectedPath}
@@ -186,7 +187,7 @@ export function TwinApp() {
             </div>
             <button className="icon-button" onClick={() => visitWaypoint("overview")} aria-label="Reset to overview">⌂</button>
           </div>
-          <div className="model-caveat"><span>Provisional shell</span> Diagrammatic geometry; object records carry their own provenance.</div>
+          <div className="model-caveat"><span>Registered source model</span> Electrical-plan coordinates + detailed carpentry + current renders + chat-confirmed revisions; not an as-built survey.</div>
           {navigationMode === "walk" && (
             <div className="walk-controls" aria-label="Walkthrough controls">
               <button className="turn" aria-label="Turn left" onPointerDown={() => beginMovement("turnLeft")} onPointerUp={() => endMovement("turnLeft")} onPointerCancel={() => endMovement("turnLeft")}>↶</button>
@@ -236,7 +237,7 @@ export function TwinApp() {
                 <section className="control-section hint-card">
                   <b>Try the built-ins</b>
                   <p>Tap the kitchen cabinet or bedroom wardrobe in the model, then use the inspector to open or close it.</p>
-                  <button onClick={() => selectAndLocate("/World/Carpentry/Kitchen/CabinetSet_A")}>Find kitchen cabinet →</button>
+                  <button onClick={() => selectAndLocate("/World/Carpentry/Kitchen/SinkServiceRun")}>Find kitchen cabinet →</button>
                 </section>
               </div>
             )}
@@ -277,7 +278,7 @@ export function TwinApp() {
                     </label>
                   ))}
                 </section>
-                <section className="control-section"><button className="secondary-button" onClick={() => setLayers(DEFAULT_LAYERS)}>Show all layers</button></section>
+                <section className="control-section"><button className="secondary-button" onClick={() => setLayers(DEFAULT_LAYERS)}>Reset layer view</button></section>
               </div>
             )}
 
@@ -308,7 +309,7 @@ export function TwinApp() {
 
             {panel === "provenance" && (
               <div className="panel-content">
-                <section className="control-section intro-section"><span className="section-kicker">Trust & provenance</span><h2>What this twin knows—and what it does not</h2><p>Every semantic object carries a source and confidence. No budget, invoice, owner email, secret, or private source document is shipped here.</p></section>
+                <section className="control-section intro-section"><span className="section-kicker">Trust & provenance</span><h2>One model, registered sources</h2><p>{SOURCE_COUNTS.registeredSources} source records register {SOURCE_COUNTS.rooms} rooms, {SOURCE_COUNTS.carpentryAssemblies} carpentry assemblies, {SOURCE_COUNTS.electricalFixtures} electrical fixtures and {SOURCE_COUNTS.equipmentAssets} equipment assets. No budget, invoice, owner email, secret, or private source document is shipped here.</p></section>
                 <section className="control-section provenance-key">
                   <div><i className="confirmed" /><span><b>Confirmed</b><small>Direct chat decision or explicit project fact</small></span></div>
                   <div><i className="reference" /><span><b>Reference</b><small>Current record or observed condition</small></span></div>
@@ -320,7 +321,16 @@ export function TwinApp() {
                 </section>
                 <section className="control-section source-card">
                   <h3>Spatial confidence</h3>
-                  <p>The room topology and object placement are a provisional whole-home reconstruction for interaction design. Drawings inform intent but do not override chat-confirmed values. Only the study’s 3294 mm usable wall and 2036 mm depth-plus-walkway budget are presented numerically here, cited to CP on 11 and 18 Jun 2026.</p>
+                  <p>The room order and L-shaped envelope are traced from the current Comfort Home electrical plan sent by CP on 25 May 2026. Its 12,650 mm × 9,235 mm dimension chains are plan references, not an as-built survey; furniture and detailed bathroom partitions remain provisional where chat or site measurements do not confirm them. The study’s 3294 mm usable wall and 2036 mm depth-plus-walkway budget are cited to CP on 11 and 18 Jun 2026.</p>
+                </section>
+                <section className="control-section source-register">
+                  <h3>Registered source stack</h3>
+                  {REGISTERED_SOURCES.map((source) => (
+                    <article key={source.id}>
+                      <i className={source.confidence === "confirmed" ? "confirmed" : "reference"} />
+                      <div><b>{source.label}</b><small>{source.pages} · {source.issuedBy}, {source.issuedAt}</small><p>{source.role}: {source.scope}</p><code>{source.id}</code></div>
+                    </article>
+                  ))}
                 </section>
               </div>
             )}

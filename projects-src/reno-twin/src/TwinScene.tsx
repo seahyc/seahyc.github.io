@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { CARPENTRY_ASSEMBLIES, ELECTRICAL_FIXTURES, EQUIPMENT_ASSETS, ROOM_REGIONS, WALL_SEGMENTS } from "./sceneModel";
 import { MATERIAL_PRESETS, WAYPOINTS } from "./twinData";
 import type { MaterialSelection, TwinLayer } from "./types";
 
@@ -39,8 +40,8 @@ interface RuntimeState {
 }
 
 const WALL_HEIGHT = 2.75;
-const CABINET_PATH = "/World/Carpentry/Kitchen/CabinetSet_A";
-const WARDROBE_PATH = "/World/Carpentry/MasterBedroom/Wardrobe_A";
+const CABINET_PATH = "/World/Carpentry/Kitchen/SinkServiceRun";
+const WARDROBE_PATH = "/World/Carpentry/MasterBedroom/WardrobeReturn";
 
 const presetColor = (kind: keyof MaterialSelection, id: string) => {
   const preset = MATERIAL_PRESETS[kind].find((candidate) => candidate.id === id);
@@ -95,7 +96,7 @@ export function TwinScene(props: TwinSceneProps) {
     scene.fog = new THREE.Fog("#cad2cb", 15, 28);
 
     const camera = new THREE.PerspectiveCamera(48, 1, 0.05, 80);
-    camera.position.set(13.5, 11, 14);
+    camera.position.set(6.325, 15, 15.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -110,7 +111,7 @@ export function TwinScene(props: TwinSceneProps) {
     mount.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(5.8, 0.65, 4.5);
+    controls.target.set(6.3, 0.65, 4.6);
     controls.enableDamping = true;
     controls.dampingFactor = 0.07;
     controls.minDistance = 3;
@@ -130,7 +131,7 @@ export function TwinScene(props: TwinSceneProps) {
     scene.add(sun);
 
     const layerGroups = {} as Record<TwinLayer, THREE.Group>;
-    (["shell", "carpentry", "electrical", "plumbing", "furniture", "inventory", "issues"] as TwinLayer[]).forEach((layer) => {
+    (["shell", "carpentry", "electrical", "plumbing", "furniture", "inventory", "issues", "references"] as TwinLayer[]).forEach((layer) => {
       const group = new THREE.Group();
       group.name = `Layer:${layer}`;
       layerGroups[layer] = group;
@@ -148,6 +149,8 @@ export function TwinScene(props: TwinSceneProps) {
       issue: new THREE.MeshStandardMaterial({ color: "#df624d", emissive: "#7a1d10", emissiveIntensity: 0.55 }),
       inventory: new THREE.MeshStandardMaterial({ color: "#e7b85c", emissive: "#6d4e0e", emissiveIntensity: 0.25 }),
       white: new THREE.MeshStandardMaterial({ color: "#eeeae1", roughness: 0.58 }),
+      reference: new THREE.MeshBasicMaterial({ color: "#53d4c7", transparent: true, opacity: 0.32, wireframe: true, depthTest: false }),
+      referenceLine: new THREE.LineBasicMaterial({ color: "#2ebdad", transparent: true, opacity: 0.68, depthTest: false }),
     };
 
     const boxGeometryCache = new Map<string, THREE.BoxGeometry>();
@@ -176,35 +179,69 @@ export function TwinScene(props: TwinSceneProps) {
       return mesh;
     };
 
-    const floorRooms = [
-      { center: [3, 0, 2.5] as const, size: [6, 0.12, 5] as const },
-      { center: [7.5, 0, 1.5] as const, size: [3, 0.12, 3] as const },
-      { center: [10.5, 0, 1.5] as const, size: [3, 0.12, 3] as const },
-      { center: [3, 0, 7] as const, size: [6, 0.12, 4] as const },
-      { center: [9, 0, 6] as const, size: [6, 0.12, 6] as const },
-    ];
-    floorRooms.forEach(({ center, size }) => addBox(layerGroups.shell, [...size], [...center], materials.floor, false));
+    // Comfort Home electrical plan, issued by CP on 25 May 2026. Coordinates are
+    // metres traced from the drawing dimension chains, not an as-built survey.
+    const walkableRegions: THREE.Box2[] = [];
+    ROOM_REGIONS.forEach(({ bounds: [x1, x2, z1, z2] }) => {
+      addBox(layerGroups.shell, [x2 - x1, 0.12, z2 - z1], [(x1 + x2) / 2, 0, (z1 + z2) / 2], materials.floor, false);
+      walkableRegions.push(new THREE.Box2(new THREE.Vector2(x1 + 0.18, z1 + 0.18), new THREE.Vector2(x2 - 0.18, z2 - 0.18)));
+    });
+    addBox(layerGroups.shell, [1.585, 0.08, 1.31], [9.4075, -0.01, 7.195], materials.dark, false);
 
-    const wall = (size: [number, number, number], position: [number, number, number]) =>
-      addBox(layerGroups.shell, size, position, materials.wall);
-    wall([12.25, WALL_HEIGHT, 0.14], [6, WALL_HEIGHT / 2, -0.06]);
-    wall([0.14, WALL_HEIGHT, 9.15], [-0.06, WALL_HEIGHT / 2, 4.5]);
-    wall([12.25, WALL_HEIGHT, 0.14], [6, WALL_HEIGHT / 2, 9.06]);
-    wall([0.14, WALL_HEIGHT, 9.15], [12.06, WALL_HEIGHT / 2, 4.5]);
-    wall([0.12, WALL_HEIGHT, 3], [6, WALL_HEIGHT / 2, 1.5]);
-    wall([0.12, WALL_HEIGHT, 2.1], [6, WALL_HEIGHT / 2, 7.95]);
-    wall([3, WALL_HEIGHT, 0.12], [10.5, WALL_HEIGHT / 2, 3]);
-    wall([1.65, WALL_HEIGHT, 0.12], [6.85, WALL_HEIGHT / 2, 3]);
-    wall([1.6, WALL_HEIGHT, 0.12], [9.2, WALL_HEIGHT / 2, 3]);
-    wall([2.2, WALL_HEIGHT, 0.12], [1.1, WALL_HEIGHT / 2, 5]);
-    wall([2.2, WALL_HEIGHT, 0.12], [4.9, WALL_HEIGHT / 2, 5]);
+    const labelTextures: THREE.CanvasTexture[] = [];
+    const addRoomLabel = (label: string, x: number, z: number, width = 1.45, parent: THREE.Object3D = layerGroups.shell, y = 0.34) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 112;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      context.fillStyle = "rgba(24, 34, 31, .78)";
+      context.roundRect(4, 4, 504, 104, 24);
+      context.fill();
+      context.fillStyle = "#f5f0e5";
+      context.font = "600 38px system-ui, sans-serif";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillText(label, 256, 57);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      labelTextures.push(texture);
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false }));
+      sprite.position.set(x, y, z);
+      sprite.scale.set(width, width * 0.219, 1);
+      sprite.renderOrder = 8;
+      parent.add(sprite);
+    };
+    ROOM_REGIONS.forEach(({ label, bounds: [x1, x2, z1, z2] }) => addRoomLabel(label, (x1 + x2) / 2, (z1 + z2) / 2, Math.min(1.65, (x2 - x1) * 0.72)));
+    addRoomLabel("Air-con ledge", 9.4075, 7.195, 1.35);
+    const balconyGlazing = addBox(layerGroups.shell, [3.55, 2.35, 0.05], [1.775, 1.175, 1.4], materials.glass, false);
+    balconyGlazing.name = "Balcony sliding glazing";
+
+    const wallObstacles: THREE.Box2[] = [];
+    const wall = (size: [number, number, number], position: [number, number, number]) => {
+      const mesh = addBox(layerGroups.shell, size, position, materials.wall);
+      const padding = 0.1;
+      wallObstacles.push(new THREE.Box2(
+        new THREE.Vector2(position[0] - size[0] / 2 - padding, position[2] - size[2] / 2 - padding),
+        new THREE.Vector2(position[0] + size[0] / 2 + padding, position[2] + size[2] / 2 + padding),
+      ));
+      return mesh;
+    };
+    const wallX = (x1: number, x2: number, z: number) => wall([x2 - x1, WALL_HEIGHT, 0.12], [(x1 + x2) / 2, WALL_HEIGHT / 2, z]);
+    const wallZ = (x: number, z1: number, z2: number) => wall([0.12, WALL_HEIGHT, z2 - z1], [x, WALL_HEIGHT / 2, (z1 + z2) / 2]);
+
+    WALL_SEGMENTS.forEach((segment) => {
+      if (segment.axis === "x") wallX(segment.from, segment.to, segment.fixed);
+      else wallZ(segment.fixed, segment.from, segment.to);
+    });
 
     const shellPath = "/World/Shell/Apartment";
     assignPath(layerGroups.shell, shellPath);
 
     const sofaGroup = new THREE.Group();
     sofaGroup.name = "Scenario:Sofa";
-    sofaGroup.position.set(2.35, 0.34, 2.1);
+    sofaGroup.position.set(1.1, 0.34, 3.15);
+    sofaGroup.rotation.y = Math.PI / 2;
     addBox(sofaGroup, [2.8, 0.42, 1.05], [0, 0.18, 0], materials.furniture);
     addBox(sofaGroup, [2.8, 0.7, 0.22], [0, 0.65, -0.42], materials.furniture);
     addBox(sofaGroup, [0.2, 0.54, 1], [-1.32, 0.42, 0], materials.furniture);
@@ -214,7 +251,7 @@ export function TwinScene(props: TwinSceneProps) {
 
     const diningGroup = new THREE.Group();
     diningGroup.name = "Scenario:Dining";
-    diningGroup.position.set(4.55, 0.72, 3.85);
+    diningGroup.position.set(2.25, 0.72, 4.35);
     const tableTop = new THREE.Mesh(new THREE.CylinderGeometry(0.82, 0.82, 0.1, 40), materials.white);
     tableTop.castShadow = renderer.shadowMap.enabled;
     diningGroup.add(tableTop);
@@ -224,7 +261,8 @@ export function TwinScene(props: TwinSceneProps) {
 
     const deskGroup = new THREE.Group();
     deskGroup.name = "Scenario:Desks";
-    deskGroup.position.set(2.7, 0, 7.7);
+    deskGroup.position.set(4.15, 0, 2.35);
+    deskGroup.rotation.y = Math.PI / 2;
     [-0.86, 0.86].forEach((x) => {
       addBox(deskGroup, [1.55, 0.09, 0.7], [x, 0.76, 0], materials.cabinet);
       addBox(deskGroup, [0.07, 0.72, 0.5], [x - 0.57, 0.38, 0], materials.dark);
@@ -234,41 +272,86 @@ export function TwinScene(props: TwinSceneProps) {
     layerGroups.furniture.add(deskGroup);
 
     const bedGroup = new THREE.Group();
-    bedGroup.position.set(8.7, 0, 6.6);
+    bedGroup.position.set(11.38, 0, 1.55);
+    bedGroup.rotation.y = -Math.PI / 2;
     addBox(bedGroup, [2.1, 0.42, 2.25], [0, 0.28, 0], materials.white);
     addBox(bedGroup, [2.25, 0.9, 0.18], [0, 0.62, -1.07], materials.cabinet);
     assignPath(bedGroup, "/World/Furniture/MasterBedroom/Bed_A");
     layerGroups.furniture.add(bedGroup);
 
+    const addDetailedAssembly = (assembly: (typeof CARPENTRY_ASSEMBLIES)[number]) => {
+      const group = new THREE.Group();
+      group.name = assembly.name;
+      group.position.set(...assembly.position);
+      group.rotation.y = assembly.rotationY ?? 0;
+      const [width, height, depth] = assembly.size;
+      addBox(group, [width, 0.1, depth], [0, 0.05, 0], materials.dark);
+      addBox(group, [width, 0.05, depth], [0, height - 0.025, 0], materials.cabinet);
+      addBox(group, [0.055, height, depth], [-width / 2 + 0.0275, height / 2, 0], materials.cabinet);
+      addBox(group, [0.055, height, depth], [width / 2 - 0.0275, height / 2, 0], materials.cabinet);
+      addBox(group, [width - 0.09, height - 0.14, 0.055], [0, height / 2, -depth / 2 + 0.035], materials.cabinet);
+      const bayTotal = assembly.bays.reduce((sum, bay) => sum + bay, 0);
+      let cursor = -bayTotal / 2;
+      assembly.bays.slice(0, -1).forEach((bay) => {
+        cursor += bay;
+        addBox(group, [0.035, height - 0.14, depth * 0.92], [cursor, height / 2, 0], materials.dark, false);
+      });
+      if (assembly.kind === "run" || assembly.kind === "vanity") {
+        addBox(group, [width - 0.08, 0.065, depth + 0.08], [0, 0.94, 0.02], materials.white);
+        addBox(group, [width - 0.1, 0.035, 0.05], [0, 1.4, depth / 2 + 0.03], materials.metal, false);
+      } else if (assembly.kind === "feature-wall") {
+        [0.68, 1.06, 1.44].forEach((y) => addBox(group, [Math.min(width * 0.28, 1.55), 0.045, depth * 0.86], [width * 0.3, y, 0], materials.white, false));
+      } else {
+        addBox(group, [width - 0.12, 0.035, depth + 0.025], [0, 1.25, 0.025], materials.metal, false);
+      }
+      assignPath(group, assembly.path);
+      layerGroups.carpentry.add(group);
+      return group;
+    };
+
+    CARPENTRY_ASSEMBLIES.filter(({ path }) => path !== CABINET_PATH && path !== WARDROBE_PATH).forEach(addDetailedAssembly);
+
+    const kitchenAssembly = CARPENTRY_ASSEMBLIES.find(({ path }) => path === CABINET_PATH)!;
     const cabinetGroup = new THREE.Group();
-    cabinetGroup.position.set(7.5, 0, 0.55);
-    addBox(cabinetGroup, [2.4, 0.12, 0.58], [0, 0.08, 0], materials.cabinet);
-    addBox(cabinetGroup, [0.12, 0.82, 0.58], [-1.14, 0.48, 0], materials.cabinet);
-    addBox(cabinetGroup, [0.12, 0.82, 0.58], [0, 0.48, 0], materials.cabinet);
-    addBox(cabinetGroup, [0.12, 0.82, 0.58], [1.14, 0.48, 0], materials.cabinet);
-    addBox(cabinetGroup, [2.48, 0.1, 0.7], [0, 0.94, 0], materials.white);
+    cabinetGroup.name = kitchenAssembly.name;
+    cabinetGroup.position.set(...kitchenAssembly.position);
+    const [kitchenWidth, kitchenHeight, kitchenDepth] = kitchenAssembly.size;
+    addBox(cabinetGroup, [kitchenWidth, 0.1, kitchenDepth], [0, 0.05, 0], materials.dark);
+    addBox(cabinetGroup, [kitchenWidth, 0.08, kitchenDepth + 0.08], [0, 0.94, 0], materials.white);
+    addBox(cabinetGroup, [kitchenWidth, 0.05, kitchenDepth], [0, kitchenHeight - 0.025, 0], materials.cabinet);
+    let kitchenCursor = -kitchenWidth / 2;
+    kitchenAssembly.bays.slice(0, -1).forEach((bay) => {
+      kitchenCursor += bay;
+      addBox(cabinetGroup, [0.045, 0.86, kitchenDepth], [kitchenCursor, 0.5, 0], materials.dark, false);
+      addBox(cabinetGroup, [0.045, 0.78, kitchenDepth], [kitchenCursor, 1.95, 0], materials.dark, false);
+    });
+    addBox(cabinetGroup, [kitchenWidth, 0.06, 0.05], [0, 1.4, kitchenDepth / 2], materials.metal, false);
     const cabinetDoorPivots: THREE.Group[] = [];
-    [-1.08, 0.06].forEach((x, index) => {
+    [-kitchenWidth / 2 + 0.04, -kitchenWidth / 2 + 0.74].forEach((x, index) => {
       const pivot = new THREE.Group();
       pivot.position.set(x, 0.5, 0.32);
-      addBox(pivot, [1.05, 0.72, 0.07], [0.525, 0, 0], materials.cabinet);
+      addBox(pivot, [0.66, 0.72, 0.055], [0.33, 0, 0], materials.cabinet);
       pivot.userData.openDirection = index === 0 ? 1 : -1;
       cabinetGroup.add(pivot);
       cabinetDoorPivots.push(pivot);
     });
-    const drawer = addBox(cabinetGroup, [0.96, 0.25, 0.5], [0.58, 0.76, 0.1], materials.cabinet);
+    const drawer = addBox(cabinetGroup, [0.72, 0.25, kitchenDepth * 0.78], [0.36, 0.76, 0.1], materials.cabinet);
     drawer.userData.closedZ = 0.1;
     assignPath(cabinetGroup, CABINET_PATH);
     layerGroups.carpentry.add(cabinetGroup);
 
+    const wardrobeAssembly = CARPENTRY_ASSEMBLIES.find(({ path }) => path === WARDROBE_PATH)!;
     const wardrobe = new THREE.Group();
-    wardrobe.position.set(10.75, 0, 7.75);
-    addBox(wardrobe, [2.2, 2.35, 0.62], [0, 1.18, 0], materials.cabinet);
+    wardrobe.name = wardrobeAssembly.name;
+    wardrobe.position.set(...wardrobeAssembly.position);
+    wardrobe.rotation.y = wardrobeAssembly.rotationY ?? 0;
+    const [wardrobeWidth, wardrobeHeight, wardrobeDepth] = wardrobeAssembly.size;
+    addBox(wardrobe, [wardrobeWidth, wardrobeHeight, wardrobeDepth], [0, wardrobeHeight / 2, 0], materials.cabinet);
     const wardrobeDoorPivots: THREE.Group[] = [];
-    [-1.04, 0.02].forEach((x, index) => {
+    [-wardrobeWidth / 2 + 0.04, 0.02].forEach((x, index) => {
       const pivot = new THREE.Group();
-      pivot.position.set(x, 1.18, 0.33);
-      addBox(pivot, [1.02, 2.2, 0.06], [0.51, 0, 0], materials.cabinet);
+      pivot.position.set(x, wardrobeHeight / 2, wardrobeDepth / 2 + 0.03);
+      addBox(pivot, [wardrobeWidth / 2 - 0.06, wardrobeHeight - 0.16, 0.055], [(wardrobeWidth / 2 - 0.06) / 2, 0, 0], materials.cabinet);
       pivot.userData.openDirection = index === 0 ? 1 : -1;
       wardrobe.add(pivot);
       wardrobeDoorPivots.push(pivot);
@@ -276,8 +359,29 @@ export function TwinScene(props: TwinSceneProps) {
     assignPath(wardrobe, WARDROBE_PATH);
     layerGroups.carpentry.add(wardrobe);
 
+    CARPENTRY_ASSEMBLIES.forEach((assembly) => {
+      const registrationBox = new THREE.Mesh(boxGeometry(...assembly.size), materials.reference);
+      registrationBox.position.set(assembly.position[0], assembly.position[1] + assembly.size[1] / 2, assembly.position[2]);
+      registrationBox.rotation.y = assembly.rotationY ?? 0;
+      registrationBox.renderOrder = 7;
+      layerGroups.references.add(registrationBox);
+      addRoomLabel(assembly.name, assembly.position[0], assembly.position[2], Math.min(1.7, Math.max(1.1, assembly.size[0] * 0.38)), layerGroups.references, assembly.size[1] + 0.24);
+    });
+
+    const dimensionVertices: number[] = [];
+    const addDimensionSegment = (x1: number, x2: number, z: number) => {
+      dimensionVertices.push(x1, 0.16, z, x2, 0.16, z, x1, 0.08, z - 0.1, x1, 0.24, z + 0.1, x2, 0.08, z - 0.1, x2, 0.24, z + 0.1);
+    };
+    [[0, 3.55], [3.55, 6.6], [6.6, 9.55], [9.55, 12.65]].forEach(([x1, x2]) => addDimensionSegment(x1, x2, -0.24));
+    const dimensionGeometry = new THREE.BufferGeometry();
+    dimensionGeometry.setAttribute("position", new THREE.Float32BufferAttribute(dimensionVertices, 3));
+    const dimensionLines = new THREE.LineSegments(dimensionGeometry, materials.referenceLine);
+    dimensionLines.renderOrder = 8;
+    layerGroups.references.add(dimensionLines);
+    [[1.775, "3.550 m"], [5.075, "3.050 m"], [8.075, "2.950 m"], [11.1, "3.100 m"]].forEach(([x, label]) => addRoomLabel(String(label), Number(x), -0.45, 1.05, layerGroups.references, 0.34));
+
     const boba = new THREE.Group();
-    boba.position.set(0.12, 1.85, 2.45);
+    boba.position.set(2.96, 1.9, 4.55);
     boba.rotation.z = Math.PI / 2;
     const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.16, 32), materials.metal);
     boba.add(collar);
@@ -287,14 +391,66 @@ export function TwinScene(props: TwinSceneProps) {
     assignPath(boba, "/World/Electrical/Living/BobaLight_Upper");
     layerGroups.electrical.add(boba);
 
+    const fixtureGeometry = {
+      ceiling: new THREE.CylinderGeometry(0.11, 0.11, 0.035, 18),
+      marker: new THREE.SphereGeometry(0.085, 14, 10),
+      blade: boxGeometry(0.72, 0.028, 0.12),
+    };
+    ELECTRICAL_FIXTURES.filter(({ path }) => path !== "/World/Electrical/Living/BobaLight_Upper").forEach((fixture) => {
+      const fixtureGroup = new THREE.Group();
+      fixtureGroup.name = `${fixture.kind}:${fixture.circuit}`;
+      fixtureGroup.position.set(...fixture.position);
+      if (fixture.kind === "fan") {
+        const hub = new THREE.Mesh(fixtureGeometry.marker, materials.dark);
+        fixtureGroup.add(hub);
+        [0, (Math.PI * 2) / 3, (Math.PI * 4) / 3].forEach((rotation) => {
+          const blade = new THREE.Mesh(fixtureGeometry.blade, materials.dark);
+          blade.position.x = 0.34;
+          const pivot = new THREE.Group();
+          pivot.rotation.y = rotation;
+          pivot.add(blade);
+          fixtureGroup.add(pivot);
+        });
+      } else if (fixture.kind === "track") {
+        addBox(fixtureGroup, [0.58, 0.045, 0.08], [0, 0, 0], materials.dark, false);
+        [-0.2, 0, 0.2].forEach((x) => {
+          const spot = new THREE.Mesh(fixtureGeometry.ceiling, materials.white);
+          spot.position.x = x;
+          fixtureGroup.add(spot);
+        });
+      } else if (fixture.kind === "socket" || fixture.kind === "switch") {
+        addBox(fixtureGroup, [0.18, 0.12, 0.045], [0, 0, 0], materials.white, false);
+      } else {
+        const lightMesh = new THREE.Mesh(fixture.kind === "ceiling" ? fixtureGeometry.ceiling : fixtureGeometry.marker, materials.white);
+        fixtureGroup.add(lightMesh);
+      }
+      assignPath(fixtureGroup, fixture.path);
+      layerGroups.electrical.add(fixtureGroup);
+    });
+
+    EQUIPMENT_ASSETS.forEach((equipment) => {
+      const equipmentGroup = new THREE.Group();
+      equipmentGroup.name = equipment.name;
+      equipmentGroup.position.set(...equipment.position);
+      equipmentGroup.rotation.y = equipment.rotationY ?? 0;
+      const [width, height, depth] = equipment.size;
+      const equipmentMaterial = equipment.path.endsWith("Paludarium") ? materials.glass : equipment.path.endsWith("Sink") ? materials.metal : materials.dark;
+      addBox(equipmentGroup, [width, height, depth], [0, height / 2, 0], equipmentMaterial);
+      if (height > 0.7 && !equipment.path.endsWith("Paludarium")) {
+        addBox(equipmentGroup, [width * 0.76, Math.min(0.48, height * 0.28), 0.035], [0, Math.min(height * 0.63, height - 0.3), depth / 2 + 0.02], materials.metal, false);
+      }
+      assignPath(equipmentGroup, equipment.path);
+      layerGroups.inventory.add(equipmentGroup);
+    });
+
     const controlsNode = new THREE.Group();
-    controlsNode.position.set(5.86, 1.25, 3.85);
+    controlsNode.position.set(3.48, 1.25, 6.15);
     addBox(controlsNode, [0.04, 0.28, 0.42], [0, 0, 0], materials.white, false);
     assignPath(controlsNode, "/World/Electrical/WholeHome/Controls");
     layerGroups.electrical.add(controlsNode);
 
     const shower = new THREE.Group();
-    shower.position.set(11.86, 1.2, 1.25);
+    shower.position.set(9.98, 1.2, 5.72);
     shower.rotation.z = Math.PI / 2;
     const escutcheon = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.08, 32), materials.metal);
     shower.add(escutcheon);
@@ -310,14 +466,14 @@ export function TwinScene(props: TwinSceneProps) {
       assignPath(marker, path);
       layerGroups[kind === "issue" ? "issues" : "inventory"].add(marker);
     };
-    addMarker([0.48, 2.35, 2.45], "/World/Electrical/Living/BobaLight_Upper", "issue");
-    addMarker([11.48, 1.72, 1.25], "/World/Plumbing/MasterBath/ShowerMixer", "issue");
-    addMarker([2.7, 1.15, 7.7], "/World/Furniture/Study/DeskPair", "inventory");
-    addMarker([7.5, 1.3, 0.65], CABINET_PATH, "inventory");
-    addMarker([10.75, 2.55, 7.75], WARDROBE_PATH, "inventory");
+    addMarker([2.58, 2.35, 4.55], "/World/Electrical/Living/BobaLight_Upper", "issue");
+    addMarker([9.62, 1.72, 5.72], "/World/Plumbing/MasterBath/ShowerMixer", "issue");
+    addMarker([4.15, 1.15, 2.35], "/World/Furniture/Study/DeskPair", "inventory");
+    addMarker([6.15, 2.58, 6.87], CABINET_PATH, "inventory");
+    addMarker([12.34, 2.78, 3.55], WARDROBE_PATH, "inventory");
 
     const grid = new THREE.GridHelper(18, 36, "#83948e", "#aebbb5");
-    grid.position.set(6, -0.055, 4.5);
+    grid.position.set(6.325, -0.055, 4.6175);
     (grid.material as THREE.Material).opacity = 0.22;
     (grid.material as THREE.Material).transparent = true;
     layerGroups.shell.add(grid);
@@ -388,23 +544,36 @@ export function TwinScene(props: TwinSceneProps) {
     window.addEventListener("keydown", keyDown);
     window.addEventListener("keyup", keyUp);
 
+    const assemblyObstacles = CARPENTRY_ASSEMBLIES.map((assembly) => {
+      const [width, , depth] = assembly.size;
+      const angle = assembly.rotationY ?? 0;
+      const extentX = Math.abs(Math.cos(angle)) * width + Math.abs(Math.sin(angle)) * depth;
+      const extentZ = Math.abs(Math.sin(angle)) * width + Math.abs(Math.cos(angle)) * depth;
+      return new THREE.Box2(
+        new THREE.Vector2(assembly.position[0] - extentX / 2 - 0.12, assembly.position[2] - extentZ / 2 - 0.12),
+        new THREE.Vector2(assembly.position[0] + extentX / 2 + 0.12, assembly.position[2] + extentZ / 2 + 0.12),
+      );
+    });
+    const equipmentObstacles = EQUIPMENT_ASSETS.map((equipment) => {
+      const [width, , depth] = equipment.size;
+      const angle = equipment.rotationY ?? 0;
+      const extentX = Math.abs(Math.cos(angle)) * width + Math.abs(Math.sin(angle)) * depth;
+      const extentZ = Math.abs(Math.sin(angle)) * width + Math.abs(Math.cos(angle)) * depth;
+      return new THREE.Box2(
+        new THREE.Vector2(equipment.position[0] - extentX / 2 - 0.08, equipment.position[2] - extentZ / 2 - 0.08),
+        new THREE.Vector2(equipment.position[0] + extentX / 2 + 0.08, equipment.position[2] + extentZ / 2 + 0.08),
+      );
+    });
     const obstacles = [
-      new THREE.Box2(new THREE.Vector2(1.0, 1.35), new THREE.Vector2(3.8, 2.8)),
-      new THREE.Box2(new THREE.Vector2(6.2, 0.05), new THREE.Vector2(8.8, 1.25)),
-      new THREE.Box2(new THREE.Vector2(1.0, 7.2), new THREE.Vector2(4.5, 8.3)),
-      new THREE.Box2(new THREE.Vector2(7.5, 5.3), new THREE.Vector2(9.9, 7.9)),
-      new THREE.Box2(new THREE.Vector2(9.5, 7.25), new THREE.Vector2(11.8, 8.4)),
-      // Interior wall runs, split where the diagrammatic shell leaves door openings.
-      new THREE.Box2(new THREE.Vector2(5.82, 0), new THREE.Vector2(6.18, 3)),
-      new THREE.Box2(new THREE.Vector2(5.82, 6.85), new THREE.Vector2(6.18, 9)),
-      new THREE.Box2(new THREE.Vector2(9, 2.82), new THREE.Vector2(12, 3.18)),
-      new THREE.Box2(new THREE.Vector2(6, 2.82), new THREE.Vector2(7.7, 3.18)),
-      new THREE.Box2(new THREE.Vector2(8.35, 2.82), new THREE.Vector2(10, 3.18)),
-      new THREE.Box2(new THREE.Vector2(0, 4.82), new THREE.Vector2(2.2, 5.18)),
-      new THREE.Box2(new THREE.Vector2(3.8, 4.82), new THREE.Vector2(6, 5.18)),
+      ...wallObstacles,
+      ...assemblyObstacles,
+      ...equipmentObstacles,
+      new THREE.Box2(new THREE.Vector2(0.45, 1.65), new THREE.Vector2(1.75, 4.6)),
+      new THREE.Box2(new THREE.Vector2(10.1, 0.35), new THREE.Vector2(12.4, 2.75)),
     ];
     const canMoveTo = (x: number, z: number) => {
-      if (x < 0.3 || x > 11.7 || z < 0.3 || z > 8.7) return false;
+      const point = new THREE.Vector2(x, z);
+      if (!walkableRegions.some((region) => region.containsPoint(point))) return false;
       return !obstacles.some((box) => box.containsPoint(new THREE.Vector2(x, z)));
     };
 
@@ -440,13 +609,15 @@ export function TwinScene(props: TwinSceneProps) {
       });
 
       const scenarioProgress = state.scenario;
-      sofaGroup.visible = !state.hiddenObjects["/World/Furniture/Living/Sofa_A"];
-      diningGroup.visible = !state.hiddenObjects["/World/Furniture/Living/DiningTable_A"];
+      const showRenderFurniture = scenarioProgress === "render";
+      sofaGroup.visible = showRenderFurniture && !state.hiddenObjects["/World/Furniture/Living/Sofa_A"];
+      diningGroup.visible = showRenderFurniture && !state.hiddenObjects["/World/Furniture/Living/DiningTable_A"];
       deskGroup.visible = !state.hiddenObjects["/World/Furniture/Study/DeskPair"];
-      diningGroup.position.x = THREE.MathUtils.lerp(diningGroup.position.x, scenarioProgress === "open" ? 5.1 : 4.55, 0.09);
-      diningGroup.position.z = THREE.MathUtils.lerp(diningGroup.position.z, scenarioProgress === "open" ? 4.45 : 3.85, 0.09);
-      sofaGroup.position.x = THREE.MathUtils.lerp(sofaGroup.position.x, scenarioProgress === "work" ? 1.95 : 2.35, 0.09);
-      sofaGroup.scale.setScalar(THREE.MathUtils.lerp(sofaGroup.scale.x, scenarioProgress === "open" ? 0.82 : 1, 0.09));
+      bedGroup.visible = !state.hiddenObjects["/World/Furniture/MasterBedroom/Bed_A"];
+      diningGroup.position.x = THREE.MathUtils.lerp(diningGroup.position.x, 2.25, 0.09);
+      diningGroup.position.z = THREE.MathUtils.lerp(diningGroup.position.z, 4.35, 0.09);
+      sofaGroup.position.x = THREE.MathUtils.lerp(sofaGroup.position.x, scenarioProgress === "work" ? 0.92 : 1.1, 0.09);
+      sofaGroup.scale.setScalar(THREE.MathUtils.lerp(sofaGroup.scale.x, 1, 0.09));
       deskGroup.scale.setScalar(THREE.MathUtils.lerp(deskGroup.scale.x, scenarioProgress === "work" ? 1.06 : 1, 0.09));
 
       layerGroups.issues.children.forEach((marker, index) => {
@@ -454,8 +625,10 @@ export function TwinScene(props: TwinSceneProps) {
         marker.rotation.y += delta * 0.7;
       });
       layerGroups.inventory.children.forEach((marker, index) => {
-        marker.position.y = marker.userData.baseY + Math.sin(elapsed * 1.7 + index) * 0.045;
-        marker.rotation.y -= delta * 0.45;
+        if (typeof marker.userData.baseY === "number") {
+          marker.position.y = marker.userData.baseY + Math.sin(elapsed * 1.7 + index) * 0.045;
+          marker.rotation.y -= delta * 0.45;
+        }
       });
 
       const selectedObject = state.selectedPath ? objectByPath.get(state.selectedPath) : undefined;
@@ -471,7 +644,12 @@ export function TwinScene(props: TwinSceneProps) {
         currentWaypointSequence = requestedWaypoint.sequence;
         const waypoint = WAYPOINTS.find((candidate) => candidate.id === requestedWaypoint.id);
         if (waypoint) {
-          camera.position.set(waypoint.position[0], waypoint.position[1], waypoint.position[2]);
+          const waypointTarget = new THREE.Vector3(...waypoint.target);
+          const waypointPosition = new THREE.Vector3(...waypoint.position);
+          if (waypoint.id === "overview" && mount.clientWidth < 700) {
+            waypointPosition.sub(waypointTarget).multiplyScalar(0.84).add(waypointTarget);
+          }
+          camera.position.copy(waypointPosition);
           controls.target.set(waypoint.target[0], waypoint.target[1], waypoint.target[2]);
           if (state.navigationMode === "walk" && waypoint.id !== "overview") {
             const direction = new THREE.Vector3(...waypoint.target).sub(camera.position).normalize();
@@ -545,6 +723,8 @@ export function TwinScene(props: TwinSceneProps) {
         }
       });
       boxGeometryCache.forEach((geometry) => geometry.dispose());
+      dimensionGeometry.dispose();
+      labelTextures.forEach((texture) => texture.dispose());
       Object.values(materials).forEach((material) => material.dispose());
       selectionHelper.geometry.dispose();
       selectionHelper.material.dispose();
