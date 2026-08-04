@@ -342,15 +342,15 @@
     </section>
 
     <section class="section" id="sensor-provenance">
-      <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products. Distances are rounded and the public home marker is deliberately displaced so this remains useful without reconstructing the exact unit.</p></div>
+      <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products. The real home point sits inside the published location envelope, and distance bands add privacy allowance without inventing a false location.</p></div>
       <div class="sensor-shell">
         <article class="card sensor-map-card">
           <div class="sensor-map-top">
             <div><small>Privacy-safe sensor geometry</small><h3>Nearest useful station points</h3></div>
-            <span>North-up schematic · official station positions · home endpoint offset</span>
+            <span>North-up schematic · official station positions · containing home envelope</span>
           </div>
-          <canvas id="sensor-map" width="920" height="650" role="img" aria-label="North-up schematic showing an intentionally offset home-area marker south of wind station S109 and northwest of rain gauge S217, with rounded straight-line distances"></canvas>
-          <div class="sensor-map-caption"><b>Lines show direction, not a pollution or wind trajectory</b><span>Distances were calculated from the private coordinate, then rounded for publication.</span></div>
+          <canvas id="sensor-map" width="920" height="650" role="img" aria-label="North-up schematic showing a home location envelope that contains the real point, south of wind station S109 and northwest of rain gauge S217, with distance allowance bands"></canvas>
+          <div class="sensor-map-caption"><b>Lines show direction, not a pollution or wind trajectory</b><span>The model uses the private point; the public map shows a containing envelope and distance bands.</span></div>
         </article>
 
         <aside class="sensor-panel">
@@ -365,8 +365,8 @@
             <div class="station-head"><small>Rain gauge · S217</small><span>nearest rain point</span></div>
             <h3>Bishan Street 13</h3>
             <div class="distance-pair">
-              <div><span>Horizontal</span><b>≈0.34 km</b><em>ground-plan line</em></div>
-              <div><span>With height</span><b>≈0.35 km</b><em>3D straight line</em></div>
+              <div><span>Horizontal</span><b>0.30–0.40 km</b><em>published band</em></div>
+              <div><span>With height</span><b>0.31–0.41 km</b><em>3D published band</em></div>
             </div>
             <p class="distance-note">Height adds roughly 9–12 m to this short line. Rain can still differ sharply between a ground gauge and a windward high-floor facade.</p>
           </article>
@@ -375,8 +375,8 @@
             <div class="station-head"><small>Wind station · S109</small><span>nearest wind point</span></div>
             <h3>Ang Mo Kio Avenue 5</h3>
             <div class="distance-pair">
-              <div><span>Horizontal</span><b>≈3.00 km</b><em>ground-plan line</em></div>
-              <div><span>With height</span><b>≈3.00 km</b><em>about 1 m longer</em></div>
+              <div><span>Horizontal</span><b>2.9–3.1 km</b><em>published band</em></div>
+              <div><span>With height</span><b>2.9–3.1 km</b><em>less than 2 m added</em></div>
             </div>
             <p class="distance-note">At this range the height term barely changes distance, but local building aerodynamics remain the larger source of uncertainty.</p>
           </article>
@@ -796,6 +796,30 @@
           mapCtx.fillText(subtitle, labelX, labelY + 18);
           mapCtx.restore();
         };
+        const envelopeEdge = (target, radius = 34) => {
+          const dx = target.x - home.x;
+          const dy = target.y - home.y;
+          const length = Math.hypot(dx, dy) || 1;
+          return { x: home.x + dx / length * radius, y: home.y + dy / length * radius };
+        };
+        const homeEnvelope = () => {
+          mapCtx.save();
+          mapCtx.beginPath();
+          mapCtx.arc(home.x, home.y, 34, 0, Math.PI * 2);
+          mapCtx.fillStyle = "rgba(168,220,204,.13)";
+          mapCtx.fill();
+          mapCtx.strokeStyle = "rgba(168,220,204,.78)";
+          mapCtx.lineWidth = 2;
+          mapCtx.setLineDash([6, 5]);
+          mapCtx.stroke();
+          mapCtx.fillStyle = "#eef6f2";
+          mapCtx.font = "800 14px Inter, system-ui, sans-serif";
+          mapCtx.fillText("Home location envelope", 260, 452);
+          mapCtx.fillStyle = "rgba(238,246,242,.58)";
+          mapCtx.font = "500 11px Inter, system-ui, sans-serif";
+          mapCtx.fillText("actual model point is inside", 260, 470);
+          mapCtx.restore();
+        };
 
         const gradient = mapCtx.createLinearGradient(0, 0, 0, height);
         gradient.addColorStop(0, "#123b35");
@@ -831,14 +855,14 @@
         mapCtx.font = "800 10px Inter, system-ui, sans-serif";
         mapCtx.fillText("PRECINCT CONTEXT", 583, 353);
 
-        mapLine(home, wind, "rgba(126,182,196,.78)", [8, 8]);
-        mapLine(home, rain, "rgba(223,178,111,.92)", [8, 8]);
-        pill(516, 284, "≈3.0 km horizontal", "#a9d5df");
-        pill(552, 538, "≈0.34 km horizontal", "#efca92");
+        mapLine(envelopeEdge(wind), wind, "rgba(126,182,196,.78)", [8, 8]);
+        mapLine(envelopeEdge(rain), rain, "rgba(223,178,111,.92)", [8, 8]);
+        pill(516, 284, "2.9–3.1 km horizontal", "#a9d5df");
+        pill(552, 550, "0.30–0.40 km horizontal", "#efca92");
 
         marker(wind, "#7eb6c4", "S109 · wind", "Ang Mo Kio Avenue 5", 495, 105);
         marker(rain, "#dfb26f", "S217 · rain", "Bishan Street 13", 553, 488);
-        marker(home, "#a8dccc", "Approx. home area", "deliberately offset", 288, 463);
+        homeEnvelope();
 
         const north = { x: 848, y: 68 };
         mapLine({ x: north.x, y: north.y + 38 }, north, "rgba(238,246,242,.72)");
