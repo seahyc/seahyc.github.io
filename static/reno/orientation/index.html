@@ -105,6 +105,35 @@
     .forecast-line time { color: var(--muted); }
     .forecast-line b { font-size: 9px; }
     .data-note { margin: 12px 0 0; color: var(--muted); font-size: 8px; }
+    .sensor-shell { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr); gap: 12px; }
+    .sensor-map-card { align-self: start; color: #eef6f2; background: var(--deep); }
+    .sensor-map-top { display: flex; justify-content: space-between; gap: 18px; align-items: start; padding: 19px 19px 0; }
+    .sensor-map-top small { color: var(--sand); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .sensor-map-top h3 { margin: 5px 0 0; font: 500 27px/1.05 Georgia, serif; letter-spacing: -.03em; }
+    .sensor-map-top span { max-width: 220px; color: rgba(238,246,242,.58); font-size: 8px; text-align: right; }
+    #sensor-map { display: block; width: 100%; height: auto; aspect-ratio: 1.42; margin-top: 7px; }
+    .sensor-map-caption { display: flex; justify-content: space-between; gap: 18px; padding: 0 19px 18px; color: rgba(238,246,242,.6); font-size: 8px; }
+    .sensor-map-caption b { color: #eef6f2; }
+    .sensor-panel { display: grid; gap: 12px; }
+    .station-distance { padding: 18px; }
+    .station-head { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+    .station-head small { color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .station-head span { padding: 5px 7px; border-radius: 999px; color: var(--green); background: rgba(26,102,85,.08); font-size: 8px; font-weight: 800; }
+    .station-distance h3 { margin: 7px 0 13px; font-size: 15px; }
+    .distance-pair { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .distance-pair div { min-height: 91px; padding: 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .distance-pair span { display: block; color: var(--muted); font-size: 8px; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; }
+    .distance-pair b { display: block; margin-top: 8px; color: var(--green); font: 500 24px/1 Georgia, serif; }
+    .distance-pair em { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; font-style: normal; }
+    .distance-note { margin: 11px 0 0; color: var(--muted); font-size: 9px; }
+    .height-caveat { padding: 18px; border-color: rgba(196,99,72,.28); background: rgba(255,247,242,.78); }
+    .height-caveat small { color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .height-caveat h3 { margin: 7px 0 7px; font-size: 15px; }
+    .height-caveat p { margin: 0; color: var(--muted); font-size: 9px; }
+    .distance-formula { display: block; margin-top: 11px; padding: 9px 10px; border-radius: 10px; color: var(--green); background: rgba(26,102,85,.07); font: 9px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .regional-note { padding: 16px 18px; border-style: dashed; background: rgba(255,255,255,.44); }
+    .regional-note b { display: block; margin-bottom: 5px; font-size: 11px; }
+    .regional-note p { margin: 0; color: var(--muted); font-size: 9px; }
     .wind-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .wind { min-height: 225px; padding: 20px; }
     .wind .season { color: var(--coral); font-size: 8px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
@@ -130,7 +159,7 @@
     .source .out { color: var(--green); font-size: 17px; }
     footer { display: flex; justify-content: space-between; gap: 18px; margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 9px; }
     @media (max-width: 820px) {
-      .hero, .map-grid, .orientation-grid, .live-shell, .verdict { grid-template-columns: 1fr; }
+      .hero, .map-grid, .orientation-grid, .live-shell, .sensor-shell, .verdict { grid-template-columns: 1fr; }
       .hero { gap: 24px; padding: 42px 0 34px; }
       .map-frame { min-height: 440px; }
       .compass-card { min-height: 0; }
@@ -151,6 +180,10 @@
       .sim-top { display: block; }
       .live-label { margin-top: 13px; }
       .sim-caption { grid-template-columns: 1fr; }
+      .sensor-map-top { display: block; }
+      .sensor-map-top span { display: block; max-width: none; margin-top: 8px; text-align: left; }
+      .sensor-map-caption { display: block; }
+      .sensor-map-caption span { display: block; margin-top: 4px; }
       .weather-metrics { grid-template-columns: 1fr 1fr; }
       .modes, .source-grid { grid-template-columns: 1fr; }
       .mode { border-right: 0; }
@@ -308,6 +341,55 @@
       </div>
     </section>
 
+    <section class="section" id="sensor-provenance">
+      <div class="section-head"><h2>Where the readings come from</h2><p>Point observations are mapped separately from regional products. Distances are rounded and the public home marker is deliberately displaced so this remains useful without reconstructing the exact unit.</p></div>
+      <div class="sensor-shell">
+        <article class="card sensor-map-card">
+          <div class="sensor-map-top">
+            <div><small>Privacy-safe sensor geometry</small><h3>Nearest useful station points</h3></div>
+            <span>North-up schematic · official station positions · home endpoint offset</span>
+          </div>
+          <canvas id="sensor-map" width="920" height="650" role="img" aria-label="North-up schematic showing an intentionally offset home-area marker south of wind station S109 and northwest of rain gauge S217, with rounded straight-line distances"></canvas>
+          <div class="sensor-map-caption"><b>Lines show direction, not a pollution or wind trajectory</b><span>Distances were calculated from the private coordinate, then rounded for publication.</span></div>
+        </article>
+
+        <aside class="sensor-panel">
+          <article class="card height-caveat">
+            <small>High-floor / tower-effect caveat</small>
+            <h3>Nearby does not mean representative</h3>
+            <p>The home sits far above surface instruments. Tower wakes, facade pressure, neighbouring blocks, terrain and the station's own mast height can all change wind direction and speed. The 3D calculation answers geometry only; it is not a high-floor wind correction.</p>
+            <span class="distance-formula">3D line = √(horizontal² + vertical²)<br>Public assumption: 80–90 m vertical separation</span>
+          </article>
+
+          <article class="card station-distance">
+            <div class="station-head"><small>Rain gauge · S217</small><span>nearest rain point</span></div>
+            <h3>Bishan Street 13</h3>
+            <div class="distance-pair">
+              <div><span>Horizontal</span><b>≈0.34 km</b><em>ground-plan line</em></div>
+              <div><span>With height</span><b>≈0.35 km</b><em>3D straight line</em></div>
+            </div>
+            <p class="distance-note">Height adds roughly 9–12 m to this short line. Rain can still differ sharply between a ground gauge and a windward high-floor facade.</p>
+          </article>
+
+          <article class="card station-distance">
+            <div class="station-head"><small>Wind station · S109</small><span>nearest wind point</span></div>
+            <h3>Ang Mo Kio Avenue 5</h3>
+            <div class="distance-pair">
+              <div><span>Horizontal</span><b>≈3.00 km</b><em>ground-plan line</em></div>
+              <div><span>With height</span><b>≈3.00 km</b><em>about 1 m longer</em></div>
+            </div>
+            <p class="distance-note">At this range the height term barely changes distance, but local building aerodynamics remain the larger source of uncertainty.</p>
+          </article>
+
+          <article class="card regional-note">
+            <b>No honest point distance for PSI or forecasts</b>
+            <p>Central-region PSI / PM2.5, Bishan's two-hour nowcast and the 24-hour central forecast are area products, not sensors at the map label. Their map labels must not be treated as instrument locations.</p>
+          </article>
+        </aside>
+      </div>
+      <p class="data-note">Height method: owner-confirmed high-floor level (exact storey withheld) combined with HDB's published typical 2.8 m floor-to-floor height. The 80–90 m band also avoids false precision because station terrain and instrument heights are not supplied in the realtime feed.</p>
+    </section>
+
     <section class="section">
       <div class="section-head"><h2>Seasonal wind fit</h2><p>Singapore's prevailing winds shift through the year. A good bearing creates opportunity, not a guarantee: neighbouring towers, rain screens, open doors and fan use still decide the indoor path.</p></div>
       <div class="wind-grid">
@@ -340,6 +422,7 @@
         <a class="card source" href="https://www.nea.gov.sg/our-services/public-cleanliness/environmental-cleaning-guidelines/advisories/guidance-on-improving-ventilation-and-indoor-air-quality-in-buildings-amid-the-covid-19-situation" target="_blank" rel="noreferrer"><span>06</span><div><b>NEA · ventilation guidance</b><span>Outdoor-air ventilation first; air cleaning as a supplement</span></div><span class="out">↗</span></a>
         <a class="card source" href="https://guide.data.gov.sg/developer-guide/real-time-apis" target="_blank" rel="noreferrer"><span>07</span><div><b>data.gov.sg · realtime APIs</b><span>Central PM2.5/PSI, area wind and rain, plus short-range forecasts</span></div><span class="out">↗</span></a>
         <a class="card source" href="https://data.gov.sg/collections/1459/view" target="_blank" rel="noreferrer"><span>08</span><div><b>NEA · realtime weather collection</b><span>Automated outdoor observations; station readings may reflect local conditions</span></div><span class="out">↗</span></a>
+        <a class="card source" href="https://www1.bca.gov.sg/docs/default-source/docs-corp-news-and-publications/publications/for-industry/buildability-series/hdb_precast_pictorial_guide_bca.pdf" target="_blank" rel="noreferrer"><span>09</span><div><b>HDB precast guide · BCA</b><span>Published reference for the typical 2.8 m HDB floor-to-floor height used in the public height range</span></div><span class="out">↗</span></a>
       </div>
     </section>
 
@@ -663,7 +746,114 @@
         if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(drawFrame);
       }
 
+      function drawSensorMap() {
+        const map = $("sensor-map");
+        const mapCtx = map.getContext("2d");
+        const width = map.width;
+        const height = map.height;
+        const home = { x: 500, y: 478 };
+        const wind = { x: 468, y: 118 };
+        const rain = { x: 528, y: 507 };
+
+        const mapLine = (from, to, color, dash = []) => {
+          mapCtx.save();
+          mapCtx.beginPath();
+          mapCtx.moveTo(from.x, from.y);
+          mapCtx.lineTo(to.x, to.y);
+          mapCtx.strokeStyle = color;
+          mapCtx.lineWidth = 2.5;
+          mapCtx.setLineDash(dash);
+          mapCtx.stroke();
+          mapCtx.restore();
+        };
+        const pill = (x, y, label, color) => {
+          mapCtx.save();
+          mapCtx.font = "750 13px Inter, system-ui, sans-serif";
+          const padX = 10;
+          const textWidth = mapCtx.measureText(label).width;
+          mapCtx.fillStyle = "rgba(8,31,27,.92)";
+          mapCtx.fillRect(x - padX, y - 16, textWidth + padX * 2, 26);
+          mapCtx.fillStyle = color;
+          mapCtx.fillText(label, x, y + 2);
+          mapCtx.restore();
+        };
+        const marker = (point, color, title, subtitle, labelX, labelY) => {
+          mapCtx.save();
+          mapCtx.beginPath();
+          mapCtx.arc(point.x, point.y, 17, 0, Math.PI * 2);
+          mapCtx.fillStyle = `${color}28`;
+          mapCtx.fill();
+          mapCtx.beginPath();
+          mapCtx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+          mapCtx.fillStyle = color;
+          mapCtx.fill();
+          mapCtx.fillStyle = "#eef6f2";
+          mapCtx.font = "800 14px Inter, system-ui, sans-serif";
+          mapCtx.fillText(title, labelX, labelY);
+          mapCtx.fillStyle = "rgba(238,246,242,.58)";
+          mapCtx.font = "500 11px Inter, system-ui, sans-serif";
+          mapCtx.fillText(subtitle, labelX, labelY + 18);
+          mapCtx.restore();
+        };
+
+        const gradient = mapCtx.createLinearGradient(0, 0, 0, height);
+        gradient.addColorStop(0, "#123b35");
+        gradient.addColorStop(1, "#0a2823");
+        mapCtx.fillStyle = gradient;
+        mapCtx.fillRect(0, 0, width, height);
+
+        mapCtx.strokeStyle = "rgba(238,246,242,.055)";
+        mapCtx.lineWidth = 1;
+        for (let x = 55; x < width; x += 74) {
+          mapCtx.beginPath(); mapCtx.moveTo(x, 36); mapCtx.lineTo(x, height - 34); mapCtx.stroke();
+        }
+        for (let y = 45; y < height; y += 72) {
+          mapCtx.beginPath(); mapCtx.moveTo(38, y); mapCtx.lineTo(width - 38, y); mapCtx.stroke();
+        }
+
+        mapCtx.save();
+        mapCtx.beginPath();
+        mapCtx.moveTo(90, 205);
+        mapCtx.bezierCurveTo(235, 240, 312, 196, 405, 232);
+        mapCtx.bezierCurveTo(530, 281, 670, 238, 842, 286);
+        mapCtx.strokeStyle = "rgba(126,182,196,.12)";
+        mapCtx.lineWidth = 28;
+        mapCtx.stroke();
+        mapCtx.strokeStyle = "rgba(126,182,196,.3)";
+        mapCtx.lineWidth = 2;
+        mapCtx.stroke();
+        mapCtx.restore();
+
+        mapCtx.fillStyle = "rgba(223,178,111,.055)";
+        mapCtx.fillRect(565, 328, 275, 142);
+        mapCtx.fillStyle = "rgba(223,178,111,.37)";
+        mapCtx.font = "800 10px Inter, system-ui, sans-serif";
+        mapCtx.fillText("PRECINCT CONTEXT", 583, 353);
+
+        mapLine(home, wind, "rgba(126,182,196,.78)", [8, 8]);
+        mapLine(home, rain, "rgba(223,178,111,.92)", [8, 8]);
+        pill(516, 284, "≈3.0 km horizontal", "#a9d5df");
+        pill(552, 538, "≈0.34 km horizontal", "#efca92");
+
+        marker(wind, "#7eb6c4", "S109 · wind", "Ang Mo Kio Avenue 5", 495, 105);
+        marker(rain, "#dfb26f", "S217 · rain", "Bishan Street 13", 553, 488);
+        marker(home, "#a8dccc", "Approx. home area", "deliberately offset", 288, 463);
+
+        const north = { x: 848, y: 68 };
+        mapLine({ x: north.x, y: north.y + 38 }, north, "rgba(238,246,242,.72)");
+        mapCtx.fillStyle = "rgba(238,246,242,.8)";
+        mapCtx.font = "800 12px Inter, system-ui, sans-serif";
+        mapCtx.textAlign = "center";
+        mapCtx.fillText("N", north.x, north.y - 11);
+        mapCtx.textAlign = "left";
+
+        mapCtx.fillStyle = "rgba(238,246,242,.44)";
+        mapCtx.font = "500 11px Inter, system-ui, sans-serif";
+        mapCtx.fillText("Top-down geometry · line lengths are schematic", 45, height - 34);
+      }
+
       setScenario("live");
+      drawSensorMap();
       drawFrame(0);
       loadLive().catch(() => {
         $("live-status").textContent = "Live feed unavailable";
