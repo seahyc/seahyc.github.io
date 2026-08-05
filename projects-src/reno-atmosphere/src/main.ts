@@ -350,7 +350,6 @@ let windMesh: THREE.InstancedMesh;
 let rainMesh: THREE.InstancedMesh;
 let sunLight: THREE.DirectionalLight;
 let ambientLight: THREE.HemisphereLight;
-let windRibbons: THREE.Group;
 let homeBlock: THREE.Group;
 let homeMarker: THREE.Group | null = null;
 let homePulseMaterial: THREE.MeshBasicMaterial | null = null;
@@ -790,13 +789,39 @@ function addAreaLayer(areas: MapPoint[][], color: number, y: number, opacity = 1
   scene.add(mesh);
 }
 
+function clipSegmentToCircle(a: MapPoint, b: MapPoint, radius: number): [MapPoint, MapPoint] | null {
+  const dx = b[0] - a[0];
+  const dz = b[1] - a[1];
+  const quadraticA = dx * dx + dz * dz;
+  if (quadraticA < 1e-12) return Math.hypot(a[0], a[1]) <= radius ? [a, b] : null;
+  const quadraticB = 2 * (a[0] * dx + a[1] * dz);
+  const quadraticC = a[0] * a[0] + a[1] * a[1] - radius * radius;
+  const discriminant = quadraticB * quadraticB - 4 * quadraticA * quadraticC;
+  const aInside = quadraticC <= 0;
+  const bInside = b[0] * b[0] + b[1] * b[1] <= radius * radius;
+  if (aInside && bInside) return [a, b];
+  if (discriminant < 0) return null;
+  const root = Math.sqrt(discriminant);
+  const first = (-quadraticB - root) / (2 * quadraticA);
+  const second = (-quadraticB + root) / (2 * quadraticA);
+  const start = Math.max(0, Math.min(first, second));
+  const end = Math.min(1, Math.max(first, second));
+  if (start > end) return null;
+  return [
+    [a[0] + dx * start, a[1] + dz * start],
+    [a[0] + dx * end, a[1] + dz * end],
+  ];
+}
+
 function addLineLayer(lines: LinearDatum[], colors: Record<string, number>, y: number, fallbackColor: number) {
   const positionsByClass = new Map<string, number[]>();
+  const clipRadius = neighbourhood.radius - .035;
   lines.forEach((line) => {
     const positions = positionsByClass.get(line.class) ?? [];
     for (let index = 1; index < line.points.length; index += 1) {
-      const [ax, az] = line.points[index - 1];
-      const [bx, bz] = line.points[index];
+      const clipped = clipSegmentToCircle(line.points[index - 1], line.points[index], clipRadius);
+      if (!clipped) continue;
+      const [[ax, az], [bx, bz]] = clipped;
       positions.push(ax, y, az, bx, y, bz);
     }
     positionsByClass.set(line.class, positions);
@@ -805,7 +830,7 @@ function addLineLayer(lines: LinearDatum[], colors: Record<string, number>, y: n
     if (!positions.length) return;
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-    const line = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: colors[lineClass] ?? fallbackColor, transparent: true, opacity: .82 }));
+    const line = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: colors[lineClass] ?? fallbackColor, transparent: true, opacity: .68, depthWrite: false }));
     line.renderOrder = 2;
     scene.add(line);
   });
@@ -854,20 +879,49 @@ function facadeEdge(points: MapPoint[], targetBearing: number) {
   return best;
 }
 
-function createGeoResident(color: number, hair: number, x: number, scale = 1) {
+function limbBetween(start: THREE.Vector3, end: THREE.Vector3, radius: number, color: number) {
+  const direction = end.clone().sub(start);
+  const limb = new THREE.Mesh(new THREE.CylinderGeometry(radius * .88, radius, direction.length(), 8), material(color, .86));
+  limb.position.copy(start).add(end).multiplyScalar(.5);
+  limb.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+  return limb;
+}
+
+function createGeoResident(color: number, hair: number, x: number, scale = 1, longHair = false, skin = 0xd79a74) {
   const person = new THREE.Group();
-  person.position.set(x, -.0075, -.004);
+  person.position.set(x, -.0088, -.0033);
   person.scale.setScalar(scale);
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(.0027, .0038, .009, 8), material(color, .78));
-  body.position.y = .006;
-  const head = new THREE.Mesh(new THREE.SphereGeometry(.0034, 10, 8), material(0xd79a74, .88));
-  head.position.y = .0132;
-  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(.00355, 10, 6, 0, Math.PI * 2, 0, Math.PI * .52), material(hair, .9));
-  hairCap.position.y = .0142;
-  const arm = new THREE.Mesh(new THREE.CylinderGeometry(.0008, .001, .007, 6), material(0xd79a74, .86));
-  arm.position.set(.002, .0085, .001);
-  arm.rotation.x = -.68;
-  person.add(body, head, hairCap, arm);
+  const torso = new THREE.Mesh(new RoundedBoxGeometry(.0055, .0064, .0028, 2, .0009), material(color, .78));
+  torso.position.y = .0102;
+  const pelvis = new THREE.Mesh(new RoundedBoxGeometry(.0045, .0025, .0026, 2, .0007), material(0x425668, .86));
+  pelvis.position.y = .0063;
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(.00075, .00082, .0015, 8), material(skin, .87));
+  neck.position.y = .014;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.00275, 14, 10), material(skin, .88));
+  head.scale.set(1, 1.08, .94);
+  head.position.y = .0166;
+  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(.00288, 14, 9, 0, Math.PI * 2, 0, Math.PI * .56), material(hair, .92));
+  hairCap.position.y = .01715;
+  const leftLeg = limbBetween(new THREE.Vector3(-.00125, .0055, 0), new THREE.Vector3(-.00155, .0002, .0003), .00072, 0x354550);
+  const rightLeg = limbBetween(new THREE.Vector3(.00125, .0055, 0), new THREE.Vector3(.00155, .0002, -.00015), .00072, 0x354550);
+  const leftArm = limbBetween(new THREE.Vector3(-.0031, .0118, 0), new THREE.Vector3(-.00365, .0068, .00135), .00066, skin);
+  const rightArm = limbBetween(new THREE.Vector3(.0031, .0118, 0), new THREE.Vector3(.00365, .0068, .00135), .00066, skin);
+  const leftHand = new THREE.Mesh(new THREE.SphereGeometry(.00078, 8, 6), material(skin, .87));
+  leftHand.position.set(-.00365, .0068, .00135);
+  const rightHand = leftHand.clone();
+  rightHand.position.x *= -1;
+  const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x30282a });
+  [-.00078, .00078].forEach((eyeX) => {
+    const eye = new THREE.Mesh(new THREE.SphereGeometry(.00023, 6, 4), eyeMaterial);
+    eye.position.set(eyeX, .0168, .00257);
+    person.add(eye);
+  });
+  if (longHair) {
+    const hairBack = new THREE.Mesh(new RoundedBoxGeometry(.0054, .0066, .0015, 2, .0007), material(hair, .92));
+    hairBack.position.set(0, .0146, -.00145);
+    person.add(hairBack);
+  }
+  person.add(torso, pelvis, neck, head, hairCap, leftLeg, rightLeg, leftArm, rightArm, leftHand, rightHand);
   residentGroups.push(person);
   return person;
 }
@@ -887,8 +941,8 @@ function createGeoHomeVignette(marker: PrivateHomeMarker, building: BuildingDatu
   homeMarker.position.copy(position).addScaledVector(edge.normal, .004);
   homeMarker.rotation.y = Math.atan2(edge.normal.x, edge.normal.z);
 
-  const room = new THREE.Mesh(new THREE.BoxGeometry(.022, .018, .012), new THREE.MeshStandardMaterial({ color: 0x31515a, emissive: 0xf4b77f, emissiveIntensity: 1.4, roughness: .46 }));
-  room.position.z = -.007;
+  const room = new THREE.Mesh(new THREE.BoxGeometry(.022, .018, .0015), new THREE.MeshStandardMaterial({ color: 0x31515a, emissive: 0xf4b77f, emissiveIntensity: 1.4, roughness: .46 }));
+  room.position.z = -.0115;
   homeMarker.add(room);
   const glass = new THREE.Mesh(new THREE.PlaneGeometry(.019, .016), new THREE.MeshPhysicalMaterial({ color: 0xcff4f4, transparent: true, opacity: .2, transmission: .1, roughness: .12, side: THREE.DoubleSide }));
   glass.position.z = .001;
@@ -906,8 +960,8 @@ function createGeoHomeVignette(marker: PrivateHomeMarker, building: BuildingDatu
     homeMarker!.add(frame);
   });
 
-  homeMarker.add(createGeoResident(0x65c7b4, 0x304047, -.0046, 1.03));
-  homeMarker.add(createGeoResident(0xf2a68a, 0x3b2d34, .0046, .96));
+  homeMarker.add(createGeoResident(0x65c7b4, 0x304047, -.0044, .89, false, 0xd49a73));
+  homeMarker.add(createGeoResident(0xf2a68a, 0x3b2d34, .0044, .84, true, 0xc98a65));
   homePulseMaterial = new THREE.MeshBasicMaterial({ color: 0x70ead2, transparent: true, opacity: .72, depthWrite: false });
   const pulse = new THREE.Mesh(new THREE.TorusGeometry(.028, .0014, 6, 48), homePulseMaterial);
   pulse.position.z = .003;
@@ -922,35 +976,145 @@ function createGeoHomeVignette(marker: PrivateHomeMarker, building: BuildingDatu
   $("private-model-state").textContent = "Exact storey and window bank loaded on the surveyed footprint";
 }
 
+function buildingFrame(building: BuildingDatum) {
+  const centre = polygonCentre(building.footprint);
+  let longest = new THREE.Vector2(1, 0);
+  let longestLength = 0;
+  for (let index = 0; index < building.footprint.length; index += 1) {
+    const [ax, az] = building.footprint[index];
+    const [bx, bz] = building.footprint[(index + 1) % building.footprint.length];
+    const edge = new THREE.Vector2(bx - ax, bz - az);
+    if (edge.lengthSq() > longestLength) {
+      longestLength = edge.lengthSq();
+      longest.copy(edge).normalize();
+    }
+  }
+  const cross = new THREE.Vector2(-longest.y, longest.x);
+  let minLong = Infinity;
+  let maxLong = -Infinity;
+  let minCross = Infinity;
+  let maxCross = -Infinity;
+  building.footprint.forEach(([x, z]) => {
+    const relative = new THREE.Vector2(x - centre.x, z - centre.z);
+    const along = relative.dot(longest);
+    const across = relative.dot(cross);
+    minLong = Math.min(minLong, along);
+    maxLong = Math.max(maxLong, along);
+    minCross = Math.min(minCross, across);
+    maxCross = Math.max(maxCross, across);
+  });
+  return {
+    centre,
+    width: Math.max(.08, maxLong - minLong),
+    depth: Math.max(.06, maxCross - minCross),
+    rotation: -Math.atan2(longest.y, longest.x),
+  };
+}
+
+function createBishanRidgesBuilding(building: BuildingDatum, highlighted: boolean) {
+  const group = new THREE.Group();
+  group.name = highlighted ? "bishan-ridges-home" : "bishan-ridges-block";
+  const frame = buildingFrame(building);
+  const base = new THREE.Mesh(buildingGeometry(building), new THREE.MeshStandardMaterial({
+    color: highlighted ? 0xa2745d : 0x8d6757,
+    roughness: .76,
+    emissive: highlighted ? 0x6b3520 : 0x000000,
+    emissiveIntensity: highlighted ? .08 : 0,
+  }));
+  base.castShadow = true;
+  base.receiveShadow = true;
+  group.add(base);
+
+  const details = new THREE.Group();
+  details.position.copy(frame.centre);
+  details.rotation.y = frame.rotation;
+  const cream = material(0xf0ddbd, .72);
+  const mustard = material(0xd5a62e, .72);
+  const deepBrown = material(0x60453d, .82);
+  const gardenGreen = material(0x5f9771, .9);
+  const floorsPerBand = 4;
+  const bandCount = Math.max(5, Math.floor(building.levels / floorsPerBand));
+  for (let index = 1; index <= bandCount; index += 1) {
+    const band = new THREE.Mesh(new THREE.BoxGeometry(frame.width * .96, .009, frame.depth * .93), cream);
+    band.position.y = index * building.height / (bandCount + 1);
+    details.add(band);
+  }
+
+  [-1, 1].forEach((side, sideIndex) => {
+    const facadeZ = side * (frame.depth * .5 + .004);
+    const brownBay = new THREE.Mesh(new RoundedBoxGeometry(frame.width * .18, building.height * .79, .012, 2, .004), deepBrown);
+    brownBay.position.set(frame.width * (sideIndex ? .2 : -.22), building.height * .49, facadeZ);
+    const yellowBay = new THREE.Mesh(new RoundedBoxGeometry(Math.max(.025, frame.width * .1), building.height * .31, .014, 2, .004), mustard);
+    yellowBay.position.set(frame.width * (sideIndex ? -.28 : .27), building.height * .33, facadeZ + side * .002);
+    const fin = new THREE.Mesh(new RoundedBoxGeometry(.012, building.height * .66, .016, 2, .003), cream);
+    fin.position.set(frame.width * (sideIndex ? .43 : -.43), building.height * .53, facadeZ + side * .003);
+    details.add(brownBay, yellowBay, fin);
+  });
+
+  const terraceY = building.height * .58;
+  const terrace = new THREE.Mesh(new RoundedBoxGeometry(frame.width * .58, .018, frame.depth * .64, 2, .004), cream);
+  terrace.position.set(frame.width * .1, terraceY, 0);
+  details.add(terrace);
+  for (let index = -2; index <= 2; index += 1) {
+    const planter = new THREE.Mesh(new THREE.IcosahedronGeometry(.012 + (index & 1) * .003, 1), gardenGreen);
+    planter.position.set(frame.width * .1 + index * frame.width * .09, terraceY + .018, frame.depth * .27);
+    details.add(planter);
+  }
+
+  const roof = new THREE.Mesh(new RoundedBoxGeometry(frame.width * .72, .02, frame.depth * .72, 2, .005), cream);
+  roof.position.y = building.height + .012;
+  details.add(roof);
+  [-.24, 0, .24].forEach((offset, index) => {
+    const roofFin = new THREE.Mesh(new RoundedBoxGeometry(.018, .075 + index * .018, frame.depth * .42, 2, .004), index === 1 ? mustard : deepBrown);
+    roofFin.position.set(frame.width * offset, building.height + .047 + index * .009, 0);
+    details.add(roofFin);
+  });
+  group.add(details);
+  scene.add(group);
+  return group;
+}
+
 function createGeoBuildings() {
   const homeIndex = privateHomeMarker?.buildingIndex;
-  const geometryGroups = new Map<BuildingDatum["kind"], THREE.BufferGeometry[]>();
-  const colors: Record<BuildingDatum["kind"], number> = { tower: 0xf0dccd, school: 0xe7cf9f, commercial: 0xcbd8d4, "low-rise": 0xe9e4d8 };
+  const ridgeBuildingIndices = new Set(neighbourhood.buildings
+    .map((building, index) => ({ index, levels: building.levels, distance: polygonCentre(building.footprint).length() }))
+    .filter(({ levels }) => levels >= 30)
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 6)
+    .map(({ index }) => index));
+  const geometryGroups = new Map<string, THREE.BufferGeometry[]>();
+  const palettes: Record<BuildingDatum["kind"], number[]> = {
+    tower: [0xe9c9b5, 0xe8d6bf, 0xd9c9bb],
+    school: [0xe5c787, 0xf0d9a5, 0xdab98b],
+    commercial: [0xbfd3cc, 0xc8d8cf, 0xb9cdd3],
+    "low-rise": [0xe9dfcf, 0xded7c7, 0xead2c5],
+  };
   neighbourhood.buildings.forEach((building, index) => {
-    const geometry = buildingGeometry(building);
     const centre = polygonCentre(building.footprint);
     const box = new THREE.Box2();
     building.footprint.forEach(([x, z]) => box.expandByPoint(new THREE.Vector2(x, z)));
     const size = box.getSize(new THREE.Vector2());
     towerObstacles.push({ x: centre.x, z: centre.z, radius: Math.max(size.x, size.y) * .65, height: building.height });
-    if (index === homeIndex) {
-      homeBlock = new THREE.Group();
-      const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0xffdfc6, roughness: .7, emissive: 0x5b3021, emissiveIntensity: .06 }));
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      homeBlock.add(mesh);
-      scene.add(homeBlock);
-      createGeoHomeVignette(privateHomeMarker!, building);
+    if (ridgeBuildingIndices.has(index)) {
+      const isHome = index === homeIndex;
+      const ridgeBlock = createBishanRidgesBuilding(building, isHome);
+      if (isHome) {
+        homeBlock = ridgeBlock;
+        createGeoHomeVignette(privateHomeMarker!, building);
+      }
     } else {
-      const group = geometryGroups.get(building.kind) ?? [];
-      group.push(geometry);
-      geometryGroups.set(building.kind, group);
+      const paletteIndex = Math.abs((index * 31 + building.levels * 7) % palettes[building.kind].length);
+      const key = `${building.kind}-${paletteIndex}`;
+      const group = geometryGroups.get(key) ?? [];
+      group.push(buildingGeometry(building));
+      geometryGroups.set(key, group);
     }
   });
-  geometryGroups.forEach((geometries, kind) => {
+  geometryGroups.forEach((geometries, key) => {
     const geometry = mergedGeometry(geometries);
     if (!geometry) return;
-    const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: colors[kind], roughness: .78, flatShading: false }));
+    const [kind, paletteIndex] = key.split(/-(?=\d+$)/) as [BuildingDatum["kind"], string];
+    const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: palettes[kind][Number(paletteIndex)], roughness: .8, flatShading: false }));
     mesh.castShadow = !compact;
     mesh.receiveShadow = true;
     scene.add(mesh);
@@ -1082,32 +1246,6 @@ function createWind() {
     windParticles.push(particle);
   }
   scene.add(windMesh);
-  windRibbons = new THREE.Group();
-  scene.add(windRibbons);
-  rebuildWindRibbons();
-}
-
-function rebuildWindRibbons() {
-  windRibbons.children.forEach((child) => {
-    const mesh = child as THREE.Mesh;
-    mesh.geometry.dispose();
-    (mesh.material as THREE.Material).dispose();
-  });
-  windRibbons.clear();
-  const direction = bearingVector((model.windFrom + 180) % 360);
-  const cross = new THREE.Vector3(-direction.z, 0, direction.x);
-  for (let index = -3; index <= 3; index += 1) {
-    const offset = index * .72;
-    const points: THREE.Vector3[] = [];
-    for (let step = -8; step <= 8; step += 2) {
-      const point = direction.clone().multiplyScalar(step * 1.25).addScaledVector(cross, offset + Math.sin(step * .45 + index) * .18);
-      point.y = 5.5 + index * .2 + Math.sin(step * .3 + index) * .3;
-      points.push(point);
-    }
-    const curve = new THREE.CatmullRomCurve3(points);
-    const ribbon = new THREE.Mesh(new THREE.TubeGeometry(curve, 42, .018 + Math.abs(index) * .002, 5, false), new THREE.MeshBasicMaterial({ color: 0x8ce9da, transparent: true, opacity: .17, depthWrite: false }));
-    windRibbons.add(ribbon);
-  }
 }
 
 function resetRainParticle(particle: RainParticle, initial = false) {
@@ -1141,7 +1279,6 @@ function updateWeatherLook() {
   });
   rainMesh.visible = rainy;
   windMesh.visible = windVisible;
-  windRibbons.visible = windVisible;
   scene.background = new THREE.Color(storm ? 0x9ebcc5 : rainy ? 0xc8dce2 : 0xdceff0);
   scene.fog = new THREE.Fog(storm ? 0x9ebcc5 : 0xdceff0, 16, storm ? 35 : 42);
   sunLight.color.set(storm ? 0xc4d4e2 : 0xffefcf);
@@ -1154,7 +1291,6 @@ function updateWeatherLook() {
     cloudMaterial.opacity = storm ? .92 : .82;
     cloud.scale.setScalar((index % 2 ? .92 : 1.1) * (storm ? 1.15 : 1));
   });
-  rebuildWindRibbons();
 }
 
 function updateWind(delta: number, elapsed: number) {
@@ -1280,7 +1416,7 @@ function initialiseWorld() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xdceff0);
   scene.fog = new THREE.Fog(0xdceff0, 16, 42);
-  camera = new THREE.PerspectiveCamera(compact ? 45 : 39, 1, .001, 70);
+  camera = new THREE.PerspectiveCamera(compact ? 45 : 39, 1, .01, 70);
   camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -1375,7 +1511,6 @@ $("wind-toggle").addEventListener("click", () => {
   $("wind-toggle").classList.toggle("active", windVisible);
   $("wind-toggle").setAttribute("aria-pressed", String(windVisible));
   if (windMesh) windMesh.visible = windVisible;
-  if (windRibbons) windRibbons.visible = windVisible;
 });
 
 homeLabel.addEventListener("click", focusHome);

@@ -32,7 +32,9 @@ for (const expected of [
   "createWind",
   "createRain",
   "createGeoBuildings",
+  "createBishanRidgesBuilding",
   "createGeoHomeVignette",
+  "clipSegmentToCircle",
   "homeFacadeNormal",
   "PRIVATE_HOME_ENDPOINT",
   "Yingcong + Sopisa",
@@ -55,6 +57,9 @@ for (const expected of [
 
 assert.ok((source.match(/new THREE\.InstancedMesh/g) ?? []).length >= 4, "Repeated windows, trees, wind and rain should use instancing");
 assert.doesNotMatch(sourceBundle, /data-scenario|SCENARIOS|SphereGeometry\(11\.2|globeMaterial/, "The model should not expose fake weather scenarios or a glass globe");
+assert.doesNotMatch(source, /windRibbons|rebuildWindRibbons/, "Wind should use short directional particles instead of camera-angle line artifacts");
+assert.match(source, /neighbourhood\.radius - \.035/, "Linear map layers should be clipped inside the model edge");
+assert.match(source, /0xd5a62e/, "Bishan Ridges blocks should retain their distinctive mustard-yellow accent");
 assert.match(sourceBundle, /Weather follows live observations/, "Weather should be visibly locked to live observations");
 assert.match(css, /@media \(max-width: 520px\)/, "Model should include a compact phone composition");
 assert.match(css, /prefers-reduced-motion/, "Model should respect reduced motion");
