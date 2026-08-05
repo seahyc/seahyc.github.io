@@ -17,11 +17,12 @@ export default {
     try {
       const marker = JSON.parse(env.HOME_MARKER_JSON || "null");
       const validSide = marker?.side === "east" || marker?.side === "west";
-      if (!validSide || !Number.isFinite(marker?.heightRatio) || !Number.isFinite(marker?.bayIndex)) throw new Error("Invalid marker configuration");
+      if (!validSide || !Number.isFinite(marker?.heightRatio) || !Number.isFinite(marker?.bayIndex) || !Number.isFinite(marker?.buildingIndex)) throw new Error("Invalid marker configuration");
       return respond({ marker: {
         heightRatio: Math.max(.1, Math.min(.985, marker.heightRatio)),
         side: marker.side,
         bayIndex: Math.max(0, Math.round(marker.bayIndex)),
+        buildingIndex: Math.max(0, Math.round(marker.buildingIndex)),
       } });
     } catch (error) {
       console.error("Private home marker is not configured", error);

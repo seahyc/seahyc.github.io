@@ -151,7 +151,7 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
 .home-portal {
   position: absolute;
   z-index: 7;
-  top: clamp(180px, 24vh, 250px);
+  top: max(72px, calc(env(safe-area-inset-top) + 54px));
   left: 50%;
   display: grid;
   width: min(440px, calc(100vw - 28px));
@@ -205,8 +205,25 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
   gap: 8px;
   align-items: center;
 }
-.scenario-control { display: flex; padding: 5px; border: 1px solid rgba(255,255,255,.8); border-radius: 999px; background: rgba(255,255,255,.54); box-shadow: var(--shadow); backdrop-filter: blur(16px) saturate(1.2); }
-.scene-button, .layer-toggle {
+.live-model-lock {
+  display: flex;
+  min-height: 38px;
+  padding: 0 13px;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 999px;
+  color: #58797e;
+  background: rgba(255,255,255,.54);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px) saturate(1.2);
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
+.live-model-lock i { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px rgba(86,203,181,.13); }
+.layer-toggle {
   appearance: none;
   min-height: 38px;
   padding: 0 13px;
@@ -219,7 +236,6 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
   cursor: pointer;
   white-space: nowrap;
 }
-.scene-button.active { color: white; background: #55bca9; box-shadow: 0 6px 14px rgba(42,143,126,.22); }
 .layer-toggle { border: 1px solid rgba(255,255,255,.8); background: rgba(255,255,255,.54); box-shadow: var(--shadow); backdrop-filter: blur(16px); }
 .layer-toggle.active { color: #36796e; }
 
@@ -235,6 +251,7 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
   transition: opacity .4s ease;
 }
 .gesture-hint.hidden { opacity: 0; }
+.model-provenance { position: absolute; z-index: 3; bottom: 28px; left: max(24px, calc((100vw - 1400px) / 2)); color: rgba(48,85,91,.58); font: 750 8px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .025em; pointer-events: none; }
 
 .intel-toggle {
   position: absolute;
@@ -365,13 +382,11 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
   .forecast span, .forecast b { display: block; text-align: left; }
   .forecast b { margin-top: 3px; }
   .scene-controls { right: 12px; bottom: max(18px, env(safe-area-inset-bottom)); left: 12px; justify-content: space-between; }
-  .scenario-control { max-width: calc(100vw - 108px); overflow-x: auto; scrollbar-width: none; }
-  .scenario-control::-webkit-scrollbar { display: none; }
-  .scene-button { padding: 0 11px; }
   .layer-toggle { width: 88px; padding: 0 10px; }
+  .live-model-lock { max-width: calc(100vw - 110px); overflow: hidden; text-overflow: ellipsis; }
   .gesture-hint { right: 16px; bottom: 218px; font-size: 8px; }
   .intel-toggle { top: 126px; right: 14px; bottom: auto; min-width: 145px; padding: 8px 10px; }
-  .home-portal { top: 190px; width: min(366px, calc(100vw - 18px)); }
+  .home-portal { top: 142px; width: min(366px, calc(100vw - 18px)); }
   .home-portal button, .home-portal a { min-height: 54px; padding: 8px 10px; }
   .intel-sheet { right: 0; left: 0; height: 91svh; border-radius: 24px 24px 0 0; }
   .intel-head { min-height: 96px; padding: 20px 18px 15px; }
@@ -406,6 +421,7 @@ h1 { margin: 0; color: #183d44; font-size: clamp(36px, 5vw, 68px); font-weight: 
   .intel-forecast { grid-template-columns: 1fr; }
   .source-links { grid-template-columns: 1fr; }
   .gesture-hint { bottom: 205px; }
+  .model-provenance { right: 10px; bottom: 65px; left: 10px; text-align: center; font-size: 6px; }
   .home-focus .intro { opacity: .28; }
 }
 

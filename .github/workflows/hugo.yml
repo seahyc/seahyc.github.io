@@ -54,11 +54,11 @@ jobs:
         run: npm run build:reno-twin
       - name: Verify renovation digital twin
         run: npm run verify:reno-twin
-      - name: Typecheck renovation weather globe
+      - name: Typecheck renovation atmosphere model
         run: npm run typecheck:reno-atmosphere
-      - name: Build renovation weather globe
+      - name: Build renovation atmosphere model
         run: npm run build:reno-atmosphere
-      - name: Verify renovation weather globe
+      - name: Verify renovation atmosphere model
         run: npm run verify:reno-atmosphere
       - name: Verify renovation private marker API
         run: npm run verify:reno-private-api

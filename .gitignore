@@ -1,4 +1,6 @@
 public/
+!projects-src/reno-atmosphere/public/
+!projects-src/reno-atmosphere/public/neighbourhood-model.json
 resources/
 .hugo_build.lock
 .DS_Store

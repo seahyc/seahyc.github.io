@@ -35,6 +35,13 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       target: "es2022",
       chunkSizeWarningLimit: 560,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("/node_modules/three/")) return "three-runtime";
+          },
+        },
+      },
     },
   };
 });

@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#dceef0" />
-    <meta name="description" content="A live three-dimensional weather globe for a high-floor Bishan home." />
-    <title>Home weather globe · renovation</title>
-    <script type="module" crossorigin src="/reno/orientation/assets/index-CszHSG72.js"></script>
-    <link rel="stylesheet" crossorigin href="/reno/orientation/assets/index-CGW39GD0.css">
+    <meta name="description" content="A live, geospatially anchored three-dimensional weather model around home." />
+    <title>Home atmosphere · renovation</title>
+    <script type="module" crossorigin src="/reno/orientation/assets/index-Beq7uFvv.js"></script>
+    <link rel="modulepreload" crossorigin href="/reno/orientation/assets/three-runtime-TEl596fd.js">
+    <link rel="stylesheet" crossorigin href="/reno/orientation/assets/index-Ep4oWgg2.css">
   </head>
   <body>
     <main id="app">
-      <div id="scene" aria-label="Interactive three-dimensional miniature of the neighbourhood with live wind and rain"></div>
+      <div id="scene" aria-label="Interactive, true-north three-dimensional model of the neighbourhood with live wind and rain"></div>
 
       <header class="topbar">
         <a class="back" href="/reno/" aria-label="Back to renovation hub">← Fieldbook</a>
@@ -19,8 +20,8 @@
       </header>
 
       <section class="intro" aria-labelledby="page-title">
-        <span class="kicker">Our little patch of sky</span>
-        <h1 id="page-title">Home weather globe</h1>
+        <span class="kicker">Live 1 km neighbourhood</span>
+        <h1 id="page-title">Home atmosphere</h1>
         <p id="weather-story">Gathering the wind, rain and air around home…</p>
       </section>
 
@@ -36,7 +37,7 @@
       <button class="world-label station-label" id="station-label" type="button"><i></i><b>Rain gauge S217</b><span>0.30–0.40 km away</span></button>
 
       <nav class="home-portal" id="home-portal" aria-label="Home scale navigation" hidden>
-        <button id="zoom-neighbourhood" type="button"><span>Zoom out</span><b>Neighbourhood globe</b></button>
+        <button id="zoom-neighbourhood" type="button"><span>Zoom out</span><b>Neighbourhood view</b></button>
         <a href="/reno/twin/?entry=window"><span>Step through the window</span><b>Enter our home twin →</b></a>
       </nav>
 
@@ -47,22 +48,16 @@
         <div class="forecast" id="forecast"><span>Next 2 hours</span><b>Loading Bishan forecast…</b></div>
       </aside>
 
-      <nav class="scene-controls" aria-label="Weather scene">
-        <div class="scenario-control" role="group" aria-label="Weather scenario">
-          <button class="scene-button active" type="button" data-scenario="live">Live</button>
-          <button class="scene-button" type="button" data-scenario="ne">NE breeze</button>
-          <button class="scene-button" type="button" data-scenario="sw">SW breeze</button>
-          <button class="scene-button" type="button" data-scenario="storm">Rain</button>
-          <button class="scene-button" type="button" data-scenario="calm">Still</button>
-        </div>
+      <nav class="scene-controls" aria-label="Visualization layers">
+        <div class="live-model-lock"><i></i><span>Weather follows live observations</span></div>
         <button class="layer-toggle active" id="wind-toggle" type="button" aria-pressed="true">Wind trails</button>
       </nav>
 
-      <button class="intel-toggle" id="intel-toggle" type="button" aria-controls="intel-sheet" aria-expanded="false"><span>Field intelligence</span><b>What this globe knows</b></button>
+      <button class="intel-toggle" id="intel-toggle" type="button" aria-controls="intel-sheet" aria-expanded="false"><span>Field intelligence</span><b>What this model knows</b></button>
       <div class="intel-scrim" id="intel-scrim"></div>
       <section class="intel-sheet" id="intel-sheet" aria-hidden="true" aria-label="Weather and home intelligence">
         <header class="intel-head">
-          <div><span>Live context, not another dashboard</span><h2>What this globe knows</h2><p id="intel-load-state">Core weather is live · open detail loads the remaining feeds</p></div>
+          <div><span>Live context, not another dashboard</span><h2>What this model knows</h2><p id="intel-load-state">Core weather is live · open detail loads the remaining feeds</p></div>
           <button id="intel-close" type="button" aria-label="Close field intelligence">×</button>
         </header>
         <div class="intel-scroll">
@@ -103,7 +98,7 @@
               <article><span>S109 · wind / temperature / humidity</span><b>2.9–3.1 km horizontal</b><em>height changes the line by less than 2 m</em></article>
               <article><span>High-floor separation</span><b>about 80–90 m vertically</b><em>tower wakes and facade pressure dominate that small distance correction</em></article>
             </div>
-            <p class="source-caveat">PSI, PM2.5 and forecasts are regional products. They do not have an honest point-sensor distance from the home. The animated pressure-driven airflow is illustrative—not indoor sensing or engineering CFD.</p>
+            <p class="source-caveat"><b>Geometry:</b> horizontal positions and footprints are drawn in one coordinate system at 1:1 proportions within 1 km. Published height or storey data is used where available; the remaining low-rise heights are explicitly estimated. PSI, PM2.5 and forecasts are regional products. Animated airflow is illustrative—not indoor sensing or engineering CFD.</p>
           </section>
 
           <section class="intel-section split-section">
@@ -131,6 +126,8 @@
             <div class="source-links">
               <a href="https://www.onemap.gov.sg/" target="_blank" rel="noreferrer">OneMap <span>coordinate context ↗</span></a>
               <a href="https://assets.hdb.gov.sg/community/bishan_ridges/index.html" target="_blank" rel="noreferrer">HDB <span>project and source plans ↗</span></a>
+              <a href="https://docs.overturemaps.org/guides/buildings/" target="_blank" rel="noreferrer">Overture Maps <span>building-height and footprint cross-check ↗</span></a>
+              <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap <span>roads, rail, water and land ↗</span></a>
               <a href="https://www.weather.gov.sg/climate-climate-of-singapore/" target="_blank" rel="noreferrer">MSS <span>seasonal wind climate ↗</span></a>
               <a href="https://data.gov.sg/collections/1459/view" target="_blank" rel="noreferrer">data.gov.sg <span>realtime weather stations ↗</span></a>
               <a href="https://guide.data.gov.sg/developer-guide/real-time-apis" target="_blank" rel="noreferrer">Realtime APIs <span>PSI and PM2.5 ↗</span></a>
@@ -141,9 +138,10 @@
       </section>
 
       <div class="gesture-hint" id="gesture-hint">Drag to orbit · pinch to zoom · tap our window to enter</div>
+      <div class="model-provenance">True north · 1 km radius · footprints to scale · heights source-aware</div>
 
       <div class="loading" id="loading"><div class="orb"></div><span>Building the neighbourhood…</span></div>
-      <div class="webgl-fallback" id="webgl-fallback" hidden><b>The weather globe needs WebGL.</b><span>Your live recommendation is still shown above.</span></div>
+      <div class="webgl-fallback" id="webgl-fallback" hidden><b>The 3D neighbourhood needs WebGL.</b><span>Your live recommendation is still shown above.</span></div>
     </main>
   </body>
 </html>

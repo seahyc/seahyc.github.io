@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import "./style.css";
 
-type ScenarioName = "live" | "ne" | "sw" | "storm" | "calm";
 type ForecastPeriod = { time: string; forecast: string };
 type OutlookDay = { day: string; forecast: string; low: number; high: number; wind: string };
 type WeatherModel = {
@@ -36,11 +36,28 @@ type PrivateHomeMarker = {
   heightRatio: number;
   side: "east" | "west";
   bayIndex: number;
+  buildingIndex: number;
 };
 
 type TowerObstacle = { x: number; z: number; radius: number; height: number };
 type WindParticle = { position: THREE.Vector3; phase: number; age: number; maxAge: number };
 type RainParticle = { position: THREE.Vector3; speed: number };
+type MapPoint = [number, number];
+type BuildingDatum = { footprint: MapPoint[]; height: number; levels: number; heightSource: "measured" | "levels" | "estimated"; kind: "tower" | "school" | "commercial" | "low-rise" };
+type LinearDatum = { class: string; points: MapPoint[] };
+type NeighbourhoodModel = {
+  radius: number;
+  unitsPerMetre: number;
+  buildings: BuildingDatum[];
+  roads: LinearDatum[];
+  rails: LinearDatum[];
+  waterLines: LinearDatum[];
+  waterAreas: MapPoint[][];
+  greenAreas: MapPoint[][];
+  railAreas: MapPoint[][];
+  trees: MapPoint[];
+  landmarks: { depot: MapPoint; rainGauge: MapPoint };
+};
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const compact = window.matchMedia("(max-width: 700px)").matches;
@@ -64,18 +81,14 @@ const SUPPLEMENTAL_API = {
   wbgt: `${API_ROOT}weather?api=wbgt`,
 };
 const PRIVATE_HOME_ENDPOINT = "/reno/api/private-home-marker";
+const NEIGHBOURHOOD_ENDPOINT = "/reno/orientation/neighbourhood-model.json";
 const STATIONS = { weather: "S109", rain: "S217" };
 const OPENINGS = [
   { bearing: 55, short: "NE", name: "bedroom / study window bank" },
   { bearing: 145, short: "SE", name: "bedroom side" },
   { bearing: 325, short: "NW", name: "living-room glazing" },
 ];
-const SCENARIOS: Record<Exclude<ScenarioName, "live">, Partial<WeatherModel>> = {
-  ne: { windFrom: 45, speed: 8, rain: 0, forecast: "Typical northeast-monsoon breeze", title: "Northeast breeze" },
-  sw: { windFrom: 165, speed: 7, rain: 0, forecast: "Typical south–southeast monsoon flow", title: "Southwest-monsoon breeze" },
-  storm: { windFrom: 195, speed: 18, rain: 8, forecast: "Wind-driven thundery showers", title: "Passing rain" },
-  calm: { windFrom: 90, speed: 1, rain: 0, forecast: "Light and variable", title: "Still inter-monsoon air" },
-};
+let neighbourhood: NeighbourhoodModel;
 const fallback: WeatherModel = {
   windFrom: 45,
   speed: 5,
@@ -91,7 +104,6 @@ const fallback: WeatherModel = {
 
 let liveData = { ...fallback };
 let model = { ...fallback };
-let selected: ScenarioName = "live";
 let forecastRain = false;
 let windVisible = true;
 let supplementalLoading = false;
@@ -147,7 +159,7 @@ function renderHUD() {
   const inlet = OPENINGS.reduce((best, opening) => alignment(model.windFrom, opening.bearing) > alignment(model.windFrom, best.bearing) ? opening : best);
   const outlet = OPENINGS.reduce((best, opening) => angleDifference((model.windFrom + 180) % 360, opening.bearing) < angleDifference((model.windFrom + 180) % 360, best.bearing) ? opening : best);
   const windName = `${compass(model.windFrom)} ${fmt(model.windFrom)}°`;
-  const rainActive = model.rain > 0 || (selected === "live" && forecastRain);
+  const rainActive = model.rain > 0 || forecastRain;
 
   $("wind-value").textContent = windName;
   $("wind-speed").textContent = `${fmt(model.speed, 1)} kn · ${fmt(model.speed * 1.852, 1)} km/h`;
@@ -159,7 +171,7 @@ function renderHUD() {
   $("home-label-detail").textContent = privateHomeMarker
     ? `Yingcong + Sopisa · ${inlet.short} windward`
     : `${inlet.short} side windward now`;
-  $("weather-story").textContent = `${compass(model.windFrom)} wind reaches the ${inlet.name} first. The globe shows the likely path toward the ${outlet.short} side.`;
+  $("weather-story").textContent = `${compass(model.windFrom)} wind reaches the ${inlet.name} first. The live model traces the likely path toward the ${outlet.short} side.`;
 
   let call = "A good moment to keep the windows open";
   let reason = `The nearby rain gauge is dry and central PSI is not unhealthy. The ${inlet.short} side is windward, with likely relief toward the ${outlet.short} opening.`;
@@ -174,7 +186,7 @@ function renderHUD() {
     kicker = "Wind-driven rain path";
   } else if (rainActive) {
     call = `Keep open, but watch the ${inlet.short} windows`;
-    reason = `${model.forecast} is forecast while the nearby gauge remains dry. The globe highlights the facade most likely to receive it first.`;
+    reason = `${model.forecast} is forecast while the nearby gauge remains dry. The model highlights the facade most likely to receive it first.`;
     kicker = "Rain possible nearby";
   } else if (model.speed < 2) {
     call = "Open up and let the ceiling fans help";
@@ -233,7 +245,9 @@ async function loadLive() {
   lastPrimaryFetchAt = Date.now();
   const updateTime = liveData.updated ? new Intl.DateTimeFormat("en-SG", { timeZone: "Asia/Singapore", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(liveData.updated)) : "now";
   setLiveState(usable === keys.length ? `Live ${updateTime}` : `Partial · ${usable}/${keys.length}`, usable < keys.length);
-  if (selected === "live") setScenario("live");
+  model = { ...liveData };
+  renderHUD();
+  if (scene) updateWeatherLook();
   renderIntelligence();
 }
 
@@ -334,7 +348,6 @@ let camera: THREE.PerspectiveCamera;
 let controls: OrbitControls;
 let windMesh: THREE.InstancedMesh;
 let rainMesh: THREE.InstancedMesh;
-let globeMaterial: THREE.MeshPhysicalMaterial;
 let sunLight: THREE.DirectionalLight;
 let ambientLight: THREE.HemisphereLight;
 let windRibbons: THREE.Group;
@@ -355,10 +368,11 @@ const HOME_BAYS = {
   west: [-1.18, 0, 1.18],
 };
 const worldAnchors = {
-  home: new THREE.Vector3(0, 8.45, .2),
-  depot: new THREE.Vector3(6.9, 1.15, -5.4),
-  station: new THREE.Vector3(7.4, 1.25, 3.5),
+  home: new THREE.Vector3(0, .8, 0),
+  depot: new THREE.Vector3(0, .08, 0),
+  station: new THREE.Vector3(0, .08, 0),
 };
+const homeFacadeNormal = new THREE.Vector3(0, 0, -1);
 
 const homeLabel = $("home-label");
 const depotLabel = $("depot-label");
@@ -587,15 +601,21 @@ async function loadPrivateHomeMarker() {
     if (!response.ok) throw new Error(`Private marker ${response.status}`);
     const payload = await response.json();
     const marker = payload?.marker as PrivateHomeMarker;
-    if (!marker || !Number.isFinite(marker.heightRatio) || !Number.isFinite(marker.bayIndex) || !["east", "west"].includes(marker.side)) throw new Error("Invalid private marker");
+    if (!marker || !Number.isFinite(marker.heightRatio) || !Number.isFinite(marker.bayIndex) || !Number.isFinite(marker.buildingIndex) || !["east", "west"].includes(marker.side)) throw new Error("Invalid private marker");
     privateHomeMarker = marker;
-    createHomeVignette(marker);
-    if (new URLSearchParams(window.location.search).get("view") === "home") {
-      window.setTimeout(focusHome, reducedMotion ? 0 : 380);
-    }
+    $("private-model-state").textContent = "Protected building and stack geometry loaded";
   } catch {
     $("private-model-state").textContent = "Home is shown at block level in this preview";
   }
+}
+
+async function loadNeighbourhoodModel() {
+  const response = await fetch(NEIGHBOURHOOD_ENDPOINT, { cache: "force-cache" });
+  if (!response.ok) throw new Error(`Neighbourhood model ${response.status}`);
+  neighbourhood = await response.json() as NeighbourhoodModel;
+  if (!Array.isArray(neighbourhood.buildings) || !Array.isArray(neighbourhood.roads) || !neighbourhood.landmarks) throw new Error("Invalid neighbourhood model");
+  worldAnchors.depot.set(neighbourhood.landmarks.depot[0], .08, neighbourhood.landmarks.depot[1]);
+  worldAnchors.station.set(neighbourhood.landmarks.rainGauge[0], .08, neighbourhood.landmarks.rainGauge[1]);
 }
 
 function createFacadePane(bearing: number, width: number, height: number, towerHeight: number) {
@@ -730,6 +750,265 @@ function createNeighbourhood() {
   createTrees();
 }
 
+function mapShape(points: MapPoint[]) {
+  const shape = new THREE.Shape();
+  points.forEach(([x, z], index) => index ? shape.lineTo(x, -z) : shape.moveTo(x, -z));
+  shape.closePath();
+  return shape;
+}
+
+function flatGeometry(points: MapPoint[]) {
+  const geometry = new THREE.ShapeGeometry(mapShape(points));
+  geometry.rotateX(-Math.PI / 2);
+  return geometry;
+}
+
+function buildingGeometry(building: BuildingDatum) {
+  const geometry = new THREE.ExtrudeGeometry(mapShape(building.footprint), {
+    depth: building.height,
+    bevelEnabled: false,
+    curveSegments: 1,
+  });
+  geometry.rotateX(-Math.PI / 2);
+  return geometry;
+}
+
+function mergedGeometry(geometries: THREE.BufferGeometry[]) {
+  if (!geometries.length) return null;
+  const merged = mergeGeometries(geometries, false);
+  geometries.forEach((geometry) => geometry.dispose());
+  return merged;
+}
+
+function addAreaLayer(areas: MapPoint[][], color: number, y: number, opacity = 1) {
+  const geometries = areas.filter((area) => area.length >= 3).map(flatGeometry);
+  const geometry = mergedGeometry(geometries);
+  if (!geometry) return;
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color, roughness: .92, transparent: opacity < 1, opacity, depthWrite: true }));
+  mesh.position.y = y;
+  mesh.receiveShadow = true;
+  scene.add(mesh);
+}
+
+function addLineLayer(lines: LinearDatum[], colors: Record<string, number>, y: number, fallbackColor: number) {
+  const positionsByClass = new Map<string, number[]>();
+  lines.forEach((line) => {
+    const positions = positionsByClass.get(line.class) ?? [];
+    for (let index = 1; index < line.points.length; index += 1) {
+      const [ax, az] = line.points[index - 1];
+      const [bx, bz] = line.points[index];
+      positions.push(ax, y, az, bx, y, bz);
+    }
+    positionsByClass.set(line.class, positions);
+  });
+  positionsByClass.forEach((positions, lineClass) => {
+    if (!positions.length) return;
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    const line = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: colors[lineClass] ?? fallbackColor, transparent: true, opacity: .82 }));
+    line.renderOrder = 2;
+    scene.add(line);
+  });
+}
+
+function polygonCentre(points: MapPoint[]) {
+  const box = new THREE.Box2();
+  points.forEach(([x, z]) => box.expandByPoint(new THREE.Vector2(x, z)));
+  const centre = box.getCenter(new THREE.Vector2());
+  return new THREE.Vector3(centre.x, 0, centre.y);
+}
+
+function mapPointInside(point: THREE.Vector3, polygon: MapPoint[]) {
+  let inside = false;
+  for (let index = 0, previous = polygon.length - 1; index < polygon.length; previous = index++) {
+    const [ax, az] = polygon[index];
+    const [bx, bz] = polygon[previous];
+    const intersects = ((az > point.z) !== (bz > point.z)) && point.x < (bx - ax) * (point.z - az) / (bz - az || 1e-9) + ax;
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function facadeEdge(points: MapPoint[], targetBearing: number) {
+  const targetNormal = bearingVector(targetBearing);
+  let best: { a: THREE.Vector3; b: THREE.Vector3; normal: THREE.Vector3; score: number } | null = null;
+  for (let index = 0; index < points.length; index += 1) {
+    const [ax, az] = points[index];
+    const [bx, bz] = points[(index + 1) % points.length];
+    const a = new THREE.Vector3(ax, 0, az);
+    const b = new THREE.Vector3(bx, 0, bz);
+    const tangent = b.clone().sub(a).normalize();
+    const normalA = new THREE.Vector3(-tangent.z, 0, tangent.x);
+    const normalB = normalA.clone().multiplyScalar(-1);
+    const normal = normalA.dot(targetNormal) >= normalB.dot(targetNormal) ? normalA : normalB;
+    const edgeLength = a.distanceTo(b);
+    const midpoint = a.clone().add(b).multiplyScalar(.5);
+    if (edgeLength < .03 || mapPointInside(midpoint.clone().addScaledVector(normal, .012), points)) continue;
+    const bearing = (THREE.MathUtils.radToDeg(Math.atan2(normal.x, -normal.z)) + 360) % 360;
+    const bearingError = angleDifference(bearing, targetBearing);
+    const lengthBonus = Math.min(.25, edgeLength) * 8;
+    const outwardSupport = midpoint.dot(targetNormal);
+    const score = bearingError * 10 - outwardSupport * 10 - lengthBonus;
+    if (!best || score < best.score) best = { a, b, normal, score };
+  }
+  return best;
+}
+
+function createGeoResident(color: number, hair: number, x: number, scale = 1) {
+  const person = new THREE.Group();
+  person.position.set(x, -.0075, -.004);
+  person.scale.setScalar(scale);
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(.0027, .0038, .009, 8), material(color, .78));
+  body.position.y = .006;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.0034, 10, 8), material(0xd79a74, .88));
+  head.position.y = .0132;
+  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(.00355, 10, 6, 0, Math.PI * 2, 0, Math.PI * .52), material(hair, .9));
+  hairCap.position.y = .0142;
+  const arm = new THREE.Mesh(new THREE.CylinderGeometry(.0008, .001, .007, 6), material(0xd79a74, .86));
+  arm.position.set(.002, .0085, .001);
+  arm.rotation.x = -.68;
+  person.add(body, head, hairCap, arm);
+  residentGroups.push(person);
+  return person;
+}
+
+function createGeoHomeVignette(marker: PrivateHomeMarker, building: BuildingDatum) {
+  const targetBearing = marker.side === "east" ? 55 : 235;
+  const edge = facadeEdge(building.footprint, targetBearing);
+  if (!edge) return;
+  const bayCount = marker.side === "east" ? 4 : 3;
+  const ratio = THREE.MathUtils.clamp((Math.round(marker.bayIndex) + .5) / bayCount, .08, .92);
+  const position = edge.a.clone().lerp(edge.b, ratio);
+  position.y = building.height * THREE.MathUtils.clamp(marker.heightRatio, .1, .985);
+  homeFacadeNormal.copy(edge.normal);
+
+  homeMarker = new THREE.Group();
+  homeMarker.name = "private-home-window";
+  homeMarker.position.copy(position).addScaledVector(edge.normal, .004);
+  homeMarker.rotation.y = Math.atan2(edge.normal.x, edge.normal.z);
+
+  const room = new THREE.Mesh(new THREE.BoxGeometry(.022, .018, .012), new THREE.MeshStandardMaterial({ color: 0x31515a, emissive: 0xf4b77f, emissiveIntensity: 1.4, roughness: .46 }));
+  room.position.z = -.007;
+  homeMarker.add(room);
+  const glass = new THREE.Mesh(new THREE.PlaneGeometry(.019, .016), new THREE.MeshPhysicalMaterial({ color: 0xcff4f4, transparent: true, opacity: .2, transmission: .1, roughness: .12, side: THREE.DoubleSide }));
+  glass.position.z = .001;
+  homeMarker.add(glass);
+
+  const frameMaterial = material(0xfff8e9, .5);
+  [-.0095, 0, .0095].forEach((x) => {
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(.0008, .017, .0008), frameMaterial);
+    frame.position.set(x, 0, .0015);
+    homeMarker!.add(frame);
+  });
+  [-.0085, .0085].forEach((y) => {
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(.02, .0008, .0008), frameMaterial);
+    frame.position.set(0, y, .0015);
+    homeMarker!.add(frame);
+  });
+
+  homeMarker.add(createGeoResident(0x65c7b4, 0x304047, -.0046, 1.03));
+  homeMarker.add(createGeoResident(0xf2a68a, 0x3b2d34, .0046, .96));
+  homePulseMaterial = new THREE.MeshBasicMaterial({ color: 0x70ead2, transparent: true, opacity: .72, depthWrite: false });
+  const pulse = new THREE.Mesh(new THREE.TorusGeometry(.028, .0014, 6, 48), homePulseMaterial);
+  pulse.position.z = .003;
+  homeMarker.add(pulse);
+  const heart = new THREE.Mesh(new THREE.SphereGeometry(.0016, 8, 6), new THREE.MeshBasicMaterial({ color: 0xf38f96 }));
+  heart.position.set(0, .011, .0035);
+  homeMarker.add(heart);
+  scene.add(homeMarker);
+  worldAnchors.home.copy(homeMarker.position);
+  $("home-label").querySelector("b")!.textContent = "Our window";
+  $("home-label-detail").textContent = "Yingcong + Sopisa · tap to visit";
+  $("private-model-state").textContent = "Exact storey and window bank loaded on the surveyed footprint";
+}
+
+function createGeoBuildings() {
+  const homeIndex = privateHomeMarker?.buildingIndex;
+  const geometryGroups = new Map<BuildingDatum["kind"], THREE.BufferGeometry[]>();
+  const colors: Record<BuildingDatum["kind"], number> = { tower: 0xf0dccd, school: 0xe7cf9f, commercial: 0xcbd8d4, "low-rise": 0xe9e4d8 };
+  neighbourhood.buildings.forEach((building, index) => {
+    const geometry = buildingGeometry(building);
+    const centre = polygonCentre(building.footprint);
+    const box = new THREE.Box2();
+    building.footprint.forEach(([x, z]) => box.expandByPoint(new THREE.Vector2(x, z)));
+    const size = box.getSize(new THREE.Vector2());
+    towerObstacles.push({ x: centre.x, z: centre.z, radius: Math.max(size.x, size.y) * .65, height: building.height });
+    if (index === homeIndex) {
+      homeBlock = new THREE.Group();
+      const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: 0xffdfc6, roughness: .7, emissive: 0x5b3021, emissiveIntensity: .06 }));
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      homeBlock.add(mesh);
+      scene.add(homeBlock);
+      createGeoHomeVignette(privateHomeMarker!, building);
+    } else {
+      const group = geometryGroups.get(building.kind) ?? [];
+      group.push(geometry);
+      geometryGroups.set(building.kind, group);
+    }
+  });
+  geometryGroups.forEach((geometries, kind) => {
+    const geometry = mergedGeometry(geometries);
+    if (!geometry) return;
+    const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: colors[kind], roughness: .78, flatShading: false }));
+    mesh.castShadow = !compact;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+  });
+}
+
+function createGeoTrees() {
+  const count = neighbourhood.trees.length;
+  if (!count) return;
+  const trunks = new THREE.InstancedMesh(new THREE.CylinderGeometry(.0014, .0019, .016, 5), material(0x9a7658, .9), count);
+  const crowns = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.009, 1), material(0x65aa7e, .88), count);
+  const dummy = new THREE.Object3D();
+  neighbourhood.trees.forEach(([x, z], index) => {
+    const scale = .82 + ((index * 37) % 29) / 100;
+    dummy.position.set(x, .008 * scale, z);
+    dummy.scale.setScalar(scale);
+    dummy.rotation.y = index * .71;
+    dummy.updateMatrix();
+    trunks.setMatrixAt(index, dummy.matrix);
+    dummy.position.y = .021 * scale;
+    dummy.updateMatrix();
+    crowns.setMatrixAt(index, dummy.matrix);
+  });
+  trunks.instanceMatrix.needsUpdate = true;
+  crowns.instanceMatrix.needsUpdate = true;
+  scene.add(trunks, crowns);
+}
+
+function createGeoNeighbourhood() {
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(neighbourhood.radius + .14, neighbourhood.radius + .26, .11, 96), material(0x6f9f91, .96));
+  base.position.y = -.07;
+  base.receiveShadow = true;
+  scene.add(base);
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(neighbourhood.radius, 96), material(0xb9d1aa, .9));
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -.01;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  addAreaLayer(neighbourhood.greenAreas, 0x83b986, .002, .82);
+  addAreaLayer(neighbourhood.railAreas, 0xb7b5aa, .006, .95);
+  addAreaLayer(neighbourhood.waterAreas, 0x67bfd6, .012, .9);
+  addLineLayer(neighbourhood.roads, { arterial: 0x7d8381, collector: 0x929996, local: 0xabb0aa, path: 0xd2cdb9 }, .018, 0xa8ada8);
+  addLineLayer(neighbourhood.rails, {}, .023, 0x535e5d);
+  addLineLayer(neighbourhood.waterLines, {}, .02, 0x58b4d1);
+  createGeoBuildings();
+  createGeoTrees();
+
+  const gauge = new THREE.Group();
+  gauge.position.copy(worldAnchors.station);
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(.0012, .0018, .028, 6), material(0x547f84, .6));
+  pole.position.y = .014;
+  const cup = new THREE.Mesh(new THREE.CylinderGeometry(.006, .003, .006, 10), material(0x6ec8df, .45));
+  cup.position.y = .031;
+  gauge.add(pole, cup);
+  scene.add(gauge);
+}
+
 function createCloud(x: number, y: number, z: number, scale: number) {
   const group = new THREE.Group();
   group.position.set(x, y, z);
@@ -753,27 +1032,6 @@ function createAtmosphere() {
   const sun = new THREE.Mesh(new THREE.SphereGeometry(.72, 24, 18), new THREE.MeshBasicMaterial({ color: 0xffdc88, transparent: true, opacity: .9 }));
   sun.position.set(-7.4, 8.9, -6.7);
   scene.add(sun);
-
-  globeMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xeaffff,
-    roughness: .04,
-    metalness: 0,
-    transparent: true,
-    opacity: .12,
-    transmission: .28,
-    thickness: .16,
-    ior: 1.28,
-    side: THREE.DoubleSide,
-    depthWrite: false,
-  });
-  const globe = new THREE.Mesh(new THREE.SphereGeometry(11.2, compact ? 32 : 48, compact ? 20 : 32), globeMaterial);
-  globe.position.y = .3;
-  globe.renderOrder = 20;
-  scene.add(globe);
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(10.78, .095, 8, 80), new THREE.MeshStandardMaterial({ color: 0xeefcf9, metalness: .12, roughness: .35, transparent: true, opacity: .8 }));
-  rim.rotation.x = Math.PI / 2;
-  rim.position.y = .45;
-  scene.add(rim);
 }
 
 function resetWindParticle(particle: WindParticle, initial = false) {
@@ -873,7 +1131,7 @@ function createRain() {
 }
 
 function updateWeatherLook() {
-  const rainy = model.rain > 0 || (selected === "live" && forecastRain);
+  const rainy = model.rain > 0 || forecastRain;
   const storm = model.rain > 2;
   const inlet = OPENINGS.reduce((best, opening) => alignment(model.windFrom, opening.bearing) > alignment(model.windFrom, best.bearing) ? opening : best);
   facadePanes.forEach(({ bearing, mesh }) => {
@@ -890,7 +1148,6 @@ function updateWeatherLook() {
   const uvLift = supplemental.uv == null ? 0 : Math.min(.65, supplemental.uv * .07);
   sunLight.intensity = storm ? 1.1 : rainy ? 1.7 : 2.45 + uvLift;
   ambientLight.intensity = storm ? 1.25 : 1.8;
-  globeMaterial.opacity = storm ? .16 : .11;
   clouds.forEach((cloud, index) => {
     const cloudMaterial = (cloud.children[0] as THREE.Mesh).material as THREE.MeshStandardMaterial;
     cloudMaterial.color.set(storm ? 0x8ea6ad : rainy ? 0xd5e1e3 : 0xffffff);
@@ -980,12 +1237,10 @@ function focusHome() {
   $("home-portal").hidden = false;
   $("home-portal").classList.add("visible");
   $("app").classList.add("home-focus");
-  controls.minDistance = 2.15;
+  controls.minDistance = .035;
   controls.target.copy(worldAnchors.home);
-  const outwardBearing = privateHomeMarker.side === "east" ? 55 : 235;
-  const outward = bearingVector(outwardBearing);
-  camera.position.copy(worldAnchors.home).addScaledVector(outward, compact ? 3.2 : 2.75);
-  camera.position.y += compact ? .48 : .36;
+  camera.position.copy(worldAnchors.home).addScaledVector(homeFacadeNormal, compact ? .13 : .105);
+  camera.position.y += compact ? .018 : .012;
   controls.update();
   $("gesture-hint").classList.add("hidden");
 }
@@ -993,8 +1248,8 @@ function focusHome() {
 function focusNeighbourhood() {
   controls.autoRotate = !reducedMotion;
   controls.minDistance = compact ? 15 : 13;
-  controls.target.set(0, 3.1, 0);
-  camera.position.set(compact ? 16 : 17, compact ? 11.5 : 10.8, compact ? 18 : 19);
+  controls.target.set(0, .32, 0);
+  camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
   controls.update();
   homeLabel.classList.remove("focused");
   $("home-portal").classList.remove("visible");
@@ -1025,11 +1280,11 @@ function initialiseWorld() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xdceff0);
   scene.fog = new THREE.Fog(0xdceff0, 16, 42);
-  camera = new THREE.PerspectiveCamera(compact ? 45 : 39, 1, .1, 70);
-  camera.position.set(compact ? 16 : 17, compact ? 11.5 : 10.8, compact ? 18 : 19);
+  camera = new THREE.PerspectiveCamera(compact ? 45 : 39, 1, .001, 70);
+  camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 3.1, 0);
+  controls.target.set(0, .32, 0);
   controls.enableDamping = true;
   controls.dampingFactor = .055;
   controls.enablePan = false;
@@ -1061,11 +1316,14 @@ function initialiseWorld() {
   fill.position.set(10, 7, -9);
   scene.add(fill);
 
-  createNeighbourhood();
+  createGeoNeighbourhood();
   createAtmosphere();
   createWind();
   createRain();
   updateWeatherLook();
+  if (new URLSearchParams(window.location.search).get("view") === "home" && privateHomeMarker && homeMarker) {
+    window.setTimeout(focusHome, reducedMotion ? 0 : 380);
+  }
 
   const resize = () => {
     const width = container.clientWidth;
@@ -1112,24 +1370,6 @@ function initialiseWorld() {
   window.setTimeout(() => $("loading").classList.add("dismissed"), 420);
 }
 
-function setScenario(name: ScenarioName) {
-  selected = name;
-  document.querySelectorAll<HTMLButtonElement>(".scene-button").forEach((button) => button.classList.toggle("active", button.dataset.scenario === name));
-  if (name === "live") {
-    model = { ...liveData };
-  } else {
-    model = { ...liveData, ...SCENARIOS[name] };
-    setLiveState("Illustrative scene", true);
-  }
-  renderHUD();
-  if (scene) updateWeatherLook();
-}
-
-document.querySelectorAll<HTMLButtonElement>(".scene-button").forEach((button) => button.addEventListener("click", () => {
-  setScenario(button.dataset.scenario as ScenarioName);
-  if (button.dataset.scenario === "live") loadLive().catch(() => setLiveState("Feed unavailable", true));
-}));
-
 $("wind-toggle").addEventListener("click", () => {
   windVisible = !windVisible;
   $("wind-toggle").classList.toggle("active", windVisible);
@@ -1160,12 +1400,23 @@ $("intel-close").addEventListener("click", () => setIntelOpen(false));
 intelScrim.addEventListener("click", () => setIntelOpen(false));
 window.addEventListener("keydown", (event) => { if (event.key === "Escape") setIntelOpen(false); });
 
-setScenario("live");
-initialiseWorld();
 renderIntelligence();
-loadPrivateHomeMarker();
-loadLive().catch(() => {
-  setLiveState("Live feed unavailable", true);
-  $("weather-story").textContent = "The live feed is resting. Try a weather scene while we reconnect.";
-});
-window.setInterval(() => { if (!document.hidden && selected === "live") loadLive().catch(() => setLiveState("Feed unavailable", true)); }, 600000);
+async function boot() {
+  try {
+    await Promise.all([loadPrivateHomeMarker(), loadNeighbourhoodModel()]);
+    initialiseWorld();
+    renderHUD();
+    loadLive().catch(() => {
+      setLiveState("Live feed unavailable", true);
+      $("weather-story").textContent = "The live weather feed is resting; the anchored neighbourhood geometry remains available.";
+    });
+  } catch {
+    setLiveState("Model unavailable", true);
+    $("loading").classList.add("dismissed");
+    $("webgl-fallback").hidden = false;
+    $("webgl-fallback").querySelector("b")!.textContent = "The neighbourhood model could not load.";
+  }
+}
+
+boot();
+window.setInterval(() => { if (!document.hidden) loadLive().catch(() => setLiveState("Feed unavailable", true)); }, 600000);
