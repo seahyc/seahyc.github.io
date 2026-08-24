@@ -45,6 +45,23 @@
     current.appendChild(node);
   });
 
+  // Give the supply page one deliberately small, hand-drawn visual anchor.
+  // The remaining pages stay text-led until their illustrations earn their place.
+  slides.forEach(function (slide) {
+    var heading = slide.querySelector('h2');
+    if (!heading) return;
+    var title = heading.textContent.toLowerCase();
+    Array.prototype.forEach.call(slide.querySelectorAll('img[src*="distributed-inference-supply.png"], img[src*="distributed-inference-network.png"]'), function (image) {
+      image.remove();
+    });
+    if (title.indexOf('supply map') === -1) return;
+    var image = document.createElement('img');
+    image.src = '/images/distributed-inference-supply-doodle.png';
+    image.alt = 'A small hand-drawn laptop carrying an oversized stack of computer boxes';
+    image.className = 'story-illustration story-illustration--supply';
+    heading.insertAdjacentElement('afterend', image);
+  });
+
   var track = document.createElement('div');
   track.className = 'swipe-track swiper-wrapper';
   viewport.classList.add('swiper');
@@ -75,7 +92,7 @@
     dots.appendChild(dot);
   });
   var swiper = new Swiper(viewport, {
-    effect: 'cards',
+    effect: 'slide',
     grabCursor: true,
     threshold: 0,
     touchAngle: 28,
@@ -92,7 +109,6 @@
     nested: false,
     touchMoveStopPropagation: false,
     noSwipingSelector: 'table, .wide-object',
-    cardsEffect: { slideShadows: false, rotate: true, perSlideOffset: 8, perSlideRotate: 4, modifier: 1.25 },
     keyboard: { enabled: true, onlyInViewport: true },
     initialSlide: 0
   });
