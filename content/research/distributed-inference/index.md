@@ -122,6 +122,8 @@ Darkbloom cites more than 100 million Apple Silicon machines shipped since 2020.
 
 There is no public measurement of this funnel. It is a scenario model. The practical conclusion is still clear: the addressable Mac supply is likely **tens of thousands to a few hundred thousand machines**, not 100 million.
 
+![The supply hiding in plain sight: personal machines, gaming rigs, labs, and internet cafés converging on one inference layer](/images/distributed-inference-supply.png)
+
 The best early Mac providers are likely:
 
 - high-memory Mac Studios;
@@ -211,6 +213,8 @@ The product should make the trust boundary visible on every request.
 ## 06 · How to make the multi-platform version work
 
 The opportunity is not a universal peer-to-peer marketplace on day one. It is a **trust-aware fleet operating system**.
+
+![A distributed inference request being split across heterogeneous machines and recombined by a coordinator](/images/distributed-inference-network.png)
 
 ### Core control plane
 
