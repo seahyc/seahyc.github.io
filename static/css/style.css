@@ -624,14 +624,19 @@ body.research-swipe .main-research-swipe {
 }
 
 .swipe-track {
+    position: relative;
     display: flex;
+    width: 100%;
     height: 100%;
     gap: 0;
     will-change: transform;
 }
 
 .story-slide {
-    flex: 0 0 100vw;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    flex: 0 0 100%;
     width: 100vw;
     height: 100svh;
     min-height: 0;
@@ -640,10 +645,28 @@ body.research-swipe .main-research-swipe {
     padding: 0;
     border: 0;
     border-radius: 0;
-    background: transparent;
+    background-color: rgba(243, 234, 219, .985);
+    background-image: radial-gradient(rgba(88, 65, 38, .065) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .2) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.1), rgba(126,91,48,.035));
+    background-size: 5px 5px, 7px 7px, 100% 100%;
+    background-attachment: fixed;
     box-shadow: none;
     user-select: text;
     transform-origin: 50% 100%;
+}
+
+.swipe-track > .story-slide.swiper-slide {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.story-slide.swiper-slide-active {
+    z-index: 2;
+}
+
+.story-slide.swiper-slide:not(.swiper-slide-active) {
+    pointer-events: none;
 }
 
 .story-slide[aria-hidden="true"] { pointer-events: none; }
