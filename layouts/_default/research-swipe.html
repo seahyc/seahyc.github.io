@@ -109,6 +109,13 @@
       swiper.allowTouchMove = true;
     }, { passive: true });
   });
+  viewport.addEventListener('wheel', function (event) {
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
+    if (!activeScroll || activeScroll.scrollHeight <= activeScroll.clientHeight) return;
+    activeScroll.scrollTop += event.deltaY;
+    event.preventDefault();
+  }, { passive: false });
 })();
 </script>
 {{ end }}

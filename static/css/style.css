@@ -520,15 +520,17 @@ img { max-width: 100%; height: auto; display: block; }
 /* Mobile research swipe report */
 html:has(body.research-swipe) {
     background-color: #f3eadb;
-    background-image: radial-gradient(rgba(88, 65, 38, .08) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .22) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.12), rgba(126,91,48,.04));
+    background-image: radial-gradient(rgba(88, 65, 38, .065) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .2) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.1), rgba(126,91,48,.035));
     background-size: 5px 5px, 7px 7px, 100% 100%;
+    background-attachment: fixed;
     overflow-x: hidden;
 }
 
 body.research-swipe {
     background-color: #f3eadb;
-    background-image: radial-gradient(rgba(88, 65, 38, .08) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .22) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.12), rgba(126,91,48,.04));
+    background-image: radial-gradient(rgba(88, 65, 38, .065) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .2) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.1), rgba(126,91,48,.035));
     background-size: 5px 5px, 7px 7px, 100% 100%;
+    background-attachment: fixed;
     color: #27231e;
     overflow-x: hidden;
 }
@@ -559,9 +561,7 @@ body.research-swipe .main-research-swipe {
     min-height: 100svh;
     overflow: hidden;
     overflow-x: hidden;
-    background-color: var(--paper);
-    background-image: radial-gradient(rgba(88, 65, 38, .08) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .22) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.12), rgba(126,91,48,.04));
-    background-size: 5px 5px, 7px 7px, 100% 100%;
+    background: transparent;
 }
 
 .swipe-topline {
@@ -640,9 +640,7 @@ body.research-swipe .main-research-swipe {
     padding: 0;
     border: 0;
     border-radius: 0;
-    background-color: var(--paper);
-    background-image: radial-gradient(rgba(88, 65, 38, .08) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .22) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.12), rgba(126,91,48,.04));
-    background-size: 5px 5px, 7px 7px, 100% 100%;
+    background: transparent;
     box-shadow: none;
     user-select: text;
     transform-origin: 50% 100%;
