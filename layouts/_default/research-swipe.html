@@ -49,6 +49,12 @@
     scroll.className = 'story-scroll';
     while (slide.firstChild) scroll.appendChild(slide.firstChild);
     slide.appendChild(scroll);
+    Array.prototype.forEach.call(scroll.querySelectorAll('table'), function (table) {
+      var wide = document.createElement('div');
+      wide.className = 'wide-object';
+      table.parentNode.insertBefore(wide, table);
+      wide.appendChild(table);
+    });
     track.appendChild(slide);
   });
   viewport.appendChild(track);
@@ -69,6 +75,7 @@
     preventInteractionOnTransition: true,
     nested: false,
     touchMoveStopPropagation: false,
+    noSwipingSelector: 'table, .wide-object',
     cardsEffect: { slideShadows: false, rotate: true, perSlideOffset: 8, perSlideRotate: 4, modifier: 1.25 },
     keyboard: { enabled: true, onlyInViewport: true }
   });
