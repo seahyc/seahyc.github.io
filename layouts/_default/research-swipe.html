@@ -7,21 +7,9 @@
 
 {{ define "main" }}
 <div class="swipe-report">
-    <div class="swipe-topline">
-        <a href="/">Seah Ying Cong</a>
-        <span>FIELD NOTE · 04</span>
-        <a href="/research/">Research</a>
-    </div>
-    <div class="swipe-progress" aria-hidden="true"><span></span></div>
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
-    <div class="swipe-controls" aria-label="Slide navigation">
-        <button type="button" data-swipe="prev" aria-label="Previous slide">←</button>
-        <div class="swipe-dots" aria-hidden="true"></div>
-        <button type="button" data-swipe="next" aria-label="Next slide">→</button>
-    </div>
-    <div class="swipe-endnote">Independent market investigation · 24 August 2026</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -52,8 +40,6 @@
     current.appendChild(node);
   });
 
-  var dots = document.querySelector('.swipe-dots');
-  var progress = document.querySelector('.swipe-progress span');
   var track = document.createElement('div');
   track.className = 'swipe-track swiper-wrapper';
   viewport.classList.add('swiper');
@@ -62,24 +48,6 @@
     track.appendChild(slide);
   });
   viewport.appendChild(track);
-  function updateChrome(index) {
-    Array.prototype.forEach.call(dots.children, function (dot, dotIndex) {
-      dot.classList.toggle('is-active', dotIndex === index);
-    });
-    progress.style.width = ((index + 1) / slides.length * 100) + '%';
-    slides.forEach(function (slide, slideIndex) {
-      slide.setAttribute('aria-hidden', slideIndex === index ? 'false' : 'true');
-    });
-  }
-
-  slides.forEach(function (_, index) {
-    var dot = document.createElement('button');
-    dot.type = 'button';
-    dot.setAttribute('aria-label', 'Go to slide ' + (index + 1));
-    dot.addEventListener('click', function () { render(index, true); });
-    dots.appendChild(dot);
-  });
-
   var swiper = new Swiper(viewport, {
     effect: 'cards',
     grabCursor: true,
@@ -100,10 +68,6 @@
     cardsEffect: { slideShadows: false, rotate: true, perSlideOffset: 8, perSlideRotate: 4, modifier: 1.25 },
     keyboard: { enabled: true, onlyInViewport: true }
   });
-  swiper.on('slideChange', function () { updateChrome(swiper.activeIndex); });
-  document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
-  document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
-  updateChrome(0);
 })();
 </script>
 {{ end }}

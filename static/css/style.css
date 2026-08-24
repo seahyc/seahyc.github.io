@@ -627,9 +627,12 @@ body.research-swipe .main-research-swipe {
     flex: 0 0 100vw;
     width: 100vw;
     height: 100svh;
+    box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 7rem;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
     border: 0;
     border-radius: 0;
     background: var(--paper);
