@@ -518,6 +518,10 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* Mobile research swipe report */
+html:has(body.research-swipe) {
+    background: #f7f3ec;
+}
+
 body.research-swipe {
     background: #f7f3ec;
     color: #27231e;
@@ -618,6 +622,7 @@ body.research-swipe .main-research-swipe {
     background: var(--paper);
     box-shadow: none;
     user-select: text;
+    transform-origin: 50% 100%;
 }
 
 .story-slide[aria-hidden="true"] { pointer-events: none; }
@@ -780,7 +785,7 @@ body.research-swipe .main-research-swipe {
 
 .swipe-content td {
     padding: .8rem .7rem;
-    border-bottom: 1px solid #cfc4b7;
+    border-bottom: 0;
     vertical-align: top;
 }
 
@@ -793,7 +798,7 @@ body.research-swipe .main-research-swipe {
 
 .swipe-endnote {
     padding: 2rem 1.6rem 4rem;
-    border-top: 1px solid #d4c9bb;
+    border-top: 0;
     color: var(--muted);
     font-size: 1.2rem;
     letter-spacing: .04em;
