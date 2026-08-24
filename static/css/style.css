@@ -805,9 +805,10 @@ body.research-swipe .main-research-swipe {
 }
 
 .swipe-content table {
-    display: block;
-    min-width: 42rem;
-    width: 100%;
+    display: table;
+    min-width: 52rem;
+    width: 52rem;
+    max-width: none;
     margin: 0;
     table-layout: auto;
     border-collapse: collapse;
@@ -827,14 +828,16 @@ body.research-swipe .main-research-swipe {
 }
 
 .swipe-content th {
-    padding: .8rem .7rem;
+    min-width: 10rem;
+    padding: 1rem 1.1rem;
     background: var(--red);
     color: #fff;
     text-align: left;
 }
 
 .swipe-content td {
-    padding: .8rem .7rem;
+    min-width: 10rem;
+    padding: 1rem 1.1rem;
     border-bottom: 0;
     vertical-align: top;
 }
