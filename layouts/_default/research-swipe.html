@@ -52,18 +52,40 @@
 
   var dots = document.querySelector('.swipe-dots');
   var progress = document.querySelector('.swipe-progress span');
+  var track = document.createElement('div');
+  track.className = 'swipe-track';
+  slides.forEach(function (slide) { track.appendChild(slide); });
+  viewport.appendChild(track);
+  var activeIndex = 0;
+  var drag = null;
+
+  function stepSize() {
+    return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : slides[0].offsetWidth;
+  }
+
+  function render(index, animate) {
+    activeIndex = Math.max(0, Math.min(slides.length - 1, index));
+    track.style.transition = animate ? 'transform 420ms cubic-bezier(.22,.8,.26,1)' : 'none';
+    track.style.transform = 'translate3d(' + (-activeIndex * stepSize()) + 'px, 0, 0)';
+    Array.prototype.forEach.call(dots.children, function (dot, dotIndex) {
+      dot.classList.toggle('is-active', dotIndex === activeIndex);
+    });
+    progress.style.width = ((activeIndex + 1) / slides.length * 100) + '%';
+    slides.forEach(function (slide, slideIndex) {
+      slide.setAttribute('aria-hidden', slideIndex === activeIndex ? 'false' : 'true');
+    });
+  }
+
   slides.forEach(function (_, index) {
     var dot = document.createElement('button');
     dot.type = 'button';
     dot.setAttribute('aria-label', 'Go to slide ' + (index + 1));
-    dot.addEventListener('click', function () { slides[index].scrollIntoView({ behavior: 'smooth', inline: 'start' }); });
+    dot.addEventListener('click', function () { render(index, true); });
     dots.appendChild(dot);
   });
 
   function go(delta) {
-    var active = Math.round(viewport.scrollLeft / viewport.clientWidth);
-    var next = Math.max(0, Math.min(slides.length - 1, active + delta));
-    slides[next].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+    render(activeIndex + delta, true);
   }
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { go(-1); });
   document.querySelector('[data-swipe="next"]').addEventListener('click', function () { go(1); });
@@ -72,15 +94,42 @@
     if (event.key === 'ArrowRight') go(1);
   });
 
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var index = slides.indexOf(entry.target);
-      Array.prototype.forEach.call(dots.children, function (dot, dotIndex) { dot.classList.toggle('is-active', dotIndex === index); });
-      progress.style.width = ((index + 1) / slides.length * 100) + '%';
-    });
-  }, { root: viewport, threshold: 0.6 });
-  slides.forEach(function (slide) { observer.observe(slide); });
+  viewport.addEventListener('pointerdown', function (event) {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, lastX: event.clientX, lastTime: Date.now(), horizontal: false };
+    track.style.transition = 'none';
+    viewport.setPointerCapture(event.pointerId);
+  });
+
+  viewport.addEventListener('pointermove', function (event) {
+    if (!drag || drag.id !== event.pointerId) return;
+    var dx = event.clientX - drag.x;
+    var dy = event.clientY - drag.y;
+    if (!drag.horizontal && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.15) drag.horizontal = true;
+    if (!drag.horizontal) return;
+    event.preventDefault();
+    var resistance = (activeIndex === 0 && dx > 0) || (activeIndex === slides.length - 1 && dx < 0) ? .28 : 1;
+    track.style.transform = 'translate3d(' + (-activeIndex * stepSize() + dx * resistance) + 'px, 0, 0)';
+    drag.lastX = event.clientX;
+    drag.lastTime = Date.now();
+  });
+
+  function finishDrag(event) {
+    if (!drag || drag.id !== event.pointerId) return;
+    var dx = event.clientX - drag.x;
+    var elapsed = Math.max(1, Date.now() - drag.lastTime);
+    var velocity = (event.clientX - drag.lastX) / elapsed;
+    if (drag.horizontal && (Math.abs(dx) > Math.min(72, viewport.clientWidth * .18) || Math.abs(velocity) > .45)) {
+      render(activeIndex + (dx < 0 ? 1 : -1), true);
+    } else {
+      render(activeIndex, true);
+    }
+    drag = null;
+  }
+  viewport.addEventListener('pointerup', finishDrag);
+  viewport.addEventListener('pointercancel', finishDrag);
+  window.addEventListener('resize', function () { render(activeIndex, false); });
+  render(0, false);
 })();
 </script>
 {{ end }}
