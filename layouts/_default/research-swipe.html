@@ -1,0 +1,20 @@
+{{ define "head" }}
+<meta property="og:title" content="The distributed inference fieldbook">
+<meta property="og:description" content="An entrepreneur's field guide to Darkbloom, idle compute, cybercafés, and the next inference layer.">
+<meta name="twitter:card" content="summary_large_image">
+{{ end }}
+
+{{ define "main" }}
+<div class="swipe-report">
+    <div class="swipe-topline">
+        <a href="/">Seah Ying Cong</a>
+        <span>FIELD NOTE · 04</span>
+        <a href="/research/">Research</a>
+    </div>
+    <div class="swipe-progress" aria-hidden="true"><span></span></div>
+    <article class="swipe-article">
+        <div class="swipe-content">{{ .Content }}</div>
+    </article>
+    <div class="swipe-endnote">Independent market investigation · 24 August 2026</div>
+</div>
+{{ end }}
