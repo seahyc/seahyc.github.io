@@ -628,11 +628,8 @@ body.research-swipe .main-research-swipe {
     width: 100vw;
     height: 100svh;
     box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
-    padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
+    overflow: hidden;
+    padding: 0;
     border: 0;
     border-radius: 0;
     background: var(--paper);
@@ -650,7 +647,32 @@ body.research-swipe .main-research-swipe {
     margin-right: auto;
 }
 
+.story-slide > .story-scroll {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
+    touch-action: pan-y;
+}
+
+.story-scroll > * {
+    width: min(100%, 980px);
+    min-width: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .story-slide--cover {
+    padding-top: 0;
+}
+
+.story-slide--cover > .story-scroll {
     padding-top: clamp(3rem, 10vh, 8rem);
 }
 

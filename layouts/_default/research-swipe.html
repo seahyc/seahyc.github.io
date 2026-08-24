@@ -45,6 +45,10 @@
   viewport.classList.add('swiper');
   slides.forEach(function (slide) {
     slide.classList.add('swiper-slide');
+    var scroll = document.createElement('div');
+    scroll.className = 'story-scroll';
+    while (slide.firstChild) scroll.appendChild(slide.firstChild);
+    slide.appendChild(scroll);
     track.appendChild(slide);
   });
   viewport.appendChild(track);
