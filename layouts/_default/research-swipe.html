@@ -55,6 +55,9 @@
       table.parentNode.insertBefore(wide, table);
       wide.appendChild(table);
     });
+    Array.prototype.forEach.call(scroll.querySelectorAll('img[src*="distributed-inference-"]'), function (image) {
+      image.classList.add('editorial-plate');
+    });
     track.appendChild(slide);
   });
   viewport.appendChild(track);
