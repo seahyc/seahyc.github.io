@@ -543,7 +543,6 @@ body.research-swipe .footer {
 
 body.research-swipe .swipe-topline,
 body.research-swipe .swipe-progress,
-body.research-swipe .swipe-controls,
 body.research-swipe .swipe-endnote {
     display: none;
 }
@@ -720,7 +719,7 @@ body.research-swipe .main-research-swipe {
     padding: .6rem .8rem;
     border: 0;
     border-radius: 999px;
-    background: rgba(247, 243, 236, .94);
+    background: rgba(243, 234, 219, .88);
     box-shadow: 0 8px 30px rgba(55, 42, 31, .12);
     backdrop-filter: blur(12px);
 }

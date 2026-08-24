@@ -10,6 +10,11 @@
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
+    <div class="swipe-controls" aria-label="Slide navigation">
+        <button type="button" data-swipe="prev" aria-label="Previous card">←</button>
+        <div class="swipe-dots" aria-hidden="true"></div>
+        <button type="button" data-swipe="next" aria-label="Next card">→</button>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
@@ -61,6 +66,14 @@
     track.appendChild(slide);
   });
   viewport.appendChild(track);
+  var dots = document.querySelector('.swipe-dots');
+  var controls = document.querySelector('.swipe-controls');
+  slides.forEach(function (_, index) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', 'Go to card ' + (index + 1));
+    dots.appendChild(dot);
+  });
   var swiper = new Swiper(viewport, {
     effect: 'cards',
     grabCursor: true,
@@ -80,8 +93,27 @@
     touchMoveStopPropagation: false,
     noSwipingSelector: 'table, .wide-object',
     cardsEffect: { slideShadows: false, rotate: true, perSlideOffset: 8, perSlideRotate: 4, modifier: 1.25 },
-    keyboard: { enabled: true, onlyInViewport: true }
+    keyboard: { enabled: true, onlyInViewport: true },
+    initialSlide: 0
   });
+  function syncNavigation() {
+    var active = swiper.activeIndex;
+    slides.forEach(function (slide, index) {
+      var distance = Math.abs(index - active);
+      slide.style.setProperty('z-index', index === active ? '20' : String(Math.max(1, 10 - distance)), 'important');
+      slide.setAttribute('aria-hidden', index === active ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (dot, index) {
+      dot.classList.toggle('is-active', index === active);
+    });
+  }
+  swiper.on('slideChange', syncNavigation);
+  document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
+  document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
+  Array.prototype.forEach.call(dots.children, function (dot, index) {
+    dot.addEventListener('click', function () { swiper.slideTo(index); });
+  });
+  syncNavigation();
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
