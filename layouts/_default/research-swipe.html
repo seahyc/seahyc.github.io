@@ -67,6 +67,10 @@
     activeIndex = Math.max(0, Math.min(slides.length - 1, index));
     track.style.transition = animate ? 'transform 420ms cubic-bezier(.22,.8,.26,1)' : 'none';
     track.style.transform = 'translate3d(' + (-activeIndex * stepSize()) + 'px, 0, 0)';
+    slides.forEach(function (slide) {
+      slide.style.transition = animate ? 'transform 420ms cubic-bezier(.22,.8,.26,1)' : 'none';
+      slide.style.transform = 'rotate(0deg) translate3d(0, 0, 0)';
+    });
     Array.prototype.forEach.call(dots.children, function (dot, dotIndex) {
       dot.classList.toggle('is-active', dotIndex === activeIndex);
     });
@@ -110,6 +114,8 @@
     event.preventDefault();
     var resistance = (activeIndex === 0 && dx > 0) || (activeIndex === slides.length - 1 && dx < 0) ? .28 : 1;
     track.style.transform = 'translate3d(' + (-activeIndex * stepSize() + dx * resistance) + 'px, 0, 0)';
+    var tilt = Math.max(-5, Math.min(5, dx / viewport.clientWidth * 7));
+    slides[activeIndex].style.transform = 'rotate(' + tilt + 'deg) translate3d(0, ' + Math.min(10, Math.abs(dx) * .025) + 'px, 0)';
     drag.lastX = event.clientX;
     drag.lastTime = Date.now();
   });
@@ -117,9 +123,8 @@
   function finishDrag(event) {
     if (!drag || drag.id !== event.pointerId) return;
     var dx = event.clientX - drag.x;
-    var elapsed = Math.max(1, Date.now() - drag.lastTime);
-    var velocity = (event.clientX - drag.lastX) / elapsed;
-    if (drag.horizontal && (Math.abs(dx) > Math.min(72, viewport.clientWidth * .18) || Math.abs(velocity) > .45)) {
+    var velocity = (event.clientX - drag.lastX) / Math.max(1, Date.now() - drag.lastTime);
+    if (drag.horizontal && (Math.abs(dx) > Math.min(64, viewport.clientWidth * .16) || Math.abs(velocity) > .3)) {
       render(activeIndex + (dx < 0 ? 1 : -1), true);
     } else {
       render(activeIndex, true);
@@ -128,6 +133,7 @@
   }
   viewport.addEventListener('pointerup', finishDrag);
   viewport.addEventListener('pointercancel', finishDrag);
+  viewport.addEventListener('lostpointercapture', function () { if (drag) finishDrag({ pointerId: drag.id, clientX: drag.lastX, clientY: drag.y }); });
   window.addEventListener('resize', function () { render(activeIndex, false); });
   render(0, false);
 })();
