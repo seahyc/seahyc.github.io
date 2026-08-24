@@ -84,7 +84,7 @@
     effect: 'cards',
     grabCursor: true,
     threshold: 0,
-    touchAngle: 50,
+    touchAngle: 28,
     touchRatio: 1.2,
     followFinger: true,
     longSwipes: true,
@@ -95,7 +95,8 @@
     resistance: true,
     resistanceRatio: .55,
     preventInteractionOnTransition: true,
-    nested: true,
+    nested: false,
+    touchMoveStopPropagation: false,
     cardsEffect: { slideShadows: false, rotate: true, perSlideOffset: 8, perSlideRotate: 4, modifier: 1.25 },
     keyboard: { enabled: true, onlyInViewport: true }
   });
