@@ -650,6 +650,8 @@ body.research-swipe .main-research-swipe {
     background-attachment: fixed;
     box-shadow: none;
     user-select: text;
+    transform: rotate(var(--card-tilt, 0deg));
+    transition: transform .12s ease-out;
 }
 
 .swipe-track > .story-slide.swiper-slide {

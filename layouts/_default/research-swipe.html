@@ -45,21 +45,40 @@
     current.appendChild(node);
   });
 
-  // Give the supply page one deliberately small, hand-drawn visual anchor.
-  // The remaining pages stay text-led until their illustrations earn their place.
-  slides.forEach(function (slide) {
+  // Replace the old collage plates with small, topic-specific notebook vignettes.
+  slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
-    if (!heading) return;
-    var title = heading.textContent.toLowerCase();
-    Array.prototype.forEach.call(slide.querySelectorAll('img[src*="distributed-inference-supply.png"], img[src*="distributed-inference-network.png"]'), function (image) {
+    var title = heading ? heading.textContent.toLowerCase() : '';
+    Array.prototype.forEach.call(slide.querySelectorAll('img[src*="darkbloom-fieldbook"], img[src*="distributed-inference-"]'), function (image) {
       image.remove();
     });
-    if (title.indexOf('supply map') === -1) return;
+    var illustration = null;
+    if (index === 0) illustration = {
+      src: '/images/distributed-inference-cover-doodle.png',
+      alt: 'A small room welcoming a cloud beside a laptop'
+    };
+    if (title.indexOf('demand map') !== -1) illustration = {
+      src: '/images/distributed-inference-demand-doodle.png',
+      alt: 'Three small computers passing a parcel along a crooked path'
+    };
+    if (title.indexOf('supply map') !== -1) illustration = {
+      src: '/images/distributed-inference-supply-doodle.png',
+      alt: 'A small hand-drawn laptop carrying an oversized stack of computer boxes'
+    };
+    if (title.indexOf('fleet-owner') !== -1) illustration = {
+      src: '/images/distributed-inference-fleet-doodle.png',
+      alt: 'A cheerful fleet operator beside a row of computers'
+    };
+    if (title.indexOf('multi-platform') !== -1) illustration = {
+      src: '/images/distributed-inference-network-doodle.png',
+      alt: 'Mismatched computers connected around a shared parcel'
+    };
+    if (!illustration) return;
     var image = document.createElement('img');
-    image.src = '/images/distributed-inference-supply-doodle.png';
-    image.alt = 'A small hand-drawn laptop carrying an oversized stack of computer boxes';
-    image.className = 'story-illustration story-illustration--supply';
-    heading.insertAdjacentElement('afterend', image);
+    image.src = illustration.src;
+    image.alt = illustration.alt;
+    image.className = 'story-illustration';
+    (heading || slide.querySelector('h1')).insertAdjacentElement('afterend', image);
   });
 
   var track = document.createElement('div');
@@ -123,6 +142,15 @@
       dot.classList.toggle('is-active', index === active);
     });
   }
+  function applyCardTilt() {
+    slides.forEach(function (slide) {
+      var progress = Number(slide.progress || 0);
+      var tilt = Math.max(-4.5, Math.min(4.5, progress * 4.5));
+      slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
+    });
+  }
+  swiper.on('setTranslate', applyCardTilt);
+  swiper.on('transitionEnd', applyCardTilt);
   swiper.on('slideChange', syncNavigation);
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
   document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
@@ -130,6 +158,7 @@
     dot.addEventListener('click', function () { swiper.slideTo(index); });
   });
   syncNavigation();
+  applyCardTilt();
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
