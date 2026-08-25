@@ -924,6 +924,22 @@ body.card-frame-full .story-slide > .story-scroll {
     line-height: 1.4;
 }
 
+.swipe-content pre {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+    padding: 1.25rem 1.5rem;
+    border: 0;
+    border-radius: .35rem;
+    background: rgba(39, 37, 32, .96);
+    color: #f3efe6;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: .78em;
+    line-height: 1.55;
+}
+
 .swipe-content ul,
 .swipe-content ol {
     margin: 0 0 1.8rem 2.2rem;
