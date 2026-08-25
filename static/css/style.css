@@ -542,7 +542,6 @@ body.research-swipe .footer {
 }
 
 body.research-swipe .swipe-topline,
-body.research-swipe .swipe-progress,
 body.research-swipe .swipe-endnote {
     display: none;
 }
@@ -650,8 +649,9 @@ body.research-swipe .main-research-swipe {
     background-attachment: fixed;
     box-shadow: none;
     user-select: text;
-    transform: rotate(var(--card-tilt, 0deg));
-    transition: transform .12s ease-out;
+    transform: translateY(var(--card-lift, 0px)) rotate(var(--card-tilt, 0deg));
+    transform-origin: 50% 92%;
+    transition: transform .18s cubic-bezier(.2, .8, .2, 1);
 }
 
 .swipe-track > .story-slide.swiper-slide {
@@ -716,7 +716,7 @@ body.research-swipe .main-research-swipe {
     z-index: 10;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: .2rem;
     padding: .6rem .8rem;
     border: 0;
     border-radius: 999px;
@@ -739,22 +739,30 @@ body.research-swipe .main-research-swipe {
 
 .swipe-controls button:hover { background: #eadfd3; }
 
-.swipe-dots {
+.swipe-progress {
+    position: fixed;
+    top: max(.7rem, env(safe-area-inset-top));
+    left: clamp(1rem, 4vw, 4rem);
+    right: clamp(1rem, 4vw, 4rem);
+    z-index: 30;
     display: flex;
-    max-width: 14rem;
-    gap: .35rem;
-    overflow: hidden;
+    gap: 3px;
+    height: 3px;
+    overflow: visible;
+    pointer-events: none;
 }
 
-.swipe-dots button {
-    flex: 0 0 .55rem;
-    width: .55rem;
-    height: .55rem;
+.swipe-progress button {
+    flex: 1 1 0;
+    width: auto;
+    height: 3px;
     padding: 0;
-    background: #cfc4b7;
+    border-radius: 999px;
+    background: rgba(39, 35, 30, .16);
+    pointer-events: auto;
 }
 
-.swipe-dots button.is-active { background: var(--red); transform: scale(1.35); }
+.swipe-progress button.is-active { background: rgba(157, 76, 63, .88); transform: none; }
 
 .swipe-content h1 {
     padding: 4.8rem 0 1.8rem;
@@ -930,6 +938,10 @@ body.research-swipe .main-research-swipe {
     .swipe-article { padding-top: 1rem; }
     .swipe-content { font-size: 1.95rem; }
     .swipe-content h2 { font-size: 3.5rem; }
+    .story-scroll > * { width: min(100%, 1260px); }
+    .swipe-content table { width: min(100%, 76rem); min-width: 0; }
+    .wide-object { width: min(100%, 1260px); }
+    .swipe-content img.story-illustration { width: min(34%, 26rem); }
 }
 
 @media (max-width: 699px) {

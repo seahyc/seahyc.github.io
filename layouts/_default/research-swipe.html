@@ -10,9 +10,9 @@
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
+    <div class="swipe-progress" aria-hidden="true"></div>
     <div class="swipe-controls" aria-label="Slide navigation">
         <button type="button" data-swipe="prev" aria-label="Previous card">←</button>
-        <div class="swipe-dots" aria-hidden="true"></div>
         <button type="button" data-swipe="next" aria-label="Next card">→</button>
     </div>
 </div>
@@ -102,8 +102,7 @@
     track.appendChild(slide);
   });
   viewport.appendChild(track);
-  var dots = document.querySelector('.swipe-dots');
-  var controls = document.querySelector('.swipe-controls');
+  var dots = document.querySelector('.swipe-progress');
   slides.forEach(function (_, index) {
     var dot = document.createElement('button');
     dot.type = 'button';
@@ -145,8 +144,11 @@
   function applyCardTilt() {
     slides.forEach(function (slide) {
       var progress = Number(slide.progress || 0);
-      var tilt = Math.max(-4.5, Math.min(4.5, progress * 4.5));
+      var distance = Math.min(1.25, Math.abs(progress));
+      var eased = Math.pow(distance, .72);
+      var tilt = Math.max(-8, Math.min(8, Math.sign(progress) * eased * 8));
       slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
+      slide.style.setProperty('--card-lift', (eased * -6).toFixed(2) + 'px');
     });
   }
   swiper.on('setTranslate', applyCardTilt);
