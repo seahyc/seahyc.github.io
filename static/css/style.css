@@ -686,11 +686,11 @@ body.research-swipe .main-research-swipe {
 
 .story-slide > .story-scroll {
     width: calc(100% - 1.5rem);
-    height: calc(100% - 1.5rem);
+    height: calc(100% - 2.5rem);
     max-height: 100%;
     min-height: 0;
     min-width: 0;
-    margin: .75rem;
+    margin: 1.75rem .75rem .75rem;
     border-radius: 1.2rem;
     background-color: rgba(243, 234, 219, .985);
     background-image: radial-gradient(rgba(88, 65, 38, .065) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .2) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.1), rgba(126,91,48,.035));
@@ -699,11 +699,14 @@ body.research-swipe .main-research-swipe {
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
     touch-action: pan-y;
 }
+
+.story-slide > .story-scroll::-webkit-scrollbar { display: none; }
 
 body.card-frame-full .swipe-content { background: var(--paper); }
 body.card-frame-full .story-slide > .story-scroll {
@@ -761,7 +764,7 @@ body.card-frame-full .story-slide > .story-scroll {
 
 .swipe-progress {
     position: fixed;
-    top: max(.2rem, env(safe-area-inset-top));
+    top: max(1rem, env(safe-area-inset-top) + .45rem);
     left: calc(clamp(1rem, 4vw, 4rem) + .75rem);
     right: calc(clamp(1rem, 4vw, 4rem) + .75rem);
     z-index: 30;
