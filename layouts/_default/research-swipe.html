@@ -145,21 +145,38 @@
       dot.classList.toggle('is-complete', index < active);
     });
   }
+  function setCardMotion(slide, progress) {
+    var distance = Math.min(1.25, Math.abs(progress));
+    var eased = Math.pow(distance, .72);
+    // Swiper's progress sign is opposite the finger direction: a leftward
+    // drag makes the current slide's progress positive, so invert it here.
+    var tilt = Math.max(-10, Math.min(10, -Math.sign(progress) * eased * 10));
+    slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
+    slide.style.setProperty('--card-lift', (eased * -10).toFixed(2) + 'px');
+    slide.style.setProperty('--card-shadow-x', (tilt * -1.1).toFixed(2) + 'px');
+  }
   function applyCardTilt() {
-    slides.forEach(function (slide) {
-      var progress = Number(slide.progress || 0);
-      var distance = Math.min(1.25, Math.abs(progress));
-      var eased = Math.pow(distance, .72);
-      // Swiper's progress sign is opposite the finger direction: a leftward
-      // drag makes the current slide's progress positive, so invert it here.
-      var tilt = Math.max(-10, Math.min(10, -Math.sign(progress) * eased * 10));
-      slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
-      slide.style.setProperty('--card-lift', (eased * -10).toFixed(2) + 'px');
-      slide.style.setProperty('--card-shadow-x', (tilt * -1.1).toFixed(2) + 'px');
-    });
+    slides.forEach(function (slide) { setCardMotion(slide, Number(slide.progress || 0)); });
+  }
+  var arrowRaf = null;
+  function animateArrowCards() {
+    var direction = swiper.activeIndex > swiper.previousIndex ? 1 : -1;
+    var outgoing = slides[swiper.previousIndex];
+    var incoming = slides[swiper.activeIndex];
+    var start = performance.now();
+    function frame(now) {
+      var t = Math.min(1, (now - start) / swiper.params.speed);
+      var eased = 1 - Math.pow(1 - t, 3);
+      setCardMotion(outgoing, direction * eased);
+      setCardMotion(incoming, -direction * (1 - eased));
+      if (t < 1) arrowRaf = requestAnimationFrame(frame);
+    }
+    if (arrowRaf) cancelAnimationFrame(arrowRaf);
+    arrowRaf = requestAnimationFrame(frame);
   }
   swiper.on('setTranslate', applyCardTilt);
-  swiper.on('transitionEnd', function () { applyCardTilt(); syncNavigation(); });
+  swiper.on('slideChangeTransitionStart', animateArrowCards);
+  swiper.on('transitionEnd', function () { if (arrowRaf) cancelAnimationFrame(arrowRaf); applyCardTilt(); syncNavigation(); });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
   swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
