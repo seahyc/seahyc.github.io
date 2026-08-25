@@ -162,6 +162,29 @@
   });
   syncNavigation();
   applyCardTilt();
+
+  // Development-only harness: ?tilt-test=1 drives the same progress values
+  // used during a live drag and exposes the resulting CSS variables.
+  if (new URLSearchParams(window.location.search).has('tilt-test')) {
+    var harness = document.createElement('div');
+    harness.className = 'tilt-test-harness';
+    harness.innerHTML = '<label>tilt test <input type="range" min="-1" max="1" step=".01" value="0"></label><output></output>';
+    document.body.appendChild(harness);
+    var tiltInput = harness.querySelector('input');
+    var tiltOutput = harness.querySelector('output');
+    function runTiltTest(value) {
+      var translate = Number(value) * viewport.clientWidth;
+      swiper.updateSlidesProgress(translate);
+      swiper.emit('setTranslate', translate);
+      var activeSlide = slides[swiper.activeIndex];
+      var tilt = activeSlide.style.getPropertyValue('--card-tilt') || '0deg';
+      var lift = activeSlide.style.getPropertyValue('--card-lift') || '0px';
+      tiltOutput.textContent = 'progress ' + Number(value).toFixed(2) + ' · ' + tilt + ' · ' + lift;
+    }
+    tiltInput.addEventListener('input', function () { runTiltTest(tiltInput.value); });
+    window.__fieldbookTiltTest = runTiltTest;
+    runTiltTest(tiltInput.value);
+  }
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
