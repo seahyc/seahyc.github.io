@@ -159,10 +159,9 @@
     });
   }
   swiper.on('setTranslate', applyCardTilt);
-  swiper.on('transitionEnd', applyCardTilt);
+  swiper.on('transitionEnd', function () { applyCardTilt(); syncNavigation(); });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
   swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
-  swiper.on('slideChange', syncNavigation);
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
   document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
   Array.prototype.forEach.call(dots.children, function (dot, index) {

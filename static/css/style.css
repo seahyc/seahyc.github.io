@@ -761,9 +761,9 @@ body.card-frame-full .story-slide > .story-scroll {
 
 .swipe-progress {
     position: fixed;
-    top: max(.7rem, env(safe-area-inset-top));
-    left: clamp(1rem, 4vw, 4rem);
-    right: clamp(1rem, 4vw, 4rem);
+    top: max(.2rem, env(safe-area-inset-top));
+    left: calc(clamp(1rem, 4vw, 4rem) + .75rem);
+    right: calc(clamp(1rem, 4vw, 4rem) + .75rem);
     z-index: 30;
     display: flex;
     gap: 4px;
