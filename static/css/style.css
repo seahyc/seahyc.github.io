@@ -686,8 +686,9 @@ body.research-swipe .main-research-swipe {
 
 .story-slide > .story-scroll {
     width: calc(100% - 1.5rem);
-    height: calc(100% - 2.5rem);
-    max-height: 100%;
+    height: auto;
+    min-height: calc(100% - 2.5rem);
+    max-height: none;
     min-height: 0;
     min-width: 0;
     margin: 1.75rem .75rem .75rem;
@@ -697,21 +698,23 @@ body.research-swipe .main-research-swipe {
     background-size: 5px 5px, 7px 7px, 100% 100%;
     box-shadow: var(--card-shadow-x, 0px) 28px 64px rgba(55, 42, 31, .24), 0 7px 18px rgba(55, 42, 31, .16), 0 0 0 1px rgba(55, 42, 31, .1);
     box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
+    overflow: visible;
+    overflow-x: visible;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
     touch-action: pan-y;
+    transform: translateY(var(--card-scroll-y, 0px));
+    transition: transform .18s cubic-bezier(.2, .8, .2, 1);
 }
 
-.story-slide > .story-scroll::-webkit-scrollbar { display: none; }
+.story-slide > .story-scroll.is-vertical-dragging { transition: none; }
 
 body.card-frame-full .swipe-content { background: var(--paper); }
 body.card-frame-full .story-slide > .story-scroll {
     width: 100%;
     height: 100%;
+    min-height: 100%;
     margin: 0;
     border-radius: 0;
     box-shadow: none;

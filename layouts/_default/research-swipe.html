@@ -212,10 +212,22 @@
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
+    scroll._cardOffset = 0;
+    function cardMaxOffset() {
+      var styles = getComputedStyle(scroll);
+      var bottomGap = parseFloat(styles.marginBottom) || 0;
+      var available = slide.clientHeight - scroll.offsetTop - bottomGap;
+      return Math.max(0, scroll.offsetHeight - available);
+    }
+    function renderCardOffset(offset) {
+      var max = cardMaxOffset();
+      scroll._cardOffset = Math.max(0, Math.min(max, offset));
+      scroll.style.setProperty('--card-scroll-y', (-scroll._cardOffset).toFixed(2) + 'px');
+    }
     var gesture = null;
     scroll.addEventListener('touchstart', function (event) {
       var touch = event.touches[0];
-      gesture = { x: touch.clientX, y: touch.clientY, vertical: false };
+      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset };
     }, { passive: true });
     scroll.addEventListener('touchmove', function (event) {
       if (!gesture) return;
@@ -229,12 +241,19 @@
       } else if (gesture.vertical) {
         event.stopPropagation();
       }
-    }, { passive: true });
+      if (gesture.vertical) {
+        event.preventDefault();
+        scroll.classList.add('is-vertical-dragging');
+        renderCardOffset(gesture.offset - dy);
+      }
+    }, { passive: false });
     scroll.addEventListener('touchend', function () {
+      scroll.classList.remove('is-vertical-dragging');
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
     scroll.addEventListener('touchcancel', function () {
+      scroll.classList.remove('is-vertical-dragging');
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
@@ -242,8 +261,14 @@
   viewport.addEventListener('wheel', function (event) {
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
-    if (!activeScroll || activeScroll.scrollHeight <= activeScroll.clientHeight) return;
-    activeScroll.scrollTop += event.deltaY;
+    if (!activeScroll) return;
+    var styles = getComputedStyle(activeScroll);
+    var bottomGap = parseFloat(styles.marginBottom) || 0;
+    var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
+    var max = Math.max(0, activeScroll.offsetHeight - available);
+    if (!max) return;
+    activeScroll._cardOffset = Math.max(0, Math.min(max, (activeScroll._cardOffset || 0) + event.deltaY));
+    activeScroll.style.setProperty('--card-scroll-y', (-activeScroll._cardOffset).toFixed(2) + 'px');
     event.preventDefault();
   }, { passive: false });
 })();
