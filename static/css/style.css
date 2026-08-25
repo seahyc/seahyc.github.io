@@ -649,9 +649,15 @@ body.research-swipe .main-research-swipe {
     background-attachment: fixed;
     box-shadow: none;
     user-select: text;
-    transform: translateY(var(--card-lift, 0px)) rotate(var(--card-tilt, 0deg));
+    transform: perspective(1400px) translateY(var(--card-lift, 0px)) rotateZ(var(--card-tilt, 0deg));
     transform-origin: 50% 92%;
-    transition: transform .18s cubic-bezier(.2, .8, .2, 1);
+    will-change: transform, box-shadow;
+    box-shadow: var(--card-shadow-x, 0px) 18px 42px rgba(55, 42, 31, .14), 0 0 0 1px rgba(55, 42, 31, .055);
+    transition: transform .24s cubic-bezier(.2, .8, .2, 1), box-shadow .24s cubic-bezier(.2, .8, .2, 1);
+}
+
+.story-slide.is-dragging {
+    transition: none;
 }
 
 .swipe-track > .story-slide.swiper-slide {
@@ -746,8 +752,8 @@ body.research-swipe .main-research-swipe {
     right: clamp(1rem, 4vw, 4rem);
     z-index: 30;
     display: flex;
-    gap: 3px;
-    height: 3px;
+    gap: 4px;
+    height: 4px;
     overflow: visible;
     pointer-events: none;
 }
@@ -755,14 +761,22 @@ body.research-swipe .main-research-swipe {
 .swipe-progress button {
     flex: 1 1 0;
     width: auto;
-    height: 3px;
+    height: 4px;
     padding: 0;
     border-radius: 999px;
-    background: rgba(39, 35, 30, .16);
+    background: rgba(39, 35, 30, .13);
     pointer-events: auto;
+    opacity: .78;
+    transition: background-color .22s ease, opacity .22s ease, box-shadow .22s ease;
 }
 
-.swipe-progress button.is-active { background: rgba(157, 76, 63, .88); transform: none; }
+.swipe-progress button.is-complete { background: rgba(39, 35, 30, .38); }
+.swipe-progress button.is-active {
+    background: rgba(157, 76, 63, .9);
+    box-shadow: 0 0 0 1px rgba(157, 76, 63, .12), 0 1px 5px rgba(157, 76, 63, .18);
+    opacity: 1;
+    transform: none;
+}
 
 .tilt-test-harness {
     position: fixed;

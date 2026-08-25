@@ -140,6 +140,7 @@
     });
     Array.prototype.forEach.call(dots.children, function (dot, index) {
       dot.classList.toggle('is-active', index === active);
+      dot.classList.toggle('is-complete', index < active);
     });
   }
   function applyCardTilt() {
@@ -147,13 +148,18 @@
       var progress = Number(slide.progress || 0);
       var distance = Math.min(1.25, Math.abs(progress));
       var eased = Math.pow(distance, .72);
-      var tilt = Math.max(-8, Math.min(8, Math.sign(progress) * eased * 8));
+      // Swiper's progress sign is opposite the finger direction: a leftward
+      // drag makes the current slide's progress positive, so invert it here.
+      var tilt = Math.max(-10, Math.min(10, -Math.sign(progress) * eased * 10));
       slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
       slide.style.setProperty('--card-lift', (eased * -6).toFixed(2) + 'px');
+      slide.style.setProperty('--card-shadow-x', (tilt * -1.1).toFixed(2) + 'px');
     });
   }
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('transitionEnd', applyCardTilt);
+  swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
+  swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
   swiper.on('slideChange', syncNavigation);
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
   document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
