@@ -688,7 +688,7 @@ body.research-swipe .main-research-swipe {
 .story-slide > .story-scroll {
     width: calc(100% - 1.5rem);
     height: auto;
-    min-height: calc(100% - 2.5rem);
+    min-height: calc(100svh - 2.5rem);
     max-height: none;
     min-height: 0;
     min-width: 0;
@@ -715,7 +715,7 @@ body.card-frame-full .swipe-content { background: var(--paper); }
 body.card-frame-full .story-slide > .story-scroll {
     width: 100%;
     height: 100%;
-    min-height: 100%;
+    min-height: 100svh;
     margin: 0;
     border-radius: 0;
     box-shadow: none;
