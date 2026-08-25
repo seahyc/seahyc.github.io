@@ -631,6 +631,7 @@ body.research-swipe .main-research-swipe {
     height: 100%;
     gap: 0;
     will-change: transform;
+    transition-timing-function: cubic-bezier(.16, .82, .28, 1);
 }
 
 .story-slide {
