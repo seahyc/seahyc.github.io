@@ -19,6 +19,8 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function () {
+  var frameMode = new URLSearchParams(window.location.search).get('frame');
+  if (frameMode === 'full' || frameMode === 'raised') document.body.classList.add('card-frame-' + frameMode);
   var viewport = document.querySelector('.swipe-content');
   if (!viewport) return;
   var nodes = Array.prototype.slice.call(viewport.children);
