@@ -705,7 +705,7 @@ body.research-swipe .main-research-swipe {
     -webkit-overflow-scrolling: touch;
     padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
     touch-action: pan-y;
-    transform: perspective(1400px) translateY(var(--card-scroll-y, 0px)) rotateZ(var(--card-tilt, 0deg));
+    transform: perspective(1400px) translateY(var(--card-scroll-y, 0px)) rotateZ(calc(var(--card-tilt, 0deg) + var(--edge-tilt, 0deg)));
     transform-origin: 50% 92%;
     will-change: transform;
     transition: transform .18s cubic-bezier(.2, .8, .2, 1);

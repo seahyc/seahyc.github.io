@@ -222,13 +222,17 @@
     function renderCardOffset(offset) {
       var max = cardMaxOffset();
       scroll._cardMaxOffset = max;
+      var overshoot = offset < 0 ? offset : Math.max(0, offset - max);
+      var visualOffset = offset < 0 ? offset * .22 : (offset > max ? max + overshoot * .22 : offset);
       scroll._cardOffset = Math.max(0, Math.min(max, offset));
-      scroll.style.setProperty('--card-scroll-y', (-scroll._cardOffset).toFixed(2) + 'px');
+      scroll.style.setProperty('--card-scroll-y', (-visualOffset).toFixed(2) + 'px');
+      var edgeTilt = offset < 0 ? Math.min(4, -overshoot * .08) : Math.max(-4, -overshoot * .08);
+      scroll.parentElement.style.setProperty('--edge-tilt', edgeTilt.toFixed(2) + 'deg');
     }
     var gesture = null;
     scroll.addEventListener('touchstart', function (event) {
       var touch = event.touches[0];
-      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset, edgeX: null, handedOff: false };
+      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset };
     }, { passive: true });
     scroll.addEventListener('touchmove', function (event) {
       if (!gesture) return;
@@ -245,28 +249,18 @@
       if (gesture.vertical) {
         event.preventDefault();
         scroll.classList.add('is-vertical-dragging');
-        var atBottom = scroll._cardOffset >= (scroll._cardMaxOffset || cardMaxOffset()) - 1;
-        var atTop = scroll._cardOffset <= 1;
-        if ((atBottom || atTop) && gesture.edgeX === null) gesture.edgeX = touch.clientX;
-        var edgeDx = gesture.edgeX === null ? 0 : touch.clientX - gesture.edgeX;
-        if (!gesture.handedOff && ((atBottom && edgeDx < -34) || (atTop && edgeDx > 34))) {
-          gesture.handedOff = true;
-          swiper.allowTouchMove = true;
-          scroll.classList.remove('is-vertical-dragging');
-          if (edgeDx < 0) swiper.slideNext();
-          else swiper.slidePrev();
-          return;
-        }
         renderCardOffset(gesture.offset - dy);
       }
     }, { passive: false });
     scroll.addEventListener('touchend', function () {
       scroll.classList.remove('is-vertical-dragging');
+      renderCardOffset(scroll._cardOffset);
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
     scroll.addEventListener('touchcancel', function () {
       scroll.classList.remove('is-vertical-dragging');
+      renderCardOffset(scroll._cardOffset);
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
@@ -298,7 +292,7 @@
   }, { passive: true });
   viewport.addEventListener('click', function (event) {
     if (tap && tap.moved) { tap = null; return; }
-    if (event.target.closest('a, button, input, textarea, select, table, pre, .wide-object, .tilt-test-harness')) return;
+    if (event.target.closest('a, button, input, textarea, select, .swipe-progress, .swipe-controls, .tilt-test-harness')) return;
     if (event.clientX < viewport.clientWidth / 2) swiper.slidePrev();
     else swiper.slideNext();
     tap = null;
