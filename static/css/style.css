@@ -695,7 +695,7 @@ body.research-swipe .main-research-swipe {
     background-color: rgba(243, 234, 219, .985);
     background-image: radial-gradient(rgba(88, 65, 38, .065) .45px, transparent .55px), radial-gradient(rgba(255, 255, 255, .2) .55px, transparent .7px), linear-gradient(145deg, rgba(255,255,255,.1), rgba(126,91,48,.035));
     background-size: 5px 5px, 7px 7px, 100% 100%;
-    box-shadow: var(--card-shadow-x, 0px) 18px 42px rgba(55, 42, 31, .18), 0 0 0 1px rgba(55, 42, 31, .08);
+    box-shadow: var(--card-shadow-x, 0px) 28px 64px rgba(55, 42, 31, .24), 0 7px 18px rgba(55, 42, 31, .16), 0 0 0 1px rgba(55, 42, 31, .1);
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
@@ -768,17 +768,18 @@ body.research-swipe .main-research-swipe {
     width: auto;
     height: 4px;
     padding: 0;
+    border: 0;
+    appearance: none;
     border-radius: 999px;
     background: rgba(255, 255, 255, .42);
     pointer-events: auto;
     opacity: .78;
-    transition: background-color .22s ease, opacity .22s ease, box-shadow .22s ease;
+    transition: background-color .22s ease, opacity .22s ease;
 }
 
 .swipe-progress button.is-complete { background: rgba(255, 255, 255, .82); }
 .swipe-progress button.is-active {
     background: #fff;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, .18), 0 1px 5px rgba(0, 0, 0, .12);
     opacity: 1;
     transform: none;
 }

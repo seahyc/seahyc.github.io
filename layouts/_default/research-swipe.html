@@ -152,7 +152,7 @@
       // drag makes the current slide's progress positive, so invert it here.
       var tilt = Math.max(-10, Math.min(10, -Math.sign(progress) * eased * 10));
       slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
-      slide.style.setProperty('--card-lift', (eased * -6).toFixed(2) + 'px');
+      slide.style.setProperty('--card-lift', (eased * -10).toFixed(2) + 'px');
       slide.style.setProperty('--card-shadow-x', (tilt * -1.1).toFixed(2) + 'px');
     });
   }
