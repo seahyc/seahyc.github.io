@@ -986,6 +986,8 @@ body.research-swipe .main-research-swipe {
 }
 
 @media (max-width: 699px) {
+    .swipe-controls { display: none; }
+
     .swipe-content {
         font-size: 1.35rem;
         line-height: 1.55;
