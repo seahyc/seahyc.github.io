@@ -221,13 +221,14 @@
     }
     function renderCardOffset(offset) {
       var max = cardMaxOffset();
+      scroll._cardMaxOffset = max;
       scroll._cardOffset = Math.max(0, Math.min(max, offset));
       scroll.style.setProperty('--card-scroll-y', (-scroll._cardOffset).toFixed(2) + 'px');
     }
     var gesture = null;
     scroll.addEventListener('touchstart', function (event) {
       var touch = event.touches[0];
-      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset };
+      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset, edgeX: null, handedOff: false };
     }, { passive: true });
     scroll.addEventListener('touchmove', function (event) {
       if (!gesture) return;
@@ -244,6 +245,18 @@
       if (gesture.vertical) {
         event.preventDefault();
         scroll.classList.add('is-vertical-dragging');
+        var atBottom = scroll._cardOffset >= (scroll._cardMaxOffset || cardMaxOffset()) - 1;
+        var atTop = scroll._cardOffset <= 1;
+        if ((atBottom || atTop) && gesture.edgeX === null) gesture.edgeX = touch.clientX;
+        var edgeDx = gesture.edgeX === null ? 0 : touch.clientX - gesture.edgeX;
+        if (!gesture.handedOff && ((atBottom && edgeDx < -34) || (atTop && edgeDx > 34))) {
+          gesture.handedOff = true;
+          swiper.allowTouchMove = true;
+          scroll.classList.remove('is-vertical-dragging');
+          if (edgeDx < 0) swiper.slideNext();
+          else swiper.slidePrev();
+          return;
+        }
         renderCardOffset(gesture.offset - dy);
       }
     }, { passive: false });
@@ -271,6 +284,25 @@
     activeScroll.style.setProperty('--card-scroll-y', (-activeScroll._cardOffset).toFixed(2) + 'px');
     event.preventDefault();
   }, { passive: false });
+
+  // Instagram-style tap zones. Interactive content keeps its native behavior.
+  var tap = null;
+  viewport.addEventListener('touchstart', function (event) {
+    var touch = event.touches[0];
+    tap = { x: touch.clientX, y: touch.clientY, moved: false };
+  }, { passive: true });
+  viewport.addEventListener('touchmove', function (event) {
+    if (!tap) return;
+    var touch = event.touches[0];
+    if (Math.hypot(touch.clientX - tap.x, touch.clientY - tap.y) > 12) tap.moved = true;
+  }, { passive: true });
+  viewport.addEventListener('click', function (event) {
+    if (tap && tap.moved) { tap = null; return; }
+    if (event.target.closest('a, button, input, textarea, select, table, pre, .wide-object, .tilt-test-harness')) return;
+    if (event.clientX < viewport.clientWidth / 2) swiper.slidePrev();
+    else swiper.slideNext();
+    tap = null;
+  });
 })();
 </script>
 {{ end }}
