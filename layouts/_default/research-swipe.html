@@ -1,6 +1,6 @@
 {{ define "head" }}
-<meta property="og:title" content="The distributed inference fieldbook">
-<meta property="og:description" content="An entrepreneur's field guide to Darkbloom, idle compute, cybercafés, and the next inference layer.">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 {{ end }}
@@ -71,7 +71,7 @@
       src: '/images/distributed-inference-fleet-doodle.png',
       alt: 'A cheerful fleet operator beside a row of computers'
     };
-    if (title.indexOf('multi-platform') !== -1) illustration = {
+    if (title.indexOf('multi-platform') !== -1 || title.indexOf('make the multi-platform') !== -1) illustration = {
       src: '/images/distributed-inference-network-doodle.png',
       alt: 'Mismatched computers connected around a shared parcel'
     };
