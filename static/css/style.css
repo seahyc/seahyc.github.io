@@ -740,6 +740,37 @@ body.card-frame-full .story-slide > .story-scroll {
     padding-top: clamp(3rem, 10vh, 8rem);
 }
 
+.story-slide--cover > .story-scroll {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 27rem);
+    column-gap: clamp(1.5rem, 4vw, 4rem);
+    align-content: start;
+}
+
+.story-slide--cover > .story-scroll > h1,
+.story-slide--cover > .story-scroll > h2 {
+    grid-column: 1 / -1;
+}
+
+.story-slide--cover > .story-scroll > h3 {
+    grid-column: 1;
+    max-width: 100%;
+}
+
+.story-slide--cover > .story-scroll > .cover-illustration {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+    float: none;
+    align-self: start;
+    width: 100%;
+    margin: .5rem 0 0;
+}
+
+.story-slide--cover > .story-scroll > h3 + p,
+.story-slide--cover > .story-scroll > h3 + p + p {
+    grid-column: 1;
+}
+
 .swipe-controls {
     position: fixed;
     right: clamp(1.5rem, 4vw, 4rem);
@@ -1036,6 +1067,17 @@ body.card-frame-full .story-slide > .story-scroll {
         max-width: 100%;
         font-size: clamp(2.7rem, 13vw, 4.8rem);
         overflow-wrap: anywhere;
+    }
+
+    .story-slide--cover > .story-scroll {
+        grid-template-columns: minmax(0, 1fr) minmax(7rem, 10rem);
+        column-gap: .9rem;
+        padding-top: 2.2rem;
+    }
+
+    .story-slide--cover > .story-scroll > .cover-illustration {
+        width: 100%;
+        margin-top: .35rem;
     }
 
     .swipe-content h2 {

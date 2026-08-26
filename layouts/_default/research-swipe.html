@@ -79,7 +79,7 @@
     var image = document.createElement('img');
     image.src = illustration.src;
     image.alt = illustration.alt;
-    image.className = 'story-illustration';
+    image.className = 'story-illustration' + (index === 0 ? ' cover-illustration' : '');
     (heading || slide.querySelector('h1')).insertAdjacentElement('afterend', image);
   });
 
