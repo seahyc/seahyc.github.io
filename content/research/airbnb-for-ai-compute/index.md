@@ -138,6 +138,8 @@ The average MacBook owner is unlikely to be the best initial provider. The ratio
 
 The same discipline must apply to non-Mac hardware. Public data gives us several useful but non-equivalent signals:
 
+![A mismatched procession of computers carrying different-sized model blocks toward a shared coordinator.](/images/airbnb-ai-hardware-mix.png)
+
 | Signal | What it tells us | What it does not tell us |
 |---|---|---|
 | Darkbloom's 100M+ Apple Silicon claim | Company-reported cumulative shipments | Current active, idle, willing, or reliable provider count |
@@ -169,6 +171,8 @@ The last line is the market. Everything above it is merely inventory.
 ### Intelligence follows memory, bandwidth, and workload—not the GPU name
 
 “A GPU” is not a unit of useful AI work. A node’s practical capability is determined by model weights, KV cache, context length, quantization, memory bandwidth, runtime support, concurrency, and the workload’s latency requirement.
+
+![A modest computer sorting documents, images, and evaluation checks while a frontier-model crown remains out of reach.](/images/airbnb-ai-useful-work.png)
 
 | Hardware pool | Defensible capability envelope | Strong workloads | Weak or excluded workloads |
 |---|---|---|---|
@@ -391,6 +395,8 @@ The most attractive supply-side customer is therefore:
 ### Geography changes the answer
 
 Electricity is not a universal constant. The same machine can be marginally attractive in a low-cost-power market and uneconomic in a high-cost, air-conditioned venue.
+
+![A cybercafe operator balancing an electricity meter, repair toolbox, worn fan, and a small stack of coins.](/images/airbnb-ai-operator-economics.png)
 
 | Location example | Public tariff signal | 250W system, electricity only | 600W system, electricity only |
 |---|---:|---:|---:|

@@ -98,7 +98,7 @@
       table.parentNode.insertBefore(wide, table);
       wide.appendChild(table);
     });
-    Array.prototype.forEach.call(scroll.querySelectorAll('img[src*="distributed-inference-"]'), function (image) {
+    Array.prototype.forEach.call(scroll.querySelectorAll('img[src*="distributed-inference-"], img[src*="airbnb-ai-"]'), function (image) {
       image.classList.add('editorial-plate');
     });
     track.appendChild(slide);

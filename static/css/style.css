@@ -908,6 +908,8 @@ body.card-frame-full .story-slide > .story-scroll {
     border-radius: .8rem;
     transform: rotate(1.2deg);
     transition: transform .35s ease;
+    background: transparent;
+    mix-blend-mode: multiply;
 }
 
 .swipe-content img.editorial-plate:hover {
