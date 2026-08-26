@@ -28,6 +28,13 @@
   var current = null;
   var h2Count = 0;
 
+  function cardSlug(text, fallback) {
+    var slug = String(text || '').toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return slug || fallback;
+  }
+
   nodes.forEach(function (node) {
     var isSection = node.tagName === 'H2';
     if (isSection) h2Count += 1;
@@ -51,6 +58,9 @@
   slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
     var title = heading ? heading.textContent.toLowerCase() : '';
+    var label = heading ? heading.textContent : (slide.querySelector('h1') ? slide.querySelector('h1').textContent : 'cover');
+    slide.dataset.cardSlug = index === 0 ? 'cover' : cardSlug(label, 'card-' + (index + 1));
+    slide.id = 'card-' + slide.dataset.cardSlug;
     Array.prototype.forEach.call(slide.querySelectorAll('img[src*="darkbloom-fieldbook"], img[src*="distributed-inference-"]'), function (image) {
       image.remove();
     });
@@ -111,6 +121,9 @@
     dot.setAttribute('aria-label', 'Go to card ' + (index + 1));
     dots.appendChild(dot);
   });
+  var requestedSlug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
+  var initialSlide = requestedSlug ? slides.findIndex(function (slide) { return slide.dataset.cardSlug === requestedSlug; }) : 0;
+  if (initialSlide < 0) initialSlide = 0;
   var swiper = new Swiper(viewport, {
     effect: 'slide',
     grabCursor: true,
@@ -131,8 +144,16 @@
     touchMoveStopPropagation: false,
     noSwipingSelector: 'table, .wide-object',
     keyboard: { enabled: true, onlyInViewport: true },
-    initialSlide: 0
+    initialSlide: initialSlide
   });
+  function syncUrl(replace) {
+    var slide = slides[swiper.activeIndex];
+    if (!slide) return;
+    var hash = '#card-' + slide.dataset.cardSlug;
+    var nextUrl = window.location.pathname + window.location.search + hash;
+    if (replace) window.history.replaceState({ card: slide.dataset.cardSlug }, '', nextUrl);
+    else if (window.location.hash !== hash) window.history.pushState({ card: slide.dataset.cardSlug }, '', nextUrl);
+  }
   function syncNavigation() {
     var active = swiper.activeIndex;
     slides.forEach(function (slide, index) {
@@ -176,7 +197,7 @@
   }
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('slideChangeTransitionStart', animateArrowCards);
-  swiper.on('transitionEnd', function () { if (arrowRaf) cancelAnimationFrame(arrowRaf); applyCardTilt(); syncNavigation(); });
+  swiper.on('transitionEnd', function () { if (arrowRaf) cancelAnimationFrame(arrowRaf); applyCardTilt(); syncNavigation(); syncUrl(false); });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
   swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
@@ -186,6 +207,12 @@
   });
   syncNavigation();
   applyCardTilt();
+  syncUrl(true);
+  window.addEventListener('popstate', function () {
+    var slug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
+    var target = slides.findIndex(function (slide) { return slide.dataset.cardSlug === slug; });
+    if (target >= 0 && target !== swiper.activeIndex) swiper.slideTo(target);
+  });
 
   // Development-only harness: ?tilt-test=1 drives the same progress values
   // used during a live drag and exposes the resulting CSS variables.

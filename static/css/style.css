@@ -703,7 +703,7 @@ body.research-swipe .main-research-swipe {
     overflow-x: visible;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
-    padding: 2.2rem clamp(1.6rem, 6vw, 7rem) 2.5rem;
+    padding: 2.2rem clamp(2rem, 6vw, 7rem) 2.5rem;
     touch-action: pan-y;
     transform: perspective(1400px) translateY(var(--card-scroll-y, 0px)) rotateZ(calc(var(--card-tilt, 0deg) + var(--edge-tilt, 0deg)));
     transform-origin: 50% 92%;
@@ -1072,7 +1072,7 @@ body.card-frame-full .story-slide > .story-scroll {
     .story-slide--cover > .story-scroll {
         grid-template-columns: minmax(0, 1fr) minmax(7rem, 10rem);
         column-gap: .9rem;
-        padding-top: 2.2rem;
+        padding: 2.2rem clamp(1.8rem, 7vw, 4rem) 2.5rem;
     }
 
     .story-slide--cover > .story-scroll > .cover-illustration {
