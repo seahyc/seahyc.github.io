@@ -166,6 +166,10 @@ Installed hardware
 
 The last line is the market. Everything above it is merely inventory.
 
+![Scenario funnel from shipped Apple Silicon to owners willing to participate.](/images/airbnb-ai-supply-funnel.svg)
+
+*Evidence chart — reconstructed from the report’s scenario model. Darkbloom’s shipment figure is company-reported; the subsequent filters are analyst assumptions, not public measurements.*
+
 ## 03A · What the hardware can actually do
 
 ### Intelligence follows memory, bandwidth, and workload—not the GPU name
@@ -180,10 +184,10 @@ The last line is the market. Everything above it is merely inventory.
 | 12–16GB RTX fleet | Small-to-mid quantized models, usually one or a few concurrent requests | Support automation, document work, evaluation, image/audio batch | Large models, high concurrency, strict p95 latency |
 | 24GB RTX 3090/4090-class | Mid-size quantized models; higher throughput; some multimodal and image workloads | 7B–20B serving, image generation, batch synthetic data, evaluation | Frontier models, large KV-heavy contexts, confidential inference by default |
 | 48–128GB Apple Silicon | Larger quantized models with unified memory; lower discrete-GPU-style throughput but high capacity | Private open-weight inference, long-context batch, developer workloads | Dense real-time serving if demand requires predictable high throughput |
-| 96–256GB Apple Silicon / workstation | Larger MoE or quantized models, subject to runtime and memory pressure | Privacy-sensitive model serving, model experiments, batch inference | Assumed enterprise SLA without measured fleet reliability |
+| 96–512GB Apple Silicon / workstation | Larger MoE or quantized models, subject to runtime and memory pressure | Privacy-sensitive model serving, model experiments, batch inference | Assumed enterprise SLA without measured fleet reliability |
 | H100/H200/B200 or equivalent | High-throughput, high-concurrency, attested or managed serving | Frontier inference, enterprise SLAs, training-adjacent work | Sunk-cost arbitrage; capex and facility costs dominate |
 
-Apple’s current Mac Studio specifications illustrate why the Mac wedge exists: M4 Max configurations offer 48–128GB unified memory and up to 546GB/s bandwidth, while M3 Ultra configurations reach 96–256GB and 819GB/s. Nvidia’s RTX 4090 offers 24GB of VRAM and a 450W graphics power rating; the RTX 3060 offers 12GB and 170W. These specifications establish feasible model envelopes, not guaranteed tokens per second. [Apple Mac Studio specs](https://support.apple.com/en-us/122211) [RTX 4090 specs](https://www.nvidia.com/en-ph/geforce/graphics-cards/40-series/rtx-4090/) [RTX 3060 specs](https://www.nvidia.com/en-gb/geforce/graphics-cards/30-series/rtx-3060-3060ti/)
+Apple’s current Mac Studio specifications illustrate why the Mac wedge exists: M5 Max configurations offer 48–128GB unified memory and up to 614GB/s bandwidth, while M5 Ultra configurations reach 96–512GB and 1.2TB/s. Nvidia’s RTX 4090 offers 24GB of VRAM and a 450W graphics power rating; the RTX 3060 offers 12GB and 170W. These specifications establish feasible model envelopes, not guaranteed tokens per second. [Apple Mac Studio specs](https://www.apple.com/mac-studio/specs/) [RTX 4090 specs](https://www.nvidia.com/en-ph/geforce/graphics-cards/40-series/rtx-4090/) [RTX 3060 specs](https://www.nvidia.com/en-gb/geforce/graphics-cards/30-series/rtx-3060-3060ti/)
 
 Darkbloom’s own calculator gives a useful example of the distinction: it models a 48GB Mac serving Gemma 4 26B at 123 tokens per second under an assumed 60% active rate and 2.5 concurrent requests. That is a provider projection under specified assumptions, not a universal benchmark for every Mac. [Darkbloom](https://www.darkbloom.dev/)
 
@@ -407,6 +411,10 @@ Electricity is not a universal constant. The same machine can be marginally attr
 
 These are directional examples, not a regional tariff table: commercial demand charges, taxes, air-conditioning, local utility schedules, and exchange rates can materially change the result. Singapore’s regulated tariff is especially punitive for a 24/7 consumer-GPU provider; Vietnam, Manila, and India can look cheaper on energy alone but may impose other reliability or cooling constraints. [Singapore EMA](https://www.ema.gov.sg/consumer-information/electricity/buying-electricity/buying-at-regulated-tariff) [Vietnam EVN](https://en.evn.com.vn/d/en-US/news/RETAIL-ELECTRICITY-TARIFF-Decision-No-2699QD-BCT-dated-11-October-2024-60-28-252) [Meralco April 2026](https://meralcomain.s3.ap-southeast-1.amazonaws.com/2026-04/english_press_release-_april_2026_rates.pdf) [India CEA tariff book](https://cea.nic.in/wp-content/uploads/fs___a/2026/03/Book_2025.pdf)
 
+![Directional electricity-only comparison for a 600W system across four geography examples.](/images/airbnb-ai-power-costs.svg)
+
+*Evidence chart — local-currency tariff examples from the linked utility sources. It excludes cooling, taxes, demand charges, FX normalization, and venue overhead.*
+
 ### The provider income model
 
 For each node, calculate:
@@ -523,7 +531,7 @@ The market will not be won by claiming that every idle computer is equivalent to
 - [Akash Network](https://akash.network/) — decentralized provider marketplace
 - [Jon Peddie Research Q1 2026](https://www.jonpeddie.com/news/q126-pc-graphics-add-in-board-shipments-decreased-0-6-from-last-quarter-to-12-million-units-with-a-cagr-to-2029-of-3-3/) — discrete GPU shipment proxy
 - [Steam Hardware Survey](https://store.steampowered.com/hwsurvey/videocard/) — relative gaming-hardware mix proxy
-- [Apple Mac Studio specifications](https://support.apple.com/en-us/122211) — unified memory and bandwidth
+- [Apple Mac Studio specifications](https://www.apple.com/mac-studio/specs/) — current M5/M5 Ultra unified memory and bandwidth
 - [NVIDIA RTX 4090 specifications](https://www.nvidia.com/en-ph/geforce/graphics-cards/40-series/rtx-4090/) — VRAM and power envelope
 - [NVIDIA RTX 3060 specifications](https://www.nvidia.com/en-gb/geforce/graphics-cards/30-series/rtx-3060-3060ti/) — VRAM and power envelope
 - [NVIDIA confidential computing](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html) — supported confidential-GPU platforms

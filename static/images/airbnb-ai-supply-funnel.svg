@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Scenario funnel from shipped Apple Silicon to profitable useful capacity</title>
+  <desc id="desc">A horizontal funnel showing the narrowing scenario range from 100 million shipped Apple Silicon machines to 20 thousand to 650 thousand owners willing to participate.</desc>
+  <rect width="1200" height="720" fill="#f7f0e5"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#29251f">
+    <text x="70" y="72" font-size="28" font-weight="700">Apple Silicon supply funnel</text>
+    <text x="70" y="108" font-size="18" fill="#6a6258">Scenario model, not a measured provider census</text>
+    <g fill="#a8473a">
+      <path d="M80 160H1120L1010 270H190Z"/>
+      <path d="M220 300H980L875 410H325Z"/>
+      <path d="M355 440H845L770 550H430Z"/>
+      <path d="M455 580H745L700 650H500Z"/>
+    </g>
+    <g fill="#fff9f0" text-anchor="middle">
+      <text x="600" y="216" font-size="24" font-weight="700">100M shipped</text>
+      <text x="600" y="254" font-size="17">cumulative Apple Silicon claim</text>
+      <text x="600" y="356" font-size="24" font-weight="700">70–85M still active</text>
+      <text x="600" y="394" font-size="17">survival and accessibility assumption</text>
+      <text x="600" y="496" font-size="24" font-weight="700">2–13M memory-fit pool</text>
+      <text x="600" y="534" font-size="17">enough memory for useful hosted models</text>
+      <text x="600" y="616" font-size="22" font-weight="700">20K–650K willing owners</text>
+    </g>
+    <text x="70" y="690" font-size="15" fill="#6a6258">Sources: Darkbloom company claim; scenario assumptions in the accompanying report. Ranges are illustrative and unvalidated.</text>
+  </g>
+</svg>
