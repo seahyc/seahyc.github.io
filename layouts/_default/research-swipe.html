@@ -58,6 +58,7 @@
   });
 
   // Replace the old collage plates with small, topic-specific notebook vignettes.
+  var truckingFinanceFieldbook = window.location.pathname.indexOf('/research/flex-x-copywriter-opportunity/') === 0;
   slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
     var title = heading ? heading.textContent.toLowerCase() : '';
@@ -68,7 +69,10 @@
       image.remove();
     });
     var illustration = null;
-    if (index === 0) illustration = {
+    if (index === 0) illustration = truckingFinanceFieldbook ? {
+      src: '/images/trucking-finance-cover.png',
+      alt: 'A trucking operator turning delivery proof into cash and bank-account activity'
+    } : {
       src: '/images/distributed-inference-cover-doodle.png',
       alt: 'A small room welcoming a cloud beside a laptop'
     };
