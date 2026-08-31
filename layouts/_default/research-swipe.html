@@ -130,6 +130,8 @@
   slides.forEach(function (_, index) {
     var dot = document.createElement('button');
     dot.type = 'button';
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-controls', slides[index].id);
     dot.dataset.cardIndex = index + 1;
     dot.setAttribute('aria-label', 'Go to card ' + (index + 1) + ' (unread)');
     dots.appendChild(dot);
@@ -172,7 +174,8 @@
     slides.forEach(function (slide, index) {
       var distance = Math.abs(index - active);
       slide.style.setProperty('z-index', index === active ? '20' : String(Math.max(1, 10 - distance)), 'important');
-      slide.setAttribute('aria-hidden', index === active ? 'false' : 'true');
+      if (index !== active && slide.contains(document.activeElement)) document.activeElement.blur();
+      slide.inert = index !== active;
     });
     Array.prototype.forEach.call(dots.children, function (dot, index) {
       var isCurrent = index === active;
@@ -182,6 +185,8 @@
       dot.classList.toggle('is-unread', !isCurrent && !isRead);
       dot.style.setProperty('--card-scroll-progress', isCurrent ? String(slides[index]._cardScrollProgress || 0) : '0');
       dot.setAttribute('aria-current', isCurrent ? 'step' : 'false');
+      dot.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+      dot.tabIndex = isCurrent ? 0 : -1;
       dot.setAttribute('aria-label', 'Card ' + (index + 1) + ' (' + (isCurrent ? 'current' : isRead ? 'read' : 'unread') + ')');
     });
   }
@@ -214,6 +219,37 @@
     if (arrowRaf) cancelAnimationFrame(arrowRaf);
     arrowRaf = requestAnimationFrame(frame);
   }
+  var edgePreview = null;
+  var edgePreviewTimer = null;
+  function renderEdgeFlipPreview(direction, amount) {
+    var active = swiper.activeIndex;
+    var incoming = active + direction;
+    if (!slides[incoming] || amount <= 0) return;
+    var eased = Math.min(.3, Math.pow(Math.min(1, amount), .78) * .3);
+    edgePreview = { active: active, incoming: incoming };
+    if (edgePreviewTimer) clearTimeout(edgePreviewTimer);
+    track.style.transitionDuration = '0ms';
+    track.style.transform = 'translate3d(' + (swiper.translate - direction * viewport.clientWidth * eased).toFixed(2) + 'px, 0px, 0px)';
+    slides[active].querySelector('.story-scroll').classList.add('is-edge-preview');
+    slides[incoming].querySelector('.story-scroll').classList.add('is-edge-preview');
+    // Match the first fraction of a horizontal swipe: the current card
+    // departs while its neighbour enters along the complementary trajectory.
+    setCardMotion(slides[active], direction * eased);
+    setCardMotion(slides[incoming], -direction * (1 - eased));
+  }
+  function clearEdgeFlipPreview(animate) {
+    if (!edgePreview) return;
+    var previous = edgePreview;
+    edgePreview = null;
+    if (slides[previous.active]) slides[previous.active].querySelector('.story-scroll').classList.remove('is-edge-preview');
+    if (slides[previous.incoming]) slides[previous.incoming].querySelector('.story-scroll').classList.remove('is-edge-preview');
+    if (edgePreviewTimer) clearTimeout(edgePreviewTimer);
+    track.style.transitionDuration = animate ? '190ms' : '0ms';
+    track.style.transform = 'translate3d(' + Number(swiper.translate || 0).toFixed(2) + 'px, 0px, 0px)';
+    applyCardTilt();
+    if (animate) edgePreviewTimer = setTimeout(function () { if (!edgePreview) track.style.transitionDuration = ''; }, 210);
+    else track.style.transitionDuration = '';
+  }
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('slideChangeTransitionStart', animateArrowCards);
   var boundaryLanding = 0;
@@ -226,6 +262,7 @@
       }
       boundaryLanding = 0;
     }
+    clearEdgeFlipPreview(false);
     applyCardTilt(); syncNavigation(); syncUrl(false);
   });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
@@ -264,6 +301,10 @@
     }
     tiltInput.addEventListener('input', function () { runTiltTest(tiltInput.value); });
     window.__fieldbookTiltTest = runTiltTest;
+    window.__fieldbookEdgePreview = function (direction, amount) {
+      renderEdgeFlipPreview(direction < 0 ? -1 : 1, amount);
+    };
+    window.__fieldbookClearEdgePreview = function () { clearEdgeFlipPreview(true); };
     runTiltTest(tiltInput.value);
   }
   slides.forEach(function (slide) {
@@ -288,6 +329,13 @@
       scroll.style.setProperty('--card-scroll-y', (-visualOffset).toFixed(2) + 'px');
       var edgeTilt = offset < 0 ? Math.min(4, -overshoot * .08) : Math.max(-4, -overshoot * .08);
       scroll.parentElement.style.setProperty('--edge-tilt', edgeTilt.toFixed(2) + 'deg');
+      if (overshoot) {
+        var direction = offset < 0 ? -1 : 1;
+        var previewRange = Math.max(84, Math.min(260, viewport.clientHeight * .24));
+        renderEdgeFlipPreview(direction, Math.abs(overshoot) / previewRange);
+      } else {
+        clearEdgeFlipPreview(!scroll.classList.contains('is-vertical-dragging'));
+      }
       var progress = max > 0 ? scroll._cardOffset / max : 0;
       var slide = scroll.parentElement;
       slide._cardScrollProgress = progress;

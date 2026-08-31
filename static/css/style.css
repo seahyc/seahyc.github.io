@@ -673,7 +673,7 @@ body.research-swipe .main-research-swipe {
 }
 
 .story-slide.swiper-slide:not(.swiper-slide-active) {
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .story-slide[aria-hidden="true"] { pointer-events: none; }
@@ -712,6 +712,7 @@ body.research-swipe .main-research-swipe {
 }
 
 .story-slide > .story-scroll.is-vertical-dragging { transition: none; }
+.story-slide > .story-scroll.is-edge-preview { transition: none; }
 .story-slide.is-dragging > .story-scroll { transition: none; }
 
 body.card-frame-full .swipe-content { background: var(--paper); }

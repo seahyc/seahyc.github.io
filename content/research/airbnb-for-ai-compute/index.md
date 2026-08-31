@@ -67,6 +67,30 @@ OpenRouter’s provider onboarding says:
 
 > **Diligence flag**  OpenRouter’s public provider table currently labels Darkbloom “Retains prompts,” while Darkbloom markets operator-blind privacy. That may reflect different layers of the architecture or a classification mismatch, but it needs to be reconciled before selling strong confidentiality claims.
 
+## 01A · The technical trick
+
+### Darkbloom is a trust pipeline, not a GPU marketplace
+
+The open-source implementation makes the architecture more concrete than the marketing language does. A consumer calls an OpenAI- or Anthropic-compatible API. A Go coordinator running in a hardware-encrypted Confidential VM authenticates the request, chooses a provider, handles billing, and relays the response. The provider is an Apple Silicon Mac running a Swift CLI; it connects outbound over WebSocket, so the operator does not need to expose an inbound port.
+
+The privacy boundary is precise:
+
+- the coordinator can briefly see plaintext in confidential VM memory for routing and billing;
+- the provider machine’s owner should not be able to read the prompt or response;
+- the provider process decrypts the request using a key bound to an attested Apple identity;
+- inference runs in-process through MLX, with no subprocess, local server, or IPC surface for the operator to tap;
+- hardened runtime, SIP, and debugger denial reduce memory inspection and code-injection paths.
+
+That is a materially stronger claim than “encrypted in transit,” but a narrower one than “the network never sees plaintext.” The residual threat model still includes physical attacks on the device, and the public alpha has not been independently audited. [Darkbloom architecture overview](https://github.com/Layr-Labs/d-inference/blob/master/docs/architecture/overview.md) [Darkbloom encryption model](https://github.com/Layr-Labs/d-inference/blob/master/docs/architecture/security/encryption.md) [Darkbloom privacy expectations](https://github.com/Layr-Labs/d-inference/blob/master/docs/consumer/privacy-expectations.md)
+
+### The API contract reveals the real demand wedge
+
+Darkbloom supports OpenAI Chat Completions, Responses, legacy Completions, and Anthropic Messages, including streaming, tool calling, vision, reasoning models, and continuous batching. But it currently rejects `n > 1`, and `/v1/embeddings` is not implemented. That points to a first use case centered on interactive or batch text generation—not a fully interchangeable endpoint for every AI workload.
+
+The provider requirements are also more restrictive than “any idle Mac”: Apple Silicon M1 or newer, macOS 14+, at least 8GB memory, 50GB free disk, and outbound HTTPS. The documentation recommends 32GB+ for larger or multi-model workloads; a model must fit in available memory plus roughly 2GB headroom after the OS reserve. Models can be kept warm, unloaded after an idle timeout, and served with continuous batching, while operators can define availability windows.
+
+**Technical implication:** the scarce resource is not only silicon. It is a node that simultaneously passes memory fit, runtime support, attestation, model residency, network reachability, and predictable scheduling. A competitor should benchmark and advertise those dimensions separately instead of publishing one generic “GPU available” number. [Darkbloom API contracts](https://github.com/Layr-Labs/d-inference/blob/master/docs/reference/api-contracts.md) [Provider hardware requirements](https://github.com/Layr-Labs/d-inference/blob/master/docs/provider/hardware-requirements.md) [Provider configuration](https://github.com/Layr-Labs/d-inference/blob/master/docs/provider/quickstart.md)
+
 ---
 
 ## 02 · The demand map
