@@ -118,6 +118,11 @@
     Array.prototype.forEach.call(scroll.querySelectorAll('img[src*="distributed-inference-"], img[src*="airbnb-ai-"]'), function (image) {
       image.classList.add('editorial-plate');
     });
+    var scrollCue = document.createElement('div');
+    scrollCue.className = 'card-scroll-cue';
+    scrollCue.setAttribute('aria-hidden', 'true');
+    scrollCue.innerHTML = '<span>scroll</span><i></i>';
+    slide.appendChild(scrollCue);
     track.appendChild(slide);
   });
   viewport.appendChild(track);
@@ -175,6 +180,7 @@
       dot.classList.toggle('is-active', isCurrent);
       dot.classList.toggle('is-complete', isRead);
       dot.classList.toggle('is-unread', !isCurrent && !isRead);
+      dot.style.setProperty('--card-scroll-progress', isCurrent ? String(slides[index]._cardScrollProgress || 0) : '0');
       dot.setAttribute('aria-current', isCurrent ? 'step' : 'false');
       dot.setAttribute('aria-label', 'Card ' + (index + 1) + ' (' + (isCurrent ? 'current' : isRead ? 'read' : 'unread') + ')');
     });
@@ -268,7 +274,16 @@
       scroll.style.setProperty('--card-scroll-y', (-visualOffset).toFixed(2) + 'px');
       var edgeTilt = offset < 0 ? Math.min(4, -overshoot * .08) : Math.max(-4, -overshoot * .08);
       scroll.parentElement.style.setProperty('--edge-tilt', edgeTilt.toFixed(2) + 'deg');
+      var progress = max > 0 ? scroll._cardOffset / max : 0;
+      var slide = scroll.parentElement;
+      slide._cardScrollProgress = progress;
+      slide.classList.toggle('has-vertical-overflow', max > 8);
+      slide.classList.toggle('is-reading-deeper', progress > .04);
+      slide.style.setProperty('--card-scroll-progress', progress.toFixed(4));
+      if (slides[swiper.activeIndex] === slide) dots.children[swiper.activeIndex].style.setProperty('--card-scroll-progress', progress.toFixed(4));
     }
+    scroll.renderCardOffset = renderCardOffset;
+    renderCardOffset(0);
     var gesture = null;
     scroll.addEventListener('touchstart', function (event) {
       var touch = event.touches[0];
@@ -314,8 +329,7 @@
     var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
     var max = Math.max(0, activeScroll.offsetHeight - available);
     if (!max) return;
-    activeScroll._cardOffset = Math.max(0, Math.min(max, (activeScroll._cardOffset || 0) + event.deltaY));
-    activeScroll.style.setProperty('--card-scroll-y', (-activeScroll._cardOffset).toFixed(2) + 'px');
+    activeScroll.renderCardOffset((activeScroll._cardOffset || 0) + event.deltaY);
     event.preventDefault();
   }, { passive: false });
 

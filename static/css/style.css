@@ -834,14 +834,76 @@ body.card-frame-full .story-slide > .story-scroll {
 .swipe-progress button.is-active {
     height: 8px;
     margin-top: -1.5px;
-    background: var(--red);
+    overflow: hidden;
+    background: rgba(157, 76, 63, .52);
     box-shadow: 0 2px 8px rgba(104, 43, 33, .45), 0 0 0 2px rgba(243, 234, 219, .94);
     transform: scaleY(1.08);
+}
+
+.swipe-progress button.is-active::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--card-scroll-progress, 0) * 100%);
+    border-radius: inherit;
+    background: var(--red);
+    transition: width .12s linear;
 }
 
 .swipe-progress button:focus-visible {
     outline: 3px solid #fff8ee;
     outline-offset: 3px;
+}
+
+.card-scroll-cue {
+    position: absolute;
+    top: 50%;
+    right: clamp(.8rem, 2vw, 1.5rem);
+    z-index: 4;
+    display: flex;
+    width: .8rem;
+    height: 5.5rem;
+    align-items: center;
+    flex-direction: column;
+    gap: .35rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: opacity .22s ease;
+}
+
+.story-slide.has-vertical-overflow .card-scroll-cue { opacity: .9; }
+.story-slide.is-reading-deeper .card-scroll-cue { opacity: .55; }
+
+.card-scroll-cue span {
+    color: var(--red);
+    font: 800 .5rem/1 ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+}
+
+.card-scroll-cue i {
+    position: relative;
+    display: block;
+    width: 4px;
+    height: 3.6rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(61, 47, 35, .15);
+}
+
+.card-scroll-cue i::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--card-scroll-progress, 0) * 2.5rem);
+    left: 0;
+    width: 100%;
+    height: 1.1rem;
+    border-radius: inherit;
+    background: var(--red);
+    box-shadow: 0 1px 4px rgba(104, 43, 33, .35);
+    transition: top .12s linear;
 }
 
 .fieldbook-index {
