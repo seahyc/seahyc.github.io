@@ -121,7 +121,7 @@
     var scrollCue = document.createElement('div');
     scrollCue.className = 'card-scroll-cue';
     scrollCue.setAttribute('aria-hidden', 'true');
-    scrollCue.innerHTML = '<span>scroll</span><i></i>';
+    scrollCue.innerHTML = '<i></i>';
     slide.appendChild(scrollCue);
     track.appendChild(slide);
   });
@@ -277,7 +277,7 @@
       return Math.max(0, scroll.offsetHeight - available);
     }
     function boundaryThreshold() {
-      return Math.max(76, Math.min(150, slide.clientHeight * .13));
+      return Math.max(180, Math.min(300, slide.clientHeight * .26));
     }
     function renderCardOffset(offset) {
       var max = cardMaxOffset();

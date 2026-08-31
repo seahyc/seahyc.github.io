@@ -862,10 +862,9 @@ body.card-frame-full .story-slide > .story-scroll {
     z-index: 4;
     display: flex;
     width: .8rem;
-    height: 5.5rem;
+    height: 4.2rem;
     align-items: center;
     flex-direction: column;
-    gap: .35rem;
     opacity: 0;
     pointer-events: none;
     transform: translateY(-50%);
@@ -875,19 +874,11 @@ body.card-frame-full .story-slide > .story-scroll {
 .story-slide.has-vertical-overflow .card-scroll-cue { opacity: .9; }
 .story-slide.is-reading-deeper .card-scroll-cue { opacity: .55; }
 
-.card-scroll-cue span {
-    color: var(--red);
-    font: 800 .5rem/1 ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: .09em;
-    text-transform: uppercase;
-    writing-mode: vertical-rl;
-}
-
 .card-scroll-cue i {
     position: relative;
     display: block;
     width: 4px;
-    height: 3.6rem;
+    height: 4.2rem;
     overflow: hidden;
     border-radius: 999px;
     background: rgba(61, 47, 35, .15);
@@ -896,7 +887,7 @@ body.card-frame-full .story-slide > .story-scroll {
 .card-scroll-cue i::after {
     content: '';
     position: absolute;
-    top: calc(var(--card-scroll-progress, 0) * 2.5rem);
+    top: calc(var(--card-scroll-progress, 0) * 3.1rem);
     left: 0;
     width: 100%;
     height: 1.1rem;
