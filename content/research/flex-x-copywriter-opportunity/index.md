@@ -33,6 +33,10 @@ completed load → proof of delivery → invoice → broker / shipper submission
 
 The proposed software layer would generate invoices, collect and verify proof of delivery, submit to brokers and shippers, track outstanding receivables, automate AI payment follow-ups, and reconcile payment. Banking and credit follow underneath.
 
+![Reconstructed freight invoice-to-cash operating loop.](/images/trucking-finance-invoice-loop.svg)
+
+*Evidence reconstruction. It translates the operations named in the seed post into a system boundary; it is not a claim that a single product currently performs every step.*
+
 That is a materially better starting point than a generic business card. It begins where the user feels pain every day: a completed job that has not yet turned into usable cash.
 
 > The product thesis is not “truckers need another bank.” It is “the company that sees a freight receivable become real can finance it more intelligently.”
@@ -58,7 +62,26 @@ Sources: [OTR Solutions](https://otrsolutions.com/) · [AtoB for Factors](https:
 
 ---
 
-## 03 · Where the value could still accrue
+## 03 · The scale of the incumbent problem
+
+### Triumph proves both the opportunity and the barrier
+
+Triumph Financial’s 2025 10-K is the cleanest public counterweight to the seed post. It operates banking, factoring, payments, and intelligence products for brokers, shippers, factors, and carriers. Its Payments segment processed **33.6M invoices** and paid carriers **$40.517B** in 2025. Its Factoring segment purchased **$11.699B** of invoices, with a **$1,717** transportation average invoice; it says invoices are typically paid **30–60 days** after delivery while carriers need immediate operating cash.
+
+| Observed 2025 figure | What it establishes | What it does not establish |
+|---|---|---|
+| 33.6M invoices / $40.517B payments | Invoice workflow can create high-volume payment-network value | A new entrant can acquire the network |
+| $11.699B invoices purchased | Factoring is already a major capital deployment business | Gross margin for a startup |
+| $1,717 transportation average invoice | Tiny-ticket, repeatable operations are the real scaling challenge | Unit cost of automated versus manual review |
+| 30–60 day carrier-payment gap | A real working-capital mismatch exists | A card alone solves it |
+
+Triumph’s investor presentation further reported a roughly **1.29% average discount rate**, around **10 annual portfolio turns**, and a **14.3% yield on net funds employed** as of 3Q25. Those are incumbent-reported metrics—not portable startup forecasts—but they make the gate clear: a new platform must either reduce cost-to-serve, improve loss/fraud outcomes, or acquire proprietary workflow distribution.
+
+Sources: [Triumph Financial 2025 10-K](https://www.sec.gov/Archives/edgar/data/1539638/000153963826000007/tfin-20251231.htm) · [Triumph investor presentation](https://www.sec.gov/Archives/edgar/data/1539638/000153963825000019/tfin-investorpresentatio.htm).
+
+---
+
+## 04 · Where the value could still accrue
 
 ### The underwriting loop is the prize—not the card interchange
 
@@ -84,7 +107,7 @@ Public evidence points in the same direction. AtoB describes telematics and GPS 
 
 ---
 
-## 04 · The supply and demand map
+## 05 · The demand and supply map
 
 ### Do not call every trucker the customer
 
@@ -102,7 +125,7 @@ The buyer is not necessarily the driver. It may be the owner, dispatcher, or bac
 
 ---
 
-## 05 · Unit economics: the question behind the headline
+## 06 · Unit economics: the question behind the headline
 
 ### “Software becomes distribution” only works if the financed receivable performs better
 
@@ -130,9 +153,41 @@ The card can improve retention and add revenue, but it does not cure credit loss
 
 The public narrative omits cost of capital, recourse terms, loss reserves, fraud operations, licensing, and collection labor. Those are the business.
 
+### Sensitivity: a thin invoice fee can disappear quickly
+
+Using Triumph’s $1,717 average transportation invoice and its 1.29% disclosed discount-rate reference, the gross fee reference is **$22.15 per invoice**. The following is not Triumph’s economics and not a startup forecast. It is a deliberately transparent sensitivity for **$1M purchased**, assuming a 36.5-day cash-conversion period (10 turns/year) and using analyst assumptions for funding, loss, operations, and acquisition.
+
+![Illustrative sensitivity of contribution per one million dollars purchased.](/images/trucking-finance-sensitivity.svg)
+
+| Scenario | Gross fee | Funding cost | Expected loss | Ops + acquisition | Contribution |
+|---|---:|---:|---:|---:|---:|
+| Low | $12.9k (1.29%) | $5.0k (5% annualized) | $1.0k (.1%) | $3.0k | **+$3.9k** |
+| Base | $12.9k (1.29%) | $8.0k (8% annualized) | $3.0k (.3%) | $5.0k | **−$3.1k** |
+| High | $7.5k (.75%) | $12.0k (12% annualized) | $10.0k (1.0%) | $9.0k | **−$23.5k** |
+
+The chart intentionally treats the purchase discount as the entire gross revenue pool. Card interchange, payment fees, software fees, reserves, and recourse mechanics may improve or worsen the actual result; none may be silently assumed. The binding variable is not “AI collections.” It is whether the system produces enough verified signal to price capital and reduce exception-handling cost better than the incumbent network.
+
 ---
 
-## 06 · The recommended wedge
+## 07 · What the headline omits
+
+### Cards are cheap distribution; verified receivables are the hard asset
+
+Coast currently lists $4 per active user per month for its fleet-card platform, with 3–9¢/gallon partner-station rebates and 1% non-gas cashback. That is evidence of pricing pressure around the card/control layer. AtoB and OTR both market instant funding and wallet/payment products. The founder must not confuse an attractive financial-product bundle with a durable economic moat.
+
+The hidden questions a serious lender, operator, or investor should ask are:
+
+1. Which document and counterparty fields are unavailable to Triumph, OTR, AtoB, broker TMSs, or the factor already?
+2. Does AI reduce human touch time on real invoices—including exceptions—or merely draft emails?
+3. Who bears fraud, dilution, credit, and recourse risk when a broker disputes a proof of delivery?
+4. How are the first 100 fleets acquired without buying them through uneconomic card rewards or financing subsidy?
+5. Can the workflow remain useful even if the financing partner changes?
+
+Source for fleet-card pricing: [Coast pricing](https://coastpay.com/pricing/). This is a product-page snapshot, not a full competitor price survey.
+
+---
+
+## 08 · The recommended wedge
 
 ### Start as the receivables control plane, not a new bank
 
@@ -151,7 +206,7 @@ This sequencing avoids the highest-capital, highest-regulatory version of the id
 
 ---
 
-## 07 · Falsification and 30-day test
+## 09 · Falsification and 30-day test
 
 ### The smallest credible experiment is operational, not financial
 
@@ -168,7 +223,7 @@ This sequencing avoids the highest-capital, highest-regulatory version of the id
 
 ---
 
-## Appendix · Evidence ledger
+## Appendix · Evidence ledger, provider boundary, and visual provenance
 
 | Claim | Type | Source | Confidence | What would disprove it? |
 |---|---|---|---|---|
@@ -178,5 +233,29 @@ This sequencing avoids the highest-capital, highest-regulatory version of the id
 | AtoB supports instant factor-funded wallet payouts, cards, and telematics/GPS invoice validation | Fact / company offering | [AtoB for Factors](https://www.atob.com/become-a-factoring-partner) | High | Official site changes |
 | Workflow data can improve underwriting and loss outcomes | Hypothesis | Operator inference | Medium | Pilot fails to beat partner baseline after review cost |
 | A workflow-first partner model is superior to forming a new bank initially | Recommendation | Economics and execution inference | Medium | Evidence that licensing/capital is not the binding constraint and incumbents cannot integrate |
+
+### Extended evidence ledger
+
+| Claim | Type | Source | Confidence | What would disprove it? |
+|---|---|---|---|---|
+| Triumph processed 33.6M carrier invoices and paid $40.517B in 2025 | Fact | [Triumph 2025 10-K](https://www.sec.gov/Archives/edgar/data/1539638/000153963826000007/tfin-20251231.htm) | High | Amended filing or source error |
+| Triumph purchased $11.699B of invoices at $1,752 average; transportation average was $1,717 | Fact | [Triumph 2025 10-K](https://www.sec.gov/Archives/edgar/data/1539638/000153963826000007/tfin-20251231.htm) | High | Amended filing or source error |
+| 1.29% discount rate and ~10 turns are relevant reference points | Company-reported estimate | [Triumph investor presentation](https://www.sec.gov/Archives/edgar/data/1539638/000153963825000019/tfin-investorpresentatio.htm) | Medium | Updated company disclosure or non-comparable cohort definition |
+
+### Provider disagreement log
+
+Gemini Deep Research was not connected in this workspace, so no Gemini brief exists and no Gemini-derived claim appears in this report. X, primary company pages, SEC filings, and web search were used as separate evidence routes. Company marketing claims were retained only where labelled; the conclusion relies on the SEC filing and visible product offers.
+
+### Visual evidence plan and provenance
+
+| Visual | Role | Provenance / constraint |
+|---|---|---|
+| Cover watercolor | Editorial metaphor: delivery becomes cash | Original generated illustration; no third-party reuse |
+| Invoice-to-cash loop | Explains the operator workflow in the seed post | Original SVG reconstruction; no measured performance claim |
+| Contribution sensitivity | Shows which economics assumptions are binding | Original SVG model; all analyst inputs stated in nearby table |
+
+### Public/paywalled boundary
+
+No paywalled source was accessed. The public record cannot tell us an entrant’s true acquisition cost, factor-partner take rate, fraud-loss distribution, counterparty concentration, or exception-handling labor. Those are exactly the measurements required before committing capital.
 
 No paywalled source was used. Company claims are labelled as such. The fieldbook does not provide lending, legal, or investment advice.
