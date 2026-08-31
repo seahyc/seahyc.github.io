@@ -13,7 +13,7 @@
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
-    <div class="swipe-progress" aria-hidden="true"></div>
+    <nav class="swipe-progress" aria-label="Fieldbook card progress"></nav>
     <div class="swipe-controls" aria-label="Slide navigation">
         <button type="button" data-swipe="prev" aria-label="Previous card">←</button>
         <button type="button" data-swipe="next" aria-label="Next card">→</button>
@@ -125,7 +125,8 @@
   slides.forEach(function (_, index) {
     var dot = document.createElement('button');
     dot.type = 'button';
-    dot.setAttribute('aria-label', 'Go to card ' + (index + 1));
+    dot.dataset.cardIndex = index + 1;
+    dot.setAttribute('aria-label', 'Go to card ' + (index + 1) + ' (unread)');
     dots.appendChild(dot);
   });
   var requestedSlug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
@@ -169,8 +170,13 @@
       slide.setAttribute('aria-hidden', index === active ? 'false' : 'true');
     });
     Array.prototype.forEach.call(dots.children, function (dot, index) {
-      dot.classList.toggle('is-active', index === active);
-      dot.classList.toggle('is-complete', index < active);
+      var isCurrent = index === active;
+      var isRead = index < active;
+      dot.classList.toggle('is-active', isCurrent);
+      dot.classList.toggle('is-complete', isRead);
+      dot.classList.toggle('is-unread', !isCurrent && !isRead);
+      dot.setAttribute('aria-current', isCurrent ? 'step' : 'false');
+      dot.setAttribute('aria-label', 'Card ' + (index + 1) + ' (' + (isCurrent ? 'current' : isRead ? 'read' : 'unread') + ')');
     });
   }
   function setCardMotion(slide, progress) {
