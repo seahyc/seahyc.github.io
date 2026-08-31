@@ -265,6 +265,7 @@
     clearEdgeFlipPreview(false);
     applyCardTilt(); syncNavigation(); syncUrl(false);
   });
+  swiper.on('slideChangeTransitionEnd', function () { clearEdgeFlipPreview(false); });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
   swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
@@ -353,11 +354,13 @@
       if (rawOffset > max + boundaryThreshold() && swiper.activeIndex < slides.length - 1) {
         boundaryLanding = 1;
         swiper.slideNext();
+        setTimeout(function () { clearEdgeFlipPreview(false); }, swiper.params.speed + 80);
         return true;
       }
       if (rawOffset < -boundaryThreshold() && swiper.activeIndex > 0) {
         boundaryLanding = -1;
         swiper.slidePrev();
+        setTimeout(function () { clearEdgeFlipPreview(false); }, swiper.params.speed + 80);
         return true;
       }
       return false;
