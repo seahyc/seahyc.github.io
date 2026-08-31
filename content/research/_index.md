@@ -1,6 +1,6 @@
 ---
-title: "Research"
-description: "Market maps, corpus coding, and opportunity notes from product research."
+title: "Fieldbooks"
+description: "Operator-first research fieldbooks with grounded models, source trails, and falsification tests."
 ---
 
-Research artifacts that are useful to keep around, but too exploratory or tool-heavy to treat as normal essays.
+This library is generated from published Fieldbook pages. Any future research page using the `research-swipe` layout appears here automatically, newest first.

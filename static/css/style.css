@@ -839,25 +839,118 @@ body.card-frame-full .story-slide > .story-scroll {
     transform: scaleY(1.08);
 }
 
-.swipe-progress button.is-active::after {
-    content: 'now';
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: .2rem .42rem;
-    border-radius: 999px;
-    background: var(--red);
-    color: #fff8ee;
-    font: 800 .55rem/1 ui-sans-serif, system-ui, sans-serif;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    box-shadow: 0 3px 10px rgba(55, 42, 31, .2);
-}
-
 .swipe-progress button:focus-visible {
     outline: 3px solid #fff8ee;
     outline-offset: 3px;
+}
+
+.fieldbook-index {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 4vw, 3rem) 6rem;
+}
+
+.fieldbook-index__eyebrow,
+.fieldbook-index__count,
+.fieldbook-card__label,
+.fieldbook-card__meta {
+    color: var(--red);
+    font: 800 .72rem/1.2 ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.fieldbook-index__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.fieldbook-index h1 {
+    max-width: 11ch;
+    margin: .6rem 0 1.1rem;
+    color: var(--ink);
+    font: 700 clamp(3rem, 8vw, 6.25rem)/.92 Georgia, 'Times New Roman', serif;
+    letter-spacing: -.055em;
+}
+
+.fieldbook-index__description {
+    max-width: 55ch;
+    margin: 0;
+    color: var(--muted);
+    font: 400 clamp(1.12rem, 2vw, 1.4rem)/1.55 Georgia, 'Times New Roman', serif;
+}
+
+.fieldbook-index__count {
+    align-self: start;
+    padding-top: .75rem;
+    white-space: nowrap;
+}
+
+.fieldbook-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fieldbook-card a {
+    display: flex;
+    min-height: 20rem;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 3vw, 2.3rem);
+    border: 1px solid rgba(55, 42, 31, .13);
+    border-radius: 1.15rem;
+    background-color: rgba(243, 234, 219, .94);
+    background-image: radial-gradient(rgba(88, 65, 38, .06) .45px, transparent .55px), linear-gradient(145deg, rgba(255,255,255,.34), rgba(126,91,48,.06));
+    background-size: 5px 5px, 100% 100%;
+    box-shadow: 0 14px 30px rgba(55, 42, 31, .1);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.fieldbook-card a:hover {
+    transform: translateY(-5px) rotate(-.35deg);
+    border-color: rgba(157, 76, 63, .38);
+    box-shadow: 0 22px 42px rgba(55, 42, 31, .17);
+}
+
+.fieldbook-card h2 {
+    max-width: 13ch;
+    margin: .85rem 0 1rem;
+    font: 700 clamp(2rem, 4.3vw, 3.45rem)/.98 Georgia, 'Times New Roman', serif;
+    letter-spacing: -.045em;
+}
+
+.fieldbook-card__description {
+    margin: 0;
+    color: var(--muted);
+    font: 400 1.05rem/1.5 Georgia, 'Times New Roman', serif;
+}
+
+.fieldbook-card__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(55, 42, 31, .12);
+}
+
+.fieldbook-card__arrow { font-size: 1.6rem; line-height: 1; }
+
+@media (max-width: 680px) {
+    .fieldbook-index__intro { grid-template-columns: 1fr; }
+    .fieldbook-index__count { padding-top: 0; }
+    .fieldbook-grid { grid-template-columns: 1fr; }
+    .fieldbook-card a { min-height: 17rem; }
 }
 
 .tilt-test-harness {

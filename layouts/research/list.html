@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{ $fieldbooks := where .RegularPages "Params.layout" "research-swipe" }}
+<section class="fieldbook-index">
+    <header class="fieldbook-index__intro">
+        <div>
+            <p class="fieldbook-index__eyebrow">Seah Ying Cong · Research library</p>
+            <h1>Fieldbooks for awkwardly real opportunities.</h1>
+            <p class="fieldbook-index__description">Operator-first investigations: a source trail, a grounded model, the inconvenient constraints, and the smallest next test.</p>
+        </div>
+        <p class="fieldbook-index__count">{{ len $fieldbooks }} published</p>
+    </header>
+
+    <ol class="fieldbook-grid">
+        {{ range $index, $book := $fieldbooks.ByDate.Reverse }}
+        <li class="fieldbook-card">
+            <a href="{{ $book.RelPermalink }}">
+                <div>
+                    <p class="fieldbook-card__label">Fieldbook {{ printf "%02d" (add $index 1) }}</p>
+                    <h2>{{ $book.Title }}</h2>
+                    {{ with $book.Description }}<p class="fieldbook-card__description">{{ . }}</p>{{ end }}
+                </div>
+                <footer class="fieldbook-card__footer">
+                    <time class="fieldbook-card__meta" datetime="{{ $book.Date.Format "2006-01-02" }}">{{ $book.Date.Format "2 Jan 2006" }}</time>
+                    <span class="fieldbook-card__arrow" aria-hidden="true">↗</span>
+                </footer>
+            </a>
+        </li>
+        {{ end }}
+    </ol>
+</section>
+{{ end }}
