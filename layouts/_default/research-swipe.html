@@ -216,7 +216,18 @@
   }
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('slideChangeTransitionStart', animateArrowCards);
-  swiper.on('transitionEnd', function () { if (arrowRaf) cancelAnimationFrame(arrowRaf); applyCardTilt(); syncNavigation(); syncUrl(false); });
+  var boundaryLanding = 0;
+  swiper.on('transitionEnd', function () {
+    if (arrowRaf) cancelAnimationFrame(arrowRaf);
+    if (boundaryLanding) {
+      var landedScroll = slides[swiper.activeIndex].querySelector('.story-scroll');
+      if (landedScroll && landedScroll.renderCardOffset) {
+        landedScroll.renderCardOffset(boundaryLanding < 0 ? landedScroll.cardMaxOffset() : 0);
+      }
+      boundaryLanding = 0;
+    }
+    applyCardTilt(); syncNavigation(); syncUrl(false);
+  });
   swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
   swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
   document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
@@ -265,6 +276,9 @@
       var available = slide.clientHeight - scroll.offsetTop - bottomGap;
       return Math.max(0, scroll.offsetHeight - available);
     }
+    function boundaryThreshold() {
+      return Math.max(76, Math.min(150, slide.clientHeight * .13));
+    }
     function renderCardOffset(offset) {
       var max = cardMaxOffset();
       scroll._cardMaxOffset = max;
@@ -283,7 +297,24 @@
       if (slides[swiper.activeIndex] === slide) dots.children[swiper.activeIndex].style.setProperty('--card-scroll-progress', progress.toFixed(4));
     }
     scroll.renderCardOffset = renderCardOffset;
+    scroll.cardMaxOffset = cardMaxOffset;
     renderCardOffset(0);
+    function crossCardBoundary(rawOffset) {
+      var max = cardMaxOffset();
+      if (swiper.animating) return true;
+      if (rawOffset > max + boundaryThreshold() && swiper.activeIndex < slides.length - 1) {
+        boundaryLanding = 1;
+        swiper.slideNext();
+        return true;
+      }
+      if (rawOffset < -boundaryThreshold() && swiper.activeIndex > 0) {
+        boundaryLanding = -1;
+        swiper.slidePrev();
+        return true;
+      }
+      return false;
+    }
+    scroll.crossCardBoundary = crossCardBoundary;
     var gesture = null;
     scroll.addEventListener('touchstart', function (event) {
       var touch = event.touches[0];
@@ -304,12 +335,13 @@
       if (gesture.vertical) {
         event.preventDefault();
         scroll.classList.add('is-vertical-dragging');
-        renderCardOffset(gesture.offset - dy);
+        gesture.rawOffset = gesture.offset - dy;
+        renderCardOffset(gesture.rawOffset);
       }
     }, { passive: false });
     scroll.addEventListener('touchend', function () {
       scroll.classList.remove('is-vertical-dragging');
-      renderCardOffset(scroll._cardOffset);
+      if (!crossCardBoundary(gesture && typeof gesture.rawOffset === 'number' ? gesture.rawOffset : scroll._cardOffset)) renderCardOffset(scroll._cardOffset);
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
@@ -328,8 +360,19 @@
     var bottomGap = parseFloat(styles.marginBottom) || 0;
     var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
     var max = Math.max(0, activeScroll.offsetHeight - available);
-    if (!max) return;
-    activeScroll.renderCardOffset((activeScroll._cardOffset || 0) + event.deltaY);
+    var current = activeScroll._cardOffset || 0;
+    var requested = current + event.deltaY;
+    if (requested >= 0 && requested <= max) {
+      activeScroll._boundaryPush = 0;
+      activeScroll.renderCardOffset(requested);
+    } else {
+      var beyond = requested < 0 ? requested : requested - max;
+      var previous = activeScroll._boundaryPush || 0;
+      activeScroll._boundaryPush = Math.sign(previous) === Math.sign(beyond) ? previous + event.deltaY : beyond;
+      var raw = activeScroll._boundaryPush < 0 ? activeScroll._boundaryPush : max + activeScroll._boundaryPush;
+      activeScroll.renderCardOffset(raw);
+      if (activeScroll.crossCardBoundary && activeScroll.crossCardBoundary(raw)) activeScroll._boundaryPush = 0;
+    }
     event.preventDefault();
   }, { passive: false });
 
