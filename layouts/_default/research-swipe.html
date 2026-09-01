@@ -59,6 +59,7 @@
 
   // Replace the old collage plates with small, topic-specific notebook vignettes.
   var truckingFinanceFieldbook = window.location.pathname.indexOf('/research/flex-x-copywriter-opportunity/') === 0;
+  var inferenceMarketFieldbook = window.location.pathname.indexOf('/research/ai-inference-market/') === 0;
   slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
     var title = heading ? heading.textContent.toLowerCase() : '';
@@ -72,6 +73,9 @@
     if (index === 0) illustration = truckingFinanceFieldbook ? {
       src: '/images/trucking-finance-cover.png',
       alt: 'A trucking operator turning delivery proof into cash and bank-account activity'
+    } : inferenceMarketFieldbook ? {
+      src: '/images/ai-inference-market-cover.webp',
+      alt: 'An engineer choosing between real-time transport, memory fabric, secure appliances, and speculative serving paths'
     } : {
       src: '/images/distributed-inference-cover-doodle.png',
       alt: 'A small room welcoming a cloud beside a laptop'
