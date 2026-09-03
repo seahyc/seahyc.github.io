@@ -60,6 +60,10 @@ jobs:
         run: npm run build:reno-atmosphere
       - name: Verify renovation atmosphere model
         run: npm run verify:reno-atmosphere
+      - name: Build public Bishan Ridges atmosphere project
+        run: npm run build:bishan-ridges-atmosphere
+      - name: Verify public Bishan Ridges atmosphere project
+        run: npm run verify:bishan-ridges-atmosphere
       - name: Verify renovation private marker API
         run: npm run verify:reno-private-api
       - name: Setup Pages

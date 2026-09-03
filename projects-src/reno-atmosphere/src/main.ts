@@ -4,6 +4,8 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import "./style.css";
 
+declare const __PUBLIC_PROJECT__: boolean;
+
 type ForecastPeriod = { time: string; forecast: string };
 type OutlookDay = { day: string; forecast: string; low: number; high: number; wind: string };
 type WeatherModel = {
@@ -60,6 +62,7 @@ type NeighbourhoodModel = {
 };
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+const PUBLIC_PROJECT = __PUBLIC_PROJECT__;
 const compact = window.matchMedia("(max-width: 700px)").matches;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -80,8 +83,7 @@ const SUPPLEMENTAL_API = {
   lightning: `${API_ROOT}weather?api=lightning`,
   wbgt: `${API_ROOT}weather?api=wbgt`,
 };
-const PRIVATE_HOME_ENDPOINT = "/reno/api/private-home-marker";
-const NEIGHBOURHOOD_ENDPOINT = "/reno/orientation/neighbourhood-model.json";
+const NEIGHBOURHOOD_ENDPOINT = `${import.meta.env.BASE_URL}neighbourhood-model.json`;
 const STATIONS = { weather: "S109", rain: "S217" };
 const OPENINGS = [
   { bearing: 55, short: "NE", name: "bedroom / study window bank" },
@@ -169,7 +171,7 @@ function renderHUD() {
   $("temp-value").textContent = model.temperature ?? "—";
   $("humidity-value").textContent = model.humidity ? `${model.humidity} humidity` : "24h range";
   $("home-label-detail").textContent = privateHomeMarker
-    ? `Yingcong + Sopisa · ${inlet.short} windward`
+    ? `Private home · ${inlet.short} windward`
     : `${inlet.short} side windward now`;
   $("weather-story").textContent = `${compass(model.windFrom)} wind reaches the ${inlet.name} first. The live model traces the likely path toward the ${outlet.short} side.`;
 
@@ -589,14 +591,15 @@ function createHomeVignette(marker: PrivateHomeMarker) {
   homeBlock.add(homeMarker);
   homeBlock.updateMatrixWorld(true);
   worldAnchors.home.copy(homeBlock.localToWorld(homeMarker.position.clone()));
-  $("home-label").querySelector("b")!.textContent = "Our window";
-  $("home-label-detail").textContent = "Yingcong + Sopisa · tap to visit";
-  $("private-model-state").textContent = "Exact storey and window bank loaded";
+  $("home-label").querySelector("b")!.textContent = "Private home";
+  $("home-label-detail").textContent = "Protected marker · tap to visit";
+  $("private-model-state").textContent = "Protected building geometry loaded";
 }
 
 async function loadPrivateHomeMarker() {
+  if (PUBLIC_PROJECT) return;
   try {
-    const response = await fetch(PRIVATE_HOME_ENDPOINT, { credentials: "same-origin", cache: "no-store" });
+    const response = await fetch("/reno/api/private-home-marker", { credentials: "same-origin", cache: "no-store" });
     if (!response.ok) throw new Error(`Private marker ${response.status}`);
     const payload = await response.json();
     const marker = payload?.marker as PrivateHomeMarker;
@@ -971,9 +974,9 @@ function createGeoHomeVignette(marker: PrivateHomeMarker, building: BuildingDatu
   homeMarker.add(heart);
   scene.add(homeMarker);
   worldAnchors.home.copy(homeMarker.position);
-  $("home-label").querySelector("b")!.textContent = "Our window";
-  $("home-label-detail").textContent = "Yingcong + Sopisa · tap to visit";
-  $("private-model-state").textContent = "Exact storey and window bank loaded on the surveyed footprint";
+  $("home-label").querySelector("b")!.textContent = "Private home";
+  $("home-label-detail").textContent = "Protected marker · tap to visit";
+  $("private-model-state").textContent = "Protected building geometry loaded on the surveyed footprint";
 }
 
 function buildingFrame(building: BuildingDatum) {
@@ -1364,6 +1367,10 @@ function focusOn(anchor: THREE.Vector3, distance = 14) {
 }
 
 function focusHome() {
+  if (PUBLIC_PROJECT) {
+    focusOn(worldAnchors.home, 14);
+    return;
+  }
   if (!privateHomeMarker || !homeMarker) {
     focusOn(worldAnchors.home, 12);
     return;
@@ -1382,10 +1389,11 @@ function focusHome() {
 }
 
 function focusNeighbourhood() {
-  controls.autoRotate = !reducedMotion;
+  controls.autoRotate = !reducedMotion && !PUBLIC_PROJECT;
   controls.minDistance = compact ? 15 : 13;
   controls.target.set(0, .32, 0);
-  camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
+  if (PUBLIC_PROJECT) camera.position.set(compact ? 15 : 16, compact ? 15 : 16, compact ? 15 : 16);
+  else camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
   controls.update();
   homeLabel.classList.remove("focused");
   $("home-portal").classList.remove("visible");
@@ -1417,7 +1425,8 @@ function initialiseWorld() {
   scene.background = new THREE.Color(0xdceff0);
   scene.fog = new THREE.Fog(0xdceff0, 16, 42);
   camera = new THREE.PerspectiveCamera(compact ? 45 : 39, 1, .01, 70);
-  camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
+  if (PUBLIC_PROJECT) camera.position.set(compact ? 15 : 16, compact ? 15 : 16, compact ? 15 : 16);
+  else camera.position.set(compact ? 16 : 17, compact ? 8.8 : 8.2, compact ? 18 : 19);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, .32, 0);
@@ -1428,7 +1437,7 @@ function initialiseWorld() {
   controls.maxDistance = 32;
   controls.maxPolarAngle = Math.PI * .48;
   controls.minPolarAngle = Math.PI * .18;
-  controls.autoRotate = !reducedMotion;
+  controls.autoRotate = !reducedMotion && !PUBLIC_PROJECT;
   controls.autoRotateSpeed = .24;
   controls.addEventListener("start", () => {
     controls.autoRotate = false;

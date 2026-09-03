@@ -4,7 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const output = path.resolve(root, "../../static/reno/orientation");
+const publicProject = process.argv.includes("--public");
+const output = path.resolve(root, publicProject ? "../../static/projects/bishan-ridges-atmosphere" : "../../static/reno/orientation");
 const siteRoot = path.resolve(root, "../..");
 
 for (const source of ["index.html", "src/main.ts", "src/style.css", "vite.config.mjs", "tsconfig.json", "public/neighbourhood-model.json", "scripts/build-neighbourhood-model.mjs"]) {
@@ -19,8 +20,9 @@ const html = await readFile(path.join(output, "index.html"), "utf8");
 const sourceBundle = `${source}\n${authoredHtml}`;
 const privateWorker = await readFile(path.join(siteRoot, "worker/reno-private-api/index.js"), "utf8");
 
-assert.match(html, /<script[^>]+type="module"[^>]+src="\/reno\/orientation\/assets\//, "Production HTML should reference the bundled model module");
-assert.match(html, /<link[^>]+stylesheet[^>]+\/reno\/orientation\/assets\//, "Production HTML should reference the bundled model CSS");
+const basePath = publicProject ? "/projects/bishan-ridges-atmosphere/" : "/reno/orientation/";
+assert.match(html, new RegExp(`<script[^>]+type="module"[^>]+src="${basePath}assets/`), "Production HTML should reference the bundled model module");
+assert.match(html, new RegExp(`<link[^>]+stylesheet[^>]+${basePath}assets/`), "Production HTML should reference the bundled model CSS");
 
 for (const expected of [
   "InstancedMesh",
@@ -36,8 +38,8 @@ for (const expected of [
   "createGeoHomeVignette",
   "clipSegmentToCircle",
   "homeFacadeNormal",
-  "PRIVATE_HOME_ENDPOINT",
-  "Yingcong + Sopisa",
+  "PUBLIC_PROJECT",
+  "Private home",
   "air-temperature",
   "relative-humidity",
   "four-day-outlook",
@@ -73,6 +75,16 @@ assert.doesNotMatch(privateWorker, /@gmail\.com|postal(?:Address|Code)|block(?:N
 const hub = await readFile(path.join(siteRoot, "static/reno/index.html"), "utf8");
 assert.match(hub, /href="\/reno\/orientation\/"/, "Renovation hub should link to the weather model");
 
+if (publicProject) {
+  const bundledAssets = await Promise.all((await readdir(path.join(output, "assets")))
+    .filter((file) => file.endsWith(".js") || file.endsWith(".css"))
+    .map((file) => readFile(path.join(output, "assets", file), "utf8")));
+  const publicBundle = `${html}\n${bundledAssets.join("\n")}`;
+  assert.match(html, /Bishan Ridges atmosphere/, "Public project should identify itself independently of the renovation hub");
+  assert.match(html, /Isometric view/, "Public project should disclose its isometric default view");
+  assert.doesNotMatch(publicBundle, /private-home-marker|Yingcong \+ Sopisa|Our window|exact storey|exact modelled position|\/reno\/twin/i, "Public bundle must not expose the private home marker or home-twin handoff");
+}
+
 const modelSource = await readFile(path.join(root, "public/neighbourhood-model.json"), "utf8");
 const model = JSON.parse(modelSource);
 assert.equal(model.radius, 10, "Neighbourhood model should cover a one-kilometre radius at one unit per 100 m");
@@ -93,4 +105,6 @@ for (const file of assets) {
 const modelAsset = await stat(path.join(output, "neighbourhood-model.json"));
 assert.ok(modelAsset.size < 700_000, "Coordinate-free neighbourhood model should remain below the raw map payload cap");
 
-console.log("Verified the live Three.js neighbourhood model, anchored geospatial systems, protected home footprint, responsive composition and production assets.");
+console.log(publicProject
+  ? "Verified the public Three.js Bishan Ridges atmosphere project, isometric default, responsive composition and privacy boundary."
+  : "Verified the live Three.js neighbourhood model, anchored geospatial systems, protected home footprint, responsive composition and production assets.");

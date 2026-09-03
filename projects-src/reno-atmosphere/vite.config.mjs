@@ -5,6 +5,7 @@ import { defineConfig, loadEnv } from "vite";
 const root = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ mode }) => {
+  const publicProject = mode === "public";
   const env = loadEnv(mode, root, "RENO_");
   const localMarker = env.RENO_PRIVATE_HOME_MARKER;
   const localMarkerPlugin = localMarker ? {
@@ -27,10 +28,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     root,
-    base: "/reno/orientation/",
-    plugins: localMarkerPlugin ? [localMarkerPlugin] : [],
+    base: publicProject ? "/projects/bishan-ridges-atmosphere/" : "/reno/orientation/",
+    define: { __PUBLIC_PROJECT__: JSON.stringify(publicProject) },
+    plugins: !publicProject && localMarkerPlugin ? [localMarkerPlugin] : [],
     build: {
-      outDir: path.join(root, "../../static/reno/orientation"),
+      outDir: path.join(root, publicProject ? "../../static/projects/bishan-ridges-atmosphere" : "../../static/reno/orientation"),
       emptyOutDir: true,
       sourcemap: false,
       target: "es2022",

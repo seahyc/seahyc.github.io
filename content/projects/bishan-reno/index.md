@@ -8,3 +8,5 @@ link: "/reno/"
 ---
 
 Renovation hub → [open the reno dashboard](/reno/)
+
+Public whole-building view → [Bishan Ridges atmosphere](/projects/bishan-ridges-atmosphere/)
