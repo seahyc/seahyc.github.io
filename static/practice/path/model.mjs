@@ -13,6 +13,7 @@ export function validatePath(value,sessions){
 }
 function validScore(v){return Number.isInteger(v)&&v>=0&&v<=3?v:null;}
 export function reviewPass(review,session){return review&&review.completed===true&&session.rubric.every(r=>validScore(review.scores?.[r.id])!==null&&review.scores[r.id]>=2)&&review.notes?.trim().length>=80&&review.feedback?.trim().length>=30;}
+export function rehearsalComplete(session,now=Date.now()){return Number.isFinite(session?.started)&&Number.isFinite(session?.deadline)&&session.deadline<=now;}
 export function assessedSessions(path,sessions,peer=false,now=Date.now()) {
  return sessions.filter(s=>{
   const records=path.reviews.filter(r=>r.id===s.id&&r.at<=now).sort((a,b)=>b.at-a.at);
