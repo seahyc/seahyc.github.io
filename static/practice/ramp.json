@@ -1,0 +1,81 @@
+{
+  "title": "Small Python steps",
+  "exercises": [
+    {
+      "id": "tiny-filter-guided",
+      "title": "Keep useful text",
+      "stage": "Foundation",
+      "minutes": 5,
+      "focus": "A calm filtering loop",
+      "why": "A tiny, reliable transformation is useful when checking data before an AI tool call.",
+      "brief": "Read the complete `keep_positive` example, then write `keep_nonempty` by copying its loop shape. Keep strings whose length is greater than zero, in encounter order. Run the tests after writing the one function. ",
+      "hints": [
+        "Start with an empty result list.",
+        "Loop over each value and append only when the condition is true.",
+        "Return the result after the loop."
+      ],
+      "entry": "src/tiny_filter_guided.py",
+      "files": {
+        "src/tiny_filter_guided.py": "def keep_positive(numbers):\n    result = []\n    for number in numbers:\n        if number > 0:\n            result.append(number)\n    return result\n\ndef keep_nonempty(values):\n    raise NotImplementedError\n",
+        "src/tests.py": "import unittest\n\nfrom tiny_filter_guided import keep_nonempty, keep_positive\n\n\nclass TinyFilterGuidedTests(unittest.TestCase):\n    def test_worked_positive_example(self):\n        self.assertEqual(keep_positive([-2, 3, 0, 4]), [3, 4])\n\n    def test_keeps_nonempty_in_order(self):\n        self.assertEqual(keep_nonempty([\"\", \"agent\", \"\", \"tool\"]), [\"agent\", \"tool\"])\n\n    def test_empty_input(self):\n        self.assertEqual(keep_nonempty([]), [])\n\n    def test_all_empty(self):\n        self.assertEqual(keep_nonempty([\"\", \"\"]), [])\n\n    def test_boundary_one_character(self):\n        self.assertEqual(keep_nonempty([\"a\", \"\", \"b\"]), [\"a\", \"b\"])\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      }
+    },
+    {
+      "id": "tiny-filter-cold",
+      "title": "Keep longer text",
+      "stage": "Foundation",
+      "minutes": 6,
+      "focus": "Filtering with a boundary",
+      "why": "Filtering short labels is a practical first check before passing user input to an AI workflow.",
+      "brief": "Implement `keep_long_enough(values)`. Return the strings with at least three characters, preserving encounter order. Empty strings and one or two character strings are discarded. Write one small function and use the tests to guide your repair loop.",
+      "hints": [
+        "The boundary is inclusive: length three stays.",
+        "Build a new list as you visit each string.",
+        "An empty input naturally returns an empty list."
+      ],
+      "entry": "src/tiny_filter_cold.py",
+      "files": {
+        "src/tiny_filter_cold.py": "def keep_long_enough(values):\n    raise NotImplementedError\n",
+        "src/tests.py": "import unittest\n\nfrom tiny_filter_cold import keep_long_enough\n\n\nclass TinyFilterColdTests(unittest.TestCase):\n    def test_keeps_only_length_three_or_more(self):\n        self.assertEqual(keep_long_enough([\"a\", \"tool\", \"AI\", \"run\"]), [\"tool\", \"run\"])\n\n    def test_empty_input(self):\n        self.assertEqual(keep_long_enough([]), [])\n\n    def test_boundary_lengths(self):\n        self.assertEqual(keep_long_enough([\"\", \"a\", \"ab\", \"abc\", \"abcd\"]), [\"abc\", \"abcd\"])\n\n    def test_repeats_are_preserved(self):\n        self.assertEqual(keep_long_enough([\"run\", \"run\", \"x\"]), [\"run\", \"run\"])\n\n    def test_order_is_preserved(self):\n        self.assertEqual(keep_long_enough([\"last\", \"first\", \"mid\"]), [\"last\", \"first\", \"mid\"])\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      }
+    },
+    {
+      "id": "tiny-count-guided",
+      "title": "Count event names",
+      "stage": "Foundation",
+      "minutes": 7,
+      "focus": "A dictionary counting loop",
+      "why": "Counting repeated events is a small foundation for inspecting AI pipeline outcomes.",
+      "brief": "Read the worked `count_fruit` loop, then implement `count_events(names)` with the same dictionary pattern. Count each event string and keep first-seen key order. Use `counts.get(name, 0) + 1`, run the tests, and repair one failure at a time.",
+      "hints": [
+        "Start with an empty dictionary.",
+        "Each name needs its old count plus one.",
+        "Return the dictionary after the loop."
+      ],
+      "entry": "src/tiny_count_guided.py",
+      "files": {
+        "src/tiny_count_guided.py": "def count_fruit(fruits):\n    counts = {}\n    for fruit in fruits:\n        counts[fruit] = counts.get(fruit, 0) + 1\n    return counts\n\ndef count_events(names):\n    raise NotImplementedError\n",
+        "src/tests.py": "import unittest\n\nfrom tiny_count_guided import count_events, count_fruit\n\n\nclass TinyCountGuidedTests(unittest.TestCase):\n    def test_worked_fruit_example(self):\n        self.assertEqual(count_fruit([\"apple\", \"pear\", \"apple\"]), {\"apple\": 2, \"pear\": 1})\n\n    def test_counts_repeated_events(self):\n        self.assertEqual(count_events([\"ok\", \"error\", \"ok\"]), {\"ok\": 2, \"error\": 1})\n\n    def test_empty_input(self):\n        self.assertEqual(count_events([]), {})\n\n    def test_single_event(self):\n        self.assertEqual(count_events([\"queued\"]), {\"queued\": 1})\n\n    def test_first_seen_order(self):\n        result = count_events([\"b\", \"a\", \"b\", \"c\"])\n        self.assertEqual(list(result), [\"b\", \"a\", \"c\"])\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      }
+    },
+    {
+      "id": "tiny-count-cold",
+      "title": "Count word endings",
+      "stage": "Foundation",
+      "minutes": 8,
+      "focus": "Counting a derived value",
+      "why": "A derived count mirrors simple telemetry summaries used to understand an AI system's behavior.",
+      "brief": "Implement `count_final_chars(words)`. For every non-empty word, count its final character. Ignore empty words, preserve the dictionary's first-seen key order, and return an empty dictionary when no words contribute. Write one function and use the tests to find the next small correction.",
+      "hints": [
+        "Skip a word when its length is zero.",
+        "The final character is selected with `word[-1]`.",
+        "Update a dictionary count just like a tally."
+      ],
+      "entry": "src/tiny_count_cold.py",
+      "files": {
+        "src/tiny_count_cold.py": "def count_final_chars(words):\n    raise NotImplementedError\n",
+        "src/tests.py": "import unittest\n\nfrom tiny_count_cold import count_final_chars\n\n\nclass TinyCountColdTests(unittest.TestCase):\n    def test_counts_final_characters(self):\n        self.assertEqual(count_final_chars([\"run\", \"tool\", \"plan\"]), {\"n\": 2, \"l\": 1})\n\n    def test_empty_input(self):\n        self.assertEqual(count_final_chars([]), {})\n\n    def test_empty_words_are_ignored(self):\n        self.assertEqual(count_final_chars([\"\", \"a\", \"\", \"b\"]), {\"a\": 1, \"b\": 1})\n\n    def test_repeated_final_character(self):\n        self.assertEqual(count_final_chars([\"run\", \"plan\", \"green\"]), {\"n\": 3})\n\n    def test_first_seen_order(self):\n        result = count_final_chars([\"cat\", \"dog\", \"ant\", \"bee\"])\n        self.assertEqual(list(result), [\"t\", \"g\", \"e\"])\n\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n"
+      }
+    }
+  ]
+}

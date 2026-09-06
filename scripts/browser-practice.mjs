@@ -5,9 +5,9 @@ const browser=await chromium.launch({headless:true,executablePath:process.env.BR
 const page=await browser.newPage({viewport:{width:1440,height:1080}});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try {
- await page.goto(process.env.PRACTICE_URL||'http://127.0.0.1:8768/practice/');
+ const url=new URL(process.env.PRACTICE_URL||'http://127.0.0.1:8768/practice/');url.searchParams.set('library','1');url.hash='syntax-guided';await page.goto(url.href);
  await page.locator('#title').filter({hasText:'Guided'}).waitFor();
- assert.equal(await page.locator('.lesson').count(),24);
+ assert.equal(await page.locator('.lesson').count(),28);
  await page.locator('#syntax').click();
  await page.waitForFunction(()=>document.querySelector('#runtime-state').textContent==='Syntax valid',null,{timeout:90000});
  console.log('PASS real browser Python syntax check');
@@ -33,7 +33,7 @@ try {
  console.log('PASS read-only tests and stop infinite loop');
  await page.locator('#editor').fill(solution);
  await page.locator('#hint-details summary').click();await page.waitForFunction(()=>document.querySelector('#notice').textContent.includes('supported practice'));assert.match(await page.locator('#notice').innerText(),/supported practice/);
- await page.locator('#method-button').click();assert.equal(await page.locator('#method').evaluate(e=>e.open),true);await page.locator('#close-method').click();
+ await page.locator('.practice-options summary').click();await page.locator('#method-button').click();assert.equal(await page.locator('#method').evaluate(e=>e.open),true);await page.locator('#close-method').click();
  console.log('PASS hint tracking and method dialog');
  await page.locator('.lesson').filter({hasText:'Container Identity'}).click();
  page.on('dialog',dialog=>dialog.accept());
