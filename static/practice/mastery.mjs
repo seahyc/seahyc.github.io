@@ -1,5 +1,6 @@
-import {day} from './state.mjs';
-import {reviewPass,assessedSessions} from './path/model.mjs';
+import {recallState,isReviewDue} from './recall.mjs?v=recall-2026-09-06-1';
+import {day} from './state.mjs?v=recall-2026-09-06-1';
+import {reviewPass,assessedSessions} from './path/model.mjs?v=recall-2026-09-06-1';
 
 // One shared route. A supported success permits retrieval practice, not a mastery claim.
 export const route = [
@@ -22,6 +23,8 @@ export function demonstrated(code,id){
   if(supported(id)&&code.exercises?.['syntax-guided']?.passed)return true;
  }
  const p=code.exercises?.[id];
+ if(p?.review?.pending)return false;
+ if(p?.review?.phase==='relearning')return false;
  if(!p?.passed || (p.lastResult && p.lastResult!=='pass')) return false;
  if(supported(id)) return true;
  // An old assisted pass is useful progress, but not evidence of independent retrieval.
@@ -30,6 +33,7 @@ export function demonstrated(code,id){
 function codeStep(e,code,review=false,now=Date.now()){
  const p=code.exercises?.[e.id]||{}, s=p.session;
  const guided=supported(e.id);
+ if(p.review?.pending)return {type:'code',id:e.id,title:e.title,mode:s?.mode||'practice',action:'resume',review,reason:'The checks passed. Your next retrieval will be scheduled automatically.'};
  const supportPass=p.passed&&p.lastResult==='pass'&&!demonstrated(code,e.id);
  const newDay=s&&day(s.started)!==day(now);
  const pristine=!p.viewedAt&&!p.files&&!p.attempts&&!s;
@@ -47,12 +51,25 @@ export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
  // Spaced retrieval is inserted into the same queue; never make a separate review list.
  const frontier=steps.findIndex(id=>!id.startsWith('@')&&!demonstrated(code,id));
  const due=steps.filter((id,i)=>frontier<0||i<=frontier).filter(id=>!id.startsWith('@')&&!supported(id)).map(id=>codeById.get(id)).filter(e=>{
-  const p=code.exercises?.[e.id];return p?.passed&&p.due<=day(now)&&day(p.lastAt||0)!==day(now);
+  const p=code.exercises?.[e.id];return p?.passed&&(p.review?.dueAt?isReviewDue(p,now):p.due<=day(now)&&day(p.lastAt||0)!==day(now));
  }).sort((a,b)=>(code.exercises[a.id].lastAt||0)-(code.exercises[b.id].lastAt||0));
+ const pending=steps.find(id=>!id.startsWith('@')&&code.exercises?.[id]?.review?.pending);
+ if(pending)return codeStep(codeById.get(pending),code,false,now);
  if(due.length)return codeStep(due[0],code,true,now);
  for(const id of steps){
   if(!id.startsWith('@')){
-   if(!demonstrated(code,id))return codeStep(codeById.get(id),code,false,now);
+   if(!demonstrated(code,id)){
+    const p=code.exercises?.[id],r=recallState(p||{},now);
+    if(p?.passed&&p.lastResult==='pass'&&!r.pending&&r.phase==='relearning'&&r.dueAt>now){
+     // While filtering settles, introduce a different small pattern instead of massing retries.
+     if(id==='tiny-filter-cold'){
+      const alternate=['tiny-count-guided','tiny-count-cold'].find(other=>codeById.has(other)&&!demonstrated(code,other)&&!(code.exercises?.[other]?.review?.dueAt>now));
+      if(alternate)return codeStep(codeById.get(alternate),code,false,now);
+     }
+     return {type:'pause',id,title:'A useful stopping point.',dueAt:r.dueAt,reason:'Your next recall check is scheduled. Let the gap do its job; your work is saved.'};
+    }
+    return codeStep(codeById.get(id),code,false,now);
+   }
   }else{
    const s=sessionById.get(id.slice(1));
    // Prerequisites are enforceable even if session order is edited later.

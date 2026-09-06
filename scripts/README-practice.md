@@ -6,23 +6,30 @@
 
 Four one-function ramp exercises lead into 24 original Python exercises that cover fluency, data structures, practical AI tooling, progressive requirements, async work, debugging and timed transfer. Twelve interview rehearsals cover live reasoning, code review, discovery, demos, project depth, evaluation, workflow systems, inference, concurrency, model basics, motivation and a full loop. Every rehearsal has a scenario, timed rounds, follow-ups and four domain-specific rubric dimensions.
 
-The default experience is one linear route through both areas. A deterministic mastery policy selects one next step from actual test results, assistance, independent retrieval, due recall and rehearsal evidence. The initial guided tasks teach a pattern; independent variants check transfer. Supported passes lead to fresh retrieval on the same task. Failed checks keep the learner on the skill; repeated failures reveal support. First independent success allows progression, with 1/3/7/14-day recall checks inserted into the same queue. This is rule-based adaptation, not an AI tutor or an inferred psychometric mastery score. The full exercise library is available only through Options. These are training heuristics, not predictions of hiring outcomes or a universal interview syllabus. Specialized research roles require further role-specific depth.
+The default experience is one linear route through both areas. A deterministic mastery policy selects one next step from actual test results, assistance, independent retrieval, due recall and rehearsal evidence. The initial guided tasks teach a pattern; independent variants check transfer. A supported pass schedules a short 10-minute repair interval and can introduce a safe alternate pattern while the interval settles. Failed checks keep the learner on the skill; repeated failures reveal support. Independent retrieval uses a managed 1/3/7/14/30/60-day successive-relearning ladder, with due work inserted into the same queue. There is no subjective recall-grade control in the interface: observed assistance and checks determine the safe schedule. This is rule-based adaptation, not an AI tutor or an inferred psychometric mastery score. The full exercise library is available only through Options. These are training heuristics, not predictions of hiring outcomes or a universal interview syllabus. Specialized research roles require further role-specific depth.
 
 ## Runtime and state
 
-Python loads from the pinned jsDelivr runtime into a fresh module worker per run. Stop terminates the worker; execution after initialization is capped at 10 seconds, and output at 30 KB. Official tests are fixed public files. The runner supports synchronous unittest suites and an `ASYNC_TESTS` list of async test functions, awaited without nesting an event loop.
+Python loads from the pinned jsDelivr runtime into a fresh module worker per run. Stop terminates the worker; execution after initialization is capped at 10 seconds, and output at 30 KB. Official tests are fixed public files. The runner supports synchronous unittest suites and an `ASYNC_TESTS` list of async test functions, awaited without nesting an event loop. Interface sounds are muted by default and are never required to understand a result.
+
+`static/practice/design-system.css` owns the shared visual tokens and components. The studio workspace and path layout files own only their page-specific composition. The CodeMirror editor is built from `projects-src/practice-editor/` with `npm run build:practice-editor`; generated editor output should not be edited by hand.
 
 The studio stores `coding-practice-v1`; the interview path stores `coding-interview-path-v1`. Prior code and progress migrate without resetting exercises. The path can export/import a combined backup and download a private coaching handoff. No stories, notes or code are uploaded. A storage change in another tab stops stale edits from silently overwriting new progress.
 
 Fresh mock launch records whether the task has been opened or attempted in this browser. Familiar retries remain practice. The page cannot detect prior exposure elsewhere, enforce tool rules, or authenticate peer review. Mock evidence requires independent timed passes on two different tasks and days. Rehearsal thresholds require every anchored dimension at least 2/3, written evidence, specific feedback, and learner-reported peer review within 30 days. A subsequent failed rehearsal invalidates older passing review evidence until repaired. There is no automatic spoken grading or recording.
 
+The release workflow stamps local JavaScript, CSS and JSON references with the deployment commit SHA, then writes the same SHA to `version.mjs` and `release.json`. The release poll deliberately fetches unversioned `release.json` with `cache: no-store`, allowing an open page to discover a newer deployment.
+
 ## Verification
 
 ```
 node --test scripts/state.test.mjs scripts/practice-path.test.mjs scripts/mastery.test.mjs
+node --test scripts/release-practice.test.mjs
+node --check scripts/release-practice.mjs
 node --check static/practice/app.mjs
 node --check static/practice/runner.mjs
 node --check static/practice/path/app.mjs
+npm run build:practice-editor
 python3 scripts/verify-exercises.py
 python3 scripts/verify-exercises.py --curriculum static/practice/ramp.json
 ```
@@ -39,4 +46,4 @@ node scripts/browser-mastery-code.mjs
 
 The tests use isolated browser contexts. They cover Python execution, stopping code, saved-work migration, timer/freshness semantics, coaching evidence, backup round trips, mastery transitions, one-question interviews and mobile overflow. Screenshots are saved to the operating-system temporary directory.
 
-`RAMP_REFERENCE_ROOT` optionally points the coding-flow smoke test to private ramp references named by exercise ID. With references it runs all 20 new Python tests through the browser, including assisted-pass → fresh retrieval → independent-pass transitions. Fresh resets retain the last three code snapshots in the coding backup. Interview wizard drafts retain every answer and position on reload; old freeform notes migrate into the first answer.
+`RAMP_REFERENCE_ROOT` optionally points the coding-flow smoke test to private ramp references named by exercise ID. With references it runs all 20 new Python tests through the browser, including assisted-pass → 10-minute repair scheduling → safe alternate-pattern progression. Fresh resets retain the last three code snapshots in the coding backup. Interview wizard drafts retain every answer and position on reload; old freeform notes migrate into the first answer.

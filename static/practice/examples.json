@@ -1,0 +1,46 @@
+{
+  "examples": {
+    "tiny-filter-guided": {
+      "module": "tiny_filter_guided",
+      "function": "keep_nonempty",
+      "args": [["", "agent", "", "tool"]],
+      "expected": ["agent", "tool"],
+      "caption": "Empty strings are removed while order stays the same."
+    },
+    "tiny-filter-cold": {
+      "module": "tiny_filter_cold",
+      "function": "keep_long_enough",
+      "args": [["a", "tool", "AI", "run"]],
+      "expected": ["tool", "run"],
+      "caption": "The inclusive boundary keeps strings with at least three characters."
+    },
+    "tiny-count-guided": {
+      "module": "tiny_count_guided",
+      "function": "count_events",
+      "args": [["ok", "error", "ok"]],
+      "expected": {"ok": 2, "error": 1},
+      "caption": "Each event is tallied in first-seen key order."
+    },
+    "tiny-count-cold": {
+      "module": "tiny_count_cold",
+      "function": "count_final_chars",
+      "args": [["run", "tool", "plan"]],
+      "expected": {"n": 2, "l": 1},
+      "caption": "Empty words would be ignored; each final character is counted."
+    },
+    "syntax-faded": {
+      "module": "faded_pattern",
+      "function": "normalize_tags",
+      "args": [[" Python ", "AI", "python", " Agents "]],
+      "expected": ["python", "ai", "agents"],
+      "caption": "Normalize whitespace and case, then keep the first occurrence."
+    },
+    "python-refresher-1": {
+      "module": "python_refresher",
+      "function": "count_outcomes",
+      "args": [[{"outcome": "success"}, {"outcome": "failure"}, {"outcome": "success"}]],
+      "expected": {"success": 2, "failure": 1},
+      "caption": "Outcome counts preserve the order in which keys first appear."
+    }
+  }
+}

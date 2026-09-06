@@ -1,11 +1,16 @@
-import {nextStep,supported} from './mastery.mjs';
-import {freshPath,validatePath} from './path/model.mjs';
-import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs';
+import {createCodeEditor} from './editor.bundle.mjs?v=recall-2026-09-06-1';
+import {feedback} from './feedback.mjs?v=recall-2026-09-06-1';
+import './version.mjs?v=recall-2026-09-06-1';
+import {rateRecall,recallState} from './recall.mjs?v=recall-2026-09-06-1';
+import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
+import {freshPath,validatePath} from './path/model.mjs?v=recall-2026-09-06-1';
+import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs?v=recall-2026-09-06-1';
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 if(!guidedFlow)document.body.classList.remove('focus');
-let interviews=[],pathState=freshPath();
+let interviews=[],pathState=freshPath(),examples={},activeAction;
+const intervalLabel=due=>{const minutes=Math.ceil((due-Date.now())/60000);return minutes<60?`in ${Math.max(1,minutes)} min`:minutes<1440?`in ${Math.ceil(minutes/60)} hours`:`in ${Math.round(minutes/1440)} day${Math.round(minutes/1440)===1?'':'s'}`;};
 const $=id=>document.getElementById(id), KEY='coding-practice-v1';
-let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),escapeTab=false,storageStale=false;
+let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),storageStale=false;
 const notice=message=>{$('notice').textContent=message;};
 try { const saved=localStorage.getItem(KEY); if(saved) state=JSON.parse(saved); } catch { storageStale=true;notice('Your saved progress could not be read. Export anything still available before clearing browser storage.'); }
 function persist(){if(storageStale)return;try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='Saved here';}catch{$('save-status').textContent='Not saved';notice('Browser storage is unavailable or full. Export your progress to keep this attempt.');}}
@@ -14,6 +19,23 @@ function session(){return entry().session ||= {mode:'practice',cold:false,starte
 function editable(name){return name!=='src/tests.py' && !name.endsWith('.jsonl');}
 function files(){const e=entry();return {...current.files,...Object.fromEntries(Object.entries(e.files||{}).filter(([n])=>n in current.files&&editable(n)))};}
 function saveEditor(){if(current&&file&&editable(file)){entry().files ||= {};entry().files[file]=$('editor').value;persist();}}
+function archiveDraft(p){
+ if(!Object.keys(p.files||{}).length&&!p.notes)return;
+ p.savedAttempts ||= [];p.savedAttempts.unshift({at:Date.now(),files:{...(p.files||{})},notes:p.notes||''});p.savedAttempts=p.savedAttempts.slice(0,3);
+}
+function clearRunOutcome(message=''){
+ $('case-feedback').replaceChildren();$('case-feedback').hidden=true;$('first-feedback').hidden=true;$('journey-feedback').hidden=true;$('run').classList.add('primary');
+ if(message)$('runtime-state').textContent=message;
+}
+const codeEditor=createCodeEditor({parent:$('code-editor'),onChange:value=>{
+ $('editor').value=value;lastInput=Date.now();
+ if(current){
+  if(entry().lastResult==='pass')entry().lastResult='pending';
+  if(!$('case-feedback').hidden||!$('journey-feedback').hidden){clearRunOutcome('Changes need checking');notice('');}
+ }
+ saveEditor();
+},onPaste:()=>assisted('Paste recorded as supported practice. We’ll check recall from a fresh scaffold.'),onRun:()=>{if(current&&!storageStale)run('tests');}});
+function loadEditor(){const value=files()[file];$('editor').value=value;codeEditor.setValue(value);codeEditor.setReadOnly(!editable(file)||storageStale);}
 function renderMarkdown(source){
   const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const parts=source.split(/```[^\n]*\n/);let html='';
@@ -41,30 +63,57 @@ function refresh(){
 function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Interview progress could not be read. Export it from Progress & backup before clearing storage.');}}
 function updateJourney(){
  const p=entry();const passed=p.lastResult==='pass';
- $('journey-feedback').hidden=!passed;$('run').classList.toggle('primary',!passed);
- if(passed){const step=nextStep(exercises,state,interviews,pathState);$('journey-message').textContent=supported(current.id)?'That works. Let’s use the pattern with less help.':session().cold&&!session().assisted?'You built it independently. We’ll bring it back later to check recall.':'That works with support. Next, rebuild without hints.';$('journey-next').textContent=step.id===current.id?'Rebuild without hints':'Continue';}
+ const effort=recallState(p);
+ if(passed&&effort.pending&&!storageStale){rateRecall(state,current.id,'good');persist();}
+ const review=recallState(p);
+ $('journey-feedback').hidden=!passed;
+ $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
+ if(passed){
+  const step=nextStep(exercises,state,interviews,pathState);
+  $('journey-message').textContent=supported(current.id)?'You’ve made the pattern work. Try using it with less support.':effort.assisted||effort.failed||effort.phase==='relearning'?'Repair recorded. A short recall check is on the way.':'Working code, with a return date. That’s one useful rep.';
+  $('next-review-date').textContent=p.review?.dueAt?`Next recall ${intervalLabel(p.review.dueAt)} · ${new Date(p.review.dueAt).toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'})}`:'';
+  $('journey-next').textContent=step.type==='pause'?'Finish for now':step.id===current.id?'Continue this skill':'Continue';
+ }
 }
+function renderExample(){const demo=examples[current.id];$('example-lab').hidden=!demo;if(!demo)return;$('example-caption').textContent=demo.caption;$('example-input').value=JSON.stringify(demo.args[0]);$('example-expected').textContent=JSON.stringify(demo.expected);}
+function renderCases(cases){
+ const target=$('case-feedback');target.replaceChildren();target.hidden=!cases?.length;if(!cases?.length)return;
+ const summary=document.createElement('p');summary.className=cases.every(c=>c.status==='pass')?'checks-pass':'checks-fail';summary.textContent=`${cases.filter(c=>c.status==='pass').length} of ${cases.length} checks passed`;target.append(summary);
+ for(const c of [...cases.filter(c=>c.status!=='pass'),...cases.filter(c=>c.status==='pass')].slice(0,8)){
+  const item=document.createElement(c.detail?'details':'div'),label=document.createElement(c.detail?'summary':'p');label.textContent=`${c.status==='pass'?'✓':'○'} ${c.name.replace(/^.*\.test_/,'').replace(/^test_/,'').replaceAll('_',' ')}`;item.append(label);
+  if(c.detail){const detail=document.createElement('pre');detail.textContent=c.detail;item.append(detail);}target.append(item);
+ }
+}
+$('example-input').oninput=()=>{$('example-expected').textContent=$('example-input').value===JSON.stringify(examples[current.id]?.args[0])?JSON.stringify(examples[current.id].expected):'Custom input — predict the result';};
+$('example-run').onclick=()=>{try{const arg=JSON.parse($('example-input').value);if(!Array.isArray(arg))throw Error('Use a JSON list, for example ["", "agent"].');run('probe',{...examples[current.id],args:[arg]});}catch(e){$('example-actual').textContent=e.message;}};
+
+
 function launchStep(){
  if(worker||storageStale)return;
  readPath();const step=nextStep(exercises,state,interviews,pathState);
- if(step.type!=='code'){location.assign('./path/');return;}
+ if(step.type!=='code'){location.assign('./path/');return;}activeAction=step;
  const e=exercises.find(e=>e.id===step.id),p=state.exercises[e.id] ||= {coldDays:[],attempts:0};
  const pristine=!p.viewedAt&&!p.files&&!p.attempts&&!p.session;
  if(step.action==='fresh'){
   if(current)saveEditor();
-  p.savedAttempts ||= [];p.savedAttempts.unshift({at:Date.now(),files:{...(p.files||{})},notes:p.notes||''});p.savedAttempts=p.savedAttempts.slice(0,3);
+  archiveDraft(p);
   p.files={};p.session=null;p.lastResult='pending';file=null;
  }
  if(!p.session){p.session={mode:step.mode,cold:step.mode!=='practice',started:Date.now(),hint:0,assisted:false,freshMock:step.mode==='mock'&&pristine};if(step.mode==='mock')p.session.deadline=Date.now()+e.minutes*60000;}
- select(e);notice(step.reason);scrollTo({top:0,behavior:'instant'});
+ select(e);
+ if(step.review)notice('Recall is due. Rebuild this from the scaffold.');
+ else if(p.lastResult&&p.lastResult!=='pass'&&p.lastResult!=='pending')notice('Repair the first failing behavior, then check again.');
+ else notice('');
+ scrollTo({top:0,behavior:'instant'});
 }
 function showResult(data,mode){
  if(!guidedFlow)return;
- $('first-feedback').hidden=false;
- $('first-feedback').textContent=data.passed?(mode==='syntax'?'Python can read this. Check your code next.':mode==='tests'?'All checks pass.':'Program finished.'):(firstError(data.output||'')||'One behavior still needs work. Open the test output to inspect the first failure.');
+ const message=data.passed?(mode==='syntax'?'Python can read this. Check your code next.':mode==='tests'||mode==='probe'?'':'Program finished.'):feedbackMessage(data.output||'');
+ $('first-feedback').hidden=!message;$('first-feedback').textContent=message;
  $('full-output').open=false;
 }
 $('journey-next').onclick=launchStep;
+function feedbackMessage(output){if(output.includes('NotImplementedError'))return 'The function still has a placeholder. Replace raise NotImplementedError with your implementation.';if(/SyntaxError|IndentationError/.test(output))return 'Python cannot read this yet. Check the construct named in the full output, especially colons and indentation.';if(output.includes('NameError'))return 'A name is not defined. Check the variable spelling and where it is created.';return firstError(output)||'One case still needs work. Open its result below to compare the behavior.';}
 function firstError(output){const lines=output.split('\n');return (lines.find(s=>/^(SyntaxError|IndentationError|AssertionError|TypeError|ValueError|NameError|NotImplementedError|FAIL:|ERROR:)/.test(s))||'').slice(0,180);}
 function select(e){
   if(worker){notice('Stop the current run before switching exercises.');return;}
@@ -72,44 +121,47 @@ function select(e){
   $('title').textContent=e.title;$('stage').textContent=`${e.stage} · ${e.minutes}-minute target · ${e.focus}`;$('why').textContent=e.why;
   $('brief').innerHTML=renderMarkdown(e.brief);$('file').replaceChildren();
   Object.keys(e.files).forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name+(editable(name)?'':' (read only)');$('file').append(o);});
-  file=e.entry;$('file').value=file;$('editor').value=files()[file];$('editor').readOnly=!editable(file);
+  file=e.entry;$('file').value=file;loadEditor();
   const s=session();if(day(s.started)!==day())s.cold=false;
+  document.body.classList.toggle('mock-active',s.mode==='mock');
   $('mode').value=s.mode;$('notes').value=entry().notes||'';$('hint-details').open=false;$('hint').textContent='';$('rescue').open=false;
   $('output').textContent='Make it parse. Make one example pass. Then handle edge cases.';
-  $('main').disabled=!('src/main.py' in e.files);lastInput=Date.now();$('journey-feedback').hidden=true;$('first-feedback').hidden=true;$('full-output').open=!guidedFlow;refresh();tick();persist();
+  $('main').disabled=!('src/main.py' in e.files);renderExample();$('case-feedback').hidden=true;$('example-actual').textContent='Run your code to see';lastInput=Date.now();$('journey-feedback').hidden=true;$('first-feedback').hidden=true;$('full-output').open=!guidedFlow;refresh();tick();persist();
 }
 function fresh(mode){
   if(worker)return;
   if(!confirm('Start from the original scaffold? Your current code will be replaced. Export progress first if you want to keep it.')){$('mode').value=session().mode;return;}
-  entry().files={};entry().notes='';
-  entry().session={mode,cold:mode!=='practice'&&!supported(current.id),started:Date.now(),hint:0};
-  if(mode==='mock')entry().session.deadline=Date.now()+current.minutes*60000;
+  saveEditor();const p=entry();archiveDraft(p);p.files={};p.notes='';p.lastResult='pending';
+  p.session={mode,cold:mode!=='practice'&&!supported(current.id),started:Date.now(),hint:0,assisted:false};
+  if(mode==='mock')p.session.deadline=Date.now()+current.minutes*60000;
   // Clear the editor before selection so its old contents cannot be saved over the reset.
   file=null;select(current);notice(mode==='mock'?'Timed mock started. Hints and pauses invalidate mock evidence.':'Fresh scaffold loaded. Reconstruct the behavior one small step at a time.');
 }
 function assisted(reason){session().cold=false;session().assisted=true;persist();refresh();if(reason)notice(reason);}
-function busy(on){['syntax','run','new-attempt','mode','file','timer-button'].forEach(id=>$(id).disabled=on);$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;$('editor').readOnly=on||!editable(file);}
-function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message)$('output').textContent=message;}
-function run(mode){
-  if(worker)return;saveEditor();const s=session();
-  runContext={id:current.id,cold:s.cold&&day(s.started)===day(),mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock};
-  busy(true);$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent='Loading Python';
-  worker=new Worker(new URL('./runner.mjs',import.meta.url),{type:'module'});
+function busy(on){['syntax','run','new-attempt','mode','file','timer-button','example-run'].forEach(id=>$(id).disabled=on);$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;codeEditor.setReadOnly(on||!editable(file)||storageStale);}
+function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message){$('output').textContent=message;$('first-feedback').hidden=false;$('first-feedback').textContent=message;}}
+function run(mode,probe){
+  if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
+  runContext={id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock};
+  if(mode==='tests'){clearRunOutcome();notice('');}else $('first-feedback').hidden=true;
+  busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
+  worker=new Worker(new URL('./runner.mjs?v=recall-2026-09-06-1',import.meta.url),{type:'module'});
   runTimeout=setTimeout(()=>stop('Python could not load within 90 seconds. Check your connection, then try again.'),90000);
   worker.onmessage=({data})=>{
-    if(data.type==='ready'){clearTimeout(runTimeout);$('runtime-state').textContent='Running';runTimeout=setTimeout(()=>{const ctx=runContext;stop('Execution exceeded 10 seconds. Check for an infinite loop or unexpectedly large input.');if(mode==='tests'){record(state,ctx.id,{passed:false,kind:'timeout',cold:false});persist();refresh();}},10000);return;}
+    if(data.type==='ready'){clearTimeout(runTimeout);$('runtime-state').textContent=mode==='tests'?'Running checks':'Running';$('first-feedback').textContent=mode==='probe'?'Trying your input…':mode==='tests'?'Running checks…':'Checking your code…';runTimeout=setTimeout(()=>{const ctx=runContext;stop('Execution exceeded 10 seconds. Check for an infinite loop or unexpectedly large input.');if(mode==='tests'){const cold=ctx.cold&&session().cold&&!session().assisted;record(state,ctx.id,{passed:false,kind:'timeout',cold,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(ctx.id),scaffold:supported(ctx.id)});feedback('fail');persist();refresh();}},10000);return;}
     if(data.type==='error'){stop('Python could not start: '+data.message+'\nCheck your connection and retry.');return;}
     if(data.type==='result'){
-      stop(null);showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':`${data.count||0} tests · passed`):'Read the first error';
+      stop(null);if(mode==='tests'){renderCases(data.cases);feedback(data.passed?'pass':'fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
       if(mode==='syntax'&&!data.passed){record(state,current.id,{passed:false,kind:'syntax',cold:false,output:firstError(data.output)});persist();refresh();}
       if(mode==='tests'){
         const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
-        record(state,current.id,{passed:data.passed,kind:data.kind,cold,scaffold:supported(current.id),mockQualified,freshMock:ctx.freshMock,count:data.count,elapsed:Math.round((Date.now()-ctx.started)/1000),output:firstError(data.output)});
-        if(data.passed)notice(supported(current.id)?'Foundation pass recorded. Continue to the next step and gradually remove the support.':cold?'Cold pass recorded. Return on the scheduled day and start fresh.':'Practice pass recorded. Tomorrow, try a fresh cold recall attempt.');
+        record(state,current.id,{passed:data.passed,kind:data.kind,cold,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(current.id),scaffold:supported(current.id),mockQualified,freshMock:ctx.freshMock,count:data.count,elapsed:Math.round((Date.now()-ctx.started)/1000),output:firstError(data.output)});
+        if(data.passed&&!supported(current.id)&&entry().review?.pending)rateRecall(state,current.id,'good');
+        if(data.passed)notice('');
         else {
          notice('One error at a time. Repair the first failing behavior, then check again.');
          const recent=state.attempts.filter(a=>a.id===current.id).slice(0,2);
-         if(guidedFlow&&recent.length===2&&recent.every(a=>!a.passed)){
+         if(guidedFlow&&s.mode!=='mock'&&recent.length===2&&recent.every(a=>!a.passed)){
           $('hint-details').open=true;assisted('Let’s make this smaller. Use the hint for this repair; we’ll check independence afterward.');$('hint').textContent=current.hints[session().hint||0];
          }
         }
@@ -118,15 +170,12 @@ function run(mode){
     }
   };
   worker.onerror=()=>stop('The Python runtime could not load. Check your connection or content blocker, then retry.');
-  worker.postMessage({mode,files:files()});
+  worker.postMessage({mode,files:files(),probe});
 }
-function tick(){if(!current)return;const s=session();if(s.deadline){const seconds=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));$('clock').textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;$('timer-button').textContent=s.mode==='mock'?'End timed mock':'Pause timer';if(!seconds){$('clock').textContent='Time is up';$('timer-button').textContent='Reset timer';}}
+function tick(){if(!current)return;const s=session();document.body.classList.toggle('mock-active',s.mode==='mock');if(s.deadline){const seconds=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));$('clock').textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;$('timer-button').textContent=s.mode==='mock'?'End timed mock':'Pause timer';if(!seconds){$('clock').textContent='Time is up';$('timer-button').textContent='Reset timer';}}
   else{$('clock').textContent=s.remaining?`${Math.ceil(s.remaining/60000)} min paused`:'Untimed';$('timer-button').textContent=s.remaining?'Resume timer':'Start timer';}
-  if(!guidedFlow&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;notice('If you’re stuck, write one input and expected output. A tiny executable step is enough.');persist();}}
-$('editor').addEventListener('input',()=>{lastInput=Date.now();saveEditor();});
-$('editor').addEventListener('paste',()=>assisted('Paste recorded as assisted practice. You can still learn and pass; start fresh for cold recall.'));
-$('editor').addEventListener('keydown',e=>{if(e.key==='Escape'){escapeTab=true;return;}if(e.key==='Tab'&&!escapeTab&&!$('editor').readOnly){e.preventDefault();const t=$('editor');t.setRangeText('    ',t.selectionStart,t.selectionEnd,'end');saveEditor();}escapeTab=false;lastInput=Date.now();});
-$('file').onchange=()=>{saveEditor();file=$('file').value;$('editor').value=files()[file];$('editor').readOnly=!editable(file);};
+  if(!guidedFlow&&s.mode!=='mock'&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;notice('If you’re stuck, write one input and expected output. A tiny executable step is enough.');persist();}}
+$('file').onchange=()=>{saveEditor();file=$('file').value;loadEditor();};
 $('notes').oninput=()=>{entry().notes=$('notes').value;persist();};
 $('motivation').oninput=()=>{state.motivation=$('motivation').value;persist();};
 $('mode').onchange=()=>fresh($('mode').value);$('new-attempt').onclick=()=>fresh($('mode').value);
@@ -138,16 +187,17 @@ $('recommended').onclick=()=>{select(recommendation(exercises,state));document.q
 $('next-exercise').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.exercise-heading').scrollIntoView({behavior:'instant'});};
 $('method-button').onclick=()=>$('method').showModal();$('close-method').onclick=()=>$('method').close();
 $('export').onclick=()=>{saveEditor();const payload=storageStale?{kind:'coding-recovery',raw:localStorage.getItem(KEY),inMemory:state}:state;const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`coding-practice-${day()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+$('import-button').onclick=()=>$('import').click();
 $('import').onchange=async()=>{const f=$('import').files[0];if(!f)return;try{if(worker)throw Error('Stop the run before importing.');if(f.size>5000000)throw Error('Backup is too large.');const next=validateImport(JSON.parse(await f.text()),exercises);if(!confirm('Replace this browser’s practice progress with the backup?'))return;state=next;file=null;persist();$('motivation').value=state.motivation;select(current);notice('Backup restored. Imported code counts as practice until a fresh attempt.');}catch(e){notice(e.message);}finally{$('import').value='';}};
 window.addEventListener('beforeunload',saveEditor);
 window.addEventListener('storage',event=>{
  if(event.key!==KEY)return;
  storageStale=true;stop(null);
- for(const id of ['syntax','run','main','new-attempt','mode','file','timer-button','next-hint','journey-next','recommended','next-exercise','import'])$(id).disabled=true;
- $('editor').readOnly=true;$('notes').readOnly=true;
+ for(const id of ['syntax','run','main','new-attempt','mode','file','timer-button','next-hint','journey-next','example-run','recommended','next-exercise','import'])$(id).disabled=true;
+ codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
  notice('Coding progress changed in another tab. Export this tab if you need its unsaved work, then reload before continuing.');
 });
-try {const responses=await Promise.all([fetch('./curriculum.json'),fetch('./ramp.json'),fetch('./path/sessions.json')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,ramp,interviewPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises];interviews=interviewPack.sessions;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
+try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./examples.json?v=recall-2026-09-06-1')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,ramp,interviewPack,examplePack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises];interviews=interviewPack.sessions;examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
 if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){
  const previous=state.exercises[target.id];
  if(target.stage==='Mock'&&!previous?.viewedAt&&!previous?.session&&!previous?.files&&!previous?.attempts){
