@@ -1,0 +1,91 @@
+.practice-page main { width: min(1680px, 100%); margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px) var(--space-7); }
+.practice-page .intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-7); align-items: center; padding: var(--space-7) 0; }
+.practice-page .intro h1 { margin: 0 0 var(--space-5); font-size: clamp(40px, 5vw, 66px); }
+.today { border-left: 4px solid var(--color-primary); padding: var(--space-5); background: var(--color-primary-soft); }
+.studio { display: grid; grid-template-columns: 240px minmax(0, 1fr); overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); }
+.curriculum { padding: var(--space-5) var(--space-4); border-right: 1px solid var(--color-border-soft); background: var(--color-surface-subtle); }
+.curriculum nav { max-height: 720px; margin: var(--space-5) calc(var(--space-2) * -1); overflow: auto; }
+.curriculum textarea { width: 100%; margin-top: var(--space-2); }
+.lesson { display: block; width: 100%; min-height: 44px; margin: var(--space-1) 0; padding: 10px 12px; border-color: transparent; background: transparent; text-align: left; }
+.lesson small { display: block; color: var(--color-muted); font-weight: 400; }
+.lesson[aria-current="true"] { border-color: var(--color-primary); background: var(--color-primary); color: var(--color-surface); }
+.lesson[aria-current="true"] small { color: var(--color-surface-subtle); }
+.group-label { padding: var(--space-4) var(--space-3) var(--space-1); font-size: 14px; font-weight: 750; }
+.workbench { min-width: 0; }
+.exercise-heading { display: flex; justify-content: space-between; gap: var(--space-5); padding: var(--space-5); }
+.timer { flex-shrink: 0; text-align: right; }
+.timer output { display: block; margin-bottom: var(--space-1); font-size: 22px; font-variant-numeric: tabular-nums; }
+.session-bar, .file-bar, .actions, .reflection-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.session-bar { padding: var(--space-3) var(--space-5); border-block: 1px solid var(--color-border-soft); background: var(--color-surface-subtle); }
+.panes { display: grid; grid-template-columns: minmax(260px, .85fr) minmax(0, 1.25fr); }
+.brief-pane { max-height: 850px; overflow: auto; padding: var(--space-5); border-right: 1px solid var(--color-border-soft); }
+.brief-pane pre, #case-feedback pre, #output { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font-mono); }
+.brief-pane pre { padding: var(--space-3); background: var(--color-surface-subtle); }
+.code-pane { min-width: 0; padding-bottom: var(--space-4); background: var(--color-surface); color: var(--color-ink); }
+.file-bar { padding: var(--space-3) var(--space-4); }
+.file-bar select { max-width: 75%; }
+.file-bar > span { margin-left: auto; color: var(--color-muted); font-size: 12px; }
+.editor-shell { height: 360px; overflow: hidden; border-block: 1px solid var(--color-border); background: var(--color-code); }
+#editor-help { margin: 0; padding: var(--space-2) var(--space-4); color: var(--color-muted); font-size: 12px; }
+.actions { padding: var(--space-3) var(--space-4); }
+.output-heading { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4) 0; }
+#full-output { margin: var(--space-3) var(--space-4); }
+#output { min-height: 110px; max-height: 240px; overflow: auto; color: var(--color-ink); }
+#case-feedback { margin: 0 var(--space-4) var(--space-4); border-top: 1px solid var(--color-border); }
+.checks-pass { color: var(--color-primary); }
+.checks-fail { color: var(--color-danger); }
+#example-lab { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-border-soft); }
+#example-input { display: block; width: 100%; min-height: 72px; margin: var(--space-2) 0; font-family: var(--font-mono); }
+.example-values { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
+.example-values span, .example-values code { display: block; }
+.example-values code { padding: var(--space-2); background: var(--color-surface-subtle); overflow-wrap: anywhere; }
+#journey-feedback { margin-top: var(--space-5); padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-primary-soft); }
+.reflection { padding: var(--space-5); border-top: 1px solid var(--color-border-soft); }
+.reflection textarea { display: block; width: 100%; min-height: 110px; margin-top: var(--space-2); }
+.reflection-footer { justify-content: space-between; margin-top: var(--space-3); }
+.evidence { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-7); padding: var(--space-7) 0; }
+.practice-options { position: relative; margin: 0 0 0 auto; padding: 0; border: 0; }
+.practice-options > summary { display: flex; align-items: center; min-height: 44px; padding: 9px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-control); list-style-position: inside; }
+.practice-options>div { position: absolute; z-index: 10; top: calc(100% + var(--space-2)); right: 0; display: grid; gap: var(--space-2); min-width: 250px; padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); box-shadow: var(--shadow-card); }
+.practice-options > div > a { display: flex; align-items: center; min-height: 44px; padding: 9px 12px; border-radius: var(--radius-control); color: var(--color-ink); font-size: 14px; font-weight: 650; text-decoration: none; }
+.practice-options > div > a:hover { background: var(--color-surface-subtle); }
+.practice-options > div > button { width: 100%; justify-content: flex-start; }
+.personal-notes { margin-top: var(--space-5); }
+
+body.focus.practice-page main { width: min(1120px, 100%); padding-inline: clamp(16px, 3vw, 32px); }
+body.focus .intro, body.focus .curriculum, body.focus .evidence, body.focus .session-bar, body.focus .timer, body.focus #stage, body.focus #why, body.focus #main, body.focus footer, body.focus #next-exercise, body.focus #review-status { display: none; }
+body.focus .studio { display: block; overflow: visible; border: 0; background: transparent; }
+body.focus .exercise-heading { padding: var(--space-5) 0; }
+body.focus .panes { grid-template-columns: minmax(240px, .8fr) minmax(0, 1.4fr); gap: var(--space-5); }
+body.focus .brief-pane, body.focus .code-pane { min-width: 0; border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-card); }
+body.focus .brief-pane { max-height: none; }
+body.focus .code-pane { overflow: hidden; padding-bottom: 0; }
+body.focus .actions { background: var(--color-surface); }
+body.focus #full-output { color: var(--color-ink); }
+
+@media (max-width: 900px) {
+  .studio { grid-template-columns: 200px minmax(0, 1fr); }
+  .panes, body.focus .panes { grid-template-columns: 1fr; }
+  .brief-pane { max-height: 360px; border-right: 0; border-bottom: 1px solid var(--color-border-soft); }
+}
+@media (max-width: 700px) {
+  .practice-page .intro, .evidence, .studio { grid-template-columns: 1fr; }
+  .curriculum { border-right: 0; border-bottom: 1px solid var(--color-border-soft); }
+  .curriculum nav { max-height: 220px; }
+  .exercise-heading { padding-inline: var(--space-4); }
+}
+
+#case-feedback pre { max-height: 180px; overflow: auto; font-size: 12px; padding: var(--space-3); background: var(--color-surface-subtle); border-radius: var(--radius-control); }
+#case-feedback details { padding-block: var(--space-2); font-size: 14px; }
+#first-feedback { padding-inline: var(--space-4); font-size: 14px; }
+body.focus .brief-pane>h3,body.focus .output-heading,body.focus #stop:disabled { display:none; }
+.example-values span {font-size:12px;color:var(--color-muted)}
+.example-values code,#example-caption {font-size:14px}
+
+body.focus #rescue { display: none; }
+
+body.focus.mock-active .timer { display: block; }
+#example-lab > summary { min-height: 44px; display: flex; align-items: center; gap: var(--space-2); }
+#example-lab > summary::before { content: '+'; color: var(--color-primary); }
+#example-lab[open] > summary::before { content: '−'; }
+@media (max-width: 540px) { header { flex-wrap: wrap; } #practice-context { order: 3; flex-basis: 100%; font-size: 12px; } .sound-toggle { margin-left: 0; } }
