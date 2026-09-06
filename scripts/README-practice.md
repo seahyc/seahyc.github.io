@@ -1,25 +1,38 @@
-# Coding practice
+# Coding and interview practice
 
-`static/practice/` is a standalone static application served at `/practice/` by Hugo. No build step or server-side execution is required. The pinned Python runtime loads from jsDelivr in a module worker; each run starts in a fresh filesystem. Stop terminates the worker. After initialization, execution is capped at 10 seconds and Python output at 30 KB.
+`static/practice/` runs at `/practice/`; the full preparation path is `/practice/path/`. Both are standalone static applications copied by Hugo. There is no server-side code runner or account system.
 
-The curriculum contains original general exercises, fixed public test suites, editable source and design notes. It includes no reference solutions. Practice progress and code are stored in localStorage; backup import/export is available. There is no cross-device sync. The public tests are not hidden assessment tests, and browser-side progress is self-reported practice evidence rather than secure certification.
+## Curriculum
 
-Modes: assisted practice, fresh cold recall, and timed mocks. Hints and paste events remove cold credit; guided/faded tasks never count as cold recall. Same-day reruns cannot increment recall days. A saved attempt carried into another day loses cold eligibility until restarted from the scaffold. Review intervals are 1, 3, 7, and 14 days.
+24 original Python exercises cover fluency, data structures, practical AI tooling, progressive requirements, async work, debugging and timed transfer. Twelve interview rehearsals cover live reasoning, code review, discovery, demos, project depth, evaluation, workflow systems, inference, concurrency, model basics, motivation and a full loop. Every rehearsal has a scenario, timed rounds, follow-ups and four domain-specific rubric dimensions.
 
-Validation:
+Choose Applied systems, Engineering depth or Both. Time budgets allocate practice; readiness thresholds do not relax when a target date is near. These are training heuristics, not predictions of hiring outcomes or a universal interview syllabus. Specialized research roles require further role-specific depth.
+
+## Runtime and state
+
+Python loads from the pinned jsDelivr runtime into a fresh module worker per run. Stop terminates the worker; execution after initialization is capped at 10 seconds, and output at 30 KB. Official tests are fixed public files. The runner supports synchronous unittest suites and an `ASYNC_TESTS` list of async test functions, awaited without nesting an event loop.
+
+The studio stores `coding-practice-v1`; the interview path stores `coding-interview-path-v1`. Prior code and progress migrate without resetting exercises. The path can export/import a combined backup and download a private coaching handoff. No stories, notes or code are uploaded. A storage change in another tab stops stale edits from silently overwriting new progress.
+
+Fresh mock launch records whether the task has been opened or attempted in this browser. Familiar retries remain practice. The page cannot detect prior exposure elsewhere, enforce tool rules, or authenticate peer review. Mock evidence requires independent timed passes on two different tasks and days. Rehearsal thresholds require every anchored dimension at least 2/3, written evidence, specific feedback, and learner-reported peer review within 30 days. A subsequent failed rehearsal invalidates older passing review evidence until repaired. There is no automatic spoken grading or recording.
+
+## Verification
 
 ```
-node --test scripts/state.test.mjs
+node --test scripts/state.test.mjs scripts/practice-path.test.mjs
 node --check static/practice/app.mjs
 node --check static/practice/runner.mjs
+node --check static/practice/path/app.mjs
+python3 scripts/verify-exercises.py
 ```
 
-The browser smoke test requires Playwright (or `PLAYWRIGHT_MODULE` pointing to its module), an installed browser (`BROWSER_EXECUTABLE` optionally), and a preview at `PRACTICE_URL`, defaulting to `http://127.0.0.1:8768/practice/`:
+The public verifier validates/compiles all starters. Add `--source-root` and `--new-reference-root` to run private references; reference solutions must remain outside the public repository. Supplementary private references may be named by exercise ID or entry basename.
+
+Browser smoke tests require Playwright (or `PLAYWRIGHT_MODULE`), an installed browser (`BROWSER_EXECUTABLE` optionally), and `PRACTICE_URL` pointing to the studio:
 
 ```
 node scripts/browser-practice.mjs
+node scripts/browser-practice-path.mjs
 ```
 
-`verify-exercises.py` accepts private exercise/reference roots at runtime to check reference solutions against the public tests. Never copy those private roots into the site. Reference validation is separate from production deployment.
-
-The application deliberately supports standard-library Python without a shell or package installation. Tests are visible and read only in the UI. User experiments can be written in the main file, or design notes where supplied. Browser storage can be lost; export backups.
+The tests use isolated browser contexts. They cover Python execution, stopping code, saved-work migration, timer/freshness semantics, coaching evidence, backup round trips, track selection and mobile overflow. Screenshots are saved to the operating-system temporary directory.

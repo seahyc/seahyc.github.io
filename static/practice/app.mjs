@@ -1,9 +1,9 @@
 import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs';
 const $=id=>document.getElementById(id), KEY='coding-practice-v1';
-let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),escapeTab=false;
+let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),escapeTab=false,storageStale=false;
 const notice=message=>{$('notice').textContent=message;};
 try { const saved=localStorage.getItem(KEY); if(saved) state=JSON.parse(saved); } catch { notice('Your saved progress could not be read. Export anything still available before clearing browser storage.'); }
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='Saved here';}catch{$('save-status').textContent='Not saved';notice('Browser storage is unavailable or full. Export your progress to keep this attempt.');}}
+function persist(){if(storageStale)return;try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='Saved here';}catch{$('save-status').textContent='Not saved';notice('Browser storage is unavailable or full. Export your progress to keep this attempt.');}}
 function entry(){ return state.exercises[current.id] ||= {coldDays:[],attempts:0}; }
 function session(){return entry().session ||= {mode:'practice',cold:false,started:Date.now(),hint:0};}
 function editable(name){return name!=='src/tests.py' && !name.endsWith('.jsonl');}
@@ -25,8 +25,8 @@ function refresh(){
   $('lessons').replaceChildren();let group='';
   exercises.forEach((e,i)=>{if(e.stage!==group){group=e.stage;const h=document.createElement('div');h.className='group-label';h.textContent=group;$('lessons').append(h);}
     const b=document.createElement('button');b.className='lesson';b.setAttribute('aria-current',String(e.id===current?.id));b.textContent=`${String(i+1).padStart(2,'0')}  ${e.title}`;const small=document.createElement('small');small.textContent=`${e.minutes} min · ${label(progress(state,e.id))}`;b.append(small);b.onclick=()=>select(e);$('lessons').append(b);});
-  const mocks=state.attempts.filter(a=>a.passed&&a.mockQualified);const distinct=new Set(mocks.map(a=>a.id)).size,days=new Set(mocks.map(a=>day(a.at))).size;
-  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${distinct} different mocks passed within time without recorded assistance, across ${days} day(s). Still review design, explanation and unfamiliar-task transfer yourself.`;
+  const mocks=state.attempts.filter(a=>a.passed&&a.mockQualified&&a.freshMock);const distinct=new Set(mocks.map(a=>a.id)).size,days=new Set(mocks.map(a=>day(a.at))).size;
+  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${distinct} different fresh mocks passed within time without recorded assistance, across ${days} day(s). Still review design, explanation and unfamiliar-task transfer yourself.`;
   $('history').replaceChildren();
   if(!state.attempts.length){const li=document.createElement('li');li.textContent='Your first run starts the evidence. Syntax errors are useful feedback.';$('history').append(li);}
   state.attempts.slice(0,6).forEach(a=>{const li=document.createElement('li');const title=exercises.find(e=>e.id===a.id)?.title||'Exercise';li.textContent=`${new Date(a.at).toLocaleDateString()} — ${title}: ${a.passed?'passed':a.kind}${a.cold?' · cold recall':''}${a.output?' · '+firstError(a.output):''}`;$('history').append(li);});
@@ -35,7 +35,7 @@ function refresh(){
 function firstError(output){const lines=output.split('\n');return (lines.find(s=>/^(SyntaxError|IndentationError|AssertionError|TypeError|ValueError|NameError|NotImplementedError|FAIL:|ERROR:)/.test(s))||'').slice(0,180);}
 function select(e){
   if(worker){notice('Stop the current run before switching exercises.');return;}
-  saveEditor();current=e;history.replaceState(null,'','#'+e.id);
+  saveEditor();current=e;entry().viewedAt ||= Date.now();history.replaceState(null,'',location.pathname+'#'+e.id);
   $('title').textContent=e.title;$('stage').textContent=`${e.stage} · ${e.minutes}-minute target · ${e.focus}`;$('why').textContent=e.why;
   $('brief').innerHTML=renderMarkdown(e.brief);$('file').replaceChildren();
   Object.keys(e.files).forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name+(editable(name)?'':' (read only)');$('file').append(o);});
@@ -59,7 +59,7 @@ function busy(on){['syntax','run','new-attempt','mode','file','timer-button'].fo
 function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message)$('output').textContent=message;}
 function run(mode){
   if(worker)return;saveEditor();const s=session();
-  runContext={id:current.id,cold:s.cold&&day(s.started)===day(),mode:s.mode,deadline:s.deadline,started:s.started};
+  runContext={id:current.id,cold:s.cold&&day(s.started)===day(),mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock};
   busy(true);$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent='Loading Python';
   worker=new Worker(new URL('./runner.mjs',import.meta.url),{type:'module'});
   runTimeout=setTimeout(()=>stop('Python could not load within 90 seconds. Check your connection, then try again.'),90000);
@@ -70,8 +70,8 @@ function run(mode){
       stop(null);$('output').textContent=data.output||'Execution finished without output.';$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':`${data.count||0} tests · passed`):'Read the first error';
       if(mode==='syntax'&&!data.passed){record(state,current.id,{passed:false,kind:'syntax',cold:false,output:firstError(data.output)});persist();refresh();}
       if(mode==='tests'){
-        const ctx=runContext;const cold=ctx.cold;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
-        record(state,current.id,{passed:data.passed,kind:data.kind,cold,scaffold:['syntax-guided','syntax-faded'].includes(current.id),mockQualified,count:data.count,elapsed:Math.round((Date.now()-ctx.started)/1000),output:firstError(data.output)});
+        const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
+        record(state,current.id,{passed:data.passed,kind:data.kind,cold,scaffold:['syntax-guided','syntax-faded'].includes(current.id),mockQualified,freshMock:ctx.freshMock,count:data.count,elapsed:Math.round((Date.now()-ctx.started)/1000),output:firstError(data.output)});
         if(data.passed)notice(['syntax-guided','syntax-faded'].includes(current.id)?'Foundation pass recorded. Continue to the next step and gradually remove the support.':cold?'Cold pass recorded. Return on the scheduled day and start fresh.':'Practice pass recorded. Tomorrow, try a fresh cold recall attempt.');
         else notice('One error at a time. Read the first failure, make one change, and run again.');
         persist();refresh();
@@ -101,4 +101,19 @@ $('method-button').onclick=()=>$('method').showModal();$('close-method').onclick
 $('export').onclick=()=>{saveEditor();const url=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`coding-practice-${day()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('import').onchange=async()=>{const f=$('import').files[0];if(!f)return;try{if(worker)throw Error('Stop the run before importing.');if(f.size>5000000)throw Error('Backup is too large.');const next=validateImport(JSON.parse(await f.text()),exercises);if(!confirm('Replace this browser’s practice progress with the backup?'))return;state=next;file=null;persist();$('motivation').value=state.motivation;select(current);notice('Backup restored. Imported code counts as practice until a fresh attempt.');}catch(e){notice(e.message);}finally{$('import').value='';}};
 window.addEventListener('beforeunload',saveEditor);
-try {const response=await fetch('./curriculum.json');if(!response.ok)throw Error('Exercise download failed');const pack=await response.json();exercises=pack.exercises;state=validateImport(state,exercises,false);$('motivation').value=state.motivation;select(exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state));setInterval(tick,1000);}catch(e){notice('Could not load the practice workspace: '+e.message+'. Reload to try again.');}
+window.addEventListener('storage',event=>{
+ if(event.key!==KEY)return;
+ storageStale=true;stop(null);
+ for(const id of ['syntax','run','main','new-attempt','mode','file','timer-button','next-hint'])$(id).disabled=true;
+ $('editor').readOnly=true;
+ notice('Coding progress changed in another tab. Export this tab if you need its unsaved work, then reload before continuing.');
+});
+try {const response=await fetch('./curriculum.json');if(!response.ok)throw Error('Exercise download failed');const pack=await response.json();exercises=pack.exercises;state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
+if(new URLSearchParams(location.search).get('assessment')==='1'){
+ const previous=state.exercises[target.id];
+ if(target.stage==='Mock'&&!previous?.viewedAt&&!previous?.session&&!previous?.files&&!previous?.attempts){
+  state.exercises[target.id]={coldDays:[],attempts:0,session:{mode:'mock',cold:true,freshMock:true,started:Date.now(),deadline:Date.now()+target.minutes*60000,hint:0}};
+  notice('Fresh mock started. Work independently; the timer is running. Explain your design afterward in the interview room.');
+ }else notice('This task has already been opened. Continue as familiar practice, or choose an unviewed mock from the complete path.');
+}
+select(target);setInterval(tick,1000);}catch(e){notice('Could not load the practice workspace: '+e.message+'. Reload to try again.');}

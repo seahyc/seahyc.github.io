@@ -112,9 +112,9 @@ def run_references(exercises, source_root, new_reference_root):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(content, encoding="utf-8")
             entry = work / exercise["entry"]
-            if exercise["id"] in {"versioned-key-value-store", "bounded-lru-cache"}:
-                reference = new_reference_root / entry.name
-            else:
+            candidates = [new_reference_root / (exercise["id"] + ".py"), new_reference_root / entry.name]
+            reference = next((candidate for candidate in candidates if candidate.is_file()), None)
+            if reference is None:
                 reference = find_original_reference(source_root, entry.name)
             if not reference.is_file():
                 fail(f"missing private reference for {exercise['id']}: {reference}")
