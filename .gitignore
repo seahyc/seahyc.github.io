@@ -11,3 +11,5 @@ projects-src/reno-atmosphere/.env.local
 
 .superpowers/
 .gstack/
+
+.worktrees/
