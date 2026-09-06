@@ -4,9 +4,9 @@
 
 ## Curriculum
 
-24 original Python exercises cover fluency, data structures, practical AI tooling, progressive requirements, async work, debugging and timed transfer. Twelve interview rehearsals cover live reasoning, code review, discovery, demos, project depth, evaluation, workflow systems, inference, concurrency, model basics, motivation and a full loop. Every rehearsal has a scenario, timed rounds, follow-ups and four domain-specific rubric dimensions.
+Four one-function ramp exercises lead into 24 original Python exercises that cover fluency, data structures, practical AI tooling, progressive requirements, async work, debugging and timed transfer. Twelve interview rehearsals cover live reasoning, code review, discovery, demos, project depth, evaluation, workflow systems, inference, concurrency, model basics, motivation and a full loop. Every rehearsal has a scenario, timed rounds, follow-ups and four domain-specific rubric dimensions.
 
-Choose Applied systems, Engineering depth or Both. Time budgets allocate practice; readiness thresholds do not relax when a target date is near. These are training heuristics, not predictions of hiring outcomes or a universal interview syllabus. Specialized research roles require further role-specific depth.
+The default experience is one linear route through both areas. A deterministic mastery policy selects one next step from actual test results, assistance, independent retrieval, due recall and rehearsal evidence. The initial guided tasks teach a pattern; independent variants check transfer. Supported passes lead to fresh retrieval on the same task. Failed checks keep the learner on the skill; repeated failures reveal support. First independent success allows progression, with 1/3/7/14-day recall checks inserted into the same queue. This is rule-based adaptation, not an AI tutor or an inferred psychometric mastery score. The full exercise library is available only through Options. These are training heuristics, not predictions of hiring outcomes or a universal interview syllabus. Specialized research roles require further role-specific depth.
 
 ## Runtime and state
 
@@ -19,11 +19,12 @@ Fresh mock launch records whether the task has been opened or attempted in this 
 ## Verification
 
 ```
-node --test scripts/state.test.mjs scripts/practice-path.test.mjs
+node --test scripts/state.test.mjs scripts/practice-path.test.mjs scripts/mastery.test.mjs
 node --check static/practice/app.mjs
 node --check static/practice/runner.mjs
 node --check static/practice/path/app.mjs
 python3 scripts/verify-exercises.py
+python3 scripts/verify-exercises.py --curriculum static/practice/ramp.json
 ```
 
 The public verifier validates/compiles all starters. Add `--source-root` and `--new-reference-root` to run private references; reference solutions must remain outside the public repository. Supplementary private references may be named by exercise ID or entry basename.
@@ -32,7 +33,10 @@ Browser smoke tests require Playwright (or `PLAYWRIGHT_MODULE`), an installed br
 
 ```
 node scripts/browser-practice.mjs
-node scripts/browser-practice-path.mjs
+node scripts/browser-mastery-path.mjs
+node scripts/browser-mastery-code.mjs
 ```
 
-The tests use isolated browser contexts. They cover Python execution, stopping code, saved-work migration, timer/freshness semantics, coaching evidence, backup round trips, track selection and mobile overflow. Screenshots are saved to the operating-system temporary directory.
+The tests use isolated browser contexts. They cover Python execution, stopping code, saved-work migration, timer/freshness semantics, coaching evidence, backup round trips, mastery transitions, one-question interviews and mobile overflow. Screenshots are saved to the operating-system temporary directory.
+
+`RAMP_REFERENCE_ROOT` optionally points the coding-flow smoke test to private ramp references named by exercise ID. With references it runs all 20 new Python tests through the browser, including assisted-pass → fresh retrieval → independent-pass transitions. Fresh resets retain the last three code snapshots in the coding backup. Interview wizard drafts retain every answer and position on reload; old freeform notes migrate into the first answer.
