@@ -7,7 +7,7 @@ const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try {
  await page.goto(process.env.PRACTICE_URL||'http://127.0.0.1:8768/practice/');
  await page.locator('#title').filter({hasText:'Guided'}).waitFor();
- assert.equal(await page.locator('.lesson').count(),16);
+ assert.equal(await page.locator('.lesson').count(),24);
  await page.locator('#syntax').click();
  await page.waitForFunction(()=>document.querySelector('#runtime-state').textContent==='Syntax valid',null,{timeout:90000});
  console.log('PASS real browser Python syntax check');

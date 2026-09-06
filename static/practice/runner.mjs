@@ -41,7 +41,20 @@ with contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):
             spec.loader.exec_module(module)
             suite=unittest.defaultTestLoader.loadTestsFromModule(module)
             result=unittest.TextTestRunner(stream=output,verbosity=2).run(suite)
-            report.update(passed=result.wasSuccessful() and result.testsRun>0,kind='tests',count=result.testsRun)
+            async_total=0
+            async_failed=0
+            for async_test in getattr(module, 'ASYNC_TESTS', []):
+                async_total += 1
+                try:
+                    await async_test()
+                    print(async_test.__name__ + ' ... ok')
+                except BaseException:
+                    async_failed += 1
+                    print(async_test.__name__ + ' ... FAIL')
+                    traceback.print_exc(limit=5)
+            count=result.testsRun+async_total
+            if async_total: print('Async tests: %s run, %s failed' % (async_total, async_failed))
+            report.update(passed=result.wasSuccessful() and async_failed==0 and count>0,kind='tests',count=count)
     except BaseException as error:
         report['kind']='syntax' if isinstance(error,SyntaxError) else 'runtime'
         traceback.print_exc(limit=5)

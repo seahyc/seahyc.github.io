@@ -1,0 +1,1021 @@
+{
+  "sessions": [
+    {
+      "id": "think-aloud",
+      "title": "Think Aloud Coding",
+      "category": "Coding discussion",
+      "track": "shared",
+      "minutes": 30,
+      "why": "Practises think aloud coding with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "syntax-guided",
+        "syntax-faded",
+        "python-refresher-1"
+      ],
+      "brief": "Implement sessionization of sorted timestamped user events: a gap over 20 minutes starts a session. Empty input and equal timestamps are valid. State assumptions, trace boundaries, and narrate syntax uncertainty while preserving the algorithm. Simulated examples are sufficient; no deployment is needed.",
+      "rounds": [
+        {
+          "minutes": 5,
+          "prompt": "State the exact 20-minute boundary rule and trace empty, singleton, equal-time, 20:00-gap, and 20:01-gap inputs.",
+          "deliverable": "A contract and exact expected session groups for all five inputs."
+        },
+        {
+          "minutes": 18,
+          "prompt": "Implement the sessionizer aloud, maintaining a per-user open-session invariant and naming any Python syntax uncertainty.",
+          "deliverable": "Runnable Python plus the loop invariant and order-preservation explanation."
+        },
+        {
+          "minutes": 7,
+          "prompt": "Trace interleaved users and repeated gaps, then add boundary assertions.",
+          "deliverable": "Assertions with exact grouped outputs and one corrected syntax check."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "20-minute-boundary-contract",
+          "label": "20-minute boundary contract",
+          "anchors": [
+            "Leaves the 20-minute boundary undefined or uses the wrong comparison.",
+            "States that gaps over 20 minutes split sessions but gives no boundary example.",
+            "Classifies 20:00 as same-session and 20:01 as a new session with expected outputs.",
+            "Writes executable boundary tests covering just below, equal to, and just above 20 minutes."
+          ]
+        },
+        {
+          "id": "per-user-loop-invariant",
+          "label": "Per-user loop invariant",
+          "anchors": [
+            "Mixes users or cannot state what the running session represents.",
+            "Tracks a prior timestamp but does not preserve a clear per-user invariant.",
+            "States and maintains that each open session contains one user\u2019s contiguous qualifying events.",
+            "Traces the invariant through user changes and multiple gaps without losing or duplicating events."
+          ]
+        },
+        {
+          "id": "empty-and-equality-edge-cases",
+          "label": "Empty and equality edge cases",
+          "anchors": [
+            "Crashes on empty input or splits events with equal timestamps.",
+            "Names empty and equal-time inputs without giving their expected results.",
+            "Returns no sessions for empty input and keeps equal timestamps together in a concrete trace.",
+            "Adds assertions for empty, singleton, repeated-equal, and zero-gap event sequences."
+          ]
+        },
+        {
+          "id": "python-syntax-recovery",
+          "label": "Python syntax recovery",
+          "anchors": [
+            "Lets a Python syntax uncertainty halt the sessionization algorithm.",
+            "Guesses syntax silently and cannot separate language recall from algorithm logic.",
+            "Names the uncertain construct, uses a valid simpler form, and continues the correct algorithm.",
+            "Checks the uncertain syntax with a minimal example and integrates the result without changing semantics."
+          ]
+        }
+      ],
+      "followups": [
+        "Events can now arrive 90 seconds out of order; revise the invariant and tests.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "code-review",
+      "title": "Review a Buggy Function",
+      "category": "Coding discussion",
+      "track": "shared",
+      "minutes": 45,
+      "why": "Practises review a buggy function with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "python-refresher-1",
+        "log-spike"
+      ],
+      "brief": "Intended contract: inspect only the first limit rows in original input order; accept status 200 rows with finite nonnegative latency; return successful count, arithmetic mean, and nearest-rank p95; return null statistics when none qualify; never mutate input. Review this exactly 12-line function before proposing changes. Find mutation, empty-data, limit, malformed latency, percentile, count, and complexity defects; rank release blockers and specify proving tests. Do not give a full replacement solution.\n\ndef summarize(rows, limit=100):\n rows.sort(key=lambda r: r['latency'])\n kept = []\n total = 0\n for i, row in enumerate(rows):\n  if row.get('status') == 200:\n   total += row['latency']\n   kept.append(row)\n  if i > limit: break\n average = total / len(kept)\n p95 = kept[int(len(kept)*.95)]['latency']\n return {'average':average,'p95':p95,'count':len(rows)}",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Restate the contract, then trace rows=[{'status':500,'latency':1},{'status':200,'latency':9}], limit=1 through all reached lines before proposing fixes.",
+          "deliverable": "The observed exception or result, required {'average':null,'p95':null,'count':0}, and first violated contract clause."
+        },
+        {
+          "minutes": 22,
+          "prompt": "Review all 12 lines against original-order limiting, finite nonnegative successful latency, no mutation, successful count, arithmetic mean, nearest-rank p95, and null empty statistics.",
+          "deliverable": "A line-numbered defect table with concrete input, observed behavior, required behavior, severity, and smallest correction."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Trace empty-success, NaN, negative latency, limit=0, the limit boundary, and four successes through the current code.",
+          "deliverable": "Exact observed-versus-required outputs or exceptions, including the nearest-rank calculation."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Rank minimal patches and tests without supplying a replacement function.",
+          "deliverable": "An ordered patch plan tied to exact regression, immutability, and complexity checks."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "first-n-input-order-contract",
+          "label": "First-N input-order contract",
+          "anchors": [
+            "Accepts sorting all rows before applying the limit.",
+            "Objects to mutation or limit handling but misses their shared input-order consequence.",
+            "Shows that slicing the original first N rows must precede latency filtering or ordering.",
+            "Uses a counterexample where a slow row beyond N changes the buggy result and proves input remains unchanged."
+          ]
+        },
+        {
+          "id": "reproducible-defect-triggers",
+          "label": "Reproducible defect triggers",
+          "anchors": [
+            "Lists defects without an input that reaches any faulty line.",
+            "Provides triggering inputs but omits the observed versus required result.",
+            "Pairs each release-blocking defect with a minimal input and mismatched expected output.",
+            "Reduces mutation, empty, malformed, percentile, and count failures to independent regression cases."
+          ]
+        },
+        {
+          "id": "minimal-compatible-patch-order",
+          "label": "Minimal compatible patch order",
+          "anchors": [
+            "Proposes a rewrite without ranking contract violations.",
+            "Names patch ideas but gives no dependency or release-blocker order.",
+            "Orders fixes so bounds and validation precede statistics while preserving the public return shape.",
+            "Justifies a smallest safe patch sequence and identifies which tests unlock each subsequent change."
+          ]
+        },
+        {
+          "id": "expected-output-test-matrix",
+          "label": "Expected-output test matrix",
+          "anchors": [
+            "Offers test themes with no exact expected dictionary.",
+            "Gives expected values for only the happy path.",
+            "Includes exact count, mean, p95, and null outputs for representative contract cases.",
+            "Builds a matrix isolating limit, mutation, invalid latency, empty success set, and nearest-rank boundaries."
+          ]
+        }
+      ],
+      "followups": [
+        "The contract is first limit input rows in original order, finite nonnegative successful latencies, successful count, nearest-rank p95, null empty statistics, and no mutation. Which lines violate it?",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "customer-discovery",
+      "title": "Customer Discovery Under Uncertainty",
+      "category": "Judgment",
+      "track": "applied",
+      "minutes": 35,
+      "why": "Practises customer discovery under uncertainty with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "tool-router"
+      ],
+      "brief": "A workflow assistant loses users after its first step. With ten conversations and aggregate funnel data but no reliable segments, distinguish unclear value, trust, setup friction, and missing capability. Use recent behavior, avoid invented quotes, define evidence that changes the roadmap. Simulation is sufficient.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Define distinct behavioral predictions for unclear value, low trust, setup friction, and missing capability.",
+          "deliverable": "Four hypotheses with one confirming and one disconfirming observation each."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Plan ten interviews that reconstruct the most recent attempt from trigger through workaround and outcome.",
+          "deliverable": "A completer/abandoner sample and behavior-anchored interview guide."
+        },
+        {
+          "minutes": 7,
+          "prompt": "Revise the study when only two abandoners are recruitable and triangulate with funnel events.",
+          "deliverable": "An evidence grid separating facts, inference, uncertainty, and sampling bias."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Set observable build, defer, and investigate thresholds.",
+          "deliverable": "Three roadmap rules with pattern counts and contrary evidence that cancels each."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "value-versus-trust-hypotheses",
+          "label": "Value versus trust hypotheses",
+          "anchors": [
+            "Treats first-step abandonment as proof of one cause.",
+            "Names value and trust as possibilities without distinguishable predictions.",
+            "Defines separate observable signals for unclear value and low trust in recent user behavior.",
+            "Adds disconfirming evidence that would swap the leading value-versus-trust hypothesis."
+          ]
+        },
+        {
+          "id": "recent-behavior-interview-probes",
+          "label": "Recent-behavior interview probes",
+          "anchors": [
+            "Asks users what they hypothetically want from the assistant.",
+            "Asks about past use but accepts opinions without reconstructing an episode.",
+            "Probes the last attempt for trigger, first action, hesitation, workaround, and outcome.",
+            "Uses follow-up questions that anchor each claim to a specific recent screen, choice, or abandonment moment."
+          ]
+        },
+        {
+          "id": "completer-and-abandoner-sampling",
+          "label": "Completer and abandoner sampling",
+          "anchors": [
+            "Recruits whoever is easiest and treats the responses as representative.",
+            "Includes both completers and abandoners without a sampling rationale.",
+            "Allocates the ten conversations across both outcomes and states the comparison each group enables.",
+            "Adjusts recruitment for scarce abandoners and narrows claims to the observed outcome groups."
+          ]
+        },
+        {
+          "id": "build-defer-investigate-thresholds",
+          "label": "Build defer investigate thresholds",
+          "anchors": [
+            "Recommends building from interview enthusiasm alone.",
+            "Uses vague roadmap language without an evidence threshold.",
+            "Sets explicit observed-behavior criteria for build, defer, and investigate decisions.",
+            "Links each roadmap branch to a minimum pattern count plus contrary evidence that cancels it."
+          ]
+        }
+      ],
+      "followups": [
+        "Only two recent abandoners can be recruited; revise sampling and the claims you permit.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "delivery-demo",
+      "title": "Delivery and Tradeoff Demo",
+      "category": "Project story",
+      "track": "applied",
+      "minutes": 45,
+      "why": "Practises delivery and tradeoff demo with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "dependency-graph",
+        "rate-limiter"
+      ],
+      "brief": "Present one real project you led under ambiguity and delivery pressure. Fill only facts you can defend: users, baseline, constraints, alternatives, your choice, an error, measurable result, and learning. Bring a diagram, metric, decision note, or mock; no deployment is needed.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Choose one real project and state its users, baseline, deadline, constraints, your remit, and the claim you will defend.",
+          "deliverable": "A fact-only opening with baseline, decision point, and ownership boundary."
+        },
+        {
+          "minutes": 17,
+          "prompt": "Present its workflow or architecture, alternatives, decision, and measurable result using one defensible artifact.",
+          "deliverable": "A project narrative plus a diagram, metric, decision note, or mock."
+        },
+        {
+          "minutes": 12,
+          "prompt": "Answer probes on the largest failure, accepted tradeoff, others\u2019 ownership, and missing evidence.",
+          "deliverable": "Factual answers with source artifacts and explicit unknowns."
+        },
+        {
+          "minutes": 8,
+          "prompt": "Re-present the decision in three minutes after the strongest challenge.",
+          "deliverable": "A revised story connecting constraint, choice, result, mistake, and learning."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "fact-and-ownership-evidence",
+          "label": "Fact and ownership evidence",
+          "anchors": [
+            "Claims project results or decisions without identifying personal work.",
+            "Describes team success but leaves individual ownership ambiguous.",
+            "Ties personal actions to a named artifact, baseline, and measured result.",
+            "Distinguishes authored, influenced, and team-owned work with verifiable evidence for each claim."
+          ]
+        },
+        {
+          "id": "alternative-decision-reconstruction",
+          "label": "Alternative decision reconstruction",
+          "anchors": [
+            "Presents the chosen approach as the only available option.",
+            "Names alternatives after the fact without their contemporary constraints.",
+            "Reconstructs at least two viable options using the information and tradeoffs known at decision time.",
+            "Shows why the chosen option won then and what changed evidence would have selected another."
+          ]
+        },
+        {
+          "id": "critical-path-delivery-control",
+          "label": "Critical-path delivery control",
+          "anchors": [
+            "Recounts delivery dates without identifying the blocking dependency.",
+            "Names a critical path but gives no action taken to protect it.",
+            "Maps the binding dependency, owner, deadline, and mitigation that preserved delivery.",
+            "Explains an actual critical-path change and the replan that limited schedule or scope impact."
+          ]
+        },
+        {
+          "id": "error-detection-and-durable-learning",
+          "label": "Error detection and durable learning",
+          "anchors": [
+            "Hides the project error or reduces it to a generic lesson.",
+            "Names an error but cannot say how it was detected or contained.",
+            "Connects the error\u2019s signal, immediate correction, and one durable process change.",
+            "Provides evidence that the process change later prevented or surfaced the same failure earlier."
+          ]
+        }
+      ],
+      "followups": [
+        "Your headline metric is ruled unreliable; rebuild the outcome case from remaining evidence.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "project-deep-dive",
+      "title": "Project Technical Deep Dive",
+      "category": "Project story",
+      "track": "shared",
+      "minutes": 45,
+      "why": "Practises project technical deep dive with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "dependency-graph",
+        "log-spike"
+      ],
+      "brief": "Choose an actual project you know firsthand. Explain requirements, architecture, interfaces, scale, failure modes, decision history, exact personal contribution, mistake, and learning. Label estimates and never invent numbers or conflict. A whiteboard diagram and local artifacts suffice.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Define an actual project\u2019s requirements, users, scale, interfaces, success measure, and your contribution; label estimates.",
+          "deliverable": "A system contract with fact/estimate labels and ownership boundary."
+        },
+        {
+          "minutes": 17,
+          "prompt": "Draw request and data paths and explain components, state, storage, and decision history.",
+          "deliverable": "An annotated architecture diagram and evidence-backed decision record."
+        },
+        {
+          "minutes": 12,
+          "prompt": "Trace one failure through detection, containment, recovery, blast radius, and possible data or trust loss.",
+          "deliverable": "An end-to-end failure trace with signals, recovery, and unresolved risk."
+        },
+        {
+          "minutes": 8,
+          "prompt": "Defend the hardest tradeoff and revise it for a stated new scale or reliability constraint.",
+          "deliverable": "A revised decision with evidence, personal mistake, and migration trigger."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "personal-versus-team-ownership",
+          "label": "Personal versus team ownership",
+          "anchors": [
+            "Uses \u201cwe\u201d throughout and leaves personal contribution unknowable.",
+            "Names a personal task but not its boundary with team work.",
+            "Separates own decisions and artifacts from collaborators\u2019 contributions at each major stage.",
+            "Handles ownership challenges by citing reviews, commits, or decision records without overstating credit."
+          ]
+        },
+        {
+          "id": "state-interfaces-and-invariants",
+          "label": "State interfaces and invariants",
+          "anchors": [
+            "Draws components without state ownership or interface contracts.",
+            "Labels state and interfaces but omits allowed transitions or invariants.",
+            "Maps each state owner, interface input/output, and one invariant maintained across calls.",
+            "Traces a failure across interfaces and shows exactly where the invariant is checked or restored."
+          ]
+        },
+        {
+          "id": "ten-times-bottleneck-reasoning",
+          "label": "Ten-times bottleneck reasoning",
+          "anchors": [
+            "Says the system scales tenfold with no resource estimate.",
+            "Names a likely bottleneck without calculating when it binds.",
+            "Uses current throughput and capacity to identify the first resource exhausted at ten times load.",
+            "Compares two scaling remedies quantitatively and identifies the next bottleneck after mitigation."
+          ]
+        },
+        {
+          "id": "incident-causal-chain",
+          "label": "Incident causal chain",
+          "anchors": [
+            "Recounts an incident as a timeline with no causal mechanism.",
+            "Names a root cause but omits contributing conditions or detection delay.",
+            "Links trigger, latent condition, propagation, user impact, detection, and containment in order.",
+            "Tests the causal chain against an alternative explanation and cites evidence that rules it out."
+          ]
+        }
+      ],
+      "followups": [
+        "Traffic rises tenfold while the main dependency limit stays fixed; redraw the bottleneck.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "eval-design",
+      "title": "Evaluation Design",
+      "category": "System design",
+      "track": "shared",
+      "minutes": 45,
+      "why": "Practises evaluation design with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "eval-harness",
+        "log-spike"
+      ],
+      "brief": "Design evaluation for an assistant that proposes action items from conversations. It may omit, invent, duplicate, or misassign tasks. Human review covers 300 examples across language and customer size. From first principles, evaluation means repeatable examples, expected properties, measurements, and decision thresholds. No production access is needed.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Define a correct action item and partition omission, invention, duplication, and wrong-assignee cases across required slices.",
+          "deliverable": "An annotation contract with examples and a 300-example stratified sample."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Specify labels and metrics for detection, fields, deduplication, assignment, and reviewer disagreement.",
+          "deliverable": "Metrics with units, denominators, adjudication rules, and worked examples."
+        },
+        {
+          "minutes": 14,
+          "prompt": "Create adversarial conversations with implicit owners, corrections, repeats, negation, and multilingual turns.",
+          "deliverable": "A challenge set with expected actions, failure class, and metric impact."
+        },
+        {
+          "minutes": 8,
+          "prompt": "Set ship, investigate, and reject thresholds by slice.",
+          "deliverable": "Numeric launch gates with agreement checks, sample caveats, and regression triggers."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "false-positive-versus-false-negative-costs",
+          "label": "False-positive versus false-negative costs",
+          "anchors": [
+            "Treats invented and omitted action items as equally harmful without analysis.",
+            "Names false-positive and false-negative costs but does not connect them to a metric choice.",
+            "Quantifies or ranks user costs for invented versus omitted tasks and selects metrics accordingly.",
+            "Derives an operating threshold from the asymmetric costs and shows how a cost change moves it."
+          ]
+        },
+        {
+          "id": "train-development-test-leakage-control",
+          "label": "Train development test leakage control",
+          "anchors": [
+            "Reuses the final test examples while tuning prompts or thresholds.",
+            "Separates datasets by name but gives no rule preventing contamination.",
+            "Assigns fitting, selection, and final reporting to disjoint example sets with controlled access.",
+            "Handles duplicate conversations and repeated customers so information cannot cross split boundaries."
+          ]
+        },
+        {
+          "id": "language-and-customer-size-slice-coverage",
+          "label": "Language and customer-size slice coverage",
+          "anchors": [
+            "Reports one aggregate score across all 300 examples.",
+            "Lists language and customer-size slices without allocating examples.",
+            "Creates a coverage table crossing language with customer size and reports each slice separately.",
+            "Justifies slice sample sizes by risk and flags intersections too small for a release claim."
+          ]
+        },
+        {
+          "id": "per-slice-release-and-rollback-thresholds",
+          "label": "Per-slice release and rollback thresholds",
+          "anchors": [
+            "Approves release from the aggregate average alone.",
+            "Sets one global threshold that can hide a failing slice.",
+            "Defines minimum precision or recall thresholds for every required slice before release.",
+            "Adds rollback triggers tied to post-release slice drift and names the measurement window."
+          ]
+        }
+      ],
+      "followups": [
+        "A high-harm slice has 12 labels and fails its gate; make and defend the release decision.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "reliable-agent-design",
+      "title": "Reliable Workflow Assistant Design",
+      "category": "System design",
+      "track": "applied",
+      "minutes": 60,
+      "why": "Practises reliable workflow assistant design with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "tool-router",
+        "retry-backoff",
+        "eval-harness"
+      ],
+      "brief": "Design an assistant that retrieves records, proposes changes, and executes only approved changes. Tools time out, reads go stale, writes may be non-idempotent, budget is 20 seconds, and logs exclude sensitive fields. Explain from first principles: idempotency makes repeats have the same effect; a state machine defines allowed transitions. Simulated tool responses suffice.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "Define states from retrieval through proposal, approval, execution, and termination, including stale reads and the 20-second budget.",
+          "deliverable": "A transition table with guards, deadlines, and prohibited transitions."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Design the flow with version checks, idempotency keys, retry boundaries, and redacted audit records.",
+          "deliverable": "A sequence diagram naming tool calls, tokens, timeouts, states, and logged fields."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Trace timeout after a non-idempotent write, stale approval, duplicate delivery, and budget exhaustion.",
+          "deliverable": "Four event traces with visible effects, safe recovery, and stop conditions."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Choose retry and reconciliation policies and user-visible status.",
+          "deliverable": "An operations table with retryability, reconciliation source, status, and redacted evidence."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Retry the weakest transition using a new event sequence.",
+          "deliverable": "A corrected state fragment, before/after trace, and restored invariant."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "approval-bound-to-final-payload",
+          "label": "Approval bound to final payload",
+          "anchors": [
+            "Treats approval of an earlier draft as permission for a changed write.",
+            "Requires approval but does not bind it to exact write parameters.",
+            "Hashes or versions the final payload and executes only the payload the user approved.",
+            "Invalidates approval after any payload, target, or stale-read change and requests a newly bound approval."
+          ]
+        },
+        {
+          "id": "persisted-guarded-state-transitions",
+          "label": "Persisted guarded state transitions",
+          "anchors": [
+            "Keeps workflow state only in process memory.",
+            "Persists state labels but allows writes from unspecified prior states.",
+            "Defines durable allowed transitions with guards for proposed, approved, executing, and terminal states.",
+            "Uses atomic transition checks so restart or duplicate workers cannot bypass an approval guard."
+          ]
+        },
+        {
+          "id": "ambiguous-write-reconciliation",
+          "label": "Ambiguous write reconciliation",
+          "anchors": [
+            "Retries a timed-out non-idempotent write immediately.",
+            "Notes the ambiguity but offers no way to discover whether the write landed.",
+            "Checks an operation key or authoritative read before deciding to retry an uncertain write.",
+            "Distinguishes committed, absent, and still-unknown outcomes with a bounded reconciliation path for each."
+          ]
+        },
+        {
+          "id": "sensitive-data-safe-audit-evidence",
+          "label": "Sensitive-data-safe audit evidence",
+          "anchors": [
+            "Logs full record or tool payloads containing sensitive fields.",
+            "Redacts obvious values but loses the evidence needed to reconstruct decisions.",
+            "Logs operation IDs, state changes, approvals, and outcomes while excluding protected field values.",
+            "Shows an audit record that proves who approved which payload version without exposing record contents."
+          ]
+        }
+      ],
+      "followups": [
+        "A write times out after it may have committed; trace persisted recovery transitions.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "inference-service",
+      "title": "Inference Service Design",
+      "category": "System design",
+      "track": "depth",
+      "minutes": 60,
+      "why": "Practises inference service design with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "batch-scheduler",
+        "bounded-lru-cache",
+        "rate-limiter"
+      ],
+      "brief": "Design a streaming service for a large predictive model at 30 requests/second, first response p99 under 800 ms, bounded memory, and graceful overload. Inference runs a trained function; batching trades efficiency for queue delay; a key-value cache retains prior attention state to avoid recomputation. No training or deployment is required.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "Quantify workload, the 800-ms first-response p99 budget, token assumptions, memory ceiling, and overload policy.",
+          "deliverable": "A capacity worksheet with assumptions, latency budget, and admission objective."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Design admission, scheduling, batching, execution, streaming, and cache ownership.",
+          "deliverable": "An architecture and sequence with deadlines, batches, streams, and cache lifecycle."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Trace burst overload, slow generation, cancellation, worker loss, and cache exhaustion.",
+          "deliverable": "A failure table with metric symptom, containment, client result, and recovery."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Choose batching windows, queue limits, and cache rejection or eviction using capacity math.",
+          "deliverable": "A defended configuration with measurements and adjustment thresholds."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Revise the weakest latency or memory claim after a numerical counterexample.",
+          "deliverable": "An updated calculation and design change tied to the violated objective."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "queue-capacity-and-first-response-math",
+          "label": "Queue capacity and first-response math",
+          "anchors": [
+            "Claims the service meets 800 ms without a queue calculation.",
+            "Uses 30 requests per second but omits service time or concurrency.",
+            "Calculates queue capacity and waiting budget from arrival rate, batch service time, and the 800 ms target.",
+            "Evaluates burst and p99 assumptions, then derives the admission point before first-response latency fails."
+          ]
+        },
+        {
+          "id": "key-value-cache-byte-accounting",
+          "label": "Key-value cache byte accounting",
+          "anchors": [
+            "Describes cache memory as bounded without estimating bytes.",
+            "Counts cached tokens but omits layers, heads, dimensions, or value precision.",
+            "Computes per-token key-plus-value bytes and multiplies by sequence count and length.",
+            "Uses the byte model to set an explicit cache limit and predicts memory reclaimed on cancellation."
+          ]
+        },
+        {
+          "id": "admission-fairness-and-cancellation-cleanup",
+          "label": "Admission fairness and cancellation cleanup",
+          "anchors": [
+            "Allows long requests to occupy all capacity indefinitely.",
+            "Mentions fairness and cancellation without a scheduling or cleanup rule.",
+            "Defines an admission policy that prevents starvation and frees queue and cache state on cancellation.",
+            "Traces competing request classes through admission, cancellation, and reclaimed capacity under overload."
+          ]
+        },
+        {
+          "id": "queue-batch-memory-and-rejection-instrumentation",
+          "label": "Queue batch memory and rejection instrumentation",
+          "anchors": [
+            "Monitors only total request latency.",
+            "Names queue, batch, memory, and rejection metrics without actionable dimensions.",
+            "Specifies queue age, batch fill, cache bytes, and rejection rate with useful percentiles or reasons.",
+            "Connects each metric to a concrete overload diagnosis and alert threshold before the 800 ms breach."
+          ]
+        }
+      ],
+      "followups": [
+        "Input length doubles and cache memory reaches 90%; recalculate admission and queueing.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "concurrency-whiteboard",
+      "title": "Concurrency Whiteboard",
+      "category": "Fundamentals",
+      "track": "depth",
+      "minutes": 45,
+      "why": "Practises concurrency whiteboard with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "bounded-async-map",
+        "loop-detector"
+      ],
+      "brief": "Sketch processing 1,000 independent jobs with at most 12 active and results in input order. Jobs time out, cancellation stops new work, failures remain visible. Concurrency overlaps tasks, a semaphore bounds active work, and a race makes outcomes depend on uncontrolled ordering. Simulated sleeps and hand traces suffice.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Specify ordered results, the 12-active cap, timeout, failure, and cancellation semantics.",
+          "deliverable": "A contract with exact success, timeout, failure, and cancellation examples."
+        },
+        {
+          "minutes": 17,
+          "prompt": "Sketch producer, bounded workers, indexed result slots, cancellation, and completion for 1,000 jobs.",
+          "deliverable": "Pseudocode and a lifecycle diagram preserving order and the cap."
+        },
+        {
+          "minutes": 12,
+          "prompt": "Trace 13 starts, out-of-order completion, timeout racing success, and mid-queue cancellation.",
+          "deliverable": "A timestamped trace of active count, slots, results, and race resolution."
+        },
+        {
+          "minutes": 8,
+          "prompt": "State invariants and tests for the cap, visible failures, ordering, and cancellation.",
+          "deliverable": "An invariant-to-test matrix with deterministic hooks and exact outputs."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "input-order-terminal-outcome-contract",
+          "label": "Input-order terminal outcome contract",
+          "anchors": [
+            "Returns jobs in completion order or drops failures.",
+            "Promises input order but leaves timeout and failure slots undefined.",
+            "Defines one terminal success, failure, timeout, or cancellation result for every input index.",
+            "Traces out-of-order completions into a complete input-ordered result vector with visible failures."
+          ]
+        },
+        {
+          "id": "twelve-active-bounded-backpressure",
+          "label": "Twelve-active bounded backpressure",
+          "anchors": [
+            "Starts all 1,000 jobs at once.",
+            "Uses a semaphore of 12 but still creates an unbounded waiting task set.",
+            "Keeps at most 12 active jobs and bounds pending work through producer backpressure.",
+            "Proves with counters that active and buffered jobs stay within limits during a slow-consumer trace."
+          ]
+        },
+        {
+          "id": "completion-cancellation-race-schedules",
+          "label": "Completion cancellation race schedules",
+          "anchors": [
+            "Assumes cancellation always occurs before or after completion.",
+            "Mentions a race but analyzes only one event ordering.",
+            "Enumerates completion-first, cancellation-first, and simultaneous-observation schedules with outcomes.",
+            "Defines a single synchronization rule that makes every enumerated race schedule satisfy the contract."
+          ]
+        },
+        {
+          "id": "barrier-driven-deterministic-tests",
+          "label": "Barrier-driven deterministic tests",
+          "anchors": [
+            "Uses random sleeps to test concurrency races.",
+            "Repeats flaky timing tests without controlling event order.",
+            "Uses barriers or controllable futures to force a named completion-and-cancellation schedule.",
+            "Builds deterministic tests for each race ordering and asserts both the result slot and active-job bound."
+          ]
+        }
+      ],
+      "followups": [
+        "Cancellation arrives as job twelve completes and job thirteen dequeues; trace ownership.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "model-fundamentals",
+      "title": "Model Fundamentals Walk-through",
+      "category": "Fundamentals",
+      "track": "depth",
+      "minutes": 45,
+      "why": "Practises model fundamentals walk-through with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "python-refresher-2"
+      ],
+      "brief": "Start from first principles: tensors are multidimensional arrays and shapes name axis sizes; stable softmax subtracts the maximum before exponentiation; leakage lets evaluation information affect fitting or selection; attention matches queries to keys and mixes values, while an optional key-value cache retains past state. Walk through shapes [2,4,3] times [3,5], scores [1000,1001,999], split leakage, and a two-token cache. Detailed derivations and specialized architectures are explicitly further study.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "For A[2,4,3] times B[3,5], write the explicit index-sum equation and derive output index ranges and shape.",
+          "deliverable": "C[i,j,k]=\u03a3 over r A[i,j,r]B[r,k], all index bounds, and shape [2,4,5]."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Compute stable softmax for [1000,1001,999], showing subtraction, exponentials, sum, and exact numerical scores.",
+          "deliverable": "[exp(-1),exp(0),exp(-2)] and normalized probabilities to at least four decimals."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Explain pre-split normalization leakage and diagnose a near-duplicate crossing the train/test split.",
+          "deliverable": "A split-then-fit pipeline and concrete traces for both leakage mechanisms."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Identify Q, K, and V for two tokens, then trace token-by-token cache growth and newly computed dot products.",
+          "deliverable": "A shape-labeled attention trace and cache contents after tokens one and two."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Without notes, retrieve one previously missed concept, example, and boundary case; revise only after feedback.",
+          "deliverable": "The first attempt, exposed gap, and corrected retrieval response."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "tensor-contraction-shape-trace",
+          "label": "Tensor contraction shape trace",
+          "anchors": [
+            "Cannot determine the output shape of [2,4,3] times [3,5].",
+            "States [2,4,5] without identifying the contracted axis.",
+            "Traces the shared size-3 axis and derives one [5] output for each [2,4] position.",
+            "Writes indexed dimensions for the contraction and verifies the resulting [2,4,5] element count."
+          ]
+        },
+        {
+          "id": "max-shift-stable-softmax-calculation",
+          "label": "Max-shift stable softmax calculation",
+          "anchors": [
+            "Exponentiates 1000, 1001, and 999 directly or declares overflow unavoidable.",
+            "Mentions subtracting the maximum but does not calculate shifted scores.",
+            "Converts the scores to [-1,0,-2], exponentiates them, and normalizes the three values.",
+            "Checks that the probabilities sum to one and identifies the largest score\u2019s resulting probability."
+          ]
+        },
+        {
+          "id": "preprocessing-duplicate-temporal-leakage",
+          "label": "Preprocessing duplicate temporal leakage",
+          "anchors": [
+            "Randomly splits records without considering duplicates or time.",
+            "Names leakage but cannot show how preprocessing transfers evaluation information.",
+            "Keeps duplicate groups together and fits preprocessing only on earlier training data.",
+            "Constructs a leaking split example, repairs it with group and temporal boundaries, and explains the score impact."
+          ]
+        },
+        {
+          "id": "two-token-attention-cache-growth",
+          "label": "Two-token attention cache growth",
+          "anchors": [
+            "Treats the attention cache as a fixed-size model parameter.",
+            "Says the cache grows with tokens but does not identify stored keys and values.",
+            "Traces token one and token two adding one key and one value entry per layer.",
+            "Compares cached decoding with recomputing prior keys and values, including the two-token shapes."
+          ]
+        }
+      ],
+      "followups": [
+        "A normalizer was fitted before the temporal split; locate and repair the leakage.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "motivation-and-judgment",
+      "title": "Motivation and Judgment",
+      "category": "Judgment",
+      "track": "shared",
+      "minutes": 40,
+      "why": "Practises motivation and judgment with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [],
+      "brief": "Prepare evidence-based answers about desired work, a hard decision, disagreement, and mistake. Use only actual facts you supply; never invent biography, motives, conflict, or outcomes. Separate what you know, infer, and need to learn, and connect preferences to demonstrated choices. Separately, consider a hypothetical capable assistant that saves users hours but occasionally proposes consequential incorrect changes. Explain the benefit you want to create, who bears the downside, which uncertainty matters, and what evidence would justify expanding or pausing deployment. Keep hypothetical judgment distinct from your real experience.",
+      "rounds": [
+        {
+          "minutes": 8,
+          "prompt": "Choose one real decision and separate facts, inference, unknowns, stakeholders, and stakes.",
+          "deliverable": "A fact-checked setup without invented motives, dialogue, or outcomes."
+        },
+        {
+          "minutes": 12,
+          "prompt": "Explain options, decision rule, your choice, and evidence connecting it to desired work.",
+          "deliverable": "A motivation-and-decision narrative grounded in demonstrated choices."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Answer probes on disagreement, the opposing case, a mistake, who bore the cost, and your response.",
+          "deliverable": "Factual answers with evidence and explicit unsupported details."
+        },
+        {
+          "minutes": 5,
+          "prompt": "A pilot saves five hours per user each week, but three of 100 proposed consequential actions are wrong. Decide whether to expand, constrain, or pause it, and state what evidence would change your view.",
+          "deliverable": "A conditional rollout decision that weighs benefit, asymmetric downside, human review, and a measurable stop or expansion condition."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Retry the least credible answer using defensible facts.",
+          "deliverable": "A revised answer, removed assumptions, and retained evidence."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "motivation-backed-by-actual-choices",
+          "label": "Motivation backed by actual choices",
+          "anchors": [
+            "States a desired job without evidence from prior choices.",
+            "Names a past choice but leaves its connection to desired work implicit.",
+            "Links each work preference to a specific voluntary project, role, or repeated investment.",
+            "Uses multiple actual choices to distinguish a durable motivation from a recent stated preference."
+          ]
+        },
+        {
+          "id": "options-constraints-dissent-and-outcome",
+          "label": "Options constraints dissent and outcome",
+          "anchors": [
+            "Tells a decision story with no viable alternative or disagreement.",
+            "Names options and dissent but omits the constraint that decided between them.",
+            "Explains options, binding constraints, dissenting view, chosen action, and observed outcome.",
+            "Reconstructs the strongest opposing case and states what outcome evidence later supported or weakened it."
+          ]
+        },
+        {
+          "id": "fact-estimate-ownership-separation",
+          "label": "Fact estimate ownership separation",
+          "anchors": [
+            "Presents estimates or team outcomes as personal facts.",
+            "Uses qualifiers inconsistently, leaving claim status unclear.",
+            "Labels each material claim as observed fact, estimate, inference, personal work, or team result.",
+            "Corrects an unsupported claim in real time and replaces it with a bounded, explicitly sourced statement."
+          ]
+        },
+        {
+          "id": "fit-questions-tied-to-decision-criteria",
+          "label": "Fit questions tied to decision criteria",
+          "anchors": [
+            "Asks generic questions that would not affect a job decision.",
+            "Asks about relevant topics but cannot say how answers change the choice.",
+            "Connects each fit question to a stated criterion and contrasting answer-dependent decision.",
+            "Prioritizes questions by remaining uncertainty and updates the fit judgment from the answers."
+          ]
+        }
+      ],
+      "followups": [
+        "Your strongest result is challenged as a team outcome; restate exact ownership and evidence.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?",
+        "What benefits and risks of increasingly capable AI most influence the work you choose? Name an uncertainty that could change your priorities.",
+        "A stakeholder offers a large contract if you remove a human-review step before measuring rare failures. What do you do, who do you consult, and what evidence would change the decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    },
+    {
+      "id": "full-loop",
+      "title": "Full Interview Loop Rehearsal",
+      "category": "Rehearsal",
+      "track": "shared",
+      "minutes": 150,
+      "why": "Practises full interview loop rehearsal with observable evidence, bounded time, and a concrete retry.",
+      "prerequisites": [
+        "evolving-ledger",
+        "bounded-async-map",
+        "object-graph-codec"
+      ],
+      "brief": "Prefer another human selecting fresh variants and recording rubric notes. Solo learners may use their own recording tool and must self-rate explicitly; this path neither records nor claims external review. Run 45 minutes coding using think-aloud and code-review patterns, 45 design, 30 actual-project deep dive, 15 judgment, and 15 evidence review. Simulated scenarios and local artifacts suffice; no deployment is required.",
+      "rounds": [
+        {
+          "minutes": 45,
+          "prompt": "Have a peer choose a fresh coding task type at session start; clarify, implement aloud, trace a failing input, and test it.",
+          "deliverable": "Working code for the peer-selected task, exact test outputs, and failure/correction review notes."
+        },
+        {
+          "minutes": 45,
+          "prompt": "Solve an actual design scenario variant supplied at session start with scale, interfaces, state, failures, and capacity math.",
+          "deliverable": "A scenario-specific architecture, event trace, calculation, and defended tradeoff."
+        },
+        {
+          "minutes": 30,
+          "prompt": "Present an actual project and answer concrete probes on architecture, ownership, history, result, failure, and lesson.",
+          "deliverable": "A project transcript with artifact citations, fact/estimate labels, and unanswered probes."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Answer a concrete hard-decision or disagreement question with real facts, stakeholders, alternatives, and consequences.",
+          "deliverable": "A four-minute evidence-based judgment answer with clear ownership."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Review evidence from all rounds, select the weakest behavior, and retry that exact segment without notes.",
+          "deliverable": "A scored evidence ledger, original excerpt, revised attempt, and rubric movement."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "coding-invariant-and-boundary-readiness",
+          "label": "Coding invariant and boundary readiness",
+          "anchors": [
+            "Finishes coding without a stated invariant or boundary check.",
+            "States an invariant but does not use it to inspect the implementation.",
+            "Uses the invariant to trace a normal case and exact boundary case to expected outputs.",
+            "Revises code after an adversarial boundary trace and reruns the previously failing example."
+          ]
+        },
+        {
+          "id": "capacity-failure-and-rollout-design-readiness",
+          "label": "Capacity failure and rollout design readiness",
+          "anchors": [
+            "Presents a design with no capacity limit, failure path, or rollout control.",
+            "Names capacity, failures, and rollout separately without connecting their decisions.",
+            "Quantifies a binding capacity, traces one failure, and gates rollout on a measurable threshold.",
+            "Adapts capacity and rollback rules after a new failure constraint while preserving service goals."
+          ]
+        },
+        {
+          "id": "actual-project-ownership-and-evidence",
+          "label": "Actual project ownership and evidence",
+          "anchors": [
+            "Describes a project using unverified team-level claims.",
+            "Names personal ownership but supplies no supporting artifact or metric.",
+            "Links a personal decision to an actual artifact, constraint, and measured project outcome.",
+            "Defends ownership boundaries under follow-up and withdraws any project claim lacking evidence."
+          ]
+        },
+        {
+          "id": "evidence-cited-scoring-and-retry-improvement",
+          "label": "Evidence-cited scoring and retry improvement",
+          "anchors": [
+            "Assigns scores without citing observed behavior.",
+            "Cites evidence for scores but does not retry the weakest response.",
+            "Quotes observable evidence for every score and performs a targeted retry of the lowest dimension.",
+            "Shows the retry changed the cited evidence and rescoring, while preserving unresolved gaps explicitly."
+          ]
+        }
+      ],
+      "followups": [
+        "At minute 30 of design the latency target halves; show what you recalculate or cut.",
+        "Which assumption is least supported, and how would you test it?",
+        "What concrete failure would reverse your decision?"
+      ],
+      "coachPrompt": "Act as an external coach. Ask one question at a time. Do not give solutions before my attempt. Require concrete evidence in feedback, score every rubric anchor, identify gaps, and make me retry the weakest part."
+    }
+  ]
+}
