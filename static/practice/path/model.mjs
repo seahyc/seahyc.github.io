@@ -9,10 +9,10 @@ export function validatePath(value,sessions){
  const next=freshPath();next.track=['applied','depth','both'].includes(value.track)?value.track:'applied';next.minutes=[20,35,60,90].includes(value.minutes)?value.minutes:35;next.targetDate=/^\d{4}-\d{2}-\d{2}$/.test(value.targetDate||'')?value.targetDate:'';next.reason=String(value.reason||next.reason).slice(0,500);
  for(const s of sessions){const d=value.drafts?.[s.id];if(d)next.drafts[s.id]={notes:String(d.notes||'').slice(0,30000),mode:['solo','peer'].includes(d.mode)?d.mode:'solo',scores:Object.fromEntries(s.rubric.map(r=>[r.id,validScore(d.scores?.[r.id])])),feedback:String(d.feedback||'').slice(0,12000)};
  const old=value.sessions[s.id];if(old&&Number.isFinite(old.started))next.sessions[s.id]={started:old.started,deadline:Number(old.deadline)||null};}
- next.reviews=value.reviews.filter(r=>sessions.some(s=>s.id===r.id)&&Number.isFinite(r.at)).slice(0,200).map(r=>{const s=sessions.find(s=>s.id===r.id);return {id:r.id,at:r.at,mode:r.mode==='peer'?'peer':'solo',scores:Object.fromEntries(s.rubric.map(d=>[d.id,validScore(r.scores?.[d.id])])),notes:String(r.notes||'').slice(0,30000),feedback:String(r.feedback||'').slice(0,12000),elapsed:Number(r.elapsed)||0};});return next;
+ next.reviews=value.reviews.filter(r=>sessions.some(s=>s.id===r.id)&&Number.isFinite(r.at)).slice(0,200).map(r=>{const s=sessions.find(s=>s.id===r.id);return {id:r.id,at:r.at,mode:r.mode==='peer'?'peer':'solo',scores:Object.fromEntries(s.rubric.map(d=>[d.id,validScore(r.scores?.[d.id])])),notes:String(r.notes||'').slice(0,30000),feedback:String(r.feedback||'').slice(0,12000),completed:r.completed===true,elapsed:Number(r.elapsed)||0};});return next;
 }
 function validScore(v){return Number.isInteger(v)&&v>=0&&v<=3?v:null;}
-export function reviewPass(review,session){return review&&session.rubric.every(r=>validScore(review.scores?.[r.id])!==null&&review.scores[r.id]>=2)&&review.notes?.trim().length>=80&&review.feedback?.trim().length>=30;}
+export function reviewPass(review,session){return review&&review.completed===true&&session.rubric.every(r=>validScore(review.scores?.[r.id])!==null&&review.scores[r.id]>=2)&&review.notes?.trim().length>=80&&review.feedback?.trim().length>=30;}
 export function assessedSessions(path,sessions,peer=false,now=Date.now()) {
  return sessions.filter(s=>{
   const records=path.reviews.filter(r=>r.id===s.id&&r.at<=now).sort((a,b)=>b.at-a.at);
@@ -41,7 +41,7 @@ export function readiness(path,code,sessions,now=Date.now()){
 }
 export function sessionStatus(s,path,now=Date.now()){
  const rs=path.reviews.filter(r=>r.id===s.id).sort((a,b)=>b.at-a.at);if(!rs.length)return 'Not rehearsed';
- const r=rs[0];if(now-r.at>30*86400000)return 'Review again';if(!reviewPass(r,s))return 'Repair and repeat';return r.mode==='peer'?'Peer-reviewed evidence':'Self-rated; peer review next';
+ const r=rs[0];if(now-r.at>30*86400000)return 'Review again';if(!reviewPass(r,s))return 'Repair and repeat';return assessedSessions(path,[s],true,now).length?'Peer-reviewed evidence':'Self-rated; peer review next';
 }
 export function nextAction(path,code,catalog,sessions,now=Date.now()){
  const due=catalog.filter(e=>code.exercises?.[e.id]?.due<=today(now));

@@ -13,7 +13,7 @@ try{
  await page.locator('#feedback').fill('The reviewer asked about unsorted inputs. Next time I will explicitly state whether validation or sorting belongs in this function.');
  for(const s of await page.locator('#rubric select').all())await s.selectOption('2');
  await page.locator('#save-review').click();assert.match(await page.locator('#review-result').innerText(),/Start and complete/);
- await page.locator('#begin').click();await page.locator('#save-review').click();assert.match(await page.locator('#review-result').innerText(),/Self-rated/);
+ await page.locator('#begin').click();await page.locator('#save-review').click();assert.match(await page.locator('#review-result').innerText(),/confirm completion/);assert.equal(await page.locator('#review-history li').count(),1);assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-interview-path-v1')).reviews.length),0);await page.locator('#completed').check();await page.locator('#save-review').click();assert.match(await page.locator('#review-result').innerText(),/Self-rated/);
  assert.match(await page.locator('#review-history').innerText(),/self-rated/);assert.equal(await page.locator('.gate.met').count(),0);
  await page.selectOption('#review-mode','peer');await page.locator('#save-review').click();assert.match(await page.locator('#review-result').innerText(),/Reported peer/);
  await page.reload();await page.waitForFunction(()=>document.querySelector('#notes').value.includes('strict over-20-minute'));
@@ -44,5 +44,7 @@ try{
  await a.waitForFunction(()=>document.querySelector('#notice').textContent.includes('another tab'));
  assert.equal(await a.locator('#editor').getAttribute('readonly'),'');await a.close();await b.close();
  console.log('PASS stale coding tabs cannot overwrite updated progress');
+ const other=await context.newPage();await other.goto(base+'path/');await other.locator('#session-title').filter({hasText:'Think Aloud'}).waitFor();await other.locator('#notes').fill('A newer draft in the other tab');
+ await page.waitForFunction(()=>document.querySelector('#notes').disabled);assert.equal(await page.locator('#save-review').isDisabled(),true);assert.equal(await page.locator('#track').isDisabled(),true);await other.close();console.log('PASS stale interview tabs disable edits and recording');
  assert.deepEqual(errors,[]);console.log('PASS mobile width and no page errors');
 }finally{await browser.close();}
