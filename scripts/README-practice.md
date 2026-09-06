@@ -47,3 +47,9 @@ node scripts/browser-mastery-code.mjs
 The tests use isolated browser contexts. They cover Python execution, stopping code, saved-work migration, timer/freshness semantics, coaching evidence, backup round trips, mastery transitions, one-question interviews and mobile overflow. Screenshots are saved to the operating-system temporary directory.
 
 `RAMP_REFERENCE_ROOT` optionally points the coding-flow smoke test to private ramp references named by exercise ID. With references it runs all 20 new Python tests through the browser, including assisted-pass → 10-minute repair scheduling → safe alternate-pattern progression. Fresh resets retain the last three code snapshots in the coding backup. Interview wizard drafts retain every answer and position on reload; old freeform notes migrate into the first answer.
+
+## Live editing feedback
+
+A separate, persistent Pyodide worker compiles the current editable Python file after a 600 ms pause. It never executes the source. CodeMirror shows CPython syntax diagnostics inline; generation IDs discard stale results after edits and file changes. Loading or worker failure leaves the runner usable and exposes the manual syntax check. Compilation does not write attempts, assistance or mastery evidence. Execution and test suites remain explicit actions in a separate fresh worker.
+
+The shared sound switch controls soft typewriter strikes, a return-key bell, action sounds and the passing chord. Keyboard shortcuts, navigation, read-only files and IME composition stay silent. Muting stops active voices. A newly successful run gets a drawn checkmark and a short, contained confetti burst; rerunning unchanged passing code does not repeat it. Reduced motion retains the success card without motion or confetti.

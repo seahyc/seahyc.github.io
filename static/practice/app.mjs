@@ -1,3 +1,5 @@
+import {createSyntaxChecker} from './syntax-client.mjs?v=delight-2026-09-06-1';
+import {celebrate,clearCelebration} from './celebration.mjs?v=recall-2026-09-06-1';
 import {createCodeEditor} from './editor.bundle.mjs?v=recall-2026-09-06-1';
 import {feedback} from './feedback.mjs?v=recall-2026-09-06-1';
 import './version.mjs?v=recall-2026-09-06-1';
@@ -24,6 +26,7 @@ function archiveDraft(p){
  p.savedAttempts ||= [];p.savedAttempts.unshift({at:Date.now(),files:{...(p.files||{})},notes:p.notes||''});p.savedAttempts=p.savedAttempts.slice(0,3);
 }
 function clearRunOutcome(message=''){
+ clearCelebration();$('success-moment').hidden=true;
  $('case-feedback').replaceChildren();$('case-feedback').hidden=true;$('first-feedback').hidden=true;$('journey-feedback').hidden=true;$('run').classList.add('primary');
  if(message)$('runtime-state').textContent=message;
 }
@@ -33,9 +36,18 @@ const codeEditor=createCodeEditor({parent:$('code-editor'),onChange:value=>{
   if(entry().lastResult==='pass')entry().lastResult='pending';
   if(!$('case-feedback').hidden||!$('journey-feedback').hidden){clearRunOutcome('Changes need checking');notice('');}
  }
- saveEditor();
+ saveEditor();queueSyntax();
 },onPaste:()=>assisted('Paste recorded as supported practice. We’ll check recall from a fresh scaffold.'),onRun:()=>{if(current&&!storageStale)run('tests');}});
-function loadEditor(){const value=files()[file];$('editor').value=value;codeEditor.setValue(value);codeEditor.setReadOnly(!editable(file)||storageStale);}
+const syntaxChecker=createSyntaxChecker({
+ onStatus:status=>{if(storageStale||!current||!editable(file))return;$('syntax-status').dataset.state=status;$('syntax-status').textContent=status==='loading'?'Starting live syntax…':status==='unavailable'?'Live syntax unavailable. You can still run checks.':'Checking syntax…';document.body.classList.toggle('syntax-unavailable',status==='unavailable');},
+ onResult:result=>{if(storageStale||!current||!editable(file)||result.status!=='checked')return;codeEditor.setDiagnostics(result.diagnostics);document.body.classList.remove('syntax-unavailable');const first=result.diagnostics[0];$('syntax-status').dataset.state=first?'error':'clear';$('syntax-status').textContent=first?`Line ${first.line}: ${first.message}`:'Syntax clear';}
+});
+function queueSyntax(){
+ codeEditor.setDiagnostics([]);
+ if(storageStale||!current||!file||!editable(file)||!file.endsWith('.py')){syntaxChecker.clear();$('syntax-status').textContent='';return;}
+ $('syntax-status').dataset.state='checking';$('syntax-status').textContent='Checking syntax…';syntaxChecker.check(codeEditor.getValue(),file);
+}
+function loadEditor(){clearCelebration();$('success-moment').hidden=true;const value=files()[file];$('editor').value=value;codeEditor.setValue(value);codeEditor.setReadOnly(!editable(file)||storageStale);queueSyntax();}
 function renderMarkdown(source){
   const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const parts=source.split(/```[^\n]*\n/);let html='';
@@ -142,7 +154,7 @@ function busy(on){['syntax','run','new-attempt','mode','file','timer-button','ex
 function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message){$('output').textContent=message;$('first-feedback').hidden=false;$('first-feedback').textContent=message;}}
 function run(mode,probe){
   if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
-  runContext={id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock};
+  runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock};
   if(mode==='tests'){clearRunOutcome();notice('');}else $('first-feedback').hidden=true;
   busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
   worker=new Worker(new URL('./runner.mjs?v=recall-2026-09-06-1',import.meta.url),{type:'module'});
@@ -151,7 +163,7 @@ function run(mode,probe){
     if(data.type==='ready'){clearTimeout(runTimeout);$('runtime-state').textContent=mode==='tests'?'Running checks':'Running';$('first-feedback').textContent=mode==='probe'?'Trying your input…':mode==='tests'?'Running checks…':'Checking your code…';runTimeout=setTimeout(()=>{const ctx=runContext;stop('Execution exceeded 10 seconds. Check for an infinite loop or unexpectedly large input.');if(mode==='tests'){const cold=ctx.cold&&session().cold&&!session().assisted;record(state,ctx.id,{passed:false,kind:'timeout',cold,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(ctx.id),scaffold:supported(ctx.id)});feedback('fail');persist();refresh();}},10000);return;}
     if(data.type==='error'){stop('Python could not start: '+data.message+'\nCheck your connection and retry.');return;}
     if(data.type==='result'){
-      stop(null);if(mode==='tests'){renderCases(data.cases);feedback(data.passed?'pass':'fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
+      stop(null);if(mode==='tests'){renderCases(data.cases);if(data.passed){$('success-moment').hidden=false;$('success-title').textContent=`${data.count} of ${data.count} checks passed`;$('success-caption').textContent='You made it work.';if(!runContext.previouslyPassed){feedback('pass');celebrate($('success-moment'));if(!document.hidden)$('success-moment').scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}else feedback('fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
       if(mode==='syntax'&&!data.passed){record(state,current.id,{passed:false,kind:'syntax',cold:false,output:firstError(data.output)});persist();refresh();}
       if(mode==='tests'){
         const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
@@ -190,9 +202,11 @@ $('export').onclick=()=>{saveEditor();const payload=storageStale?{kind:'coding-r
 $('import-button').onclick=()=>$('import').click();
 $('import').onchange=async()=>{const f=$('import').files[0];if(!f)return;try{if(worker)throw Error('Stop the run before importing.');if(f.size>5000000)throw Error('Backup is too large.');const next=validateImport(JSON.parse(await f.text()),exercises);if(!confirm('Replace this browser’s practice progress with the backup?'))return;state=next;file=null;persist();$('motivation').value=state.motivation;select(current);notice('Backup restored. Imported code counts as practice until a fresh attempt.');}catch(e){notice(e.message);}finally{$('import').value='';}};
 window.addEventListener('beforeunload',saveEditor);
+window.addEventListener('pagehide',()=>{syntaxChecker.clear();clearCelebration();});
+window.addEventListener('pageshow',event=>{if(event.persisted)queueSyntax();});
 window.addEventListener('storage',event=>{
  if(event.key!==KEY)return;
- storageStale=true;stop(null);
+ storageStale=true;syntaxChecker.clear();codeEditor.setDiagnostics([]);stop(null);
  for(const id of ['syntax','run','main','new-attempt','mode','file','timer-button','next-hint','journey-next','example-run','recommended','next-exercise','import'])$(id).disabled=true;
  codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
  notice('Coding progress changed in another tab. Export this tab if you need its unsaved work, then reload before continuing.');
