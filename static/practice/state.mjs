@@ -12,8 +12,9 @@ export function record(state, id, result, now=Date.now()) {
   p.lastAt=now;
   if(result.passed){
     p.passed=true;
+    p.scaffold=!!result.scaffold;
     if(result.cold && !p.coldDays.includes(day(now))) p.coldDays.push(day(now));
-    p.due=nextDay(now,result.cold ? [1,3,7,14][Math.min(p.coldDays.length-1,3)] : 1);
+    p.due=result.scaffold ? undefined : nextDay(now,result.cold ? [1,3,7,14][Math.min(p.coldDays.length-1,3)] : 1);
   } else p.due=day(now);
   state.attempts.unshift({id,at:now,...result});
   state.attempts=state.attempts.slice(0,300);
@@ -25,6 +26,7 @@ export function recommendation(exercises,state,now=Date.now()) {
   return due.sort((a,b)=>(progress(state,a.id).lastAt||0)-(progress(state,b.id).lastAt||0))[0] || exercises.find(e=>!progress(state,e.id).passed) || exercises[0];
 }
 export function label(p,now=Date.now()) {
+  if(p.scaffold&&p.passed&&!p.due) return 'Foundation complete';
   if(p.due<=day(now)) return 'Review due';
   if(p.coldDays?.length>=2) return 'Recalled on 2+ days';
   if(p.coldDays?.length===1) return 'Cold pass · review scheduled';
@@ -38,7 +40,7 @@ export function validateImport(value,exercises, imported=true) {
   for(const e of exercises){
     const p=value.exercises[e.id]; if(!p) continue;
     if(!Array.isArray(p.coldDays)||p.coldDays.some(d=>!/^\d{4}-\d{2}-\d{2}$/.test(d))) throw Error('Invalid review dates in backup.');
-    clean.exercises[e.id]={coldDays:[...new Set(p.coldDays)],attempts:Number(p.attempts)||0,passed:!!p.passed,due:p.due,lastAt:Number(p.lastAt)||0,lastResult:String(p.lastResult||'')};
+    clean.exercises[e.id]={coldDays:[...new Set(p.coldDays)],attempts:Number(p.attempts)||0,passed:!!p.passed,scaffold:['syntax-guided','syntax-faded'].includes(e.id),due:p.due,lastAt:Number(p.lastAt)||0,lastResult:String(p.lastResult||'')};
     if(p.files){ clean.exercises[e.id].files={}; for(const name of Object.keys(e.files)) if(typeof p.files[name]==='string' && name!=='src/tests.py') clean.exercises[e.id].files[name]=p.files[name].slice(0,200000); }
     if(p.session && typeof p.session==='object') clean.exercises[e.id].session={mode:imported?'practice':(['practice','cold','mock'].includes(p.session.mode)?p.session.mode:'practice'),cold:imported?false:!!p.session.cold,started:Number(p.session.started)||Date.now(),deadline:Number(p.session.deadline)||undefined,remaining:Number(p.session.remaining)||undefined,hint:Math.max(0,Math.min(2,Number(p.session.hint)||0)),assisted:!!p.session.assisted};
     clean.exercises[e.id].notes=String(p.notes||'').slice(0,20000);
