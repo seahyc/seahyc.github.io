@@ -40,8 +40,9 @@ export function validateImport(value,exercises, imported=true) {
   for(const e of exercises){
     const p=value.exercises[e.id]; if(!p) continue;
     if(!Array.isArray(p.coldDays)||p.coldDays.some(d=>!/^\d{4}-\d{2}-\d{2}$/.test(d))) throw Error('Invalid review dates in backup.');
-    clean.exercises[e.id]={coldDays:[...new Set(p.coldDays)],attempts:Number(p.attempts)||0,passed:!!p.passed,scaffold:['syntax-guided','syntax-faded'].includes(e.id),due:p.due,lastAt:Number(p.lastAt)||0,viewedAt:Number(p.viewedAt)||undefined,lastResult:String(p.lastResult||'')};
+    clean.exercises[e.id]={coldDays:[...new Set(p.coldDays)],attempts:Number(p.attempts)||0,passed:!!p.passed,scaffold:['syntax-guided','syntax-faded','tiny-filter-guided','tiny-count-guided'].includes(e.id),due:p.due,lastAt:Number(p.lastAt)||0,viewedAt:Number(p.viewedAt)||undefined,lastResult:String(p.lastResult||'')};
     if(p.files){ clean.exercises[e.id].files={}; for(const name of Object.keys(e.files)) if(typeof p.files[name]==='string' && name!=='src/tests.py') clean.exercises[e.id].files[name]=p.files[name].slice(0,200000); }
+    if(Array.isArray(p.savedAttempts))clean.exercises[e.id].savedAttempts=p.savedAttempts.slice(0,3).map(a=>({at:Number(a.at)||0,notes:String(a.notes||'').slice(0,20000),files:Object.fromEntries(Object.entries(a.files||{}).filter(([n,v])=>n in e.files&&n!=='src/tests.py'&&typeof v==='string').map(([n,v])=>[n,v.slice(0,200000)]))}));
     if(p.session && typeof p.session==='object') clean.exercises[e.id].session={mode:imported?'practice':(['practice','cold','mock'].includes(p.session.mode)?p.session.mode:'practice'),cold:imported?false:!!p.session.cold,started:Number(p.session.started)||Date.now(),deadline:Number(p.session.deadline)||undefined,remaining:Number(p.session.remaining)||undefined,hint:Math.max(0,Math.min(2,Number(p.session.hint)||0)),assisted:!!p.session.assisted,freshMock:imported?false:!!p.session.freshMock};
     clean.exercises[e.id].notes=String(p.notes||'').slice(0,20000);
   }
