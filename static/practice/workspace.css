@@ -89,3 +89,32 @@ body.focus.mock-active .timer { display: block; }
 #example-lab > summary::before { content: '+'; color: var(--color-primary); }
 #example-lab[open] > summary::before { content: '−'; }
 @media (max-width: 540px) { header { flex-wrap: wrap; } #practice-context { order: 3; flex-basis: 100%; font-size: 12px; } .sound-toggle { margin-left: 0; } }
+
+.code-pane { position: relative; }
+.success-moment { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-4); padding: var(--space-4); border: 1px solid var(--color-primary); border-radius: var(--radius-card); background: var(--color-primary-soft); color: var(--color-primary); }
+.success-moment strong { display: block; font-size: 18px; line-height: 1.4; }
+.success-moment span { display: block; font-size: 14px; color: var(--color-muted); }
+.success-check { width: 48px; height: 48px; flex: 0 0 48px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.success-check circle { stroke-dasharray: 145; }
+.success-check path { stroke-dasharray: 42; }
+.success-moment:not([hidden]) ~ #case-feedback > .checks-pass { display: none; }
+.is-celebrating { animation: success-arrive 420ms cubic-bezier(.18,.85,.28,1.15); }
+.is-celebrating .success-check circle { animation: success-draw 420ms ease-out both; }
+.is-celebrating .success-check path { animation: success-tick 280ms 260ms ease-out both; }
+.celebration-particles { position: absolute; left: 50%; width: 0; height: 0; pointer-events: none; z-index: 4; }
+.celebration-piece { position: absolute; width: 7px; height: 10px; border-radius: 2px; background: var(--color-primary); animation: success-confetti 1050ms var(--delay) ease-out both; }
+.celebration-piece.tone-1 { background: var(--color-focus); }
+.celebration-piece.tone-2 { background: var(--color-code-definition); }
+.celebration-piece.tone-3 { background: var(--color-code-number); }
+@keyframes success-arrive { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes success-draw { from { stroke-dashoffset: 145; } to { stroke-dashoffset: 0; } }
+@keyframes success-confetti { 0% { opacity: 0; transform: translate(0, 0) rotate(0); } 12% { opacity: 1; } 60% { opacity: .9; transform: translate(var(--flight-x), var(--flight-y)) rotate(var(--spin)); } 100% { opacity: 0; transform: translate(var(--flight-x), 55px) rotate(var(--spin)); } }
+@media (prefers-reduced-motion: reduce) { .is-celebrating, .is-celebrating .success-check circle, .is-celebrating .success-check path { animation: none; } .celebration-particles { display: none; } }
+
+@keyframes success-tick { from { stroke-dashoffset: 42; } to { stroke-dashoffset: 0; } }
+
+.syntax-status { min-height: 20px; margin: 0; padding: var(--space-1) var(--space-4); font-size: 12px; color: var(--color-muted); }
+.syntax-status[data-state="error"] { color: var(--color-danger); }
+.syntax-status[data-state="clear"] { color: var(--color-primary); }
+body.focus #syntax { display: none; }
+body.focus.syntax-unavailable #syntax { display: inline-flex; }

@@ -26,6 +26,7 @@ import {tags} from '@lezer/highlight';
 import {python} from '@codemirror/lang-python';
 import {closeBrackets, closeBracketsKeymap} from '@codemirror/autocomplete';
 import {highlightSelectionMatches, searchKeymap} from '@codemirror/search';
+import {lintGutter, setDiagnostics as applyDiagnostics} from '@codemirror/lint';
 
 const pythonHighlight=HighlightStyle.define([
   {tag:[tags.keyword,tags.controlKeyword,tags.operatorKeyword],color:'var(--color-code-keyword, #f0b86e)'},
@@ -62,6 +63,9 @@ const editorTheme=EditorView.theme({
   '.cm-cursor, .cm-dropCursor': {borderLeftColor: 'var(--color-focus, #d09122)'},
   '.cm-searchMatch': {backgroundColor: 'var(--color-code-search, #655b2c)'},
   '.cm-searchMatch.cm-searchMatch-selected': {backgroundColor: 'var(--color-code-search-selected, #7c6c2c)'},
+  '.cm-lintRange-error': {backgroundImage: 'none', borderBottom: '2px wavy var(--color-code-invalid, #ffb49d)'},
+  '.cm-diagnostic-error': {borderLeftColor: 'var(--color-code-invalid, #ffb49d)'},
+  '.cm-lint-marker-error': {content: '"●"', color: 'var(--color-code-invalid, #ffb49d)'},
   '&.cm-focused': {outline: '3px solid var(--color-focus, #d09122)', outlineOffset: '2px'}
 },{dark:true});
 
@@ -86,6 +90,7 @@ export function createCodeEditor({parent,doc='',onChange=()=>{},onPaste=()=>{},o
       closeBrackets(),
       highlightActiveLine(),
       highlightSelectionMatches(),
+      lintGutter(),
       python(),
       indentUnit.of('    '),
       syntaxHighlighting(pythonHighlight),
@@ -100,6 +105,11 @@ export function createCodeEditor({parent,doc='',onChange=()=>{},onPaste=()=>{},o
   });
   const state=createState(doc);
   const view=new EditorView({state,parent});
+  const documentPosition=(lineNumber,column)=>{
+    const number=Math.max(1,Math.min(view.state.doc.lines,Number(lineNumber)||1));
+    const line=view.state.doc.line(number);
+    return Math.min(line.to,line.from+Math.max(0,(Number(column)||1)-1));
+  };
   return {
     getValue(){return view.state.doc.toString();},
     setValue(value){
@@ -114,6 +124,18 @@ export function createCodeEditor({parent,doc='',onChange=()=>{},onPaste=()=>{},o
         readOnly.reconfigure(EditorState.readOnly.of(locked)),
         editable.reconfigure(EditorView.editable.of(!locked))
       ]});
+    },
+    setDiagnostics(diagnostics=[]){
+      const mapped=(Array.isArray(diagnostics)?diagnostics:[]).map(item=>{
+        let from=documentPosition(item.line,item.column);
+        let to=documentPosition(item.endLine||item.line,item.endColumn||((Number(item.column)||1)+1));
+        if(to<=from&&view.state.doc.length){
+          if(from<view.state.doc.length)to=from+1;
+          else {from--;to=view.state.doc.length;}
+        }
+        return {from,to,severity:'error',message:String(item.message||'Invalid Python syntax')};
+      });
+      view.dispatch(applyDiagnostics(view.state,mapped));
     },
     focus(){view.focus();},
     destroy(){view.destroy();}
