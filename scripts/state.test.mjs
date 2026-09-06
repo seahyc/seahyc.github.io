@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {freshState,record,recommendation,validateImport,day} from '../static/practice/state.mjs';
+const now=new Date(2026,8,6,12).getTime();
+const exercises=[{id:'a',files:{'src/a.py':'pass','src/tests.py':'fixed'}},{id:'b',files:{'src/b.py':'pass'}}];
+test('same-day repetitions cannot fake later-day recall',()=>{const s=freshState();record(s,'a',{passed:true,cold:true},now);record(s,'a',{passed:true,cold:true},now+1000);assert.equal(s.exercises.a.coldDays.length,1);assert.equal(s.exercises.a.due,'2026-09-07');record(s,'a',{passed:true,cold:true},now+86400000);assert.equal(s.exercises.a.coldDays.length,2);assert.equal(s.exercises.a.due,'2026-09-10');});
+test('assisted passes schedule review but never increment cold evidence',()=>{const s=freshState();record(s,'a',{passed:true,cold:false},now);assert.deepEqual(s.exercises.a.coldDays,[]);assert.equal(s.exercises.a.due,'2026-09-07');});
+test('due reviews precede new work, future reviews do not',()=>{const s=freshState();record(s,'a',{passed:true,cold:true},now);assert.equal(recommendation(exercises,s,now).id,'b');assert.equal(recommendation(exercises,s,now+86400000).id,'a');});
+test('import cannot replace official tests or continue a cold attempt',()=>{const s=freshState();s.exercises.a={coldDays:[],files:{'src/a.py':'custom','src/tests.py':'tampered','../x':'bad'},session:{mode:'cold',cold:true,started:now}};const i=validateImport(s,exercises);assert.deepEqual(i.exercises.a.files,{'src/a.py':'custom'});assert.equal(i.exercises.a.session.cold,false);assert.equal(validateImport(s,exercises,false).exercises.a.session.cold,true);});
+test('invalid state fails explicitly',()=>{assert.throws(()=>validateImport({},exercises));const s=freshState();s.exercises.a={coldDays:['tomorrow']};assert.throws(()=>validateImport(s,exercises));});
