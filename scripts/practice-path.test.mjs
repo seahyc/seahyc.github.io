@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {freshPath,eligibleMock,activeSessions,validatePath,reviewPass,readiness,nextAction,sessionStatus} from '../static/practice/path/model.mjs';
+import {freshPath,eligibleMock,activeSessions,validatePath,reviewPass,readiness,nextAction,sessionStatus,rehearsalComplete} from '../static/practice/path/model.mjs';
 import {freshState,validateImport} from '../static/practice/state.mjs';
 const catalog=JSON.parse(fs.readFileSync(new URL('../static/practice/curriculum.json',import.meta.url))).exercises;
 const sessions=JSON.parse(fs.readFileSync(new URL('../static/practice/path/sessions.json',import.meta.url))).sessions;
@@ -18,3 +18,4 @@ test('fresh beginner starts guided; untouched mock recommendation launches as mo
 test('a later failed rehearsal invalidates earlier peer evidence until repaired',()=>{const p=freshPath(),s=sessions.find(s=>s.id==='full-loop');p.reviews=[reviewed(s,'peer',now-1000)];assert.equal(readiness(p,{},sessions,now).find(g=>g.id==='loop').met,true);const failed=reviewed(s,'solo',now);failed.scores[s.rubric[0].id]=1;p.reviews.unshift(failed);assert.equal(readiness(p,{},sessions,now).find(g=>g.id==='loop').met,false);});
 
 test('completion is required and peer status agrees after later solo practice',()=>{const p=freshPath(),s=sessions[0],r=reviewed(s);assert.equal(reviewPass({...r,completed:false},s),false);p.reviews=[reviewed(s,'solo',now),reviewed(s,'peer',now-1000)];assert.equal(sessionStatus(s,p,now),'Peer-reviewed evidence');p.reviews[0].scores[s.rubric[0].id]=1;assert.equal(sessionStatus(s,p,now),'Repair and repeat');});
+test('an unfinished timer cannot create readiness evidence',()=>{assert.equal(rehearsalComplete({started:now,deadline:now+60000},now),false);assert.equal(rehearsalComplete({started:now-60000,deadline:now},now),true);assert.equal(rehearsalComplete({started:now},now),false);});
