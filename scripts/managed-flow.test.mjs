@@ -40,3 +40,12 @@ test('the next action sits beside the success result before detailed checks',()=
  assert.ok(success<next&&next<checks);
  assert.equal((html.match(/id="journey-next"/g)||[]).length,1);
 });
+
+
+test('the path never turns a future recall into a disabled continue or a file download',()=>{
+ const path=readFileSync(new URL('../static/practice/path/app.mjs',import.meta.url),'utf8');
+ assert.doesNotMatch(path,/Recall scheduled|Come back|Export coaching handoff|handoff'\)\.click/);
+ assert.doesNotMatch(path,/disabled=action\.type==='pause'/);
+ const launch=path.slice(path.indexOf('function launch()'),path.indexOf('function openSession('));
+ assert.doesNotMatch(launch,/download|handoff/);
+});
