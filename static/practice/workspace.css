@@ -39,7 +39,14 @@
 .example-values { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
 .example-values span, .example-values code { display: block; }
 .example-values code { padding: var(--space-2); background: var(--color-surface-subtle); overflow-wrap: anywhere; }
-#journey-feedback { margin-top: var(--space-5); padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-primary-soft); }
+#journey-feedback { margin: 0 var(--space-4) var(--space-4); padding: var(--space-4); border: 1px solid var(--color-primary); border-radius: var(--radius-card); background: var(--color-primary-soft); }
+#journey-feedback .eyebrow { margin-bottom: var(--space-1); }
+#journey-message { margin: 0 0 var(--space-3); font-size: 14px; }
+#next-review-date { margin: 0 0 var(--space-3); font-size: 12px; color: var(--color-muted); }
+#next-review-date:empty { display: none; }
+#journey-next { width: 100%; justify-content: space-between; padding: var(--space-3) var(--space-4); text-align: left; font-size: 16px; }
+.success-moment:has(+ #journey-feedback:not([hidden])) { margin-bottom: 0; border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.success-moment:not([hidden]) + #journey-feedback { border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
 .reflection { padding: var(--space-5); border-top: 1px solid var(--color-border-soft); }
 .reflection textarea { display: block; width: 100%; min-height: 110px; margin-top: var(--space-2); }
 .reflection-footer { justify-content: space-between; margin-top: var(--space-3); }
