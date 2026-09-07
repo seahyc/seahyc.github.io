@@ -57,3 +57,8 @@
   .step-actions > button { width: 100%; }
   .roadmap-content { padding: var(--space-5) var(--space-3) var(--space-5) 36px; }
 }
+
+.skill-evidence-list{list-style:none;padding:0;margin:var(--space-4) 0}
+.skill-evidence-item{display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;padding:var(--space-3) 0;border-bottom:1px solid var(--color-border)}
+.skill-evidence-item span{color:var(--color-pencil);font-size:.9em}
+.roadmap-skill-evidence{margin-block:var(--space-4)}

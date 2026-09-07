@@ -1,3 +1,5 @@
+import {skillProfile,coveredBySkills} from '../learning-model.mjs?v=learning-2026-09-07-1';
+import {taskSkills} from '../skill-catalog.mjs?v=learning-2026-09-07-1';
 import {nextStep,route} from '../mastery.mjs?v=recall-2026-09-06-1';
 import {exerciseEvidence} from '../evidence.mjs?v=recall-2026-09-06-1';
 import {assessedSessions,reviewPass} from './model.mjs?v=recall-2026-09-06-1';
@@ -19,6 +21,7 @@ function interviewEvidence(session,path,now){
 export function roadmapModel(exercises,code={},sessions=[],path={},now=Date.now()){
  const codeById=new Map(exercises.map(e=>[e.id,e])),sessionById=new Map(sessions.map(s=>[s.id,s]));
  const current=nextStep(exercises,code,sessions,path,now),milestones=[];
+ const adaptive=codeById.has('probe-filtering'),profile=adaptive?skillProfile(code,now):null;
  let phase=0;
  for(const routeId of route){
   const interview=routeId.startsWith('@'),id=interview?routeId.slice(1):routeId;
@@ -26,7 +29,13 @@ export function roadmapModel(exercises,code={},sessions=[],path={},now=Date.now(
   if(!source)continue;
   if(!interview)phase=Math.max(phase,phaseRank[source.stage]??phase);
   const evidence=interview?interviewEvidence(source,path,now):exerciseEvidence(code,id,now);
-  const isCurrent=current.id===id&&current.type!=='done';
+  if(adaptive&&!interview){
+   evidence.covered=!evidence.completed&&coveredBySkills(code,id,now);
+   const observed=(taskSkills[id]?.primary||[]).map(key=>profile[key]);
+   evidence.retained=observed.length>0&&observed.every(p=>p?.retained);
+   if(evidence.covered){evidence.label='Teaching covered';evidence.detail='Independent checks covered this introductory teaching. The engine will still revisit the skill.';}
+  }
+  const isCurrent=(current.id===id||(current.milestoneId===id&&current.id!==id))&&current.type!=='done';
   let status=evidence.completed?'completed':evidence.covered?'covered':'upcoming';
   let statusLabel=evidence.label;
   if(isCurrent){status=current.review?'review':current.type==='pause'?'scheduled':'current';statusLabel=current.review?'Recall due':current.type==='pause'?'Recall scheduled':evidence.label;}
@@ -35,7 +44,7 @@ export function roadmapModel(exercises,code={},sessions=[],path={},now=Date.now(
  const completed=milestones.filter(m=>m.completed).length;
  const retained=milestones.filter(m=>m.type==='code'&&m.retained).length;
  const currentIndex=milestones.findIndex(m=>m.isCurrent);
- return {summary:`${completed} of ${milestones.length} milestones completed`,completed,practiced:completed,retained,total:milestones.length,milestones,current,currentIndex};
+ return {at:now,skills:profile?Object.values(profile):[],summary:`${completed} of ${milestones.length} milestones completed`,completed,practiced:completed,retained,total:milestones.length,milestones,current,currentIndex};
 }
 
 function element(tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node;}
@@ -47,16 +56,24 @@ export function renderRoadmap(container,model){
  const count=element('strong','roadmap-count',model.summary);
  const progress=element('progress','roadmap-progress');progress.id='roadmap-progress';progress.max=model.total;progress.value=model.completed;progress.textContent=model.summary;
  overview.append(label,count,progress);
- if(model.retained>0)overview.append(element('p','roadmap-retained',`${model.retained} coding task${model.retained===1?'':'s'} with current delayed-recall evidence`));
+ if(!model.skills.length&&model.retained>0)overview.append(element('p','roadmap-retained',`${model.retained} coding task${model.retained===1?'':'s'} with current delayed-recall evidence`));
+ if(model.skills.length){
+  const currentSkills=model.skills.filter(p=>p.independent),retainedSkills=model.skills.filter(p=>p.retained);
+  overview.append(element('p','roadmap-retained',`${currentSkills.length} skills demonstrated independently · ${retainedSkills.length} with current delayed recall across different tasks`));
+  const details=element('details','roadmap-skill-evidence');details.append(element('summary','','Your skill evidence'));
+  const list=element('ul','skill-evidence-list');
+  for(const p of model.skills){const item=element('li','skill-evidence-item');const label=p.needsRepair?'Needs a fresh check':p.retained?'Recalled after a gap':p.independent&&p.dueAt<=model.at?'Recall due':p.independent?'Independent solution':p.status==='learning'?'Building with support':'Not checked yet';item.append(element('strong','',p.title),element('span','',label));list.append(item);}
+  details.append(list);overview.append(details);
+ }
  const current=model.currentIndex>=0?model.milestones[model.currentIndex]:null;
  if(current){
   const here=element('section','roadmap-here');
-  here.append(element('p','roadmap-here-step',`You are here · Step ${model.currentIndex+1} of ${model.total}`),element('h3','roadmap-here-title',current.title),element('p','roadmap-here-reason',model.current.reason||current.evidenceDetail));
+  here.append(element('p','roadmap-here-step',`You are here · Step ${model.currentIndex+1} of ${model.total}`),element('h3','roadmap-here-title',model.current.title),element('p','roadmap-here-reason',model.current.reason||current.evidenceDetail));
   if(current.completed&&model.current.review)here.append(element('p','roadmap-history-note','Completion stays checked. Recall comes back when it is due.'));
   overview.append(here);
  }
  const evidenceHelp=element('details','roadmap-evidence-help');
- evidenceHelp.append(element('summary','', 'What counts as evidence?'),element('p','', 'Coding evidence moves from guided success to an independent pass, then delayed recall. Unfamiliar timed tasks check transfer separately. Interview rehearsals are self-rated unless you report a peer review. These observations are progress evidence, not a measured mastery percentage.'));
+ evidenceHelp.append(element('summary','', 'What counts as evidence?'),element('p','', 'Short checks can cover introductory teaching. Applied builds still need their own independent solution. Recall uses different tasks when available; early repeats do not extend the schedule. Unfamiliar timed tasks check assessment transfer separately. Interview rehearsals are self-rated unless you report a peer review. These observations are progress evidence, not a measured mastery percentage.'));
  overview.append(evidenceHelp);
  container.append(overview);
  let phase='',list;
@@ -66,7 +83,7 @@ export function renderRoadmap(container,model){
   if(milestone.isCurrent){item.setAttribute('aria-current','step');item.append(element('span','roadmap-you-are-here','→ You are here'));}
   const title=element('span','roadmap-title');
   title.append(element('span','roadmap-ink',milestone.title));
-  const visibleLabel=milestone.covered&&!milestone.completed?'Covered by later work':milestone.statusLabel;
+  const visibleLabel=milestone.covered&&!milestone.completed?'Teaching covered':milestone.statusLabel;
   const meta=element('span','roadmap-status',`${milestone.type==='code'?'Code':'Interview'} · ${visibleLabel}`);
   if(milestone.completed)title.prepend(element('span','roadmap-check','✓ '));
   item.append(title,meta);
