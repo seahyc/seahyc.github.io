@@ -10,6 +10,14 @@ test('the optional input lab starts collapsed and retains its controls',()=>{
   for(const id of ['example-input','example-run','example-expected','example-actual'])assert.match(html,new RegExp(`id="${id}"`));
 });
 
+test('the exercise has one title and it lives inside the notebook brief',()=>{
+  assert.equal((html.match(/id="title"/g)||[]).length,1);
+  const briefStart=html.indexOf('<section class="brief-pane">');
+  const briefEnd=html.indexOf('</section>',briefStart);
+  const title=html.indexOf('id="title"');
+  assert.ok(briefStart<title&&title<briefEnd);
+});
+
 test('the managed flow has no learner grading controls',()=>{
   assert.doesNotMatch(html,/recall-rating|rating-actions|Needed help|Effortful|Independent/);
   assert.doesNotMatch(app,/data\.rating|previewRecall/);

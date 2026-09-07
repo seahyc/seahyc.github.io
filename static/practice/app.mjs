@@ -3,6 +3,7 @@ import {createSyntaxChecker} from './syntax-client.mjs?v=delight-2026-09-06-1';
 import {celebrate,clearCelebration} from './celebration.mjs?v=recall-2026-09-06-1';
 import {createCodeEditor} from './editor.bundle.mjs?v=recall-2026-09-06-1';
 import {feedback} from './feedback.mjs?v=recall-2026-09-06-1';
+import {withoutDuplicateTitle} from './brief.mjs?v=notebook-2026-09-07-1';
 import './version.mjs?v=recall-2026-09-06-1';
 import {rateRecall,recallState} from './recall.mjs?v=recall-2026-09-06-1';
 import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
@@ -131,7 +132,7 @@ function select(e){
   if(worker){notice('Stop the current run before switching exercises.');return;}
   saveEditor();current=e;entry().viewedAt ||= Date.now();history.replaceState(null,'',location.pathname+(guidedFlow?'?learn=1':'?library=1')+'#'+e.id);
   $('title').textContent=e.title;$('stage').textContent=`${e.stage} · ${e.minutes}-minute target · ${e.focus}`;$('why').textContent=e.why;
-  $('brief').innerHTML=renderMarkdown(e.brief);$('file').replaceChildren();
+  $('brief').innerHTML=renderMarkdown(withoutDuplicateTitle(e.brief,e.title));$('file').replaceChildren();
   Object.keys(e.files).forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name+(editable(name)?'':' (read only)');$('file').append(o);});
   file=e.entry;$('file').value=file;loadEditor();
   const s=session();if(day(s.started)!==day())s.cold=false;
@@ -197,7 +198,7 @@ $('timer-button').onclick=()=>{const s=session();if(s.deadline){s.remaining=Math
 $('hint-details').ontoggle=()=>{if($('hint-details').open){assisted('Hint opened: this attempt now counts as supported practice.');$('hint').textContent=current.hints[session().hint||0];}};
 $('next-hint').onclick=()=>{const s=session();s.hint=Math.min((s.hint||0)+1,current.hints.length-1);$('hint').textContent=current.hints[s.hint];persist();};
 $('recommended').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.studio').scrollIntoView({behavior:'instant'});};
-$('next-exercise').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.exercise-heading').scrollIntoView({behavior:'instant'});};
+$('next-exercise').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.brief-pane').scrollIntoView({behavior:'instant'});};
 $('method-button').onclick=()=>$('method').showModal();$('close-method').onclick=()=>$('method').close();
 $('export').onclick=()=>{saveEditor();const payload=storageStale?{kind:'coding-recovery',raw:localStorage.getItem(KEY),inMemory:state}:state;const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`coding-practice-${day()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('import-button').onclick=()=>$('import').click();
