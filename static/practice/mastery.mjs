@@ -43,6 +43,12 @@ function codeStep(e,code,review=false,now=Date.now()){
  return {type:'code',id:e.id,title:e.title,mode,action,review,
  reason:guided?'Use the example to build one small working behavior.':review?'A short recall check is due. Rebuild this from the scaffold before moving on.':supportPass?'It works with support. Now rebuild from a fresh scaffold without hints.':failed?'Stay with this step. Repair the first failing behavior; support is available.':mode==='mock'?'Apply what you know to an unfamiliar task. The timer starts when you continue.':'Build this independently. Ask for a hint whenever you need one; we’ll check recall afterward.'};
 }
+function reinforcement(exercises,code,now){
+ const ordered=[...exercises].sort((a,b)=>(code.exercises?.[a.id]?.lastAt||0)-(code.exercises?.[b.id]?.lastAt||0));
+ const e=ordered.find(e=>!supported(e.id))||ordered[0];
+ if(!e)return {type:'done',title:'Practice is complete.',reason:'Your progress is saved.'};
+ return {...codeStep(e,code,true,now),review:false,reinforcement:true,action:'fresh',reason:'Build this again from a fresh starting point. Your recall schedule is handled in the background.'};
+}
 export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
  const codeById=new Map(exercises.map(e=>[e.id,e]));
  const sessionById=new Map(sessions.map(s=>[s.id,s]));
@@ -53,6 +59,9 @@ export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
  const due=steps.filter((id,i)=>frontier<0||i<=frontier).filter(id=>!id.startsWith('@')&&!supported(id)).map(id=>codeById.get(id)).filter(e=>{
   const p=code.exercises?.[e.id];return p?.passed&&(p.review?.dueAt?isReviewDue(p,now):p.due<=day(now)&&day(p.lastAt||0)!==day(now));
  }).sort((a,b)=>(code.exercises[a.id].lastAt||0)-(code.exercises[b.id].lastAt||0));
+ const waiting=[];
+ const rank={Foundation:0,Build:1,Mock:2};
+ const practiceMore=()=>reinforcement(steps.filter(id=>!id.startsWith('@')).map(id=>codeById.get(id)).filter(e=>(waiting.includes(e.id)||demonstrated(code,e.id))&&(!waiting.length||(rank[e.stage]||0)<=Math.min(...waiting.map(w=>rank[codeById.get(w).stage]||0)))),code,now);
  const pending=steps.find(id=>!id.startsWith('@')&&code.exercises?.[id]?.review?.pending);
  if(pending)return codeStep(codeById.get(pending),code,false,now);
  if(due.length)return codeStep(due[0],code,true,now);
@@ -61,19 +70,17 @@ export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
    if(!demonstrated(code,id)){
     const p=code.exercises?.[id],r=recallState(p||{},now);
     if(p?.passed&&p.lastResult==='pass'&&!r.pending&&r.phase==='relearning'&&r.dueAt>now){
-     // While filtering settles, introduce a different small pattern instead of massing retries.
-     if(id==='tiny-filter-cold'){
-      const alternate=['tiny-count-guided','tiny-count-cold'].find(other=>codeById.has(other)&&!demonstrated(code,other)&&!(code.exercises?.[other]?.review?.dueAt>now));
-      if(alternate)return codeStep(codeById.get(alternate),code,false,now);
-     }
-     return {type:'pause',id,title:'A useful stopping point.',dueAt:r.dueAt,reason:'Your next recall check is scheduled. Let the gap do its job; your work is saved.'};
+     waiting.push(id);
+     continue;
     }
+    if(waiting.length&&(rank[codeById.get(id).stage]||0)>Math.min(...waiting.map(w=>rank[codeById.get(w).stage]||0)))return practiceMore();
     return codeStep(codeById.get(id),code,false,now);
    }
   }else{
    const s=sessionById.get(id.slice(1));
    // Prerequisites are enforceable even if session order is edited later.
    const missing=s.prerequisites.find(p=>codeById.has(p)&&!(p==='syntax-guided'&&demonstrated(code,'tiny-filter-guided')&&demonstrated(code,'tiny-count-guided'))&&!demonstrated(code,p));
+   if(missing&&waiting.includes(missing))return practiceMore();
    if(missing)return codeStep(codeById.get(missing),code,false,now);
    const latest=reviews.filter(r=>r.id===s.id&&r.at<=now).sort((a,b)=>b.at-a.at)[0];
    const passed=latest&&reviewPass(latest,s);
@@ -81,5 +88,5 @@ export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
    if(!passed || (final&&!assessedSessions({...path,reviews},[s],true,now).length))return {type:'session',id:s.id,title:s.title,reason:latest&&!passed?'Repair the weakest part with a new rehearsal, one prompt at a time.':final?'Bring the pieces together with a peer. Their feedback is required for this final rehearsal.':'Now explain the work. We’ll show one prompt at a time; practice feedback is self-rated until a peer reviews it.',review:false};
   }
  }
- return {type:'done',title:'Your next step is real feedback.',reason:'You completed this practice sequence. Keep returning for recall checks and use a peer to assess your explanations and new tasks.'};
+ return practiceMore();
 }

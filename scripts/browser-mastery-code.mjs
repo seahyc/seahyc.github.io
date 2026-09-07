@@ -20,14 +20,14 @@ try{
   await solve('tiny-filter-guided');await page.locator('#journey-next').click();await waitId('tiny-filter-cold');
   assert.equal(await page.locator('#mode').inputValue(),'cold');
   await page.locator('#hint-details summary').click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['tiny-filter-cold'].session.assisted===true);
-  await solve('tiny-filter-cold');assert.match(await page.locator('#journey-message').innerText(),/with support/);await page.locator('#journey-next').click();
+  await solve('tiny-filter-cold');assert.ok(await page.locator('#journey-next').isEnabled());await page.locator('#journey-next').click();
   await waitId('tiny-count-guided');
   const assisted=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['tiny-filter-cold']);
   assert.equal(assisted.review.phase,'relearning');assert.equal(assisted.review.pending,false);assert.ok(assisted.review.dueAt-Date.now()<=600000&&assisted.review.dueAt>Date.now());
   assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['tiny-filter-cold'].files['src/tiny_filter_cold.py'].includes('return result')));
   await editor(page).fill('# my unfinished counting work\npass');await page.reload();await page.waitForFunction(()=>document.querySelector('#editor').value.includes('unfinished counting work'));
   await solve('tiny-count-guided');await page.locator('#journey-next').click();await waitId('tiny-count-cold');await solve('tiny-count-cold');
-  assert.equal(await page.locator('#journey-next').innerText(),'Finish for now →');
+  assert.match(await page.locator('#journey-next').innerText(),/^Next:/);await page.locator('#journey-next').click();await waitId('syntax-faded');
   console.log('PASS real Python 20 new tests, assisted 10-minute relearning schedule, safe alternate pattern, archived solution and reload');
  }
  const newer=await context.newPage();await newer.goto(base);await newer.waitForFunction(()=>!!document.querySelector('#editor')?.value);await editor(newer).fill('# newer work\npass');
