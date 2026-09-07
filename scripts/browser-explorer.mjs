@@ -66,13 +66,13 @@ try{
  assert.equal(await p.locator('#journey-next').isVisible(),true);
  console.log('PASS actual test suite reports all six checks and a visible next step');
  // A representative function with multiple arguments.
- await p.goto(base+'?library=1#probe-windows');await editor.waitFor();
+ await p.goto(base+'?library=1&case=arguments#probe-windows');await p.locator('#title').filter({hasText:'Rolling Totals'}).waitFor();await editor.waitFor();
  await editor.fill('def rolling_totals(values, width):\n    if width <= 0 or width > len(values):\n        return []\n    return [sum(values[i:i+width]) for i in range(len(values)-width+1)]\n');
  await p.locator('#example-lab summary').click();await p.locator('#example-input').fill('[[1, 4, 2], 2]');await p.locator('#example-run').click();
  await p.waitForFunction(()=>document.querySelector('#example-actual').textContent.replace(/\s/g,'')==='[5,6]',null,{timeout:120000});
  console.log('PASS browser multiple-argument input produces real output');
  // Callback exercises need a small Python driver, not JSON pretending to encode functions.
- await p.goto(base+'?library=1#probe-routing');await editor.waitFor();
+ await p.goto(base+'?library=1&case=callback#probe-routing');await p.locator('#title').filter({hasText:'Route Named Actions'}).waitFor();await editor.waitFor();
  await editor.fill('def route_action(handlers, request):\n    name = request["action"]\n    if name not in handlers:\n        return {"ok": False, "error": "unknown"}\n    return {"ok": True, "value": handlers[name](request.get("payload"))}\n');
  await p.locator('#example-lab summary').click();
  await p.locator('#example-input').fill('from task import route_action\nprint(route_action({"double": lambda value: value * 2}, {"action": "double", "payload": 7}))');
