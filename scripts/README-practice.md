@@ -73,3 +73,11 @@ Research references: Math Academy describes diagnostic, graph, and implicit-revi
 The earlier learning-engine audit above describes the pre-adaptive release.
 The current design, evidence rules, coverage limits, migration behavior and
 verification commands are documented in [the adaptive learning design](../docs/adaptive-learning.md).
+
+## Input/output exploration regression
+
+Every coding exercise must have an entry in `static/practice/examples.json`. The “Try a real input” panel executes the learner’s current files in the same isolated Python worker: a single JSON value, a JSON array of positional arguments, or a short Python driver for objects, callbacks and async calls. Supplied expected output applies only to the supplied example. Custom inputs invite a prediction; they do not claim an automatically known answer. Experiments never award official check passes or change mastery/assistance evidence.
+
+`node --test scripts/explorer.test.mjs` enforces complete catalog coverage and input/output contracts. `python3 scripts/verify-explorer-examples.py` checks starter interfaces and all variant examples against reference fixtures. `python3 scripts/verify-runner.py` executes the actual runner Python, covering arguments, async callbacks, object state, errors and output bounds.
+
+CI additionally runs `node scripts/browser-explorer.mjs` after `npx playwright install --with-deps chromium`. This test owns an ephemeral localhost server and fresh browser contexts; it cannot use production learning state. It checks every exercise panel, real edited-code execution, invalid inputs, unchanged learning evidence, official test counts and the next-step action. New exercises without working explorer metadata fail CI.

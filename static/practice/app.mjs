@@ -13,6 +13,7 @@ import {rateRecall,recallState} from './recall.mjs?v=recall-2026-09-06-1';
 import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
 import {freshPath,validatePath} from './path/model.mjs?v=recall-2026-09-06-1';
 import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs?v=recall-2026-09-06-1';
+import {expectedForInput,explorerPresentation,formatExplorerOutput,getInitialInput,makeProbe} from './explorer.mjs?v=explorer-2026-09-08-1';
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 if(!guidedFlow)document.body.classList.remove('focus');
 let interviews=[],pathState=freshPath(),examples={},activeAction;
@@ -93,7 +94,11 @@ function updateJourney(){
   $('journey-next').textContent=smaller&&!passed?'Continue with a smaller step →':step.reinforcement?'Continue practising →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
  }
 }
-function renderExample(){const demo=examples[current.id];$('example-lab').hidden=!demo;if(!demo)return;$('example-caption').textContent=demo.caption;$('example-input').value=JSON.stringify(demo.args[0]);$('example-expected').textContent=JSON.stringify(demo.expected);}
+function renderExample(){
+ const demo=examples[current.id],lab=$('example-lab');lab.hidden=false;lab.open=false;$('example-actual').textContent='';
+ if(!demo){$('example-caption').textContent='Input explorer unavailable: this exercise is missing its example configuration.';$('example-input-label').textContent='Input unavailable';$('example-help').textContent='Please report this exercise ID: '+current.id;$('example-input').value='';$('example-input').disabled=true;$('example-run').disabled=true;$('example-expected').textContent='Unavailable';return;}
+ const presentation=explorerPresentation(demo);$('example-caption').textContent=demo.caption;$('example-input-label').textContent=presentation.label;$('example-help').textContent=presentation.help;$('example-input').rows=presentation.rows;$('example-input').disabled=false;$('example-run').disabled=false;$('example-input').value=getInitialInput(demo);$('example-expected').textContent=expectedForInput(demo,$('example-input').value);
+}
 function renderCases(cases){
  const target=$('case-feedback');target.replaceChildren();target.hidden=!cases?.length;if(!cases?.length)return;
  const summary=document.createElement('p');summary.className=cases.every(c=>c.status==='pass')?'checks-pass':'checks-fail';summary.textContent=`${cases.filter(c=>c.status==='pass').length} of ${cases.length} checks passed`;target.append(summary);
@@ -102,8 +107,8 @@ function renderCases(cases){
   if(c.detail){const detail=document.createElement('pre');detail.textContent=c.detail;item.append(detail);}target.append(item);
  }
 }
-$('example-input').oninput=()=>{$('example-expected').textContent=$('example-input').value===JSON.stringify(examples[current.id]?.args[0])?JSON.stringify(examples[current.id].expected):'Custom input — predict the result';};
-$('example-run').onclick=()=>{try{const arg=JSON.parse($('example-input').value);if(!Array.isArray(arg))throw Error('Use a JSON list, for example ["", "agent"].');run('probe',{...examples[current.id],args:[arg]});}catch(e){$('example-actual').textContent=e.message;}};
+$('example-input').oninput=()=>{const demo=examples[current.id];$('example-actual').textContent='';if(demo)$('example-expected').textContent=expectedForInput(demo,$('example-input').value);};
+$('example-run').onclick=()=>{try{const demo=examples[current.id];if(!demo)throw Error('Explorer configuration is unavailable for this exercise.');$('example-actual').textContent='';run('probe',makeProbe(demo,$('example-input').value));}catch(e){$('example-actual').textContent='Error: '+e.message;}};
 
 
 function launchStep(){
@@ -147,7 +152,7 @@ function select(e){
   document.body.classList.toggle('mock-active',s.mode==='mock');
   $('mode').value=s.mode;$('notes').value=entry().notes||'';$('hint-details').open=false;$('hint').textContent='';$('rescue').open=false;
   $('output').textContent='Make it parse. Make one example pass. Then handle edge cases.';
-  $('main').disabled=!('src/main.py' in e.files);renderExample();$('case-feedback').hidden=true;$('example-actual').textContent='Run your code to see';lastInput=Date.now();$('journey-feedback').hidden=true;$('first-feedback').hidden=true;$('full-output').open=!guidedFlow;refresh();tick();persist();
+  $('main').disabled=!('src/main.py' in e.files);renderExample();$('case-feedback').hidden=true;lastInput=Date.now();$('journey-feedback').hidden=true;$('first-feedback').hidden=true;$('full-output').open=!guidedFlow;refresh();tick();persist();
 }
 function fresh(mode){
   if(worker)return;
@@ -167,20 +172,20 @@ function renderSupport(){
  const reveal=document.createElement('details'),summary=document.createElement('summary'),answer=document.createElement('pre');summary.textContent='Check your prediction';answer.textContent=item.answer;reveal.append(summary,answer);card.append(title,explanation,pre,prompt,reveal);
 }
 function assisted(reason){const wasAssisted=session().assisted;session().cold=false;session().assisted=true;if(!wasAssisted)addLearningEvent(state,current.id,{kind:'assistance',passed:false,cold:false,assisted:true,fresh:!!session().freshExercise,sessionId:session().started});renderSupport();persist();refresh();if(reason)notice(reason);}
-function busy(on){['syntax','run','new-attempt','mode','file','timer-button','example-run'].forEach(id=>$(id).disabled=on);$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;codeEditor.setReadOnly(on||!editable(file)||storageStale);}
-function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message){$('output').textContent=message;$('first-feedback').hidden=false;$('first-feedback').textContent=message;}}
+function busy(on){['syntax','run','new-attempt','mode','file','timer-button'].forEach(id=>$(id).disabled=on);const explorerUnavailable=!examples[current?.id];$('example-input').disabled=on||explorerUnavailable;$('example-run').disabled=on||explorerUnavailable;$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;codeEditor.setReadOnly(on||!editable(file)||storageStale);}
+function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message){if(runContext?.executionMode==='probe')$('example-actual').textContent='Error: '+message;$('output').textContent=message;$('first-feedback').hidden=false;$('first-feedback').textContent=message;}}
 function run(mode,probe){
   if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
-  runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock,fresh:!!s.freshExercise};
+  runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,executionMode:mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock,fresh:!!s.freshExercise};
   if(mode==='tests'){clearRunOutcome();notice('');}else $('first-feedback').hidden=true;
   busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
-  worker=new Worker(new URL('./runner.mjs?v=recall-2026-09-06-1',import.meta.url),{type:'module'});
+  worker=new Worker(new URL('./runner.mjs?v=explorer-2026-09-07-2',import.meta.url),{type:'module'});
   runTimeout=setTimeout(()=>stop('Python could not load within 90 seconds. Check your connection, then try again.'),90000);
   worker.onmessage=({data})=>{
     if(data.type==='ready'){clearTimeout(runTimeout);$('runtime-state').textContent=mode==='tests'?'Running checks':'Running';$('first-feedback').textContent=mode==='probe'?'Trying your input…':mode==='tests'?'Running checks…':'Checking your code…';runTimeout=setTimeout(()=>{const ctx=runContext;stop('Execution exceeded 10 seconds. Check for an infinite loop or unexpectedly large input.');if(mode==='tests'){const cold=ctx.cold&&session().cold&&!session().assisted;record(state,ctx.id,{passed:false,kind:'timeout',cold,fresh:ctx.fresh,assisted:!!session().assisted,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(ctx.id),scaffold:supported(ctx.id)});feedback('fail');persist();refresh();}},10000);return;}
     if(data.type==='error'){stop('Python could not start: '+data.message+'\nCheck your connection and retry.');return;}
     if(data.type==='result'){
-      stop(null);if(mode==='tests'){renderCases(data.cases);if(data.passed){$('success-moment').hidden=false;$('success-title').textContent=`${data.count} of ${data.count} checks passed`;$('success-caption').textContent='You made it work.';if(!runContext.previouslyPassed){feedback('pass');celebrate($('success-moment'));}}else feedback('fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
+      stop(null);if(mode==='tests'){renderCases(data.cases);if(data.passed){$('success-moment').hidden=false;$('success-title').textContent=`${data.count} of ${data.count} checks passed`;$('success-caption').textContent='You made it work.';if(!runContext.previouslyPassed){feedback('pass');celebrate($('success-moment'));}}else feedback('fail');}if(mode==='probe')$('example-actual').textContent=data.passed?formatExplorerOutput(examples[current.id],data.value):'Error: '+(firstError(data.output||'')||'The input run failed. Open the output for details.');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
       if(mode==='syntax'&&!data.passed){record(state,current.id,{passed:false,kind:'syntax',cold:false,output:firstError(data.output)});persist();refresh();}
       if(mode==='tests'){
         const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
