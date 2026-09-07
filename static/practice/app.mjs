@@ -1,3 +1,4 @@
+import {exerciseEvidence} from './evidence.mjs?v=recall-2026-09-06-1';
 import {createSyntaxChecker} from './syntax-client.mjs?v=delight-2026-09-06-1';
 import {celebrate,clearCelebration} from './celebration.mjs?v=recall-2026-09-06-1';
 import {createCodeEditor} from './editor.bundle.mjs?v=recall-2026-09-06-1';
@@ -168,7 +169,7 @@ function run(mode,probe){
         const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
         record(state,current.id,{passed:data.passed,kind:data.kind,cold,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(current.id),scaffold:supported(current.id),mockQualified,freshMock:ctx.freshMock,count:data.count,elapsed:Math.round((Date.now()-ctx.started)/1000),output:firstError(data.output)});
         if(data.passed&&!supported(current.id)&&entry().review?.pending)rateRecall(state,current.id,'good');
-        if(data.passed)notice('');
+        if(data.passed){notice('');const evidence=exerciseEvidence(state,current.id);$('success-caption').textContent=evidence.label==='Recalled after a gap'?'You brought it back after a gap. That is new recall evidence.':evidence.label==='Independent pass'?'You built it independently. We’ll check it again after a gap.':evidence.label==='Guided practice complete'?'First working pattern, checked off. Next, use it with less support.':'Working solution, checked off. We’ll return to check independent recall.';}
         else {
          notice('One error at a time. Repair the first failing behavior, then check again.');
          const recent=state.attempts.filter(a=>a.id===current.id).slice(0,2);
