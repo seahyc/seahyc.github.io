@@ -64,7 +64,8 @@ export function renderRoadmap(container,model){
   if(milestone.phase!==phase){phase=milestone.phase;container.append(element('h3','roadmap-phase',phase));list=element('ol','roadmap-list');container.append(list);}
   const item=element('li',`roadmap-item roadmap-item--${milestone.status}${milestone.completed?' roadmap-item--completed':''}`);
   if(milestone.isCurrent){item.setAttribute('aria-current','step');item.append(element('span','roadmap-you-are-here','→ You are here'));}
-  const title=element('span','roadmap-title',milestone.title);
+  const title=element('span','roadmap-title');
+  title.append(element('span','roadmap-ink',milestone.title));
   const visibleLabel=milestone.covered&&!milestone.completed?'Covered by later work':milestone.statusLabel;
   const meta=element('span','roadmap-status',`${milestone.type==='code'?'Code':'Interview'} · ${visibleLabel}`);
   if(milestone.completed)title.prepend(element('span','roadmap-check','✓ '));
