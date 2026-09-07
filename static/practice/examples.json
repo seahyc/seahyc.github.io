@@ -1,46 +1,1024 @@
 {
   "examples": {
     "tiny-filter-guided": {
+      "mode": "value",
       "module": "tiny_filter_guided",
       "function": "keep_nonempty",
-      "args": [["", "agent", "", "tool"]],
-      "expected": ["agent", "tool"],
-      "caption": "Empty strings are removed while order stays the same."
+      "args": [
+        [
+          "",
+          "agent",
+          "",
+          "tool"
+        ]
+      ],
+      "expected": [
+        "agent",
+        "tool"
+      ],
+      "caption": "This example checks removing empty strings in order."
     },
     "tiny-filter-cold": {
+      "mode": "value",
       "module": "tiny_filter_cold",
       "function": "keep_long_enough",
-      "args": [["a", "tool", "AI", "run"]],
-      "expected": ["tool", "run"],
-      "caption": "The inclusive boundary keeps strings with at least three characters."
+      "args": [
+        [
+          "a",
+          "tool",
+          "AI",
+          "run"
+        ]
+      ],
+      "expected": [
+        "tool",
+        "run"
+      ],
+      "caption": "This example checks the inclusive three-character boundary."
     },
     "tiny-count-guided": {
+      "mode": "value",
       "module": "tiny_count_guided",
       "function": "count_events",
-      "args": [["ok", "error", "ok"]],
-      "expected": {"ok": 2, "error": 1},
-      "caption": "Each event is tallied in first-seen key order."
+      "args": [
+        [
+          "ok",
+          "error",
+          "ok"
+        ]
+      ],
+      "expected": {
+        "ok": 2,
+        "error": 1
+      },
+      "caption": "This example checks event counts in first-seen order."
     },
     "tiny-count-cold": {
+      "mode": "value",
       "module": "tiny_count_cold",
       "function": "count_final_chars",
-      "args": [["run", "tool", "plan"]],
-      "expected": {"n": 2, "l": 1},
-      "caption": "Empty words would be ignored; each final character is counted."
+      "args": [
+        [
+          "run",
+          "tool",
+          "plan"
+        ]
+      ],
+      "expected": {
+        "n": 2,
+        "l": 1
+      },
+      "caption": "This example checks counts of final characters."
+    },
+    "syntax-guided": {
+      "mode": "value",
+      "module": "guided_patterns",
+      "function": "keep_non_empty",
+      "args": [
+        [
+          "",
+          "agent",
+          "",
+          "tool"
+        ]
+      ],
+      "expected": [
+        "agent",
+        "tool"
+      ],
+      "caption": "This example checks the keep_non_empty function only."
     },
     "syntax-faded": {
+      "mode": "value",
       "module": "faded_pattern",
       "function": "normalize_tags",
-      "args": [[" Python ", "AI", "python", " Agents "]],
-      "expected": ["python", "ai", "agents"],
-      "caption": "Normalize whitespace and case, then keep the first occurrence."
+      "args": [
+        [
+          " Python ",
+          "AI",
+          "python",
+          " Agents "
+        ]
+      ],
+      "expected": [
+        "python",
+        "ai",
+        "agents"
+      ],
+      "caption": "This example checks normalization and stable deduplication."
     },
     "python-refresher-1": {
+      "mode": "value",
       "module": "python_refresher",
       "function": "count_outcomes",
-      "args": [[{"outcome": "success"}, {"outcome": "failure"}, {"outcome": "success"}]],
-      "expected": {"success": 2, "failure": 1},
-      "caption": "Outcome counts preserve the order in which keys first appear."
+      "args": [
+        [
+          {
+            "outcome": "success"
+          },
+          {
+            "outcome": "failure"
+          },
+          {
+            "outcome": "success"
+          }
+        ]
+      ],
+      "expected": {
+        "success": 2,
+        "failure": 1
+      },
+      "caption": "This example checks the count_outcomes function only."
+    },
+    "interval-windows": {
+      "mode": "value",
+      "module": "interval_windows",
+      "function": "merge_windows",
+      "args": [
+        [
+          [
+            1,
+            5
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "expected": [
+        [
+          1,
+          8
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "caption": "This example checks overlap merging."
+    },
+    "shortest-route": {
+      "mode": "arguments",
+      "module": "shortest_route",
+      "function": "shortest_route",
+      "args": [
+        {
+          "a": [
+            "b",
+            "c"
+          ],
+          "b": [
+            "z"
+          ],
+          "c": [
+            "z"
+          ]
+        },
+        "a",
+        "z"
+      ],
+      "expected": [
+        "a",
+        "b",
+        "z"
+      ],
+      "caption": "This example checks alphabetical shortest-route tie-breaking."
+    },
+    "ranked-results": {
+      "mode": "arguments",
+      "module": "ranked_results",
+      "function": "top_k",
+      "args": [
+        [
+          {
+            "id": "a",
+            "score": 1
+          },
+          {
+            "id": "b",
+            "score": 3
+          }
+        ],
+        1
+      ],
+      "expected": [
+        {
+          "id": "b",
+          "score": 3
+        }
+      ],
+      "caption": "This example checks selecting the highest-scoring item."
+    },
+    "tool-router": {
+      "mode": "python",
+      "script": "from tool_router import ToolRouter\nr=ToolRouter()\nr.register('add',lambda a,b:a+b,required=['a','b'])\nprint(r.dispatch({'name':'add','arguments':{'a':2,'b':3}}))",
+      "expected": "{'ok': True, 'result': 5}",
+      "caption": "This example checks dispatch to a registered handler."
+    },
+    "eval-harness": {
+      "mode": "python",
+      "script": "from eval_harness import run_eval\nc=[{'input':2,'expected':2},{'input':3,'expected':4}]\nprint(run_eval(c,lambda x:x,lambda a,e:a==e)['pass_rate'])",
+      "expected": "0.5",
+      "caption": "This example checks pass-rate calculation only."
+    },
+    "python-refresher-2": {
+      "mode": "python",
+      "script": "from container_registry import assign_container_ids\ns=[]\nr=[s,s]\ni=assign_container_ids(r)\nprint([i[id(r)],i[id(s)],len(i)])",
+      "expected": "['0', '1', 2]",
+      "caption": "This example checks one identifier for a shared container."
+    },
+    "loop-detector": {
+      "mode": "arguments",
+      "module": "loop_detector",
+      "function": "detect_stuck_agents",
+      "args": [
+        [
+          {
+            "ts": 1,
+            "agent_id": "a",
+            "action": "run",
+            "target": "tests"
+          },
+          {
+            "ts": 2,
+            "agent_id": "a",
+            "action": "run",
+            "target": "tests"
+          },
+          {
+            "ts": 3,
+            "agent_id": "a",
+            "action": "run",
+            "target": "tests"
+          }
+        ],
+        3
+      ],
+      "expected": [
+        {
+          "agent_id": "a",
+          "action": "run",
+          "target": "tests",
+          "count": 3,
+          "first_ts": 1
+        }
+      ],
+      "caption": "This example checks one repeated action run."
+    },
+    "rate-limiter": {
+      "mode": "arguments",
+      "module": "rate_limiter",
+      "function": "allowed_count",
+      "args": [
+        [
+          0,
+          0,
+          0,
+          2,
+          2
+        ],
+        2,
+        1
+      ],
+      "expected": 4,
+      "caption": "This example checks burst admission and refill."
+    },
+    "log-spike": {
+      "mode": "value",
+      "module": "spike_detector",
+      "function": "parse",
+      "args": [
+        [
+          "{\"ts\": 1, \"level\": \"error\"}",
+          "bad json",
+          "{\"ts\": 2, \"level\": \"info\"}"
+        ]
+      ],
+      "expected": [
+        {
+          "ts": 1,
+          "level": "error"
+        },
+        {
+          "ts": 2,
+          "level": "info"
+        }
+      ],
+      "caption": "This example checks the parse function only."
+    },
+    "dependency-graph": {
+      "mode": "value",
+      "module": "build_order",
+      "function": "build_order",
+      "args": [
+        {
+          "app": [
+            "db",
+            "api"
+          ],
+          "api": [
+            "db"
+          ]
+        }
+      ],
+      "expected": [
+        "db",
+        "api",
+        "app"
+      ],
+      "caption": "This example checks dependency-first ordering."
+    },
+    "retry-backoff": {
+      "mode": "python",
+      "script": "from resilient_client import TransientError,call_with_retry\na=iter([TransientError('again'),'ok'])\nd=[]\ndef work():\n v=next(a)\n if isinstance(v,Exception):raise v\n return v\nprint(call_with_retry(work,sleep=d.append),d)",
+      "expected": "ok [1.0]",
+      "caption": "This example checks one transient retry and delay."
+    },
+    "object-graph-codec": {
+      "mode": "python",
+      "script": "from object_graph_codec import encode,decode\nv=[]\nv.append(v)\nr=decode(encode(v))\nprint(r[0] is r)",
+      "expected": "True",
+      "caption": "This example checks a cyclic list round trip."
+    },
+    "bracket-parser": {
+      "mode": "value",
+      "module": "bracket_checker",
+      "function": "check",
+      "args": [
+        "( ]"
+      ],
+      "expected": [
+        1,
+        3,
+        "expected ')' but found ']'"
+      ],
+      "caption": "This example checks the first bracket mismatch."
+    },
+    "sse-parser": {
+      "mode": "value",
+      "module": "sse_parser",
+      "function": "parse_sse",
+      "args": [
+        [
+          "data: {\"delta\": \"Hi\"}\n\n"
+        ]
+      ],
+      "expected": [
+        {
+          "delta": "Hi"
+        }
+      ],
+      "caption": "This example checks parsing one complete event."
+    },
+    "versioned-key-value-store": {
+      "mode": "python",
+      "script": "from versioned_store import VersionedStore\ns=VersionedStore();s.put('a',1);s.delete('a');s.put('a',3)\nprint(s.history('a'))",
+      "expected": "[{'version': 1, 'deleted': False, 'value': 1}, {'version': 2, 'deleted': True}, {'version': 3, 'deleted': False, 'value': 3}]",
+      "caption": "This example checks a key's mutation history."
+    },
+    "bounded-lru-cache": {
+      "mode": "python",
+      "script": "from lru_cache import LRUCache\nc=LRUCache(2);c.put('a',1);c.put('b',2);c.get('a');c.put('c',3)\nprint(c.get('a'),c.get('c'),len(c))",
+      "expected": "1 3 2",
+      "caption": "This example checks access-sensitive eviction."
+    },
+    "duplicate-content": {
+      "mode": "python",
+      "script": "from duplicate_content import find_duplicates\nd={'a':b'x','b':b'x'}\nprint(find_duplicates([{'id':'a','size':1},{'id':'b','size':1}],d.get))",
+      "expected": "[['a', 'b']]",
+      "caption": "This example checks one duplicate byte group."
+    },
+    "evolving-ledger": {
+      "mode": "python",
+      "script": "from evolving_ledger import Ledger\nl=Ledger();l.create('a',4);l.create('b');l.transfer('a','b',3)\nprint(l.balance('a'),l.balance('b'),l.revision)",
+      "expected": "1 3 3",
+      "caption": "This example checks an atomic transfer."
+    },
+    "repair-expiring-cache": {
+      "mode": "python",
+      "script": "from expiring_cache import ExpiringCache\nn=[0];c=ExpiringCache(lambda:n[0]);c.set('a',1,2);n[0]=2\ntry:c.get('a')\nexcept KeyError:print('expired',len(c))",
+      "expected": "expired 0",
+      "caption": "This example checks expiry at the deadline."
+    },
+    "bounded-async-map": {
+      "mode": "python",
+      "script": "from bounded_async_map import bounded_map\nasync def twice(x):return x*2\nprint(await bounded_map(twice,[3,1,2],2))",
+      "expected": "[6, 2, 4]",
+      "caption": "This example checks ordered results with bounded concurrency."
+    },
+    "batch-scheduler": {
+      "mode": "arguments",
+      "module": "batch_scheduler",
+      "function": "schedule_batches",
+      "args": [
+        [
+          {
+            "id": "a",
+            "tokens": 3
+          },
+          {
+            "id": "b",
+            "tokens": 2
+          }
+        ],
+        5
+      ],
+      "expected": [
+        {
+          "jobs": [
+            {
+              "id": "a",
+              "tokens": 3
+            },
+            {
+              "id": "b",
+              "tokens": 2
+            }
+          ],
+          "tokens": 5,
+          "oversize": false
+        }
+      ],
+      "caption": "This example checks packing two jobs into one batch."
+    },
+    "probe-filtering": {
+      "mode": "value",
+      "module": "task",
+      "function": "ready_jobs",
+      "args": [
+        [
+          {
+            "id": "a",
+            "ready": true
+          },
+          {
+            "id": "b",
+            "ready": false
+          }
+        ]
+      ],
+      "expected": [
+        {
+          "id": "a",
+          "ready": true
+        }
+      ],
+      "caption": "This example checks filtering ready jobs."
+    },
+    "variation-filtering": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "matching_notes",
+      "args": [
+        [
+          {
+            "text": "a",
+            "tags": [
+              "x"
+            ]
+          },
+          {
+            "text": "b",
+            "tags": [
+              "y"
+            ]
+          }
+        ],
+        [
+          "x"
+        ]
+      ],
+      "expected": [
+        {
+          "text": "a",
+          "tags": [
+            "x"
+          ]
+        }
+      ],
+      "caption": "This example checks matching an allowed tag."
+    },
+    "probe-counting": {
+      "mode": "value",
+      "module": "task",
+      "function": "count_codes",
+      "args": [
+        [
+          "ok",
+          "error",
+          "ok"
+        ]
+      ],
+      "expected": {
+        "ok": 2,
+        "error": 1
+      },
+      "caption": "This example checks counting result codes."
+    },
+    "variation-counting": {
+      "mode": "value",
+      "module": "task",
+      "function": "size_buckets",
+      "args": [
+        [
+          "",
+          "abc",
+          "abcdefghijk"
+        ]
+      ],
+      "expected": {
+        "empty": 1,
+        "small": 1,
+        "large": 1
+      },
+      "caption": "This example checks all three payload-size buckets."
+    },
+    "probe-normalization": {
+      "mode": "value",
+      "module": "task",
+      "function": "normalize_channels",
+      "args": [
+        [
+          " Email ",
+          "email",
+          " SMS "
+        ]
+      ],
+      "expected": [
+        "email",
+        "sms"
+      ],
+      "caption": "This example checks channel normalization."
+    },
+    "variation-normalization": {
+      "mode": "value",
+      "module": "task",
+      "function": "preference_key",
+      "args": [
+        [
+          " Email ",
+          " DAILY ",
+          ""
+        ]
+      ],
+      "expected": "email.daily",
+      "caption": "This example checks a canonical preference key."
+    },
+    "probe-collections": {
+      "mode": "value",
+      "module": "task",
+      "function": "stable_unique_objects",
+      "args": [
+        [
+          {
+            "id": "x",
+            "v": 1
+          },
+          {
+            "id": "x",
+            "v": 2
+          },
+          {
+            "id": "y",
+            "v": 3
+          }
+        ]
+      ],
+      "expected": [
+        {
+          "id": "x",
+          "v": 1
+        },
+        {
+          "id": "y",
+          "v": 3
+        }
+      ],
+      "caption": "This example checks stable object deduplication."
+    },
+    "variation-collections": {
+      "mode": "value",
+      "module": "task",
+      "function": "split_repeats",
+      "args": [
+        [
+          {
+            "key": "x",
+            "n": 1
+          },
+          {
+            "key": "x",
+            "n": 2
+          }
+        ]
+      ],
+      "expected": [
+        [
+          {
+            "key": "x",
+            "n": 1
+          }
+        ],
+        [
+          {
+            "key": "x",
+            "n": 2
+          }
+        ]
+      ],
+      "caption": "This example checks splitting first and repeated objects."
+    },
+    "probe-routing": {
+      "mode": "python",
+      "script": "from task import route_action\nprint(route_action({'inc':lambda x:x+1},{'action':'inc','payload':2}))",
+      "expected": "{'ok': True, 'value': 3}",
+      "caption": "This example checks routing one action."
+    },
+    "variation-routing": {
+      "mode": "python",
+      "script": "from task import dispatch_events\nprint(dispatch_events({'length':len},[{'kind':'length','data':[1,2]},{'kind':'missing','data':0}]))",
+      "expected": "[2, None]",
+      "caption": "This example checks known and unknown event dispatch."
+    },
+    "probe-intervals": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "active_labels",
+      "args": [
+        [
+          [
+            1,
+            4,
+            "a"
+          ],
+          [
+            2,
+            5,
+            "b"
+          ]
+        ],
+        3
+      ],
+      "expected": [
+        "a",
+        "b"
+      ],
+      "caption": "This example checks two active half-open windows."
+    },
+    "variation-intervals": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "free_slots",
+      "args": [
+        [
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            6
+          ]
+        ],
+        0,
+        8
+      ],
+      "expected": [
+        [
+          0,
+          2
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "caption": "This example checks free slots around merged busy time."
+    },
+    "probe-graphs": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "reachable",
+      "args": [
+        {
+          "a": [
+            "b",
+            "c"
+          ],
+          "b": [
+            "d"
+          ]
+        },
+        "a"
+      ],
+      "expected": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "caption": "This example checks breadth-first reachability."
+    },
+    "variation-graphs": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "dependency_layers",
+      "args": [
+        {
+          "a": [
+            "b",
+            "c"
+          ],
+          "b": [
+            "d"
+          ]
+        },
+        [
+          "a"
+        ]
+      ],
+      "expected": [
+        [
+          "a"
+        ],
+        [
+          "b",
+          "c"
+        ],
+        [
+          "d"
+        ]
+      ],
+      "caption": "This example checks breadth-first dependency layers."
+    },
+    "probe-ranking": {
+      "mode": "value",
+      "module": "task",
+      "function": "best_candidate",
+      "args": [
+        [
+          {
+            "name": "a",
+            "score": 1
+          },
+          {
+            "name": "b",
+            "score": 2
+          }
+        ]
+      ],
+      "expected": {
+        "name": "b",
+        "score": 2
+      },
+      "caption": "This example checks the highest-scoring candidate."
+    },
+    "variation-ranking": {
+      "mode": "value",
+      "module": "task",
+      "function": "order_retries",
+      "args": [
+        [
+          {
+            "id": "a",
+            "attempts": 2,
+            "priority": 9
+          },
+          {
+            "id": "b",
+            "attempts": 1,
+            "priority": 1
+          }
+        ]
+      ],
+      "expected": [
+        {
+          "id": "b",
+          "attempts": 1,
+          "priority": 1
+        },
+        {
+          "id": "a",
+          "attempts": 2,
+          "priority": 9
+        }
+      ],
+      "caption": "This example checks retry ordering."
+    },
+    "probe-evaluation": {
+      "mode": "value",
+      "module": "task",
+      "function": "check_summary",
+      "args": [
+        [
+          {
+            "passed": true
+          },
+          {
+            "passed": false
+          }
+        ]
+      ],
+      "expected": {
+        "passed": 1,
+        "failed": 1,
+        "rate": 0.5
+      },
+      "caption": "This example checks check counts and rate."
+    },
+    "variation-evaluation": {
+      "mode": "value",
+      "module": "task",
+      "function": "field_accuracy",
+      "args": [
+        [
+          {
+            "expected": {
+              "x": 1
+            },
+            "actual": {
+              "x": 1
+            }
+          },
+          {
+            "expected": {
+              "x": 2
+            },
+            "actual": {
+              "x": 0
+            }
+          }
+        ]
+      ],
+      "expected": {
+        "x": {
+          "matched": 1,
+          "total": 2
+        }
+      },
+      "caption": "This example checks field-level accuracy."
+    },
+    "probe-windows": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "rolling_totals",
+      "args": [
+        [
+          2,
+          1,
+          3,
+          4
+        ],
+        2
+      ],
+      "expected": [
+        3,
+        4,
+        7
+      ],
+      "caption": "This example checks rolling totals."
+    },
+    "variation-windows": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "distinct_per_window",
+      "args": [
+        [
+          "a",
+          "a",
+          "b",
+          "c"
+        ],
+        3
+      ],
+      "expected": [
+        2,
+        3
+      ],
+      "caption": "This example checks distinct values per window."
+    },
+    "probe-cycles": {
+      "mode": "value",
+      "module": "task",
+      "function": "first_repeat",
+      "args": [
+        [
+          "a",
+          "b",
+          "b",
+          "a"
+        ]
+      ],
+      "expected": [
+        1,
+        2
+      ],
+      "caption": "This example checks the earliest repeat positions."
+    },
+    "variation-cycles": {
+      "mode": "python",
+      "script": "from task import trace_until_repeat\nprint(trace_until_repeat(0,lambda x:(x+1)%3))",
+      "expected": "([0, 1, 2], 0)",
+      "caption": "This example checks a deterministic cycle trace."
+    },
+    "probe-throttling": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "accept_spaced",
+      "args": [
+        [
+          0,
+          1,
+          3,
+          6
+        ],
+        3
+      ],
+      "expected": [
+        0,
+        3,
+        6
+      ],
+      "caption": "This example checks spacing from the last accepted time."
+    },
+    "variation-throttling": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "quota_decisions",
+      "args": [
+        [
+          0,
+          1,
+          2,
+          5
+        ],
+        3,
+        2
+      ],
+      "expected": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "caption": "This example checks rolling-window quota decisions."
+    },
+    "mixed-event-summary": {
+      "mode": "value",
+      "module": "task",
+      "function": "event_summary",
+      "args": [
+        [
+          {
+            "type": " OK "
+          },
+          {
+            "type": ""
+          },
+          {
+            "type": "ok"
+          }
+        ]
+      ],
+      "expected": {
+        "ok": 2
+      },
+      "caption": "This example checks normalized valid event counts."
+    },
+    "mixed-ranked-counts": {
+      "mode": "arguments",
+      "module": "task",
+      "function": "ranked_counts",
+      "args": [
+        [
+          "a",
+          "b",
+          "b"
+        ],
+        2
+      ],
+      "expected": [
+        [
+          "b",
+          2
+        ],
+        [
+          "a",
+          1
+        ]
+      ],
+      "caption": "This example checks frequency-ranked counts."
+    },
+    "mixed-window-routing": {
+      "mode": "python",
+      "script": "from task import route_batches\nprint(route_batches(['length',1,'missing'],2,{'length':len}))",
+      "expected": "[2, None]",
+      "caption": "This example checks routing complete windows."
     }
   }
 }
