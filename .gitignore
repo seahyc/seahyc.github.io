@@ -13,3 +13,7 @@ projects-src/reno-atmosphere/.env.local
 .gstack/
 
 .worktrees/
+
+# Python verification caches
+__pycache__/
+*.pyc

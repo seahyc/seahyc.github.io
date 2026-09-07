@@ -67,3 +67,9 @@ The current engine is a rule-based exercise route with outcome-adjusted recall i
 The next substantive learning improvements should be validated problem families mapped to component skills, fresh variants for transfer checks, diagnostic challenge tasks for conditional skipping, and conservative credit only for component skills actually exercised. Routine learning should remain untimed, with fluency timing followed by explicit realistic mocks; do not treat timer expiry as mastery evidence. Equivalent variants must vary reasoning or requirements, not only identifier names or input values. Wrong-answer patterns should identify a smaller repair task. All of this must feed the existing single Continue action rather than add learner scheduling choices.
 
 Research references: Math Academy describes diagnostic, graph, and implicit-review mechanisms at https://mathacademy.com/how-our-ai-works (product mechanism claims, not independent validation of this site). Varied retrieval and transfer: https://doi.org/10.1073/pnas.2413511121 . Learning/performance distinction and interleaving: https://bjorklab.psych.ucla.edu/research/ . Interview stress study: https://par.nsf.gov/servlets/purl/10196170 (observed interview stress; not a study isolating countdown timers).
+
+## Adaptive engine (September 2026)
+
+The earlier learning-engine audit above describes the pre-adaptive release.
+The current design, evidence rules, coverage limits, migration behavior and
+verification commands are documented in [the adaptive learning design](../docs/adaptive-learning.md).

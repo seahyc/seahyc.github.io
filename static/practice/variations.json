@@ -1,0 +1,545 @@
+{
+  "title": "Adaptive Python practice variations",
+  "exercises": [
+    {
+      "id": "probe-filtering",
+      "title": "Keep Ready Jobs",
+      "stage": "Foundation",
+      "minutes": 7,
+      "focus": "filtering",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `ready_jobs(jobs)`. Return a new list containing each original job dictionary whose `ready` value is exactly `True`, in encounter order.\n\nExample: `ready_jobs([{'id':'a','ready':False},{'id':'b','ready':True}]) == [{'id':'b','ready':True}]`.\n\nBoundaries: An empty list returns `[]`; missing or non-boolean `ready` values do not qualify; duplicate references remain duplicated. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def ready_jobs(jobs):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import ready_jobs\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import ready_jobs\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(ready_jobs([]), [])\n    def test_filters(self):\n        a={'id':'a','ready':False}; b={'id':'b','ready':True}; self.assertEqual(ready_jobs([a,b]),[b])\n    def test_exact_bool(self):\n        self.assertEqual(ready_jobs([{'ready':1},{'ready':'yes'},{'ready':True}]),[{'ready':True}])\n    def test_identity(self):\n        x={'ready':True}; self.assertIs(ready_jobs([x])[0],x)\n    def test_order_duplicates(self):\n        a={'id':'a','ready':True}; b={'id':'b','ready':True}; self.assertEqual(ready_jobs([b,a,b]),[b,a,b])\n    def test_mutation(self):\n        x=[{'ready':False}]; before=[dict(x[0])]; ready_jobs(x); self.assertEqual(x,before)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-filtering",
+      "title": "Select Matching Notes",
+      "stage": "Foundation",
+      "minutes": 15,
+      "focus": "filtering",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `matching_notes(notes, allowed_tags)`. Return the original note dictionaries that have at least one tag present in `allowed_tags`, preserving note order.\n\nExample: `matching_notes([{'tags':['work']},{'tags':['home']}], {'home'}) == [{'tags':['home']}]`.\n\nBoundaries: Empty notes or allowed tags return `[]`; missing tags count as empty; repeated notes stay repeated. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def matching_notes(notes, allowed_tags):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import matching_notes\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import matching_notes\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(matching_notes([], {\"x\"}), [])\n    def test_no_allowed(self):\n        self.assertEqual(matching_notes([{'tags':['x']}],set()),[] )\n    def test_match(self):\n        a={'tags':['x']};b={'tags':['y','z']};self.assertEqual(matching_notes([a,b],{'z'}),[b])\n    def test_missing(self):\n        self.assertEqual(matching_notes([{}, {'tags':[]}],{'x'}),[] )\n    def test_identity_order(self):\n        a={'tags':['x']};b={'tags':['x']};r=matching_notes([b,a,b],{'x'});self.assertEqual(r,[b,a,b]);self.assertIs(r[0],b)\n    def test_mutation(self):\n        x=[{'tags':['x']}]; matching_notes(x,{'x'}); self.assertEqual(x,[{'tags':['x']}])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-counting",
+      "title": "Count Result Codes",
+      "stage": "Foundation",
+      "minutes": 7,
+      "focus": "counting",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `count_codes(codes)`. Return a dictionary mapping each string code to its occurrence count. Keys retain first-seen order.\n\nExample: `count_codes(['ok','retry','ok']) == {'ok':2,'retry':1}`.\n\nBoundaries: Empty input returns `{}`; empty strings and duplicates are counted. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def count_codes(codes):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import count_codes\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import count_codes\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(count_codes([]),{})\n    def test_counts(self):\n        self.assertEqual(count_codes(['ok','bad','ok']),{'ok':2,'bad':1})\n    def test_empty_string(self):\n        self.assertEqual(count_codes(['','']),{'':2})\n    def test_duplicates(self):\n        self.assertEqual(count_codes(['x']*4),{'x':4})\n    def test_order(self):\n        self.assertEqual(list(count_codes(['b','a','b','c'])),['b','a','c'])\n    def test_mutation(self):\n        x=['a','b'];count_codes(x);self.assertEqual(x,['a','b'])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-counting",
+      "title": "Bucket Payload Sizes",
+      "stage": "Foundation",
+      "minutes": 15,
+      "focus": "counting",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `size_buckets(payloads)`. Return counts for the keys `empty`, `small`, and `large`, where payload string lengths are 0, 1–3, or 4 and above.\n\nExample: `size_buckets(['','abc','tool']) == {'empty':1,'small':1,'large':1}`.\n\nBoundaries: All three keys are always present in that order; empty input gives zero for every bucket. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def size_buckets(payloads):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import size_buckets\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import size_buckets\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(size_buckets([]),{'empty':0,'small':0,'large':0})\n    def test_all(self):\n        self.assertEqual(size_buckets(['','a','abcd']),{'empty':1,'small':1,'large':1})\n    def test_boundaries(self):\n        self.assertEqual(size_buckets(['abc','abcd']),{'empty':0,'small':1,'large':1})\n    def test_duplicates(self):\n        self.assertEqual(size_buckets(['xx','xx']),{'empty':0,'small':2,'large':0})\n    def test_order(self):\n        self.assertEqual(list(size_buckets(['long'])),['empty','small','large'])\n    def test_mutation(self):\n        x=['a'];size_buckets(x);self.assertEqual(x,['a'])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-normalization",
+      "title": "Normalize Channel Names",
+      "stage": "Foundation",
+      "minutes": 7,
+      "focus": "normalization",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `normalize_channels(values)`. For each string, strip surrounding whitespace, lowercase it, and replace each run of internal whitespace with one hyphen. Discard empty results and return each normalized value once in first-seen order. Raise `ValueError` if any item is not a string.\n\nExample: `normalize_channels([' Release  Notes ', 'release notes', ' API ']) == ['release-notes', 'api']`.\n\nBoundaries: Empty input or only blank strings returns `[]`; punctuation is preserved; validate every item before returning a result. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def normalize_channels(values):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import normalize_channels\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import normalize_channels\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(normalize_channels([]),[])\n    def test_normalizes(self):\n        self.assertEqual(normalize_channels(['  Release  Notes ','API']),['release-notes','api'])\n    def test_discards_empty(self):\n        self.assertEqual(normalize_channels([' ','a','']),['a'])\n    def test_deduplicates_normalized(self):\n        self.assertEqual(normalize_channels([' A  B ','a b','C',' c ']),['a-b','c'])\n    def test_punctuation(self):\n        self.assertEqual(normalize_channels([' A/B ']),['a/b'])\n    def test_invalid_nonstring(self):\n        \n        for x in [None,3,True,[]]:\n            with self.subTest(x=x), self.assertRaises(ValueError): normalize_channels(['ok',x])\n    def test_mutation_identity(self):\n        a=' Already Canonical ';x=[a,'already canonical'];before=list(x);normalize_channels(x);self.assertEqual(x,before);self.assertIs(x[0],a)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-normalization",
+      "title": "Canonicalize Preference Keys",
+      "stage": "Foundation",
+      "minutes": 15,
+      "focus": "normalization",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `preference_key(parts)`. Normalize every string part by stripping it and lowercasing it, discard normalized empty parts, then join the remainder with dots.\n\nExample: `preference_key([' UI ', '', 'Theme Mode']) == 'ui.theme mode'`.\n\nBoundaries: Empty input or only blank parts returns `\"\"`; internal whitespace and punctuation remain unchanged. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def preference_key(parts):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import preference_key\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import preference_key\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(preference_key([]),\"\")\n    def test_normalizes(self):\n        self.assertEqual(preference_key([' UI ','Theme']), 'ui.theme')\n    def test_drops_blank(self):\n        self.assertEqual(preference_key(['a',' ','b']),'a.b')\n    def test_internal(self):\n        self.assertEqual(preference_key([' A  B ']),'a  b')\n    def test_duplicates(self):\n        self.assertEqual(preference_key(['A','A']),'a.a')\n    def test_mutation(self):\n        x=[' A '];preference_key(x);self.assertEqual(x,[' A '])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-collections",
+      "title": "Stable Unique Objects",
+      "stage": "Foundation",
+      "minutes": 7,
+      "focus": "collections",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `stable_unique_objects(items)`. Return the first object for each distinct `id`, preserving encounter order and returning the original dictionary objects.\n\nExample: `stable_unique_objects([{'id':'a'},{'id':'a'},{'id':'b'}]) has ids ['a','b']`.\n\nBoundaries: Empty input returns `[]`; the first object wins; neither the list nor dictionaries may be changed. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def stable_unique_objects(items):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import stable_unique_objects\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import stable_unique_objects\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(stable_unique_objects([]),[])\n    def test_unique(self):\n        a={'id':'a'};b={'id':'b'};self.assertEqual(stable_unique_objects([a,b]),[a,b])\n    def test_duplicates(self):\n        a={'id':'x','v':1};b={'id':'x','v':2};self.assertEqual(stable_unique_objects([a,b]),[a])\n    def test_identity(self):\n        x={'id':'x'};self.assertIs(stable_unique_objects([x])[0],x)\n    def test_order(self):\n        a={'id':'a'};b={'id':'b'};self.assertEqual(stable_unique_objects([b,a,b]),[b,a])\n    def test_mutation(self):\n        x=[{'id':'a'},{'id':'a'}];before=[dict(v) for v in x];stable_unique_objects(x);self.assertEqual(x,before)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-collections",
+      "title": "Split Firsts and Repeats",
+      "stage": "Foundation",
+      "minutes": 15,
+      "focus": "collections",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `split_repeats(items)`. Return `(firsts, repeats)`: original objects whose `key` is first encountered, and every later object with an already-seen key. Preserve order and identity in both lists.\n\nExample: `For input [{'key':'a'},{'key':'a'}], the first object is in `firsts` and the second is in `repeats``.\n\nBoundaries: Empty input returns `([], [])`; every occurrence after the first belongs to repeats; do not copy objects. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def split_repeats(items):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import split_repeats\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import split_repeats\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(split_repeats([]),([],[]))\n    def test_unique(self):\n        a={'key':'a'};b={'key':'b'};self.assertEqual(split_repeats([a,b]),([a,b],[]))\n    def test_repeat(self):\n        a={'key':'x','n':1};b={'key':'x','n':2};self.assertEqual(split_repeats([a,b]),([a],[b]))\n    def test_many_repeats(self):\n        a={'key':'x'};b={'key':'x'};c={'key':'x'};self.assertEqual(split_repeats([a,b,c]),([a],[b,c]))\n    def test_identity_order(self):\n        a={'key':'a'};b={'key':'b'};c={'key':'a'};f,r=split_repeats([b,a,c]);self.assertIs(f[0],b);self.assertIs(r[0],c)\n    def test_mutation(self):\n        x=[{'key':'a'},{'key':'a'}];before=[dict(v) for v in x];split_repeats(x);self.assertEqual(x,before)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-routing",
+      "title": "Route Named Actions",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "routing",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `route_action(handlers, request)`. Look up `request[\"action\"]` in `handlers`. Return `{\"ok\": False, \"error\": \"unknown\"}` when absent; otherwise call the handler with `request.get(\"payload\")` and return `{\"ok\": True, \"value\": result}`.\n\nExample: `route_action({'echo': lambda x:x}, {'action':'echo','payload':'hi'}) == {'ok':True,'value':'hi'}`.\n\nBoundaries: A missing payload passes `None`; handler exceptions are not transformed; handlers and request remain unchanged. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def route_action(handlers, request):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import route_action\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import route_action\n\nclass T(unittest.TestCase):\n    def test_routes(self):\n        self.assertEqual(route_action({'x':lambda v:v+1},{'action':'x','payload':2}),{'ok':True,'value':3})\n    def test_unknown(self):\n        self.assertEqual(route_action({}, {'action':'x'}),{'ok':False,'error':'unknown'})\n    def test_missing_payload(self):\n        self.assertEqual(route_action({'x':lambda v:v},{'action':'x'}),{'ok':True,'value':None})\n    def test_correct_handler(self):\n        self.assertEqual(route_action({'a':lambda v:'a','b':lambda v:'b'},{'action':'b'}),{'ok':True,'value':'b'})\n    def test_duplicate_calls(self):\n        seen=[]; h=lambda v:seen.append(v) or len(seen);self.assertEqual(route_action({'x':h},{'action':'x','payload':1})['value'],1);self.assertEqual(route_action({'x':h},{'action':'x','payload':1})['value'],2)\n    def test_mutation(self):\n        r={'action':'x','payload':[]};route_action({'x':lambda v:len(v)},r);self.assertEqual(r,{'action':'x','payload':[]})\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-routing",
+      "title": "Dispatch Event Records",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "routing",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `dispatch_events(routes, events)`. Return one output per event. If its `kind` has a route, append that handler’s result for `event[\"data\"]`; otherwise append `None`.\n\nExample: `dispatch_events({'n':len}, [{'kind':'n','data':[1,2]},{'kind':'x','data':0}]) == [2,None]`.\n\nBoundaries: Empty events returns `[]`; repeated events dispatch repeatedly; output order matches input order. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def dispatch_events(routes, events):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import dispatch_events\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import dispatch_events\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(dispatch_events({},[]),[])\n    def test_routes(self):\n        self.assertEqual(dispatch_events({'n':len},[{'kind':'n','data':[1,2]}]),[2])\n    def test_unknown(self):\n        self.assertEqual(dispatch_events({},[{'kind':'x','data':1}]),[None])\n    def test_mixed(self):\n        self.assertEqual(dispatch_events({'x':lambda v:v*2},[{'kind':'z','data':3},{'kind':'x','data':4}]),[None,8])\n    def test_duplicates(self):\n        seen=[];dispatch_events({'x':lambda v:seen.append(v)},[{'kind':'x','data':1}]*2);self.assertEqual(seen,[1,1])\n    def test_mutation(self):\n        e=[{'kind':'x','data':[1]}];dispatch_events({'x':len},e);self.assertEqual(e,[{'kind':'x','data':[1]}])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-intervals",
+      "title": "Find Active Windows",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "intervals",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `active_labels(windows, point)`. Each window is `(start, end, label)` and covers the half-open span `start <= point < end`. Return labels of covering windows in input order.\n\nExample: `active_labels([(1,3,'a'),(3,5,'b')], 3) == ['b']`.\n\nBoundaries: Empty input returns `[]`; zero-length windows never cover a point; duplicate labels are preserved. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def active_labels(windows, point):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import active_labels\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import active_labels\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(active_labels([],2),[])\n    def test_inside(self):\n        self.assertEqual(active_labels([(1,4,'a')],2),['a'])\n    def test_left_boundary(self):\n        self.assertEqual(active_labels([(1,4,'a')],1),['a'])\n    def test_right_boundary(self):\n        self.assertEqual(active_labels([(1,4,'a')],4),[])\n    def test_overlap_duplicate(self):\n        self.assertEqual(active_labels([(0,5,'x'),(2,4,'x')],3),['x','x'])\n    def test_mutation(self):\n        x=[(1,2,'a')];active_labels(x,1);self.assertEqual(x,[(1,2,'a')])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-intervals",
+      "title": "List Free Slots",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "intervals",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `free_slots(busy, start, end)`. Return uncovered half-open spans within `[start, end)`. Busy `(a,b)` spans may overlap, touch, or extend outside the range; clip and combine their coverage.\n\nExample: `free_slots([(2,4),(3,6)], 0, 8) == [(0,2),(6,8)]`.\n\nBoundaries: When `start >= end`, return `[]`; empty busy input returns the whole positive range; omit zero-length gaps. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def free_slots(busy, start, end):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import free_slots\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import free_slots\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(free_slots([],0,3),[(0,3)])\n    def test_closed(self):\n        self.assertEqual(free_slots([(0,3)],0,3),[])\n    def test_overlap(self):\n        self.assertEqual(free_slots([(2,4),(3,6)],0,8),[(0,2),(6,8)])\n    def test_touch(self):\n        self.assertEqual(free_slots([(1,2),(2,3)],0,4),[(0,1),(3,4)])\n    def test_clip(self):\n        self.assertEqual(free_slots([(-2,1),(4,9)],0,6),[(1,4)])\n    def test_empty_range(self):\n        self.assertEqual(free_slots([],3,3),[])\n    def test_mutation(self):\n        x=[(2,3),(1,2)];free_slots(x,0,4);self.assertEqual(x,[(2,3),(1,2)])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-graphs",
+      "title": "Reachable Service Names",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "graphs",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `reachable(graph, start)`. Return every node reachable from `start`, including it, in breadth-first order. Visit each node’s neighbor list in its given order and visit a node once.\n\nExample: `reachable({'a':['b','c'],'b':['d']}, 'a') == ['a','b','c','d']`.\n\nBoundaries: A missing start is still returned as a leaf; cycles terminate; duplicate edges do not duplicate output. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def reachable(graph, start):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import reachable\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import reachable\n\nclass T(unittest.TestCase):\n    def test_leaf(self):\n        self.assertEqual(reachable({},'a'),['a'])\n    def test_chain(self):\n        self.assertEqual(reachable({'a':['b'],'b':['c']},'a'),['a','b','c'])\n    def test_breadth(self):\n        self.assertEqual(reachable({'a':['b','c'],'b':['d']},'a'),['a','b','c','d'])\n    def test_cycle(self):\n        self.assertEqual(reachable({'a':['b'],'b':['a']},'a'),['a','b'])\n    def test_duplicate(self):\n        self.assertEqual(reachable({'a':['b','b']},'a'),['a','b'])\n    def test_mutation(self):\n        g={'a':['b']};reachable(g,'a');self.assertEqual(g,{'a':['b']})\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-graphs",
+      "title": "Dependency Layers",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "graphs",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `dependency_layers(dependencies, roots)`. Starting with `roots`, return breadth-first layers of newly discovered names. Within each layer, preserve discovery order from the previous layer’s dependency lists.\n\nExample: `dependency_layers({'a':['b','c'],'b':['d']}, ['a']) == [['a'],['b','c'],['d']]`.\n\nBoundaries: Empty roots returns `[]`; roots are de-duplicated in order; cycles and duplicate edges add no repeated name. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def dependency_layers(dependencies, roots):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import dependency_layers\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import dependency_layers\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(dependency_layers({},[]),[])\n    def test_leaf(self):\n        self.assertEqual(dependency_layers({},['a']),[['a']])\n    def test_layers(self):\n        self.assertEqual(dependency_layers({'a':['b','c'],'b':['d']},['a']),[['a'],['b','c'],['d']])\n    def test_roots_unique(self):\n        self.assertEqual(dependency_layers({},['b','a','b']),[['b','a']])\n    def test_cycle(self):\n        self.assertEqual(dependency_layers({'a':['b'],'b':['a']},['a']),[['a'],['b']])\n    def test_mutation(self):\n        g={'a':['b']};dependency_layers(g,['a']);self.assertEqual(g,{'a':['b']})\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-ranking",
+      "title": "Pick Preferred Candidate",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "ranking",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `best_candidate(candidates)`. Return the original candidate with highest `score`; ties choose the lexicographically smaller `name`.\n\nExample: `best_candidate([{'name':'b','score':4},{'name':'a','score':4}]) has name 'a'`.\n\nBoundaries: Empty input returns `None`; negative scores are valid; preserve object identity and input data. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def best_candidate(candidates):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import best_candidate\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import best_candidate\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertIsNone(best_candidate([]))\n    def test_score(self):\n        a={'name':'a','score':1};b={'name':'b','score':2};self.assertIs(best_candidate([a,b]),b)\n    def test_tie(self):\n        a={'name':'a','score':2};b={'name':'b','score':2};self.assertIs(best_candidate([b,a]),a)\n    def test_negative(self):\n        self.assertEqual(best_candidate([{'name':'a','score':-2},{'name':'b','score':-1}])['name'],'b')\n    def test_duplicates(self):\n        x={'name':'a','score':1};self.assertIs(best_candidate([x,x]),x)\n    def test_mutation(self):\n        x=[{'name':'b','score':2},{'name':'a','score':2}];before=[dict(v) for v in x];best_candidate(x);self.assertEqual(x,before)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-ranking",
+      "title": "Order Retry Work",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "ranking",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `order_retries(jobs)`. Return a new list of original jobs ordered by ascending `attempts`, then descending `priority`; complete ties retain input order.\n\nExample: `order_retries([{'attempts':2,'priority':9},{'attempts':1,'priority':1}]) puts the second job first`.\n\nBoundaries: Empty input returns `[]`; duplicate references remain duplicated; neither jobs nor dictionaries change. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def order_retries(jobs):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import order_retries\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import order_retries\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(order_retries([]),[])\n    def test_attempts(self):\n        a={'attempts':2,'priority':9};b={'attempts':1,'priority':1};self.assertEqual(order_retries([a,b]),[b,a])\n    def test_priority(self):\n        a={'attempts':1,'priority':2};b={'attempts':1,'priority':5};self.assertEqual(order_retries([a,b]),[b,a])\n    def test_stable(self):\n        a={'id':'a','attempts':1,'priority':2};b={'id':'b','attempts':1,'priority':2};self.assertEqual(order_retries([a,b]),[a,b])\n    def test_identity(self):\n        x={'attempts':0,'priority':0};self.assertIs(order_retries([x])[0],x)\n    def test_mutation(self):\n        x=[{'attempts':2,'priority':1},{'attempts':1,'priority':2}];before=[dict(v) for v in x];order_retries(x);self.assertEqual(x,before)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-evaluation",
+      "title": "Summarize Checks",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "evaluation",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `check_summary(checks)`. Each check has boolean `passed`. Return `{\"passed\": p, \"failed\": f, \"rate\": r}` where rate is passed divided by total.\n\nExample: `check_summary([{'passed':True},{'passed':False}]) == {'passed':1,'failed':1,'rate':0.5}`.\n\nBoundaries: For empty input, counts and rate are zero; duplicates each contribute. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def check_summary(checks):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import check_summary\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import check_summary\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(check_summary([]),{'passed':0,'failed':0,'rate':0})\n    def test_mixed(self):\n        self.assertEqual(check_summary([{'passed':True},{'passed':False}]),{'passed':1,'failed':1,'rate':.5})\n    def test_all_pass(self):\n        self.assertEqual(check_summary([{'passed':True}]*2)['rate'],1)\n    def test_all_fail(self):\n        self.assertEqual(check_summary([{'passed':False}]*2)['rate'],0)\n    def test_duplicates(self):\n        self.assertEqual(check_summary([{'passed':True}]*3)['passed'],3)\n    def test_mutation(self):\n        x=[{'passed':True}];check_summary(x);self.assertEqual(x,[{'passed':True}])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-evaluation",
+      "title": "Compare Expected Fields",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "evaluation",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `field_accuracy(cases)`. Each case has `expected` and `actual` dictionaries. Return per-field counts of exact matches across all expected fields as `{field: {\"matched\": m, \"total\": t}}` in first-seen field order.\n\nExample: `field_accuracy([{'expected':{'x':1},'actual':{'x':1}}]) == {'x':{'matched':1,'total':1}}`.\n\nBoundaries: Empty input returns `{}`; missing actual fields are mismatches; extra actual fields are ignored. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def field_accuracy(cases):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import field_accuracy\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import field_accuracy\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(field_accuracy([]),{})\n    def test_match(self):\n        self.assertEqual(field_accuracy([{'expected':{'x':1},'actual':{'x':1}}]),{'x':{'matched':1,'total':1}})\n    def test_missing(self):\n        self.assertEqual(field_accuracy([{'expected':{'x':1},'actual':{}}])['x'],{'matched':0,'total':1})\n    def test_extra(self):\n        self.assertEqual(field_accuracy([{'expected':{'x':1},'actual':{'x':1,'y':2}}]),{'x':{'matched':1,'total':1}})\n    def test_aggregate_order(self):\n        r=field_accuracy([{'expected':{'b':1,'a':2},'actual':{'b':1}},{'expected':{'b':2},'actual':{'b':0}}]);self.assertEqual(list(r),['b','a']);self.assertEqual(r['b'],{'matched':1,'total':2})\n    def test_mutation(self):\n        x=[{'expected':{'a':1},'actual':{}}];field_accuracy(x);self.assertEqual(x,[{'expected':{'a':1},'actual':{}}])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-windows",
+      "title": "Rolling Totals",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "windows",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `rolling_totals(values, width)`. Return the sum of each consecutive window of exactly `width` values.\n\nExample: `rolling_totals([2,1,3,4], 2) == [3,4,7]`.\n\nBoundaries: If width is non-positive or larger than the input, return `[]`; width one returns a new list of the values. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def rolling_totals(values, width):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import rolling_totals\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import rolling_totals\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(rolling_totals([],2),[])\n    def test_normal(self):\n        self.assertEqual(rolling_totals([2,1,3,4],2),[3,4,7])\n    def test_one(self):\n        self.assertEqual(rolling_totals([2,-1],1),[2,-1])\n    def test_too_wide(self):\n        self.assertEqual(rolling_totals([1],2),[])\n    def test_nonpositive(self):\n        self.assertEqual(rolling_totals([1],0),[])\n    def test_duplicates(self):\n        self.assertEqual(rolling_totals([2,2,2],2),[4,4])\n    def test_mutation(self):\n        x=[1,2];rolling_totals(x,2);self.assertEqual(x,[1,2])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-windows",
+      "title": "Distinct Names per Window",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "windows",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `distinct_per_window(names, width)`. Return the number of distinct names in every consecutive window of exactly `width` items.\n\nExample: `distinct_per_window(['a','a','b','c'], 3) == [2,3]`.\n\nBoundaries: If width is non-positive or exceeds input length, return `[]`; repeated names count once within a window. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def distinct_per_window(names, width):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import distinct_per_window\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import distinct_per_window\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(distinct_per_window([],1),[])\n    def test_normal(self):\n        self.assertEqual(distinct_per_window(['a','a','b','c'],3),[2,3])\n    def test_one(self):\n        self.assertEqual(distinct_per_window(['a','a'],1),[1,1])\n    def test_wide(self):\n        self.assertEqual(distinct_per_window(['a'],2),[])\n    def test_zero(self):\n        self.assertEqual(distinct_per_window(['a'],0),[])\n    def test_duplicates(self):\n        self.assertEqual(distinct_per_window(['x']*4,2),[1,1,1])\n    def test_mutation(self):\n        x=['a','b'];distinct_per_window(x,2);self.assertEqual(x,['a','b'])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-cycles",
+      "title": "Locate First Repeated State",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "cycles",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `first_repeat(states)`. Return `(first_index, repeat_index)` for the earliest second occurrence while scanning; return `None` if no state repeats.\n\nExample: `first_repeat(['a','b','a']) == (0,2)`.\n\nBoundaries: Empty and unique inputs return `None`; choose the repeat encountered first, even if another value began earlier. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def first_repeat(states):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import first_repeat\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import first_repeat\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertIsNone(first_repeat([]))\n    def test_unique(self):\n        self.assertIsNone(first_repeat(['a','b']))\n    def test_basic(self):\n        self.assertEqual(first_repeat(['a','b','a']),(0,2))\n    def test_earliest_repeat(self):\n        self.assertEqual(first_repeat(['a','b','b','a']),(1,2))\n    def test_immediate(self):\n        self.assertEqual(first_repeat(['x','x']),(0,1))\n    def test_mutation(self):\n        x=['a','a'];first_repeat(x);self.assertEqual(x,['a','a'])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-cycles",
+      "title": "Trace Until State Repeats",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "cycles",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `trace_until_repeat(start, step)`. Begin with `start`, repeatedly call `step(state)`, and return `(trace, repeated_state)`. The trace contains each distinct state once and stops before adding the first repeated state.\n\nExample: `trace_until_repeat(0, lambda x:(x+1)%3) == ([0,1,2],0)`.\n\nBoundaries: A self-loop returns `([start], start)`; the function always assumes a repeat eventually occurs. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def trace_until_repeat(start, step):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import trace_until_repeat\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import trace_until_repeat\n\nclass T(unittest.TestCase):\n    def test_self_loop(self):\n        self.assertEqual(trace_until_repeat(1,lambda x:x),([1],1))\n    def test_cycle(self):\n        self.assertEqual(trace_until_repeat(0,lambda x:(x+1)%3),([0,1,2],0))\n    def test_tail(self):\n        self.assertEqual(trace_until_repeat(0,lambda x:1 if x==0 else 2 if x==1 else 1),([0,1,2],1))\n    def test_strings(self):\n        self.assertEqual(trace_until_repeat('a',{'a':'b','b':'a'}.get),(['a','b'],'a'))\n    def test_calls(self):\n        calls=[];trace_until_repeat(0,lambda x:calls.append(x) or (x+1)%2);self.assertEqual(calls,[0,1])\n    def test_start_identity(self):\n        x=('a',);trace,r=trace_until_repeat(x,lambda s:s);self.assertIs(trace[0],x);self.assertIs(r,x)\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "probe-throttling",
+      "title": "Accept Spaced Timestamps",
+      "stage": "Build",
+      "minutes": 7,
+      "focus": "throttling",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `accept_spaced(timestamps, gap)`. Scan nondecreasing timestamps and return accepted values. Accept the first, then accept a value only when it is at least `gap` after the last accepted value.\n\nExample: `accept_spaced([0,1,3,6], 3) == [0,3,6]`.\n\nBoundaries: Timestamps are numeric and nondecreasing, and `gap` is nonnegative. Empty input returns `[]`; equality at the gap is accepted; with gap zero every value, including duplicates, is accepted. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def accept_spaced(timestamps, gap):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import accept_spaced\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import accept_spaced\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(accept_spaced([],2),[])\n    def test_normal(self):\n        self.assertEqual(accept_spaced([0,1,3,6],3),[0,3,6])\n    def test_boundary(self):\n        self.assertEqual(accept_spaced([1,3],2),[1,3])\n    def test_zero(self):\n        self.assertEqual(accept_spaced([1,1,2],0),[1,1,2])\n    def test_from_last_accepted(self):\n        self.assertEqual(accept_spaced([0,2,3,5],3),[0,3])\n    def test_mutation(self):\n        x=[0,1];accept_spaced(x,2);self.assertEqual(x,[0,1])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "variation-throttling",
+      "title": "Apply Rolling Window Quotas",
+      "stage": "Build",
+      "minutes": 15,
+      "focus": "throttling",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `quota_decisions(timestamps, window, limit)`. Return booleans in input order. A timestamp is accepted when fewer than `limit` previously accepted timestamps lie in its half-open trailing window `(time-window, time]`.\n\nExample: `quota_decisions([0,1,2,5], 3, 2) == [True,True,False,True]`.\n\nBoundaries: Timestamps are numeric and nondecreasing, `window` is strictly positive, and `limit` is an integer. Empty input returns `[]`; non-positive limit rejects all; a timestamp exactly `window` old no longer counts. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def quota_decisions(timestamps, window, limit):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import quota_decisions\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import quota_decisions\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(quota_decisions([],3,2),[])\n    def test_normal(self):\n        self.assertEqual(quota_decisions([0,1,2,5],3,2),[True,True,False,True])\n    def test_boundary(self):\n        self.assertEqual(quota_decisions([0,3],3,1),[True,True])\n    def test_zero_limit(self):\n        self.assertEqual(quota_decisions([0,1],3,0),[False,False])\n    def test_duplicates(self):\n        self.assertEqual(quota_decisions([1,1,1],2,2),[True,True,False])\n    def test_rejected_not_counted(self):\n        self.assertEqual(quota_decisions([0,1,2,3],10,2),[True,True,False,False])\n    def test_mutation(self):\n        x=[0,1];quota_decisions(x,2,1);self.assertEqual(x,[0,1])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "mixed-event-summary",
+      "title": "Summarize Valid Event Types",
+      "stage": "Build",
+      "minutes": 18,
+      "focus": "filtering + counting + normalization",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `event_summary(events)`. For each event, strip and lowercase its string `type`. Discard missing, non-string, or normalized empty types, then count the remaining canonical types in first-seen order.\n\nExample: `event_summary([{'type':' OK '},{'type':''},{'type':'ok'}]) == {'ok':2}`.\n\nBoundaries: Empty input returns `{}`; input order determines key order; event dictionaries remain unchanged. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def event_summary(events):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import event_summary\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import event_summary\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(event_summary([]),{})\n    def test_all_skills(self):\n        self.assertEqual(event_summary([{'type':' OK '},{'type':''},{'type':'ok'}]),{'ok':2})\n    def test_invalid(self):\n        self.assertEqual(event_summary([{}, {'type':None},{'type':3}]),{})\n    def test_case_space(self):\n        self.assertEqual(event_summary([{'type':' A '},{'type':'a'}]),{'a':2})\n    def test_order_duplicates(self):\n        self.assertEqual(list(event_summary([{'type':' B'},{'type':'a'},{'type':'b'}])),['b','a'])\n    def test_mutation(self):\n        x=[{'type':' A '}];event_summary(x);self.assertEqual(x,[{'type':' A '}])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "mixed-ranked-counts",
+      "title": "Rank Category Counts",
+      "stage": "Build",
+      "minutes": 18,
+      "focus": "ranking + counting",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `ranked_counts(names, limit)`. Count each name, then return up to `limit` `(name, count)` tuples ordered by descending count. Ties use the name’s first encounter order.\n\nExample: `ranked_counts(['a','b','b','a','c'], 2) == [('a',2),('b',2)]`.\n\nBoundaries: Empty input or non-positive limit returns `[]`; duplicates drive counts; the input list stays unchanged. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def ranked_counts(names, limit):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import ranked_counts\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import ranked_counts\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(ranked_counts([],2),[])\n    def test_count_rank(self):\n        self.assertEqual(ranked_counts(['a','b','b'],2),[('b',2),('a',1)])\n    def test_tie_first_seen(self):\n        self.assertEqual(ranked_counts(['b','a','a','b'],2),[('b',2),('a',2)])\n    def test_limit(self):\n        self.assertEqual(ranked_counts(['a','b','c'],2),[('a',1),('b',1)])\n    def test_zero(self):\n        self.assertEqual(ranked_counts([\"a\"],0),[])\n    def test_duplicates(self):\n        self.assertEqual(ranked_counts([\"x\"]*3,5),[(\"x\",3)])\n    def test_mutation(self):\n        x=['b','a'];ranked_counts(x,1);self.assertEqual(x,['b','a'])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    },
+    {
+      "id": "mixed-window-routing",
+      "title": "Route Complete Batches",
+      "stage": "Build",
+      "minutes": 20,
+      "focus": "windows + routing",
+      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "brief": "Implement `route_batches(values, width, routes)`. For every consecutive window of exactly `width` values, use the first value as a route name. If it exists in `routes`, append the handler result for a new list containing that whole window; otherwise append `None`.\n\nExample: `route_batches(['sum',2,'sum'], 2, {'sum':lambda xs:len(xs)}) == [2,None]`.\n\nBoundaries: If width is non-positive or too large return `[]`; windows overlap; handlers run once per known route and input data is unchanged. Do not mutate inputs.",
+      "entry": "src/task.py",
+      "files": {
+        "src/task.py": "def route_batches(values, width, routes):\n    \"\"\"Return the value described in the exercise brief.\"\"\"\n    raise NotImplementedError\n",
+        "src/main.py": "from task import route_batches\n\n# Try a small example here.\n",
+        "src/tests.py": "import unittest\n\nfrom task import route_batches\n\nclass T(unittest.TestCase):\n    def test_empty(self):\n        self.assertEqual(route_batches([],2,{}),[])\n    def test_routes(self):\n        self.assertEqual(route_batches(['x',1,'x'],2,{'x':len}),[2,None])\n    def test_unknown(self):\n        self.assertEqual(route_batches(['z',1],2,{}),[None])\n    def test_boundaries(self):\n        self.assertEqual(route_batches(['x'],0,{'x':len}),[]);self.assertEqual(route_batches(['x'],2,{'x':len}),[])\n    def test_overlap_calls(self):\n        seen=[];r=route_batches(['x','x','x'],2,{'x':lambda w:seen.append(w) or len(w)});self.assertEqual(r,[2,2]);self.assertEqual(seen,[['x','x'],['x','x']])\n    def test_fresh_window(self):\n        seen=[];route_batches(['x',1],2,{'x':lambda w:seen.append(w) or w.append(9)});self.assertEqual(seen,[['x',1,9]])\n    def test_mutation(self):\n        x=['x',1];route_batches(x,2,{'x':len});self.assertEqual(x,['x',1])\n\nif __name__ == '__main__':\n    unittest.main(verbosity=2)\n"
+      },
+      "hints": [
+        "Restate the output required for one input item before writing the loop.",
+        "Track only the smallest state needed after each item.",
+        "Trace the boundary example by hand, then compare it with your state updates."
+      ]
+    }
+  ]
+}

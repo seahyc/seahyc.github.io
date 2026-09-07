@@ -1,6 +1,7 @@
 import {recallState,isReviewDue} from './recall.mjs?v=recall-2026-09-06-1';
 import {day} from './state.mjs?v=recall-2026-09-06-1';
 import {reviewPass,assessedSessions} from './path/model.mjs?v=recall-2026-09-06-1';
+import {adaptiveNextStep} from './learning-model.mjs';
 
 // One shared route. A supported success permits retrieval practice, not a mastery claim.
 export const route = [
@@ -50,6 +51,7 @@ function reinforcement(exercises,code,now){
  return {...codeStep(e,code,true,now),review:false,reinforcement:true,action:'fresh',reason:'Build this again from a fresh starting point. Your recall schedule is handled in the background.'};
 }
 export function nextStep(exercises,code={},sessions=[],path={},now=Date.now()){
+ if(exercises.some(e=>e.id==='probe-filtering'))return adaptiveNextStep(exercises,code,sessions,path,now,{route,reviewPass,peerCurrent:(p,s,at)=>assessedSessions(p,[s],true,at).length>0});
  const codeById=new Map(exercises.map(e=>[e.id,e]));
  const sessionById=new Map(sessions.map(s=>[s.id,s]));
  const reviews=path.reviews||[];
