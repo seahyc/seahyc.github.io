@@ -1,3 +1,4 @@
+import {skillProfile} from '../learning-model.mjs?v=learning-2026-09-07-1';
 export const PATH_KEY = 'coding-interview-path-v1';
 export const CODE_KEY = 'coding-practice-v1';
 export const today = (now=Date.now()) => {const d=new Date(now);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
@@ -16,7 +17,7 @@ export function reviewPass(review,session){return review&&review.completed===tru
 export function rehearsalComplete(session,now=Date.now()){return Number.isFinite(session?.started)&&Number.isFinite(session?.deadline)&&session.deadline<=now;}
 export function assessedSessions(path,sessions,peer=false,now=Date.now()) {
  return sessions.filter(s=>{
-  const records=path.reviews.filter(r=>r.id===s.id&&r.at<=now).sort((a,b)=>b.at-a.at);
+  const records=(path.reviews||[]).filter(r=>r.id===s.id&&r.at<=now).sort((a,b)=>b.at-a.at);
   if(!records.length||!reviewPass(records[0],s))return false;
   const evidence=records.find(r=>(!peer||r.mode==='peer')&&reviewPass(r,s));
   return !!evidence&&now-evidence.at<=30*86400000&&!records.some(r=>r.at>evidence.at&&!reviewPass(r,s));
@@ -27,13 +28,15 @@ export function readiness(path,code,sessions,now=Date.now()){
  const pass=id=>{const p=code.exercises?.[id];return !!p?.passed&&(!p.lastResult||p.lastResult==='pass');};
  const cold=id=>pass(id)&&(code.exercises?.[id]?.coldDays?.length||0)>=2;
  const foundation=['python-refresher-1','tool-router','interval-windows'];
+ const adaptive=code.learningEvents?.length>0,profile=adaptive?skillProfile(code,now):null;
+ const foundationSkills=['filtering','counting','normalization','collections','routing','intervals'];
  const practical=path.track==='depth'?['dependency-graph','bounded-async-map','batch-scheduler','repair-expiring-cache']:path.track==='both'?['object-graph-codec','evolving-ledger','bounded-async-map','batch-scheduler','repair-expiring-cache']:['object-graph-codec','evolving-ledger','eval-harness','repair-expiring-cache'];
  const mockAttempts=(code.attempts||[]).filter(a=>a.passed&&a.mockQualified&&a.freshMock&&a.at<=now&&now-a.at<=30*86400000);
  const distinct=new Set(mockAttempts.map(a=>a.id)), days=new Set(mockAttempts.map(a=>today(a.at)));
  const reviewed=assessedSessions(path,current,true,now);
  const must=current.filter(s=>s.id!=='full-loop');
  return [
-  {id:'fluency',title:'Retrieve the fundamentals',met:foundation.every(cold),detail:`${foundation.filter(cold).length}/${foundation.length} core exercises recalled on two different days`,next:'Return to Python Muscle Memory, Tool Router and Interval Windows from a fresh scaffold.'},
+  {id:'fluency',title:'Retrieve the fundamentals',met:adaptive?foundationSkills.every(id=>profile[id]?.retained):foundation.every(cold),detail:adaptive?`${foundationSkills.filter(id=>profile[id]?.retained).length}/${foundationSkills.length} core skills recalled after a gap across different tasks`:`${foundation.filter(cold).length}/${foundation.length} core exercises recalled on two different days`,next:'Continue the managed path. It will choose the next useful skill check.'},
   {id:'build',title:'Finish practical systems',met:practical.every(pass),detail:`${practical.filter(pass).length}/${practical.length} selected systems exercises pass`,next:'Complete the practical builds for your selected emphasis and explain their edge cases.'},
   {id:'mock',title:'Transfer under time pressure',met:distinct.size>=2&&days.size>=2,detail:`${distinct.size}/2 different fresh mocks passed on ${days.size}/2 days in the past 30 days`,next:'Use “Start a fresh mock” for an unviewed task. A familiar retry measures retention, not fresh transfer.'},
   {id:'interview',title:'Explain it to another person',met:must.every(s=>reviewed.some(r=>r.id===s.id)),detail:`${must.filter(s=>reviewed.some(r=>r.id===s.id)).length}/${must.length} interview sessions meet every rubric dimension with reported peer review`,next:'Rehearse with a peer, capture their specific feedback, and score each dimension against its anchor. Evidence expires after 30 days.'},
