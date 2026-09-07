@@ -13,10 +13,16 @@ self.onmessage = async ({data}) => {
     py.globals.set('task_mode', data.mode);
     if (data.mode === 'probe') {
       const probe = data.probe || {};
-      if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(probe.module || '') || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(probe.function || '') || !Array.isArray(probe.args)) throw Error('Invalid probe');
-      py.globals.set('probe_module', probe.module);
-      py.globals.set('probe_function', probe.function);
-      py.globals.set('probe_args_json', JSON.stringify(probe.args));
+      if (typeof probe.script === 'string') {
+        if (!probe.script.trim() || probe.script.length > 30000) throw Error('Use a Python example between 1 and 30000 characters');
+        py.globals.set('probe_script', probe.script);
+      } else {
+        if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(probe.module || '') || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(probe.function || '') || !Array.isArray(probe.args)) throw Error('Invalid probe');
+        py.globals.set('probe_script', null);
+        py.globals.set('probe_module', probe.module);
+        py.globals.set('probe_function', probe.function);
+        py.globals.set('probe_args_json', JSON.stringify(probe.args));
+      }
     }
     const result = await py.runPythonAsync(`
 import ast, contextlib, io, json, os, sys, traceback, unittest, importlib, inspect
@@ -75,13 +81,19 @@ with contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):
             import runpy; runpy.run_path('src/main.py',run_name='__main__')
             report.update(passed=True,kind='main')
         elif task_mode == 'probe':
-            args=json.loads(probe_args_json)
-            fn=getattr(importlib.import_module(probe_module), probe_function)
-            value=fn(*args)
-            if inspect.isawaitable(value): value=await value
-            encoded=json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
-            if len(encoded) > 10000: raise ValueError('Probe result is too large')
-            report.update(passed=True,kind='probe',value=json.loads(encoded))
+            if isinstance(globals().get('probe_script'), str):
+                script_code=compile(probe_script, '<input experiment>', 'exec', flags=ast.PyCF_ALLOW_TOP_LEVEL_AWAIT)
+                pending=eval(script_code, {'__name__':'__explorer__'})
+                if inspect.isawaitable(pending): await pending
+                report.update(passed=True,kind='probe',value=output.getvalue().strip())
+            else:
+                args=json.loads(probe_args_json)
+                fn=getattr(importlib.import_module(probe_module), probe_function)
+                value=fn(*args)
+                if inspect.isawaitable(value): value=await value
+                encoded=json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+                if len(encoded) > 10000: raise ValueError('Probe result is too large')
+                report.update(passed=True,kind='probe',value=json.loads(encoded))
         else:
             spec=importlib.util.spec_from_file_location('exercise_tests','/practice/src/tests.py')
             module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)

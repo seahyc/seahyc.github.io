@@ -4,10 +4,19 @@ import {readFileSync} from 'node:fs';
 
 const app=readFileSync(new URL('../static/practice/app.mjs',import.meta.url),'utf8');
 const html=readFileSync(new URL('../static/practice/index.html',import.meta.url),'utf8');
+const explorer=readFileSync(new URL('../static/practice/explorer.mjs',import.meta.url),'utf8');
 
 test('the optional input lab starts collapsed and retains its controls',()=>{
   assert.match(html,/<details id="example-lab" hidden><summary>Try a real input<\/summary>/);
   for(const id of ['example-input','example-run','example-expected','example-actual'])assert.match(html,new RegExp(`id="${id}"`));
+});
+
+test('the input lab labels examples separately from experimental output',()=>{
+  assert.match(html,/Expected for the example/);
+  assert.match(html,/Your output/);
+  assert.match(html,/id="example-input-label"/);
+  assert.match(html,/id="example-help"/);
+  assert.match(explorer,/Custom input — predict the result/);
 });
 
 test('the exercise has one title and it lives inside the notebook brief',()=>{
@@ -40,6 +49,18 @@ test('timed mocks never open hints automatically',()=>{
 test('probe success is reported only in the input result',()=>{
   assert.match(app,/mode==='tests'\|\|mode==='probe'\?'':/);
   assert.doesNotMatch(app,/mode==='probe'\?'Program finished/);
+});
+
+test('probe experiments do not record mastery, failures or assistance',()=>{
+ const resultBranch=app.slice(app.indexOf("if(data.type==='result')"),app.indexOf('worker.onerror'));
+ const probeBranch=resultBranch.slice(resultBranch.indexOf("if(mode==='probe')"),resultBranch.indexOf("showResult(data,mode)"));
+ assert.doesNotMatch(probeBranch,/record\(|assisted\(|feedback\('(pass|fail)'\)/);
+ assert.match(app,/run\('probe',makeProbe/);
+});
+
+test('an input cannot change during a run and probe termination is shown beside it',()=>{
+ assert.match(app,/\$\('example-input'\)\.disabled=on\|\|explorerUnavailable/);
+ assert.match(app,/runContext\?\.executionMode==='probe'[^;]*\$\('example-actual'\)\.textContent='Error: '/);
 });
 
 
