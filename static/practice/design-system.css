@@ -132,3 +132,6 @@ button:active:not(:disabled), .button:active { transform: translateY(3px); box-s
 button:disabled { box-shadow: none; }
 .sound-toggle { margin-left: auto; font-size: 12px; }
 @media (prefers-reduced-motion: reduce) { button, .button { transition: none; } button:active:not(:disabled), .button:active { transform: none; } }
+
+/* A short connection between the practice task and work worth doing. */
+.field-context { margin: var(--space-4) 0; padding-left: var(--space-4); border-left: 2px solid var(--paper-margin); color: var(--color-muted); font-size: 16px; line-height: 1.6; max-width: 65ch; }
