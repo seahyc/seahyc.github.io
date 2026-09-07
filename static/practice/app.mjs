@@ -77,14 +77,13 @@ function updateJourney(){
  const p=entry();const passed=p.lastResult==='pass';
  const effort=recallState(p);
  if(passed&&effort.pending&&!storageStale){rateRecall(state,current.id,'good');persist();}
- const review=recallState(p);
  $('journey-feedback').hidden=!passed;
  $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
  if(passed){
   const step=nextStep(exercises,state,interviews,pathState);
-  $('journey-message').textContent=supported(current.id)?'You’ve made the pattern work. Try using it with less support.':effort.assisted||effort.failed||effort.phase==='relearning'?'Repair recorded. A short recall check is on the way.':'Working code, with a return date. That’s one useful rep.';
-  $('next-review-date').textContent=p.review?.dueAt?`Next recall ${intervalLabel(p.review.dueAt)} · ${new Date(p.review.dueAt).toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'})}`:'';
-  $('journey-next').textContent=step.type==='pause'?'Finish for now':step.id===current.id?'Continue this skill':'Continue';
+  $('journey-message').textContent=step.type==='pause'?'You’re done for now. We’ll bring your recall check back when it’s due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
+  $('next-review-date').textContent=p.review?.dueAt?`Recall scheduled ${intervalLabel(p.review.dueAt)} · ${new Date(p.review.dueAt).toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'})}`:'';
+  $('journey-next').textContent=step.type==='pause'?'Finish for now →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
  }
 }
 function renderExample(){const demo=examples[current.id];$('example-lab').hidden=!demo;if(!demo)return;$('example-caption').textContent=demo.caption;$('example-input').value=JSON.stringify(demo.args[0]);$('example-expected').textContent=JSON.stringify(demo.expected);}
@@ -163,7 +162,7 @@ function run(mode,probe){
     if(data.type==='ready'){clearTimeout(runTimeout);$('runtime-state').textContent=mode==='tests'?'Running checks':'Running';$('first-feedback').textContent=mode==='probe'?'Trying your input…':mode==='tests'?'Running checks…':'Checking your code…';runTimeout=setTimeout(()=>{const ctx=runContext;stop('Execution exceeded 10 seconds. Check for an infinite loop or unexpectedly large input.');if(mode==='tests'){const cold=ctx.cold&&session().cold&&!session().assisted;record(state,ctx.id,{passed:false,kind:'timeout',cold,sessionId:ctx.sessionId,requiresRating:guidedFlow&&!supported(ctx.id),scaffold:supported(ctx.id)});feedback('fail');persist();refresh();}},10000);return;}
     if(data.type==='error'){stop('Python could not start: '+data.message+'\nCheck your connection and retry.');return;}
     if(data.type==='result'){
-      stop(null);if(mode==='tests'){renderCases(data.cases);if(data.passed){$('success-moment').hidden=false;$('success-title').textContent=`${data.count} of ${data.count} checks passed`;$('success-caption').textContent='You made it work.';if(!runContext.previouslyPassed){feedback('pass');celebrate($('success-moment'));if(!document.hidden)$('success-moment').scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}}else feedback('fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
+      stop(null);if(mode==='tests'){renderCases(data.cases);if(data.passed){$('success-moment').hidden=false;$('success-title').textContent=`${data.count} of ${data.count} checks passed`;$('success-caption').textContent='You made it work.';if(!runContext.previouslyPassed){feedback('pass');celebrate($('success-moment'));}}else feedback('fail');}if(mode==='probe')$('example-actual').textContent=data.passed?JSON.stringify(data.value):feedbackMessage(data.output||'');showResult(data,mode);$('output').textContent=data.output||'Execution finished without output.';const count=Number.isFinite(data.count)?data.count:null;$('runtime-state').textContent=data.passed?(mode==='syntax'?'Syntax valid':mode==='main'?'Program finished':mode==='probe'?'Input finished':count===null?'Checks passed':`${count} check${count===1?'':'s'} passed`):mode==='tests'&&count!==null?`${count} check${count===1?'':'s'} ran · repair needed`:'Read the first error';
       if(mode==='syntax'&&!data.passed){record(state,current.id,{passed:false,kind:'syntax',cold:false,output:firstError(data.output)});persist();refresh();}
       if(mode==='tests'){
         const ctx=runContext;const cold=ctx.cold&&session().cold&&!session().assisted;const mockQualified=current.stage==='Mock'&&ctx.mode==='mock'&&cold&&ctx.deadline>=Date.now();
@@ -178,6 +177,7 @@ function run(mode,probe){
          }
         }
         persist();refresh();
+        if(data.passed&&guidedFlow&&!document.hidden){$('journey-next').focus({preventScroll:true});$('journey-feedback').scrollIntoView({block:'nearest',behavior:'instant'});}
       }
     }
   };
