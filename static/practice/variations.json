@@ -7,7 +7,7 @@
       "stage": "Foundation",
       "minutes": 7,
       "focus": "filtering",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Selecting only explicitly ready jobs prevents premature tool calls while preserving the queue order and object identity needed by a scheduler.",
       "brief": "Implement `ready_jobs(jobs)`. Return a new list containing each original job dictionary whose `ready` value is exactly `True`, in encounter order.\n\nExample: `ready_jobs([{'id':'a','ready':False},{'id':'b','ready':True}]) == [{'id':'b','ready':True}]`.\n\nBoundaries: An empty list returns `[]`; missing or non-boolean `ready` values do not qualify; duplicate references remain duplicated. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -27,7 +27,7 @@
       "stage": "Foundation",
       "minutes": 15,
       "focus": "filtering",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Filtering notes by allowed tags helps a product show relevant context without reordering or copying the records another component still owns.",
       "brief": "Implement `matching_notes(notes, allowed_tags)`. Return the original note dictionaries that have at least one tag present in `allowed_tags`, preserving note order.\n\nExample: `matching_notes([{'tags':['work']},{'tags':['home']}], {'home'}) == [{'tags':['home']}]`.\n\nBoundaries: Empty notes or allowed tags return `[]`; missing tags count as empty; repeated notes stay repeated. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -47,7 +47,7 @@
       "stage": "Foundation",
       "minutes": 7,
       "focus": "counting",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Tallying result codes turns a sequence of tool responses into an ordered summary that quickly exposes the most common outcome.",
       "brief": "Implement `count_codes(codes)`. Return a dictionary mapping each string code to its occurrence count. Keys retain first-seen order.\n\nExample: `count_codes(['ok','retry','ok']) == {'ok':2,'retry':1}`.\n\nBoundaries: Empty input returns `{}`; empty strings and duplicates are counted. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -67,7 +67,7 @@
       "stage": "Foundation",
       "minutes": 15,
       "focus": "counting",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Bucketing payload sizes reveals the shape of real traffic for choosing limits, storage, or display behavior without inspecting sensitive content.",
       "brief": "Implement `size_buckets(payloads)`. Return counts for the keys `empty`, `small`, and `large`, where payload string lengths are 0, 1–3, or 4 and above.\n\nExample: `size_buckets(['','abc','tool']) == {'empty':1,'small':1,'large':1}`.\n\nBoundaries: All three keys are always present in that order; empty input gives zero for every bucket. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -87,7 +87,7 @@
       "stage": "Foundation",
       "minutes": 7,
       "focus": "normalization",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Canonical channel names prevent whitespace and casing variants from splitting routing rules, metrics, or user preferences into accidental duplicates.",
       "brief": "Implement `normalize_channels(values)`. For each string, strip surrounding whitespace, lowercase it, and replace each run of internal whitespace with one hyphen. Discard empty results and return each normalized value once in first-seen order. Raise `ValueError` if any item is not a string.\n\nExample: `normalize_channels([' Release  Notes ', 'release notes', ' API ']) == ['release-notes', 'api']`.\n\nBoundaries: Empty input or only blank strings returns `[]`; punctuation is preserved; validate every item before returning a result. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -107,7 +107,7 @@
       "stage": "Foundation",
       "minutes": 15,
       "focus": "normalization",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Building a stable preference key lets product settings address the same option consistently despite blank segments or inconsistent user-entered casing.",
       "brief": "Implement `preference_key(parts)`. Normalize every string part by stripping it and lowercasing it, discard normalized empty parts, then join the remainder with dots.\n\nExample: `preference_key([' UI ', '', 'Theme Mode']) == 'ui.theme mode'`.\n\nBoundaries: Empty input or only blank parts returns `\"\"`; internal whitespace and punctuation remain unchanged. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -127,7 +127,7 @@
       "stage": "Foundation",
       "minutes": 7,
       "focus": "collections",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Keeping the first object for each identifier removes duplicate work while retaining the exact records and order expected by downstream code.",
       "brief": "Implement `stable_unique_objects(items)`. Return the first object for each distinct `id`, preserving encounter order and returning the original dictionary objects.\n\nExample: `stable_unique_objects([{'id':'a'},{'id':'a'},{'id':'b'}]) has ids ['a','b']`.\n\nBoundaries: Empty input returns `[]`; the first object wins; neither the list nor dictionaries may be changed. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -147,7 +147,7 @@
       "stage": "Foundation",
       "minutes": 15,
       "focus": "collections",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Separating first arrivals from repeats helps a harness process new work once while retaining duplicate submissions for diagnosis or user feedback.",
       "brief": "Implement `split_repeats(items)`. Return `(firsts, repeats)`: original objects whose `key` is first encountered, and every later object with an already-seen key. Preserve order and identity in both lists.\n\nExample: `For input [{'key':'a'},{'key':'a'}], the first object is in `firsts` and the second is in `repeats``.\n\nBoundaries: Empty input returns `([], [])`; every occurrence after the first belongs to repeats; do not copy objects. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -167,7 +167,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "routing",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Routing a requested action to its handler mirrors the core dispatch step between a model's tool choice and executable product behavior.",
       "brief": "Implement `route_action(handlers, request)`. Look up `request[\"action\"]` in `handlers`. Return `{\"ok\": False, \"error\": \"unknown\"}` when absent; otherwise call the handler with `request.get(\"payload\")` and return `{\"ok\": True, \"value\": result}`.\n\nExample: `route_action({'echo': lambda x:x}, {'action':'echo','payload':'hi'}) == {'ok':True,'value':'hi'}`.\n\nBoundaries: A missing payload passes `None`; handler exceptions are not transformed; handlers and request remain unchanged. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -187,7 +187,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "routing",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Dispatching mixed event kinds in order lets a workflow combine specialized handlers while keeping unsupported inputs visible at their original positions.",
       "brief": "Implement `dispatch_events(routes, events)`. Return one output per event. If its `kind` has a route, append that handler’s result for `event[\"data\"]`; otherwise append `None`.\n\nExample: `dispatch_events({'n':len}, [{'kind':'n','data':[1,2]},{'kind':'x','data':0}]) == [2,None]`.\n\nBoundaries: Empty events returns `[]`; repeated events dispatch repeatedly; output order matches input order. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -207,7 +207,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "intervals",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Checking half-open activity windows gives schedulers an unambiguous answer at boundaries where one task ends exactly as another begins.",
       "brief": "Implement `active_labels(windows, point)`. Each window is `(start, end, label)` and covers the half-open span `start <= point < end`. Return labels of covering windows in input order.\n\nExample: `active_labels([(1,3,'a'),(3,5,'b')], 3) == ['b']`.\n\nBoundaries: Empty input returns `[]`; zero-length windows never cover a point; duplicate labels are preserved. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -227,7 +227,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "intervals",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Computing free spans from overlapping reservations helps schedule bounded tool work without double-counting busy time or offering zero-length slots.",
       "brief": "Implement `free_slots(busy, start, end)`. Return uncovered half-open spans within `[start, end)`. Busy `(a,b)` spans may overlap, touch, or extend outside the range; clip and combine their coverage.\n\nExample: `free_slots([(2,4),(3,6)], 0, 8) == [(0,2),(6,8)]`.\n\nBoundaries: When `start >= end`, return `[]`; empty busy input returns the whole positive range; omit zero-length gaps. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -247,7 +247,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "graphs",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Listing reachable services in breadth-first order helps inspect which tools or workflow states can be reached while safely terminating on cycles.",
       "brief": "Implement `reachable(graph, start)`. Return every node reachable from `start`, including it, in breadth-first order. Visit each node’s neighbor list in its given order and visit a node once.\n\nExample: `reachable({'a':['b','c'],'b':['d']}, 'a') == ['a','b','c','d']`.\n\nBoundaries: A missing start is still returned as a leaf; cycles terminate; duplicate edges do not duplicate output. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -267,7 +267,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "graphs",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Grouping dependencies by discovery depth makes a workflow easier to inspect, showing nearby and distant connections without confusing that view with an execution schedule.",
       "brief": "Implement `dependency_layers(dependencies, roots)`. Starting with `roots`, return breadth-first layers of newly discovered names. Within each layer, preserve discovery order from the previous layer’s dependency lists.\n\nExample: `dependency_layers({'a':['b','c'],'b':['d']}, ['a']) == [['a'],['b','c'],['d']]`.\n\nBoundaries: Empty roots returns `[]`; roots are de-duplicated in order; cycles and duplicate edges add no repeated name. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -287,7 +287,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "ranking",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Choosing one scored candidate with an explicit tie rule makes retrieval or model selection reproducible and preserves the winning record for later use.",
       "brief": "Implement `best_candidate(candidates)`. Return the original candidate with highest `score`; ties choose the lexicographically smaller `name`.\n\nExample: `best_candidate([{'name':'b','score':4},{'name':'a','score':4}]) has name 'a'`.\n\nBoundaries: Empty input returns `None`; negative scores are valid; preserve object identity and input data. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -307,7 +307,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "ranking",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Ordering retries by attempt count and priority balances fairness with urgency while retaining stable behavior when jobs have equal claims.",
       "brief": "Implement `order_retries(jobs)`. Return a new list of original jobs ordered by ascending `attempts`, then descending `priority`; complete ties retain input order.\n\nExample: `order_retries([{'attempts':2,'priority':9},{'attempts':1,'priority':1}]) puts the second job first`.\n\nBoundaries: Empty input returns `[]`; duplicate references remain duplicated; neither jobs nor dictionaries change. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -327,7 +327,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "evaluation",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Summarizing checks turns an evaluation run into readable product feedback, including an explicit zero-case result when there is no performance evidence yet.",
       "brief": "Implement `check_summary(checks)`. Each check has boolean `passed`. Return `{\"passed\": p, \"failed\": f, \"rate\": r}` where rate is passed divided by total.\n\nExample: `check_summary([{'passed':True},{'passed':False}]) == {'passed':1,'failed':1,'rate':0.5}`.\n\nBoundaries: For empty input, counts and rate are zero; duplicates each contribute. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -347,7 +347,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "evaluation",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Measuring accuracy per expected field reveals whether an assistant gets ownership, content, or timing wrong even when aggregate scores look acceptable.",
       "brief": "Implement `field_accuracy(cases)`. Each case has `expected` and `actual` dictionaries. Return per-field counts of exact matches across all expected fields as `{field: {\"matched\": m, \"total\": t}}` in first-seen field order.\n\nExample: `field_accuracy([{'expected':{'x':1},'actual':{'x':1}}]) == {'x':{'matched':1,'total':1}}`.\n\nBoundaries: Empty input returns `{}`; missing actual fields are mismatches; extra actual fields are ignored. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -367,7 +367,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "windows",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Rolling totals reveal local bursts in usage or failures that a whole-run total hides, supporting capacity and incident decisions.",
       "brief": "Implement `rolling_totals(values, width)`. Return the sum of each consecutive window of exactly `width` values.\n\nExample: `rolling_totals([2,1,3,4], 2) == [3,4,7]`.\n\nBoundaries: If width is non-positive or larger than the input, return `[]`; width one returns a new list of the values. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -387,7 +387,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "windows",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Counting distinct actors within moving windows helps detect concentrated activity without letting repeated events from one actor inflate the signal.",
       "brief": "Implement `distinct_per_window(names, width)`. Return the number of distinct names in every consecutive window of exactly `width` items.\n\nExample: `distinct_per_window(['a','a','b','c'], 3) == [2,3]`.\n\nBoundaries: If width is non-positive or exceeds input length, return `[]`; repeated names count once within a window. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -407,7 +407,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "cycles",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Locating the first repeated state identifies the earliest observable loop in an agent trace and points directly to the transition needing investigation.",
       "brief": "Implement `first_repeat(states)`. Return `(first_index, repeat_index)` for the earliest second occurrence while scanning; return `None` if no state repeats.\n\nExample: `first_repeat(['a','b','a']) == (0,2)`.\n\nBoundaries: Empty and unique inputs return `None`; choose the repeat encountered first, even if another value began earlier. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -427,7 +427,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "cycles",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Tracing distinct states until repetition captures the useful prefix of a workflow and names the state that traps further progress.",
       "brief": "Implement `trace_until_repeat(start, step)`. Begin with `start`, repeatedly call `step(state)`, and return `(trace, repeated_state)`. The trace contains each distinct state once and stops before adding the first repeated state.\n\nExample: `trace_until_repeat(0, lambda x:(x+1)%3) == ([0,1,2],0)`.\n\nBoundaries: A self-loop returns `([start], start)`; the function always assumes a repeat eventually occurs. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -447,7 +447,7 @@
       "stage": "Build",
       "minutes": 7,
       "focus": "throttling",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Accepting events only after a fixed gap provides simple client-side pacing for tool calls and makes the exact boundary predictable.",
       "brief": "Implement `accept_spaced(timestamps, gap)`. Scan nondecreasing timestamps and return accepted values. Accept the first, then accept a value only when it is at least `gap` after the last accepted value.\n\nExample: `accept_spaced([0,1,3,6], 3) == [0,3,6]`.\n\nBoundaries: Timestamps are numeric and nondecreasing, and `gap` is nonnegative. Empty input returns `[]`; equality at the gap is accepted; with gap zero every value, including duplicates, is accepted. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -467,7 +467,7 @@
       "stage": "Build",
       "minutes": 15,
       "focus": "throttling",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Applying a rolling quota models real API rate budgets, where earlier accepted calls expire from the window and rejected calls consume nothing.",
       "brief": "Implement `quota_decisions(timestamps, window, limit)`. Return booleans in input order. A timestamp is accepted when fewer than `limit` previously accepted timestamps lie in its half-open trailing window `(time-window, time]`.\n\nExample: `quota_decisions([0,1,2,5], 3, 2) == [True,True,False,True]`.\n\nBoundaries: Timestamps are numeric and nondecreasing, `window` is strictly positive, and `limit` is an integer. Empty input returns `[]`; non-positive limit rejects all; a timestamp exactly `window` old no longer counts. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -487,7 +487,7 @@
       "stage": "Build",
       "minutes": 18,
       "focus": "filtering + counting + normalization",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Normalizing and counting valid event types turns messy run telemetry into stable failure categories without allowing malformed records to distort results.",
       "brief": "Implement `event_summary(events)`. For each event, strip and lowercase its string `type`. Discard missing, non-string, or normalized empty types, then count the remaining canonical types in first-seen order.\n\nExample: `event_summary([{'type':' OK '},{'type':''},{'type':'ok'}]) == {'ok':2}`.\n\nBoundaries: Empty input returns `{}`; input order determines key order; event dictionaries remain unchanged. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -507,7 +507,7 @@
       "stage": "Build",
       "minutes": 18,
       "focus": "ranking + counting",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Ranking category counts surfaces the dominant tool outcomes or user intents while stable ties keep dashboards reproducible between runs.",
       "brief": "Implement `ranked_counts(names, limit)`. Count each name, then return up to `limit` `(name, count)` tuples ordered by descending count. Ties use the name’s first encounter order.\n\nExample: `ranked_counts(['a','b','b','a','c'], 2) == [('a',2),('b',2)]`.\n\nBoundaries: Empty input or non-positive limit returns `[]`; duplicates drive counts; the input list stays unchanged. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {
@@ -527,7 +527,7 @@
       "stage": "Build",
       "minutes": 20,
       "focus": "windows + routing",
-      "why": "Small deterministic transforms make event pipelines and user-facing tools easier to trust.",
+      "why": "Routing complete overlapping windows rehearses feeding bounded context to handlers while keeping unknown routes aligned with their original positions.",
       "brief": "Implement `route_batches(values, width, routes)`. For every consecutive window of exactly `width` values, use the first value as a route name. If it exists in `routes`, append the handler result for a new list containing that whole window; otherwise append `None`.\n\nExample: `route_batches(['sum',2,'sum'], 2, {'sum':lambda xs:len(xs)}) == [2,None]`.\n\nBoundaries: If width is non-positive or too large return `[]`; windows overlap; handlers run once per known route and input data is unchanged. Do not mutate inputs.",
       "entry": "src/task.py",
       "files": {

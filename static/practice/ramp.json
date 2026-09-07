@@ -7,7 +7,7 @@
       "stage": "Foundation",
       "minutes": 5,
       "focus": "A calm filtering loop",
-      "why": "A tiny, reliable transformation is useful when checking data before an AI tool call.",
+      "why": "Filtering blank values before a tool call prevents meaningless arguments while rebuilding the loop-writing rhythm used in everyday Python product work.",
       "brief": "Read the complete `keep_positive` example, then write `keep_nonempty` by copying its loop shape. Keep strings whose length is greater than zero, in encounter order. Run the tests after writing the one function. ",
       "hints": [
         "Start with an empty result list.",
@@ -26,7 +26,7 @@
       "stage": "Foundation",
       "minutes": 6,
       "focus": "Filtering with a boundary",
-      "why": "Filtering short labels is a practical first check before passing user input to an AI workflow.",
+      "why": "Enforcing a minimum label length keeps malformed input away from downstream tools and rehearses precise boundary checks in a compact function.",
       "brief": "Implement `keep_long_enough(values)`. Return the strings with at least three characters, preserving encounter order. Empty strings and one or two character strings are discarded. Write one small function and use the tests to guide your repair loop.",
       "hints": [
         "The boundary is inclusive: length three stays.",
@@ -45,7 +45,7 @@
       "stage": "Foundation",
       "minutes": 7,
       "focus": "A dictionary counting loop",
-      "why": "Counting repeated events is a small foundation for inspecting AI pipeline outcomes.",
+      "why": "Counting named events turns raw run logs into failure frequencies, a basic signal for deciding which harness behavior needs investigation first.",
       "brief": "Read the worked `count_fruit` loop, then implement `count_events(names)` with the same dictionary pattern. Count each event string and keep first-seen key order. Use `counts.get(name, 0) + 1`, run the tests, and repair one failure at a time.",
       "hints": [
         "Start with an empty dictionary.",
@@ -64,7 +64,7 @@
       "stage": "Foundation",
       "minutes": 8,
       "focus": "Counting a derived value",
-      "why": "A derived count mirrors simple telemetry summaries used to understand an AI system's behavior.",
+      "why": "Counting a derived field while ignoring empty records mirrors how telemetry is grouped into useful dimensions without corrupting first-seen reporting order.",
       "brief": "Implement `count_final_chars(words)`. For every non-empty word, count its final character. Ignore empty words, preserve the dictionary's first-seen key order, and return an empty dictionary when no words contribute. Write one function and use the tests to find the next small correction.",
       "hints": [
         "Skip a word when its length is zero.",

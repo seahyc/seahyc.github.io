@@ -6,7 +6,7 @@
       "category": "Coding discussion",
       "track": "shared",
       "minutes": 30,
-      "why": "Practises think aloud coding with observable evidence, bounded time, and a concrete retry.",
+      "why": "Explaining boundaries and syntax uncertainty while coding shows collaborators how you reason, preserves momentum, and makes subtle sessionization errors reviewable.",
       "prerequisites": [
         "syntax-guided",
         "syntax-faded",
@@ -85,7 +85,7 @@
       "category": "Coding discussion",
       "track": "shared",
       "minutes": 45,
-      "why": "Practises review a buggy function with observable evidence, bounded time, and a concrete retry.",
+      "why": "Tracing a buggy analytics function against its contract builds the review judgment needed to rank release blockers and demand tests that prove corrections.",
       "prerequisites": [
         "python-refresher-1",
         "log-spike"
@@ -168,7 +168,7 @@
       "category": "Judgment",
       "track": "applied",
       "minutes": 35,
-      "why": "Practises customer discovery under uncertainty with observable evidence, bounded time, and a concrete retry.",
+      "why": "Reconstructing recent user behavior separates value, trust, friction, and capability problems so a product team can invest against evidence instead of enthusiasm.",
       "prerequisites": [
         "tool-router"
       ],
@@ -250,7 +250,7 @@
       "category": "Project story",
       "track": "applied",
       "minutes": 45,
-      "why": "Practises delivery and tradeoff demo with observable evidence, bounded time, and a concrete retry.",
+      "why": "Defending a real project with artifacts, alternatives, ownership, and measurable results demonstrates how you lead delivery and learn under practical constraints.",
       "prerequisites": [
         "dependency-graph",
         "rate-limiter"
@@ -333,7 +333,7 @@
       "category": "Project story",
       "track": "shared",
       "minutes": 45,
-      "why": "Practises project technical deep dive with observable evidence, bounded time, and a concrete retry.",
+      "why": "Tracing architecture, decisions, and one failure from an actual project shows whether you can connect technical details to ownership and user consequences.",
       "prerequisites": [
         "dependency-graph",
         "log-spike"
@@ -416,7 +416,7 @@
       "category": "System design",
       "track": "shared",
       "minutes": 45,
-      "why": "Practises evaluation design with observable evidence, bounded time, and a concrete retry.",
+      "why": "Defining error types, slices, labels, and decision thresholds turns assistant quality into evidence a product team can use for a responsible release call.",
       "prerequisites": [
         "eval-harness",
         "log-spike"
@@ -499,7 +499,7 @@
       "category": "System design",
       "track": "applied",
       "minutes": 60,
-      "why": "Practises reliable workflow assistant design with observable evidence, bounded time, and a concrete retry.",
+      "why": "Designing approval, retries, reconciliation, and stale-state handling protects users when a workflow assistant proposes and executes consequential changes through unreliable tools.",
       "prerequisites": [
         "tool-router",
         "retry-backoff",
@@ -588,7 +588,7 @@
       "category": "System design",
       "track": "depth",
       "minutes": 60,
-      "why": "Practises inference service design with observable evidence, bounded time, and a concrete retry.",
+      "why": "Balancing queue delay, batching, streaming, and cache memory builds the capacity judgment needed to keep an interactive model product responsive under load.",
       "prerequisites": [
         "batch-scheduler",
         "bounded-lru-cache",
@@ -677,7 +677,7 @@
       "category": "Fundamentals",
       "track": "depth",
       "minutes": 45,
-      "why": "Practises concurrency whiteboard with observable evidence, bounded time, and a concrete retry.",
+      "why": "Bounding active jobs while preserving ordered results and visible failures mirrors the coordination needed when an agent runs many independent tools concurrently.",
       "prerequisites": [
         "bounded-async-map",
         "loop-detector"
@@ -760,7 +760,7 @@
       "category": "Fundamentals",
       "track": "depth",
       "minutes": 45,
-      "why": "Practises model fundamentals walk-through with observable evidence, bounded time, and a concrete retry.",
+      "why": "Working through shapes, stable softmax, leakage, attention, and cache growth gives you the vocabulary to question model behavior and evaluation claims precisely.",
       "prerequisites": [
         "python-refresher-2"
       ],
@@ -847,7 +847,7 @@
       "category": "Judgment",
       "track": "shared",
       "minutes": 40,
-      "why": "Practises motivation and judgment with observable evidence, bounded time, and a concrete retry.",
+      "why": "Grounding career answers and product-risk decisions in facts shows collaborators how your experience, values, and evidence standards shape difficult choices.",
       "prerequisites": [],
       "brief": "Prepare evidence-based answers about desired work, a hard decision, disagreement, and mistake. Use only actual facts you supply; never invent biography, motives, conflict, or outcomes. Separate what you know, infer, and need to learn, and connect preferences to demonstrated choices. Separately, consider a hypothetical capable assistant that saves users hours but occasionally proposes consequential incorrect changes. Explain the benefit you want to create, who bears the downside, which uncertainty matters, and what evidence would justify expanding or pausing deployment. Keep hypothetical judgment distinct from your real experience.",
       "rounds": [
@@ -934,7 +934,7 @@
       "category": "Rehearsal",
       "track": "shared",
       "minutes": 150,
-      "why": "Practises full interview loop rehearsal with observable evidence, bounded time, and a concrete retry.",
+      "why": "Combining coding, design, project, and judgment rounds exposes which collaborative engineering behavior breaks under sustained pressure and deserves one focused retry.",
       "prerequisites": [
         "evolving-ledger",
         "bounded-async-map",
