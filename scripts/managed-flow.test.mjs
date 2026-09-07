@@ -33,3 +33,10 @@ test('probe success is reported only in the input result',()=>{
   assert.match(app,/mode==='tests'\|\|mode==='probe'\?'':/);
   assert.doesNotMatch(app,/mode==='probe'\?'Program finished/);
 });
+
+
+test('the next action sits beside the success result before detailed checks',()=>{
+ const success=html.indexOf('id="success-moment"'),next=html.indexOf('id="journey-feedback"'),checks=html.indexOf('id="case-feedback"');
+ assert.ok(success<next&&next<checks);
+ assert.equal((html.match(/id="journey-next"/g)||[]).length,1);
+});

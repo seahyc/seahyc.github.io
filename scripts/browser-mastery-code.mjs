@@ -27,7 +27,7 @@ try{
   assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['tiny-filter-cold'].files['src/tiny_filter_cold.py'].includes('return result')));
   await editor(page).fill('# my unfinished counting work\npass');await page.reload();await page.waitForFunction(()=>document.querySelector('#editor').value.includes('unfinished counting work'));
   await solve('tiny-count-guided');await page.locator('#journey-next').click();await waitId('tiny-count-cold');await solve('tiny-count-cold');
-  assert.equal(await page.locator('#journey-next').innerText(),'Finish for now');
+  assert.equal(await page.locator('#journey-next').innerText(),'Finish for now →');
   console.log('PASS real Python 20 new tests, assisted 10-minute relearning schedule, safe alternate pattern, archived solution and reload');
  }
  const newer=await context.newPage();await newer.goto(base);await newer.waitForFunction(()=>!!document.querySelector('#editor')?.value);await editor(newer).fill('# newer work\npass');
