@@ -122,7 +122,7 @@ test('the whole route remains traversable with independent work and reviewed int
  const catalog=[...ramp.exercises,...exercises],state=freshState(),path={reviews:[]},visited=new Set();
  for(let i=0;i<100;i++){
   const step=nextStep(catalog,state,sessions,path,NOW);
-  if(step.type==='done'){assert.equal(visited.size,route.length);return;}
+  if(step.reinforcement){assert.equal(visited.size,route.length);assert.equal(step.type,'code');assert.equal(step.action,'fresh');return;}
   const id=(step.type==='session'?'@':'')+step.id;assert.ok(!visited.has(id),`Unexpected repeated step ${id}`);visited.add(id);
   if(step.type==='code')record(state,step.id,{passed:true,cold:!step.id.endsWith('guided')&&step.id!=='syntax-faded',scaffold:step.id.endsWith('guided')||step.id==='syntax-faded'},NOW);
   else path.reviews.push(review(step.id,NOW,step.id==='full-loop'?'peer':'solo',true));
@@ -144,4 +144,24 @@ test('an old advanced practice pass cannot pull a rusty beginner past the founda
  const state=freshState();record(state,'batch-scheduler',{passed:true,cold:false},NOW);
  const step=nextStep([...ramp.exercises,...exercises],state,sessions,{},LATER);
  assert.equal(step.id,'tiny-filter-guided');
+});
+
+
+test('waiting foundation recalls keep leading to suitable practice without unlocking harder work',()=>{
+ const catalog=[...ramp.exercises,...exercises],state=freshState();
+ for(const id of ['tiny-filter-guided','tiny-count-guided','syntax-faded'])record(state,id,{passed:true,scaffold:true},NOW);
+ for(const id of ['tiny-filter-cold','tiny-count-cold','python-refresher-1']){
+  record(state,id,{passed:true,cold:false},NOW);
+  state.exercises[id].review={...state.exercises[id].review,phase:'relearning',dueAt:NOW+600000};
+ }
+ const step=nextStep(catalog,state,sessions,{reviews:[]},NOW+1000);
+ assert.equal(step.type,'code');assert.equal(step.reinforcement,true);assert.equal(catalog.find(e=>e.id===step.id).stage,'Foundation');
+ const due=nextStep(catalog,state,sessions,{reviews:[]},NOW+600001);
+ assert.equal(due.id,'tiny-filter-cold');assert.equal(due.review,true);
+});
+
+test('a scheduled recall with no alternative still offers a fresh practice attempt',()=>{
+ const state=freshState(),catalog=[exercise('interval-windows')];record(state,'interval-windows',{passed:true,cold:false},NOW);
+ state.exercises['interval-windows'].review.phase='relearning';state.exercises['interval-windows'].review.dueAt=NOW+600000;
+ const step=nextStep(catalog,state,[],{},NOW+1000);assert.equal(step.type,'code');assert.equal(step.reinforcement,true);assert.equal(step.action,'fresh');
 });

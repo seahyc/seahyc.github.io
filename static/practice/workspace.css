@@ -58,7 +58,9 @@
 .practice-options > div > a { display: flex; align-items: center; min-height: 44px; padding: 9px 12px; border-radius: var(--radius-control); color: var(--color-ink); font-size: 14px; font-weight: 650; text-decoration: none; }
 .practice-options > div > a:hover { background: var(--color-surface-subtle); }
 .practice-options > div > button { width: 100%; justify-content: flex-start; }
-.personal-notes { margin-top: var(--space-5); }
+.personal-notes { margin-top: var(--space-5); border: 1px solid var(--color-border-soft); border-radius: var(--radius-card); background-color: var(--color-surface); background-image: var(--paper-texture); box-shadow: var(--shadow-paper); overflow: hidden; }
+.personal-notes > summary { display: list-item; min-height: 44px; padding: 12px var(--space-5); cursor: pointer; font-weight: 700; }
+.personal-notes .reflection { padding: var(--space-5); }
 
 body.focus.practice-page main { width: min(1120px, 100%); padding-inline: clamp(16px, 3vw, 32px); }
 body.focus .intro, body.focus .curriculum, body.focus .evidence, body.focus .session-bar, body.focus .timer, body.focus #stage, body.focus #why, body.focus #main, body.focus footer, body.focus #next-exercise, body.focus #review-status { display: none; }

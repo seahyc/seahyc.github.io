@@ -11,12 +11,11 @@ import {freshState,progress,record,recommendation,label,day,validateImport} from
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 if(!guidedFlow)document.body.classList.remove('focus');
 let interviews=[],pathState=freshPath(),examples={},activeAction;
-const intervalLabel=due=>{const minutes=Math.ceil((due-Date.now())/60000);return minutes<60?`in ${Math.max(1,minutes)} min`:minutes<1440?`in ${Math.ceil(minutes/60)} hours`:`in ${Math.round(minutes/1440)} day${Math.round(minutes/1440)===1?'':'s'}`;};
 const $=id=>document.getElementById(id), KEY='coding-practice-v1';
 let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),storageStale=false;
 const notice=message=>{$('notice').textContent=message;};
-try { const saved=localStorage.getItem(KEY); if(saved) state=JSON.parse(saved); } catch { storageStale=true;notice('Your saved progress could not be read. Export anything still available before clearing browser storage.'); }
-function persist(){if(storageStale)return;try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='Saved here';}catch{$('save-status').textContent='Not saved';notice('Browser storage is unavailable or full. Export your progress to keep this attempt.');}}
+try { const saved=localStorage.getItem(KEY); if(saved) state=JSON.parse(saved); } catch { storageStale=true;notice('Your saved progress could not be read. Keep this tab open; your stored data has not been cleared.'); }
+function persist(){if(storageStale)return;try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='Saved here';}catch{$('save-status').textContent='Not saved';notice('This attempt could not be saved because browser storage is unavailable or full. Keep this tab open until saving works again.');}}
 function entry(){ return state.exercises[current.id] ||= {coldDays:[],attempts:0}; }
 function session(){return entry().session ||= {mode:'practice',cold:false,started:Date.now(),hint:0};}
 function editable(name){return name!=='src/tests.py' && !name.endsWith('.jsonl');}
@@ -73,18 +72,18 @@ function refresh(){
   state.attempts.slice(0,6).forEach(a=>{const li=document.createElement('li');const title=exercises.find(e=>e.id===a.id)?.title||'Exercise';li.textContent=`${new Date(a.at).toLocaleDateString()} — ${title}: ${a.passed?'passed':a.kind}${a.cold?' · cold recall':''}${a.output?' · '+firstError(a.output):''}`;$('history').append(li);});
   if(current){const p=entry(),s=session();$('review-status').textContent=p.due?`Next review: ${p.due}. ${label(p)}`:(p.scaffold?'Foundation complete. Continue to independent retrieval.':'A first pass schedules tomorrow’s review.');$('session-status').textContent=s.cold?'Fresh scaffold; no assistance recorded.':'Practice: support is welcome. Cold recall starts with a fresh attempt.';}
 }
-function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Interview progress could not be read. Export it from Progress & backup before clearing storage.');}}
+function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Interview progress could not be read. Your saved data has been kept; try refreshing this page.');}}
 function updateJourney(){
  const p=entry();const passed=p.lastResult==='pass';
  const effort=recallState(p);
  if(passed&&effort.pending&&!storageStale){rateRecall(state,current.id,'good');persist();}
  $('journey-feedback').hidden=!passed;
- $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
+ $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.reinforcement?'Practice · build fluency':activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
  if(passed){
   const step=nextStep(exercises,state,interviews,pathState);
-  $('journey-message').textContent=step.type==='pause'?'You’re done for now. We’ll bring your recall check back when it’s due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
-  $('next-review-date').textContent=p.review?.dueAt?`Recall scheduled ${intervalLabel(p.review.dueAt)} · ${new Date(p.review.dueAt).toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'})}`:'';
-  $('journey-next').textContent=step.type==='pause'?'Finish for now →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
+  $('journey-message').textContent=step.reinforcement?'Keep practising this pattern. We’ll bring back recall checks when they’re due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
+  $('next-review-date').textContent=p.review?.dueAt?'Recall checks are scheduled automatically.':'';
+  $('journey-next').textContent=step.reinforcement?'Continue practising →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
  }
 }
 function renderExample(){const demo=examples[current.id];$('example-lab').hidden=!demo;if(!demo)return;$('example-caption').textContent=demo.caption;$('example-input').value=JSON.stringify(demo.args[0]);$('example-expected').textContent=JSON.stringify(demo.expected);}
@@ -113,7 +112,8 @@ function launchStep(){
  }
  if(!p.session){p.session={mode:step.mode,cold:step.mode!=='practice',started:Date.now(),hint:0,assisted:false,freshMock:step.mode==='mock'&&pristine};if(step.mode==='mock')p.session.deadline=Date.now()+e.minutes*60000;}
  select(e);
- if(step.review)notice('Recall is due. Rebuild this from the scaffold.');
+ if(step.reinforcement)notice('Fresh practice, ready. We’ll handle the recall timing.');
+ else if(step.review)notice('Recall is due. Rebuild this from the scaffold.');
  else if(p.lastResult&&p.lastResult!=='pass'&&p.lastResult!=='pending')notice('Repair the first failing behavior, then check again.');
  else notice('');
  scrollTo({top:0,behavior:'instant'});
@@ -142,7 +142,7 @@ function select(e){
 }
 function fresh(mode){
   if(worker)return;
-  if(!confirm('Start from the original scaffold? Your current code will be replaced. Export progress first if you want to keep it.')){$('mode').value=session().mode;return;}
+  if(!confirm('Start from the original scaffold? Your current code will be replaced. Your current draft will be saved in your practice history.')){$('mode').value=session().mode;return;}
   saveEditor();const p=entry();archiveDraft(p);p.files={};p.notes='';p.lastResult='pending';
   p.session={mode,cold:mode!=='practice'&&!supported(current.id),started:Date.now(),hint:0,assisted:false};
   if(mode==='mock')p.session.deadline=Date.now()+current.minutes*60000;
@@ -210,7 +210,7 @@ window.addEventListener('storage',event=>{
  storageStale=true;syntaxChecker.clear();codeEditor.setDiagnostics([]);stop(null);
  for(const id of ['syntax','run','main','new-attempt','mode','file','timer-button','next-hint','journey-next','example-run','recommended','next-exercise','import'])$(id).disabled=true;
  codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
- notice('Coding progress changed in another tab. Export this tab if you need its unsaved work, then reload before continuing.');
+ notice('Progress changed in another tab. Keep any unsaved code here, then reload to use the latest progress.');
 });
 try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./examples.json?v=recall-2026-09-06-1')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,ramp,interviewPack,examplePack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises];interviews=interviewPack.sessions;examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
 if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){

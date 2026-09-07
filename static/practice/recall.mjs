@@ -45,6 +45,11 @@ function prospective(p,rating,now){
   let effective=rating;
   if(r.assisted||(r.failed&&r.phase==='relearning'))effective='again';
   else if(r.failed&&effective==='good')effective='hard';
+  // An extra clean run before the scheduled check is practice, not a longer interval.
+  if(effective==='good'&&r.dueAt>now){
+    const entry={rating:effective,requestedRating:rating,at:now,dueAt:r.dueAt,intervalDays:r.intervalDays,early:true};
+    return {...r,lastRatedAt:now,pending:false,assisted:false,failed:false,history:[...r.history,entry].slice(-30),rating:effective};
+  }
   const sameDay=r.lastCreditDay===localDay(now);
   let interval=r.intervalDays, streak=r.streak, lapses=r.lapses, phase='review', dueAt;
   if(effective==='again'){
