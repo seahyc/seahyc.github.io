@@ -1,20 +1,20 @@
 +++
-title = "The Company to Build: Superhot Geothermal"
-description = "A founder opportunity narrative for turning superhot rock into financeable firm power - without pretending the hard engineering is solved."
+title = "Power, Without Weather: Superhot Geothermal"
+description = "A founder opportunity narrative for building firm power from deep heat - with the technical and commercial proof still required made explicit."
 date = 2026-09-09
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
 +++
 
-# THE COMPANY TO BUILD
+# POWER, WITHOUT WEATHER
 
-### Make superhot geothermal a financeable source of firm power
+### The company that turns deep heat into firm power.
 
-**Founder opportunity narrative | 9 September 2026**<br>
-Built from the underlying Gemini Deep Research dossier, narrowed to primary project, government, and technical sources.
+**Founder opportunity narrative | Research-backed | 9 September 2026**<br>
+Built from a Gemini Deep Research source sweep, then narrowed to primary project, government, and technical sources.
 
-> **The wedge** Start with one high-heat, grid-connected site and prove the well, reservoir, chemistry, and offtake case before building a power plant.
+> **The bet** Firm power is constrained less by the absence of heat than by the absence of a repeatable well-and-reservoir system. Prove that system at one exceptional site. Replicate it only if the data earns the right.
 
 ---
 
