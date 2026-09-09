@@ -14,9 +14,7 @@ main_class = "main-research-swipe"
 **Founder opportunity narrative | 9 September 2026**<br>
 Built from the underlying Gemini Deep Research dossier, narrowed to primary project, government, and technical sources.
 
-> **Company purpose** Build the field-development system that turns one high-heat, grid-connected site into a financeable superhot-rock geothermal project: site control, high-temperature well design, reservoir proof, chemistry control, and an offtake-ready data room.
-
-> **Founder thesis** Do not begin by promising a 500 MW plant or inventing every component of a new drill. Begin by owning a staged proof program at one exceptional site, use specialist drilling partners where possible, and earn the right to scale only when heat, well integrity, flow, chemistry, and economics clear visible gates.
+> **The wedge** Start with one high-heat, grid-connected site and prove the well, reservoir, chemistry, and offtake case before building a power plant.
 
 ---
 
