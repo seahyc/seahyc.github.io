@@ -7,9 +7,9 @@ body_class = "research-swipe"
 main_class = "main-research-swipe"
 +++
 
-# POWER, WITHOUT WEATHER
+# CLEAN, LIMITLESS ENERGY
 
-### Clean, always-on electricity from the heat beneath the grid.
+### The closest thing on Earth to a civilisation-scale energy resource.
 
 **Founder opportunity narrative | Research-backed | 9 September 2026**<br>
 Built from a Gemini Deep Research source sweep, then narrowed to primary project, government, and technical sources.
@@ -23,6 +23,22 @@ Built from a Gemini Deep Research source sweep, then narrowed to primary project
 # THE GRID HAS A FIRM-POWER GAP
 
 Electricity has a timing problem. A hospital, data center, train network, or factory needs power at 3 a.m. and during a heat wave, not only when the sun is out or the wind is strong.
+
+### The scale, before the startup story
+
+| Measure | Order of magnitude | What it does and does not mean |
+|---|---:|---|
+| Heat leaking from Earth's interior | **47 ± 2 TW** | A measured global heat flow, roughly 2.5 times humanity's current annual-average energy supply. It is not all collectible. [Davies & Davies](https://se.copernicus.org/articles/1/5/2010/se-1-5-2010.pdf) |
+| Humanity's 2024 total supplied energy | **592 EJ/year**, or about **19 TW** average | The scale of today's energy system, across electricity, transport, industry, and heat. [Energy Institute](https://energyinst.org/statistical-review/insights-by-source) |
+| IEA modeled next-generation geothermal technical potential below 8 km | Almost **600 TW** for a 25-year operating life | A technology-potential model, not a reserve, project pipeline, or forecast. It assumes access to deeper heat can be made economic. [IEA](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary) |
+
+The word **limitless** belongs to the ambition, not a literal resource claim. No company will harvest the planet's full heat flow; wells only reach specific geological volumes, recover only a fraction of their heat, and must compete on cost. But the scale changes the question. Geothermal need not be a small niche resource if the industry can make deep heat accessible and productive.
+
+### A civilisation-scale thought experiment
+
+The Kardashev scale is a speculative way to describe civilisation by the power it can use. Its conventional Type-I benchmark is `10^16 W` - 10,000 TW - more than 500 times humanity's current roughly 19 TW energy supply. It is **not** a policy target or a market forecast. It is a useful reminder that energy access sets the ceiling for what a civilisation can build.
+
+The optimistic world here is not one that extracts infinite energy. It is one where clean, reliable power is no longer the constraining input for electrified industry, desalination, cooling, computation, or high-quality living standards. The founder-sized version is much narrower: prove that one deep, hot site can produce bankable firm power, then earn the right to repeat it.
 
 **Firm power** is electricity a buyer can plan around: available when called, not merely when conditions cooperate. Wind and solar are essential low-carbon resources, but they are variable. Batteries can shift some energy across hours; they do not automatically create a week of clean, always-on supply. Gas delivers firm power, but burns fuel. Nuclear delivers firm power, but projects can be slow and capital-intensive.
 
