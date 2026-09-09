@@ -1443,3 +1443,43 @@ body.research-swipe .story-scroll .wide-object td {
     content: "NEXT DECISION";
   }
 }
+
+/* Mobile Fieldbook QA correction: readable copy and no browser focus outline. */
+body.research-swipe .story-slide.swiper-slide-active {
+  outline: none !important;
+}
+
+@media (max-width: 700px) {
+  body.research-swipe .story-slide .story-scroll > p,
+  body.research-swipe .story-slide .story-scroll > ul,
+  body.research-swipe .story-slide .story-scroll > ol,
+  body.research-swipe .story-slide .story-scroll > blockquote {
+    font-size: 1.0625rem !important;
+    line-height: 1.62 !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h1 {
+    font-size: clamp(2.1rem, 9vw, 2.45rem) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.035em;
+  }
+
+  body.research-swipe .story-slide--cover .story-scroll > h1 {
+    font-size: clamp(2.7rem, 12vw, 3.5rem) !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h2 {
+    font-size: 1.8rem !important;
+    line-height: 1.04 !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h3 {
+    font-size: 0.78rem !important;
+    line-height: 1.32 !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > .story-illustration {
+    width: min(50vw, 175px) !important;
+    margin: 1.1rem auto 1.4rem !important;
+  }
+}
