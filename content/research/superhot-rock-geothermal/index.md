@@ -1,6 +1,6 @@
 +++
 title = "Clean, Limitless Energy: Superhot Geothermal"
-description = "A founder's case for turning the planet's deep heat into clean, firm power - and the field evidence required before the vision earns belief."
+description = "A founder's case for turning the planet's deep heat into clean, firm power - and the proof required before it deserves scale."
 date = 2026-09-09
 layout = "research-swipe"
 body_class = "research-swipe"
@@ -9,203 +9,180 @@ main_class = "main-research-swipe"
 
 # CLEAN, LIMITLESS ENERGY
 
-### The Earth is already running the power plant. We need to learn how to drill into it.
+### The planet is already hot. The question is whether we can turn that fact into power.
 
 **A Fieldbook for founders and investors | 9 September 2026**<br>
-A first-person opportunity narrative built from primary project, government, and technical sources.
+A first-person opportunity narrative, grounded in technical and project evidence.
 
-> I think one of the largest technology companies of this century may begin with an almost ridiculous question: if the planet is hot underneath our feet all the time, why do we still burn things to keep the lights on?
+> I think the next great energy company might begin with a question that sounds too simple to be important: if Earth is hot underneath us all the time, why do we still burn things to keep the lights on?
 
 ---
 
 ## 01 · The thing beneath us
 
-# THE EARTH LEAKS MORE HEAT THAN WE KNOW WHAT TO DO WITH
+# THE PLANETARY HEAT ENGINE
 
-Start here. The Earth continuously releases about **47 +/- 2 terawatts** of internal heat. Humanity's total supplied energy in 2024 averaged roughly **19 terawatts**. [Davies & Davies](https://se.copernicus.org/articles/1/5/2010/se-1-5-2010.pdf) [Energy Institute](https://energyinst.org/statistical-review/insights-by-source)
+Earth releases about **47 +/- 2 terawatts** of internal heat, continuously. Humanity's total supplied energy in 2024 averaged about **19 terawatts**. [Davies & Davies](https://se.copernicus.org/articles/1/5/2010/se-1-5-2010.pdf) [Energy Institute](https://energyinst.org/statistical-review/insights-by-source)
 
-That does **not** mean we can collect all of it. Most of that heat is diffuse, too deep, or economically unreachable. It does mean that scarcity is not the right starting point. The planet is not short of energy. We are short of ways to turn a tiny, useful fraction of it into cheap, dependable power.
+That is not a claim that we can collect all of it. Most heat is too diffuse, too deep, or too expensive to reach. But it changes the starting point: the planet is not short of energy. We are short of ways to turn a useful fraction of its heat into dependable electricity.
 
-The International Energy Agency's estimate makes the point more forcefully: with next-generation technology and access below 8 km, the full *technical potential* of geothermal electricity could meet global electricity demand around **140 times over**. The model implies almost **600 TW** of 25-year capacity. That is a possibility frontier, not a reserve count, not a forecast, and definitely not a project pipeline. [IEA](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary)
+The IEA estimates that next-generation geothermal's full technical potential could meet global electricity demand around 140 times over. That is potential, not reserves, and certainly not a forecast. [IEA](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary)
 
-I use the phrase **limitless energy** in that sense. Not as a physics claim. Not as an excuse to hand-wave drilling cost. As a statement that the prize sits at a scale far larger than any one power market.
-
-The Kardashev scale is a useful, slightly silly, but clarifying thought experiment. Its conventional Type-I benchmark is `10^16 W`: 10,000 TW, more than 500 times humanity's current energy supply. We are nowhere near that, and should not aim for raw consumption for its own sake. But civilisations are ultimately constrained by the energy they can use cleanly and reliably. More abundant power means more cooling, clean water, materials, computation, mobility, and room to build.
-
-> The long vision is not "geothermal everywhere tomorrow." It is a world in which energy abundance is not the thing that keeps human ambition small.
+I use “limitless” as a statement of scale. The goal is not to harvest the planet. It is to learn how to use a very small part of it well.
 
 ---
 
 ## 02 · The energy we still cannot buy
 
-# ELECTRICITY IS EVERYONE'S FAVOURITE RAW MATERIAL
+# POWER, ON DEMAND
 
-Electricity turns into almost anything: light, motion, cooling, heat, computation, chemicals, and eventually whatever a robot can do. But the grid has one stubborn requirement. A hospital, a fab, a data centre, and a city at 3 a.m. need power **when they need it**.
+Electricity has become everyone’s favourite raw material. It becomes light, cooling, motion, industrial heat, computation, and almost anything a machine can do.
 
-That is the firm-power problem. Wind and solar are extraordinary technologies, and I would build far more of both. Their output still follows weather and daylight. Batteries are incredibly useful, but they move electricity through time; they do not create energy. Gas is firm, but it needs fuel and emits carbon. Nuclear is firm, but hard to build quickly and cheaply in many places.
+But electricity has a timing problem. A factory, hospital, or data centre does not need power only when the weather agrees. It needs power when it needs power.
 
-Geothermal offers a different shape of supply: low-carbon electricity from a heat source that does not care whether it is noon, midnight, calm, or cloudy. Global geothermal plants operated above 75% average utilisation in 2023, compared with less than 30% for wind and less than 15% for solar. [IEA](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary)
+Wind and solar are essential. Batteries are essential. Gas is firm but dirty. Nuclear is firm but difficult to build quickly and cheaply in many places.
 
-This is the reframe that made me pay attention. The opportunity is not another climate-tech category. It is one of the few conceivable ways to make **clean firm power** more common.
+Geothermal is different: it can produce low-carbon power around the clock. Global geothermal plants averaged more than 75% utilisation in 2023, versus less than 30% for wind and less than 15% for solar. [IEA](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary)
 
-And that matters more as the world electrifies. AI, electric industry, air conditioning, desalination, and electrified transport do not just need more electrons. They need a grid that can deliver them without waiting for the weather to cooperate.
+That is the product I care about: not energy in general, but clean power a grid can count on.
 
 ---
 
 ## 03 · The broken status quo
 
-# THE SIMPLE VERSION OF GEOTHERMAL IS A BURIED POWER PLANT
+# A POWER PLANT, UPSIDE DOWN
 
-The mental model is almost embarrassingly simple. Drill down to hot rock. Send fluid down one well. Let it absorb heat. Bring it up another well. Use that heat to generate electricity. Repeat for decades.
+The machine is simple to describe. Drill down to hot rock. Send fluid down one well. Let it gather heat. Bring it back up another. Make electricity.
 
-Conventional geothermal works when nature has already performed the hard engineering: hot rock, water, and permeable pathways exist in the same place at a reachable depth. That is why conventional geothermal has been powerful but geographically narrow.
+The hard part is that nature rarely puts everything in the same place. Conventional geothermal needs hot rock, water, and permeable pathways at a reachable depth. That natural coincidence is powerful, but rare.
 
-Enhanced geothermal systems, or EGS, try to create the missing flow path. Superhot rock, or SHR, reaches for a hotter regime where every productive well may deliver more useful energy. Fresh water reaches its critical point at **374 C and 22.1 MPa**, with salinity changing the exact threshold. Beyond that point, fluid behaviour, materials, well design, and surface equipment are no longer familiar geothermal engineering. [Clean Air Task Force](https://www.catf.us/superhot-rock/glossary/)
+Enhanced geothermal systems try to create the missing flow path. Superhot rock tries to reach a much hotter regime, where each productive well may deliver more useful energy.
 
-The trap is to think that hot rock equals power. It does not. The rock needs to exchange heat with a flowing fluid. The well must survive. The flow path must stay open. The water cannot disappear into the formation. The chemistry cannot eat the equipment. The power output cannot fall off a cliff after a year.
+Beyond roughly **374 C** and **22.1 MPa**, fresh water reaches its critical point. At those conditions, fluid behaviour, materials, well design, and surface equipment become a different kind of engineering problem. [Clean Air Task Force](https://www.catf.us/superhot-rock/glossary/)
 
-So I would not describe geothermal as a resource business. I would describe it as a heat-exchanger business with the most important equipment kilometres underground.
+The resource is everywhere at some depth. A working heat exchanger is not.
 
 ---
 
 ## 04 · Why now
 
-# THREE THINGS HAVE CHANGED. NONE OF THEM LETS US SKIP THE HARD PART.
+# THE DOOR IS OPENING
 
-First, geothermal drilling has started to borrow the operational muscle of oil and gas. Fervo's Project Red has generated commercial EGS power, and Fervo is developing Cape Station, where it expects first power in late 2026 and about 100 MW in early 2027. That is a real execution milestone. It does not prove a superhot reservoir will be durable or financeable. [Fervo prospectus](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15)
+Three things have changed.
 
-Second, there is a plausible route to drilling differently. Quaise is developing millimetre-wave drilling, which sends electromagnetic energy through a waveguide rather than asking a mechanical bit to survive the hottest rock. It has demonstrated a drilling milestone and raised a $180M Series B with strategic investment from Nabors. That is meaningful. It is not proof of multi-kilometre reliability, steering, casing integrity, or commercial SHR production. [Quaise milestone](https://www.quaise.energy/news/quaise-energy-achieves-drilling-milestone-with-millimeter-wave-technology) [Series B](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b)
+First, geothermal drilling is becoming more operationally credible. Fervo has generated commercial EGS power at Project Red and is developing Cape Station. That proves serious execution progress, not a finished superhot power plant. [Fervo prospectus](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15)
 
-Third, the grid is finally willing to pay attention. Retiring thermal sites can bring transmission, industrial land, water systems, and a workforce already trained to operate serious infrastructure. They cannot make bad geology good. They can make an excellent geothermal site much more valuable.
+Second, new access technology is plausible. Quaise is using millimetre waves to drill without forcing a mechanical bit into the hottest rock. It has a real drilling milestone, a $180M Series B, and Nabors as a strategic investor. It has not yet proved multi-kilometre reliability, steering, or commercial SHR production. [Quaise](https://www.quaise.energy/news/quaise-energy-achieves-drilling-milestone-with-millimeter-wave-technology)
 
-The distinction matters. I am not saying the problem is solved. I am saying the ingredients are mature enough to find out whether a repeatable solution exists.
+Third, grids increasingly value firm capacity. A retiring thermal site can bring transmission, land, water systems, and an experienced workforce to an exceptional geothermal site.
+
+I do not think the problem is solved. I think we can finally run the experiment properly.
 
 ---
 
 ## 05 · The wedge
 
-# THE COMPANY IS NOT A DEEPER-DRILLING COMPANY
+# THE WELL IS THE PRODUCT
 
-If I were starting this company, I would call it a **proof engine for firm power**.
+I would not start a “deeper drilling” company. I would start a **proof engine for firm power**.
 
-Its job would be to identify an exceptional site, access hotter rock, build and measure a durable reservoir, and decide - with brutal discipline - whether the result deserves a power plant. It would integrate drilling, high-temperature completions, reservoir science, materials, commercial development, and project finance. It would not pretend that a novel drill head alone is the company.
+Its job is to find one exceptional site, access hotter rock, build a durable underground flow system, and decide whether the result deserves a power plant. That means integrating drilling, high-temperature completions, reservoir science, materials, commercial development, and capital discipline.
 
-The early customer is not "everyone who uses electricity." It is a utility, industrial buyer, or retiring thermal-asset owner that has a specific problem: they need dependable clean capacity at a real interconnection point. The first asset is not a global platform. It is one place where heat, stress, water, chemistry, permitting, grid access, and partner capability line up unusually well.
+The first customer is specific: a utility, industrial buyer, or retiring thermal-asset owner that needs dependable clean capacity at a real interconnection point.
 
-There is a useful asymmetry here. A good first circulation program creates value even before it creates revenue. It can upgrade site rights, validate a development option, and tell the team whether to advance, redesign, or stop. That is the kind of experiment I want to finance: one where an honest failure prevents an enormous future mistake.
+The first asset is specific too: not a global platform, but one place where heat, stress, water, chemistry, permits, grid access, and partner capability line up.
 
-> The startup is not selling a drill. It is selling the right to believe in the next dollar of capital.
+A good first circulation program creates value before it creates revenue. It tells me whether to advance, redesign, or stop before the largest capital commitment.
 
 ---
 
 ## 06 · How the first system works
 
-# THE BEAM IS INTERESTING. THE WHOLE BOREHOLE IS THE PRODUCT.
+# ACCESS IS HALF THE MACHINE
 
-Millimetre-wave drilling is compelling because it reframes the worst part of very deep drilling. Instead of putting a mechanical bit directly against the hottest rock, a surface gyrotron sends energy down a corrugated waveguide. The rock can spall into particles; purge gas can move particles and vapor back up; local melting may produce a glassy wall.
+Millimetre-wave drilling is interesting because it changes the deepest part of the well. A surface gyrotron sends energy down a corrugated waveguide. The rock can spall into particles; gas can remove particles and vapor; local melting may create a glassy wall.
 
-Each verb in that sentence hides a company-sized problem.
+Every one of those steps has to work at depth.
 
-The energy must reach the rock face efficiently after kilometres of transmission. Particle removal must work in hot, pressurised conditions rather than in a clean demonstration. A vitrified lining is not structural casing. The well must be steered toward the right rock volume. Sensors and telemetry must still work when the temperature is trying to destroy them.
+The beam must reach the rock face efficiently after kilometres of transmission. The purge system must move hot particles without clogging. A glassy lining is not the same as structural casing. The well must steer toward the right rock. Sensors must keep working at temperatures that destroy ordinary electronics.
 
-I would treat two particularly elegant ideas as hypotheses, not headlines. A downhole micro-gyrotron could reduce long-waveguide losses, but has to survive high voltage, magnetic fields, vacuum or cooling requirements, a narrow diameter, shock, and roughly 400 C ambient conditions. Acoustic ash fluidisation could reduce particle adhesion and gas burden, but may attenuate, damage its transducer, or disrupt the waveguide. Both deserve laboratory gates before they deserve a valuation.
+I also see two attractive but unproven options: a downhole micro-gyrotron that could reduce waveguide losses, and acoustic ash fluidisation that could reduce particle adhesion. Both are laboratory questions before they are company claims.
 
-The rule I would keep repeating to the team is simple: **do not mistake access for a reservoir**. Reaching superhot rock is only half the machine.
+The rule is simple: reaching hot rock is not the same as making power from it.
 
 ---
 
 ## 07 · The proof before a power plant
 
-# ONE HOT WELL IS A STORY. TWO WELLS WITH FLOW ARE A BUSINESS.
+# FLOW IS THE PROOF
 
-The decisive experiment is paired circulation. I need a controlled path for fluid to go down, pick up heat, and return. I need useful temperature, useful mass flow, tolerable pressure behaviour, manageable water loss, chemistry that does not turn the system into a maintenance project, and a decline curve that a financier can read without laughing.
+One hot well is a story. Two wells with sustained flow are a business.
 
-This is where superhot rock becomes genuinely difficult. At depth, the rock can become ductile rather than brittle. Fractures can creep, seal, or short-circuit. Permeability can be too low. Fluid can be lost. Scaling and corrosion can become expensive. Induced seismicity must be measured and managed. High-temperature materials must last.
+I need fluid to go down, collect heat, and come back at useful temperature and mass flow. I need manageable pressure, water loss, chemistry, scaling, corrosion, induced seismicity, and decline.
 
-The Iceland Deep Drilling Project is worth studying because it shows both sides of the story: the system encountered supercritical conditions, and it exposed casing, lost-circulation, and materials failures that make long-lived operation hard. [IDDP technical paper](https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2017/Albertsson.pdf)
+This is the hardest part. At depth, rock can creep or seal. Fractures can short-circuit. Permeability can be too low. Fluid can disappear. Materials can fail.
 
-Before I would finance a plant, I would want four answers:
+The Iceland Deep Drilling Project matters because it showed both sides: supercritical conditions are real, and so are the casing, lost-circulation, and materials problems. [IDDP](https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2017/Albertsson.pdf)
 
-- Can we reach the planned depth and temperature within a credible energy, time, and well-integrity envelope?
-- Can we create a flow path that holds temperature, flow, pressure, and water balance long enough to matter?
-- Can that flow path survive scaling, corrosion, seismicity, and decline at a financeable operating cost?
-- Does one productive SHR well displace enough ordinary drilling to change project economics?
-
-If the answer to the last question is no, the system may still be beautiful science. It is not yet a power company.
+Before I finance a plant, I need to know four things: can we reach it, can we circulate it, can it last, and does a productive superhot well displace enough ordinary drilling to change economics?
 
 ---
 
 ## 08 · The path of attack
 
-# THE CURVE I WANT IS NOT TEMPERATURE. IT IS COST PER DEPENDABLE KILOWATT.
+# TEMPERATURE IS NOT THE GOAL
 
-The beauty of a superhot well is not the number on the thermometer. It is the possibility that fewer, more productive wells could support the same power plant. That possibility must show up in economics.
+A spectacular temperature reading is not the outcome. The outcome is a lower cost per dependable kilowatt.
 
-I would keep the model stubbornly simple:
+I would start by selecting the site: heat, stress, water, chemistry, permits, grid, and partner context. If there is no credible path to circulation, I stop.
 
-```text
-annual MWh = net MW x capacity factor x 8,760
-subsurface $/kW = (exploration + unsuccessful wells + successful wells + completion) / dependable net kW
-LCOE = (annualized capital + O&M + water/chemistry/interconnection cost) / annual delivered MWh
-```
+Then I would drill a pathfinder and measure the actual cost of access: energy, time, loss, casing, and telemetry. If the well cannot reach the target inside an integrity envelope, I stop.
 
-Then I would run scenarios, not forecasts. What if each productive well delivers 5 MW, 15 MW, or 30 MW net? What if the productive life is 3, 10, or 20 years? What if the campaign needs one successful well, two, or three? What if the site reuses a thermal interconnect, only part of it, or none of it?
+Then I would run paired circulation and measure temperature, flow, decline, scaling, corrosion, and seismicity. If the duration cannot support project finance, I stop.
 
-I would build in four gates.
-
-**0-6 months: choose the site.** Measure heat, stress, water, chemistry, permits, grid, and partner context. Stop if there is no credible circulation path.
-
-**6-15 months: prove access.** Drill a pathfinder. Measure energy, rate, loss, casing, and telemetry. Stop if the well cannot reach the target inside the engineering envelope.
-
-**15-24 months: prove circulation.** Measure temperature, flow, decline, scaling, corrosion, and seismicity. Advance only if the duration can support real project finance.
-
-**After proof: finance a plant.** Build the data room, contract the power, secure the interconnect, and invite infrastructure capital only when the evidence can carry it.
-
-Fervo's $421M non-recourse Cape Station financing shows that lenders will finance better-understood EGS development. I would not present it as proof that lenders have accepted first-of-a-kind SHR risk. [Fervo financing](https://fervoenergy.com/fervo-energy-secures-421-million-in-non-recourse-project-financing-for-cape-station/)
+Only after that would I pursue a power plant, an offtake agreement, and infrastructure capital. Fervo's $421M Cape Station financing tells me lenders will finance better-understood EGS. It does not tell me that first-of-a-kind SHR is already bankable. [Fervo financing](https://fervoenergy.com/fervo-energy-secures-421-million-in-non-recourse-project-financing-for-cape-station/)
 
 ---
 
 ## 09 · Why this company can win
 
-# THE MOAT IS THE LOOP BETWEEN THE WELL YOU DRILLED AND THE ONE YOU CHOOSE NEXT
+# THE FIELD IS THE FACTORY
 
-Fervo validates geothermal execution. Quaise pushes the access frontier. Mazama and the Newberry testbed advance superhot-resource knowledge. Materials suppliers, drillers, universities, and public programs will all contribute. I do not think the winner needs to own every tool.
+Fervo validates directional geothermal execution. Quaise pushes the access frontier. Mazama and the Newberry testbed advance superhot-resource knowledge. I do not think the winner must own every tool.
 
-I think the winner needs to learn faster than anyone else how a real site behaves.
+I think the winner must learn faster than everyone else how a real site behaves.
 
-Each well can refine the geological model. Each circulation test can clarify which rock, stress, chemistry, completion, and operating conditions produce durable flow. Each qualified site can make the next site cheaper to select. Each partner relationship can reduce the cost of a costly mistake.
+Each well improves the geological model. Each circulation test clarifies which rock, stress, chemistry, completion, and operating conditions produce durable flow. Each qualified site makes the next site cheaper to select.
 
-That is a more believable moat than a slogan about drilling anywhere. It combines site rights, field data, high-temperature completion knowledge, a trusted partner stack, and a decision process that gets better with every attempt.
+That learning loop can become the moat: site rights, field data, high-temperature completion knowledge, a partner stack, and a decision process that gets better after every well.
 
-There is a useful parallel with the best industrial companies: manufacturing is not downstream of invention. Making the thing teaches you how to make the next thing better. In superhot geothermal, the field is the factory, and the factory is the product.
+In deep geothermal, the field is the factory. The factory is the product.
 
 ---
 
 ## 10 · The founder decision
 
-# THE EARTH DOES NOT OWE US A BUSINESS. WE HAVE TO EARN ONE.
+# EARN THE RIGHT TO SCALE
 
-I find this opportunity unusually exhilarating because the underlying resource is so immense and the usable product is so scarce. We have an energy source that can run all day, is present beneath every country at some depth, and could expand the geography of firm low-carbon power. We do not yet know how to make it repeatable at the conditions that matter.
+I find this opportunity exhilarating because the resource is immense and the useful product is scarce. We have a source of heat that never waits for sun or wind. We do not yet know how to turn it into repeatable, financeable firm power.
 
 That gap is the company.
 
-I would pursue it only with an exceptional site, a team spanning drilling, reservoir engineering, high-temperature materials, and project development, and investors who understand that a disciplined no can be a successful outcome. I would pause or walk away if access fails the integrity envelope; if the reservoir cannot sustain useful circulation; if chemistry or seismicity destroys the operating case; or if strong technical performance still cannot improve cost per dependable kilowatt.
+I would pursue it only with an exceptional site, a team spanning drilling, reservoir engineering, high-temperature materials, and project development, and investors who understand that a disciplined no can be a successful outcome.
 
-The near-term vision is modest and very hard: one site, one durable flow system, one bankable proof point.
+I would walk away if access breaks the well-integrity envelope; if the reservoir cannot sustain useful flow; if chemistry or seismicity destroys the operating case; or if good technical performance still cannot improve the cost per dependable kilowatt.
 
-The long-term vision is not modest at all. If that proof becomes repeatable, clean firm power stops being a scarce exception. The planet becomes a much bigger part of the energy system we already live inside.
+The near-term ambition is one site and one durable flow system. The long-term ambition is much larger: clean firm power becomes a common input to a more abundant world.
 
-> I do not need geothermal to be literally limitless to believe it may be one of the most consequential sources of energy we have ever learned to use.
+> I do not need geothermal to be literally limitless to believe it may be one of the most consequential energy sources we learn to use.
 
 ### Research receipts
 
 - [IEA, The Future of Geothermal Energy](https://www.iea.org/reports/the-future-of-geothermal-energy/executive-summary)
 - [Clean Air Task Force, superhot rock glossary](https://www.catf.us/superhot-rock/glossary/)
-- [Clean Air Task Force, gaps and pathways synthesis](https://www.catf.us/resource/gaps-challenges-pathways-forward-superhot-rock-energy-summary-report/)
 - [Davies & Davies, Earth's surface heat flux](https://se.copernicus.org/articles/1/5/2010/se-1-5-2010.pdf)
 - [Energy Institute, Statistical Review insights](https://energyinst.org/statistical-review/insights-by-source)
 - [Iceland Deep Drilling Project technical paper](https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2017/Albertsson.pdf)
 - [Fervo prospectus](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15)
 - [Quaise drilling milestone](https://www.quaise.energy/news/quaise-energy-achieves-drilling-milestone-with-millimeter-wave-technology)
-- [Quaise Series B](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b)
 - [Fervo Cape Station financing](https://fervoenergy.com/fervo-energy-secures-421-million-in-non-recourse-project-financing-for-cape-station/)
