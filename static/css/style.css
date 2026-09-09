@@ -1293,3 +1293,153 @@ body.card-frame-full .story-slide > .story-scroll {
         margin-bottom: 1.6rem;
     }
 }
+
+/* Fieldbook readability pass: desktop evidence tables and mobile reading mode. */
+body.research-swipe .story-scroll .wide-object {
+  width: 100%;
+  max-width: none;
+  margin: 2rem 0;
+}
+
+body.research-swipe .story-scroll .wide-object table {
+  width: 100%;
+  min-width: 0;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  line-height: 1.42;
+}
+
+body.research-swipe .story-scroll .wide-object th,
+body.research-swipe .story-scroll .wide-object td {
+  vertical-align: top;
+}
+
+@media (max-width: 700px) {
+  body.research-swipe .story-slide,
+  body.research-swipe .story-slide .story-scroll {
+    height: auto;
+    min-height: 100%;
+  }
+
+  body.research-swipe .story-scroll {
+    padding: 2rem 1.5rem 5.5rem;
+    overflow-y: auto;
+  }
+
+  body.research-swipe .story-scroll h1 {
+    max-width: 100%;
+    font-size: clamp(2.45rem, 12vw, 4rem);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+  }
+
+  body.research-swipe .story-scroll h2 {
+    font-size: clamp(1.85rem, 9vw, 2.6rem);
+    line-height: 0.98;
+  }
+
+  body.research-swipe .story-scroll h3 {
+    max-width: 100%;
+    font-size: 0.78rem;
+    line-height: 1.25;
+    letter-spacing: 0.075em;
+  }
+
+  body.research-swipe .story-scroll p,
+  body.research-swipe .story-scroll li,
+  body.research-swipe .story-scroll blockquote {
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  body.research-swipe .story-scroll > .story-illustration {
+    display: block;
+    float: none;
+    width: min(56vw, 200px);
+    max-width: 100%;
+    margin: 1rem auto 1.5rem;
+  }
+
+  body.research-swipe .story-slide--cover .story-scroll {
+    padding-top: clamp(2.5rem, 10vh, 5rem);
+  }
+
+  body.research-swipe .story-slide--cover .story-scroll h1 {
+    font-size: clamp(2.75rem, 14vw, 4.4rem);
+  }
+
+  body.research-swipe .story-scroll .wide-object {
+    overflow: visible;
+    margin: 1.65rem 0;
+  }
+
+  body.research-swipe .story-scroll .wide-object table,
+  body.research-swipe .story-scroll .wide-object tbody,
+  body.research-swipe .story-scroll .wide-object tr,
+  body.research-swipe .story-scroll .wide-object td {
+    display: block;
+    width: 100%;
+  }
+
+  body.research-swipe .story-scroll .wide-object table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent;
+    font-size: 0.94rem;
+  }
+
+  body.research-swipe .story-scroll .wide-object thead {
+    display: none;
+  }
+
+  body.research-swipe .story-scroll .wide-object tbody {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  body.research-swipe .story-scroll .wide-object tr {
+    overflow: hidden;
+    border: 1px solid rgba(120, 67, 49, 0.2);
+    border-radius: 0.55rem;
+    background: rgba(255, 252, 242, 0.48);
+  }
+
+  body.research-swipe .story-scroll .wide-object td {
+    padding: 0.72rem 0.85rem;
+    border: 0;
+    line-height: 1.42;
+  }
+
+  body.research-swipe .story-scroll .wide-object td:first-child {
+    padding-bottom: 0.62rem;
+    background: rgba(140, 70, 51, 0.1);
+    color: #70392d;
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 1.03rem;
+    font-weight: 700;
+    line-height: 1.18;
+  }
+
+  body.research-swipe .story-scroll .wide-object td:not(:first-child) {
+    padding-top: 0.62rem;
+  }
+
+  body.research-swipe .story-scroll .wide-object td:not(:first-child)::before {
+    display: block;
+    margin-bottom: 0.22rem;
+    color: rgba(71, 42, 34, 0.62);
+    content: "DETAIL";
+    font-family: var(--font-sans, sans-serif);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    line-height: 1;
+  }
+
+  body.research-swipe .story-scroll .wide-object td:nth-child(3)::before {
+    content: "EVIDENCE / IMPLICATION";
+  }
+
+  body.research-swipe .story-scroll .wide-object td:nth-child(4)::before {
+    content: "NEXT DECISION";
+  }
+}
