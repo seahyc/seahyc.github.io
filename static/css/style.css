@@ -906,8 +906,7 @@ body.card-frame-full .story-slide > .story-scroll {
 
 .fieldbook-index__eyebrow,
 .fieldbook-index__count,
-.fieldbook-card__label,
-.fieldbook-card__meta {
+.fieldbook-row__meta {
     color: var(--red);
     font: 800 .72rem/1.2 ui-sans-serif, system-ui, sans-serif;
     letter-spacing: .12em;
@@ -919,14 +918,14 @@ body.card-frame-full .story-slide > .story-scroll {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 1.5rem;
     align-items: end;
-    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+    margin-bottom: clamp(2rem, 5vw, 3.25rem);
 }
 
 .fieldbook-index h1 {
     max-width: 11ch;
     margin: .6rem 0 1.1rem;
     color: var(--ink);
-    font: 700 clamp(3rem, 8vw, 6.25rem)/.92 Georgia, 'Times New Roman', serif;
+    font: 700 clamp(2.8rem, 6vw, 4.5rem)/.98 Georgia, 'Times New Roman', serif;
     letter-spacing: -.055em;
 }
 
@@ -943,68 +942,72 @@ body.card-frame-full .story-slide > .story-scroll {
     white-space: nowrap;
 }
 
-.fieldbook-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1rem, 2.5vw, 1.75rem);
+.fieldbook-list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.fieldbook-card a {
-    display: flex;
-    min-height: 20rem;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(1.5rem, 3vw, 2.3rem);
-    border: 1px solid rgba(55, 42, 31, .13);
-    border-radius: 1.15rem;
-    background-color: rgba(243, 234, 219, .94);
-    background-image: radial-gradient(rgba(88, 65, 38, .06) .45px, transparent .55px), linear-gradient(145deg, rgba(255,255,255,.34), rgba(126,91,48,.06));
-    background-size: 5px 5px, 100% 100%;
-    box-shadow: 0 14px 30px rgba(55, 42, 31, .1);
+.fieldbook-row {
+    border-top: 1px solid rgba(55, 42, 31, .16);
+}
+
+.fieldbook-row:last-child {
+    border-bottom: 1px solid rgba(55, 42, 31, .16);
+}
+
+.fieldbook-row a {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: clamp(1.25rem, 2.5vw, 1.8rem) 0;
     color: var(--ink);
     text-decoration: none;
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    transition: padding .18s ease;
 }
 
-.fieldbook-card a:hover {
-    transform: translateY(-5px) rotate(-.35deg);
-    border-color: rgba(157, 76, 63, .38);
-    box-shadow: 0 22px 42px rgba(55, 42, 31, .17);
+.fieldbook-row a:hover {
+    padding-right: .5rem;
 }
 
-.fieldbook-card h2 {
-    max-width: 13ch;
-    margin: .85rem 0 1rem;
-    font: 700 clamp(2rem, 4.3vw, 3.45rem)/.98 Georgia, 'Times New Roman', serif;
-    letter-spacing: -.045em;
-}
-
-.fieldbook-card__description {
-    margin: 0;
-    color: var(--muted);
-    font: 400 1.05rem/1.5 Georgia, 'Times New Roman', serif;
-}
-
-.fieldbook-card__footer {
+.fieldbook-row__meta {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(55, 42, 31, .12);
+    flex-direction: column;
+    gap: .3rem;
 }
 
-.fieldbook-card__arrow { font-size: 1.6rem; line-height: 1; }
+.fieldbook-row__content h2 {
+    margin: 0;
+    font: 700 clamp(1.65rem, 3.2vw, 2.3rem)/1.06 Georgia, 'Times New Roman', serif;
+    letter-spacing: -.035em;
+}
+
+.fieldbook-row__content p {
+    margin: .35rem 0 0;
+    color: var(--muted);
+    font: 400 1rem/1.45 Georgia, 'Times New Roman', serif;
+}
+
+.fieldbook-row__arrow {
+    font-size: 1.5rem;
+    color: var(--red);
+    transition: transform .18s ease;
+}
+
+.fieldbook-row a:hover .fieldbook-row__arrow {
+    transform: translateX(.3rem);
+}
 
 @media (max-width: 680px) {
     .fieldbook-index__intro { grid-template-columns: 1fr; }
     .fieldbook-index__count { padding-top: 0; }
-    .fieldbook-grid { grid-template-columns: 1fr; }
-    .fieldbook-card a { min-height: 17rem; }
+    .fieldbook-row a {
+        grid-template-columns: 1fr auto;
+        gap: .8rem;
+    }
+    .fieldbook-row__meta { flex-direction: row; grid-column: 1 / -1; }
+    .fieldbook-row__meta p::after { margin-left: .55rem; content: "/"; }
 }
 
 .tilt-test-harness {

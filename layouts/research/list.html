@@ -10,19 +10,19 @@
         <p class="fieldbook-index__count">{{ len $fieldbooks }} published</p>
     </header>
 
-    <ol class="fieldbook-grid">
+    <ol class="fieldbook-list">
         {{ range $index, $book := $fieldbooks.ByDate.Reverse }}
-        <li class="fieldbook-card">
+        <li class="fieldbook-row">
             <a href="{{ $book.RelPermalink }}">
-                <div>
-                    <p class="fieldbook-card__label">Fieldbook {{ printf "%02d" (add $index 1) }}</p>
-                    <h2>{{ $book.Title }}</h2>
-                    {{ with $book.Description }}<p class="fieldbook-card__description">{{ . }}</p>{{ end }}
+                <div class="fieldbook-row__meta">
+                    <p>Fieldbook {{ printf "%02d" (add $index 1) }}</p>
+                    <time datetime="{{ $book.Date.Format "2006-01-02" }}">{{ $book.Date.Format "2006" }}</time>
                 </div>
-                <footer class="fieldbook-card__footer">
-                    <time class="fieldbook-card__meta" datetime="{{ $book.Date.Format "2006-01-02" }}">{{ $book.Date.Format "2 Jan 2006" }}</time>
-                    <span class="fieldbook-card__arrow" aria-hidden="true">↗</span>
-                </footer>
+                <div class="fieldbook-row__content">
+                    <h2>{{ $book.Title }}</h2>
+                    {{ with $book.Description }}<p>{{ . }}</p>{{ end }}
+                </div>
+                <span class="fieldbook-row__arrow" aria-hidden="true">&#8594;</span>
             </a>
         </li>
         {{ end }}
