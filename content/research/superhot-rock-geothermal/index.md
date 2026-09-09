@@ -1,194 +1,213 @@
 +++
-title = "Superhot Rock Geothermal"
-description = "A Fieldbook on the deep-heat prize, the engineering that remains unproven, and the only pilot evidence that should unlock serious capital."
+title = "The Company to Build: Superhot Geothermal"
+description = "A founder opportunity narrative for turning superhot rock into financeable firm power - without pretending the hard engineering is solved."
 date = 2026-09-09
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
 +++
 
-# SUPERHOT ROCK GEOTHERMAL
+# THE COMPANY TO BUILD
 
-### Can ultra-deep heat become firm power?
+### Make superhot geothermal a financeable source of firm power
 
-**Research edition · 9 September 2026**<br>
-Built from a Gemini Deep Research source sweep, then narrowed to primary project, government, and technical sources.
+**Founder opportunity narrative | 9 September 2026**<br>
+Built from the underlying Gemini Deep Research dossier, narrowed to primary project, government, and technical sources.
 
-> **Working thesis** Superhot rock is not yet a power business. It is a bundle of interdependent engineering bets: access the resource, keep the well intact, sustain permeability, control the chemistry, and prove a flow rate long enough to finance. The resource is real. The investable question is whether those bets can be retired together.
+> **Company purpose** Build the field-development system that turns one high-heat, grid-connected site into a financeable superhot-rock geothermal project: site control, high-temperature well design, reservoir proof, chemistry control, and an offtake-ready data room.
 
-> **Decision** Treat Fervo as the relevant execution benchmark for commercial EGS, not proof that superhot systems are solved. Fund a superhot program only against a long-duration, high-temperature flow-test plan with explicit well-integrity and chemistry gates.
+> **Founder thesis** Do not begin by promising a 500 MW plant or inventing every component of a new drill. Begin by owning a staged proof program at one exceptional site, use specialist drilling partners where possible, and earn the right to scale only when heat, well integrity, flow, chemistry, and economics clear visible gates.
 
 ---
 
-## 01 · The prize begins after 374°C
+## 01 · The company to build
 
-### Superhot is a thermodynamic threshold, not a marketing adjective
+### THE MISSING COMPANY IS THE SYSTEM INTEGRATOR
 
-Conventional geothermal works where useful heat, fluid, and permeability happen to coincide. Enhanced geothermal systems (EGS) manufacture the missing permeability by drilling and stimulating wells. Superhot rock goes one regime further: it targets fluid above water's critical point, roughly **374°C and 22.1 MPa** for fresh water. In saline systems, the relevant threshold shifts upward. [Clean Air Task Force definition](https://www.catf.us/superhot-rock/glossary/)
+Superhot rock geothermal (SHR) is not one technology. It is a system problem: access heat, keep the well intact, create and sustain flow, manage aggressive chemistry, connect to a buyer, and prove enough reliability to finance the asset. Today those capabilities are fragmented between drill technology developers, geothermal developers, materials suppliers, utilities, and site owners.
 
-The attraction is not simply “hotter is better.” Above the critical point, the working fluid can carry far more usable energy per unit mass. That raises the plausible output per successful well and could reduce the number of wells, pads, and surface connections per delivered megawatt. It does not remove the need to make a reservoir, run a stable fluid loop, or finance a first-of-a-kind asset.
+The opportunity is to become the **high-temperature field-development company**: the party that selects the site, defines the operating envelope, integrates drilling and completion partners, runs the proof program, and turns evidence into an investable project. The first customer is a utility, industrial power buyer, or owner of a retiring thermal site that wants firm clean power but cannot underwrite an untested superhot well alone.
 
-| System | Resource condition | What is already demonstrated | The binding uncertainty |
+| Do now | Do not do first | Why |
+|---|---|---|
+| Control one near-grid, high-heat site and its test plan | Promise geothermal "everywhere" | Site quality and interconnection determine whether technical progress can become a project |
+| Partner for drilling while instrumenting the whole system | Build every hardware subsystem in-house | The first scarce asset is integrated proof, not an undifferentiated lab prototype |
+| Make well-integrity, flow, decline, and chemistry data financeable | Treat a hot borehole as product-market fit | A hot borehole without durable flow is only an expensive thermometer |
+
+**Decision:** build a project-development platform with a technical moat in high-temperature completion, reservoir measurement, and milestone discipline. It is an opportunity to assemble a future power company, not merely a geology study.
+
+## 02 · The prize
+
+### FIRM POWER FROM A RESOURCE MOST GRIDS CANNOT YET REACH
+
+Conventional geothermal works where useful heat, fluid, and permeability happen to coincide. Enhanced geothermal systems (EGS) manufacture the missing permeability by drilling and stimulating wells. SHR targets fluid above water's critical point: roughly **374 C and 22.1 MPa** for fresh water. In saline systems, the relevant threshold shifts upward. [Clean Air Task Force definition](https://www.catf.us/superhot-rock/glossary/)
+
+Above that threshold, the working fluid can carry substantially more usable energy per unit mass. If a productive SHR well can be made durable, it could deliver more output with fewer wells, pads, and surface connections per delivered megawatt. The vision is not simply hotter geothermal; it is dense, firm, clean power that can be developed near existing grid infrastructure.
+
+| System | Resource condition | What is demonstrated | What remains binding |
 |---|---|---|---|
 | Hydrothermal | Natural heat, fluid, permeability | Commercial power plants | Geography |
 | EGS | Hot rock plus engineered flow paths | Grid production at Project Red; Cape Station is under construction | Replication at scale |
-| Superhot rock | Supercritical-temperature resource | Public research wells and material experiments | Long-lived integrated production |
+| SHR | Supercritical-temperature resource | Public research wells and materials experiments | Long-lived integrated production |
 
-**Claim status:** the threshold is a physical fact. Any claim that it makes power cheap everywhere is a scenario, not an observation.
+**Reality label:** the supercritical threshold is a verified physical fact. Cheap power at any location is an analyst scenario, not an observation. The prize is large precisely because the system has not been proven.
 
-## 02 · Fervo is the benchmark; Quaise is the option
+## 03 · The broken status quo
 
-### Do not collapse adjacent technologies into one maturity curve
+### DEEP HEAT EXISTS, BUT THE WELL IS THE BOTTLENECK
 
-[Fervo](https://fervoenergy.com/) has demonstrated that oil-and-gas drilling and stimulation practices can create an operating EGS project. Its 2026 filings describe Project Red as a commercial pilot and Cape Station as a **500 MW** development under construction, with first power expected in late 2026 and roughly 100 MW expected by early 2027. That is real execution evidence, but its resource is EGS, not superhot rock. [Fervo 2026 prospectus](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15)
+A conventional mechanical bit is exposed to the very conditions that make SHR attractive. Even if a well reaches the temperature, the project still needs two wells, a useful flow path, sufficient mass flow, manageable pressure loss, acceptable water recovery, and chemistry that does not scale or corrode the hardware.
 
-[Quaise](https://www.quaise.energy/news/quaise-energy-achieves-drilling-milestone-with-millimeter-wave-technology) is pursuing a different path: millimeter-wave drilling intended to access much deeper, hotter rock. Its 2026 Series B close and Nabors strategic investment are source-backed. Its commercial claim is still conditional on reliably extending a directed-energy drilling system from field demonstrations to multi-kilometer wells. [Quaise Series B announcement](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b)
+The public record from Iceland, Japan, and Italy matters because it documents what goes wrong: lost circulation, casing damage, difficult completions, corrosive fluids, scaling, and permeability changes as rock approaches brittle-ductile behavior. [CATF synthesis](https://www.catf.us/resource/gaps-challenges-pathways-forward-superhot-rock-energy-summary-report/) The Iceland Deep Drilling Project reached extraordinary conditions, but its operational record is evidence of risk as much as access. [IDDP-2 technical paper](https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2017/Albertsson.pdf)
 
-| Actor | What the public record establishes | What it does not establish |
+| Constraint | Why the current workaround fails | Founder implication |
 |---|---|---|
-| Fervo | EGS pilot operations, utility-scale construction, project financing | Superhot reservoir longevity |
-| Quaise | MMW drilling development, field milestones, project-development intent | Multi-km borehole stability and commercial SHR power |
-| Mazama / Newberry | A high-heat geological testbed and active development interest | A bankable superhot plant |
-| Sage | A separate EGS and energy-storage approach | A direct substitute for superhot production |
+| Access | Mechanical drilling slows, wears, and becomes costly at depth and heat | Do not base the company on a depth claim alone |
+| Well integrity | Casing, cement, sensing, and completion materials face severe thermal and chemical load | Make completion design a core capability, not procurement |
+| Reservoir | Fractures can creep, seal, shortcut, or lose water | A reservoir lead is a founding hire, not later-stage overhead |
+| Chemistry | Silica, dissolved metals, and corrosion can choke a flow loop | Measure fluid and materials behavior before surface-plant promises |
 
-The competitive map is therefore a ladder, not a race with one finish line: Fervo de-risks drilling-and-reservoir execution; Quaise is trying to change the access cost curve; public supercritical wells reveal the failure modes.
+## 04 · Why now
 
-## 03 · The drill must become a system
+### THE OPENING EXISTS BECAUSE ADJACENT PLAYERS HAVE MOVED THE FRONTIER
 
-### The beam is only one component of the borehole
+The timing case is not that SHR has suddenly become commercial. It is that the pieces are now moving independently: EGS has reached real project execution; directed-energy drilling has attracted serious capital; grid operators need firm capacity; and retiring thermal sites can offer land, interconnection, water arrangements, and an industrial workforce.
 
-Millimeter-wave drilling replaces the mechanical bit at the rock face with electromagnetic energy delivered through a corrugated waveguide. The potential advantage is clear: no bit needs to survive the hottest rock. The system still has to deliver power efficiently downhole, remove rock, maintain a stable hole, steer, and survive heat.
+[Fervo](https://fervoenergy.com/) establishes the relevant EGS execution benchmark. Its 2026 filing describes Project Red as a commercial pilot and Cape Station as a **500 MW** development under construction, with first power expected in late 2026 and roughly 100 MW expected by early 2027. That is primary-company disclosure about EGS, not evidence that SHR reservoir life is solved. [Fervo 2026 prospectus](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15)
 
-| Subsystem | Plausible mechanism | Publication status |
+[Quaise](https://www.quaise.energy/news/quaise-energy-achieves-drilling-milestone-with-millimeter-wave-technology) is pursuing millimeter-wave (MMW) drilling to access deeper, hotter rock. Its 2026 Series B close and Nabors strategic investment are source-backed; multi-kilometer borehole stability and commercial SHR power are not. [Quaise Series B announcement](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b)
+
+| Actor or asset | What it validates | What it does not validate |
 |---|---|---|
-| Energy delivery | A surface gyrotron sends MMW energy through a waveguide | Demonstrated in relevant laboratory and field work; multi-km reliability is unproven |
-| Rock removal | Thermal spallation breaks rock into particles before wholesale melting | Material- and lithology-dependent |
-| Purge | Gas carries fines and vapour upward | A design requirement, not proof of deep-hole stability |
-| Vitrification | Melted wall material may form a glassy lining | Local glass formation is not evidence of structural casing at depth |
-| Steering and sensing | Directional drilling needs heat-tolerant telemetry | Major unresolved constraint at superhot conditions |
+| Fervo | EGS operations, utility-scale construction, project financing | Superhot reservoir longevity |
+| Quaise | MMW development, field milestones, deep-access intent | Multi-km stable wells or bankable SHR power |
+| Mazama / Newberry | A high-heat geological testbed and active development interest | A financeable superhot plant |
+| Retiring thermal sites | Interconnection, land, workforce, possible surface reuse | A suitable subsurface resource |
 
-The crucial correction to the popular story is that “vaporize granite and blow out the ash” is not an adequate drilling design. At high depth, a gas purge has to coexist with pressure control, condensed material, wall mechanics, thermal expansion, and a geometrically precise waveguide. Quaise's own milestone record is evidence of progress, not evidence that the whole stack works at 5–10 km.
+**Why now:** the founder need not invent the entire stack from zero. The gap is the integration of a real site, high-temperature operating envelope, test program, and a commercial path.
 
-**Falsification test:** demonstrate continuous drilling, spoil removal, and stable transmission at meaningful depth with a measured energy-per-metre and no waveguide failure. Until then, cost-per-metre forecasts should be treated as analyst scenarios.
+## 05 · The wedge
 
-## 04 · The reservoir is the real power plant
+### START WITH ONE REPOWERING SITE, NOT A GLOBAL RESOURCE MAP
 
-### A hot borehole without durable flow is only an expensive thermometer
+The first product is a **site-specific superhot proof program** for a near-grid, high-heat location with a willing power counterparty. The company secures development rights or an option, defines the materials and well design, commissions drilling and reservoir partners, and produces the instrumented evidence required for a later power decision.
 
-The production system needs two wells, a flow path between them, sufficient mass flow, manageable pressure loss, and a chemistry regime that does not choke its own hardware. The temperature is valuable only if the reservoir delivers heat over years rather than a brief initial surge.
+A retiring thermal site can compress non-technical risk: existing wires, land, industrial permitting experience, water arrangements, workforce, and possibly parts of a surface power island. None of that rescues a bad reservoir. It does mean that success can move into a power contract faster than a greenfield discovery.
 
-At superhot conditions, the brittle-ductile transition becomes central. Rock that fractures usefully in an EGS reservoir can creep, seal, or change its permeability under higher temperature and confining stress. That makes conventional stimulation intuition unreliable. The public record from Iceland, Japan, and Italy is valuable precisely because it records high-temperature drilling, corrosive fluids, lost circulation, casing damage, and permeability limits rather than an effortless scale-up path. [CATF synthesis report](https://www.catf.us/resource/gaps-challenges-pathways-forward-superhot-rock-energy-summary-report/)
-
-| Reservoir question | What must be measured | Stop condition |
-|---|---|---|
-| Flow | Mass flow, pressure drawdown, thermal decline | Output falls before a financeable test window |
-| Permeability | Tracer recovery, injectivity, fracture response | Flow path self-seals or shortcuts |
-| Water | Recovery, make-up requirement, local availability | Water loss makes the site impractical |
-| Chemistry | Silica, dissolved metals, corrosion rate | Scaling or corrosion defeats the flow loop |
-
-The image is a useful simplification. In a real wellfield, the geometry, fracture network, fluid composition, and stress state determine whether it behaves like a heat exchanger or a leak.
-
-## 05 · Failure is the most useful public dataset
-
-### The public supercritical wells establish risk, not a template
-
-The Iceland Deep Drilling Project is often cited as evidence that extraordinary geothermal conditions can be reached. That is true and important. It is not equivalent to proof that a repeatable power project can be built around them. IDDP work encountered extreme temperature and pressure conditions, while subsequent drilling and completion work exposed casing, fluid-loss, and materials challenges. [IDDP-2 technical paper](https://pangea.stanford.edu/ERE/pdf/IGAstandard/SGW/2017/Albertsson.pdf)
-
-The right lesson from high-temperature wells is operational humility:
-
-- The productive window may sit beside a well-integrity failure mode.
-- Reservoir stimulation may be less controllable as the rock becomes ductile.
-- Supercritical fluid can make the surface plant's chemistry harder, not easier.
-- A brief flow measurement says little about multi-year decline, scaling, or casing behaviour.
-
-That is why the report should not use one headline output-per-well number. A flow result needs its duration, pressure, chemistry, well condition, and thermal decline beside it.
-
-## 06 · The economic denominator is unproven
-
-### The project only wins if one successful well replaces several ordinary ones
-
-The optimistic SHR model is straightforward: drilling is more expensive, but each productive well is so energetic that subsurface capital per kilowatt falls. The model breaks if the success rate is low, the completion has a short life, the reservoir requires extra wells, or high-temperature materials and chemistry systems dominate operating cost.
-
-The arithmetic should be explicit:
-
-```text
-annual MWh = net MW × capacity factor × 8,760
-subsurface $/kW = (exploration + unsuccessful wells + successful wells + completion) / dependable net kW
-LCOE = annualized capital + annual O&M + water/chemistry/interconnection cost
-       ---------------------------------------------------------------
-                            annual delivered MWh
-```
-
-| Analyst scenario input | Downside | Base | Upside | Why it dominates |
-|---|---:|---:|---:|---|
-| Productive wells per drilling campaign | 1 | 2 | 3 | Exploration and completion capital are lumpy |
-| Dependable net MW per production well | 5 | 15 | 30 | This is the entire SHR value proposition |
-| Useful operating life | 3 years | 10 years | 20 years | Thermal, chemical, and mechanical survival are unproven |
-| Surface and grid reuse | None | Partial | Existing-plant reuse | Can change schedule and capex materially |
-
-These are **not forecasts**. They are a sensitivity frame. Fervo's $421 million non-recourse financing for Cape Station is evidence that lenders will finance a better-understood EGS configuration; it is not a comparable cost of capital for a first SHR project. [Fervo financing release](https://fervoenergy.com/fervo-energy-secures-421-million-in-non-recourse-project-financing-for-cape-station/)
-
-## 07 · Repowering is a siting advantage, not a shortcut
-
-### Existing wires and turbines can matter more than a clever drill
-
-The best initial SHR site may be near a retiring thermal plant: land, grid interconnection, water arrangements, industrial workforce, and perhaps parts of the surface power island may already exist. That can shorten a critical non-technical bottleneck. It cannot make an unsuitable subsurface resource workable or turn an unproven well into project finance.
-
-There are three distinct value pools:
-
-| Value pool | Who captures it if SHR works? | What must be true |
+| Value pool | Who captures it if the wedge works | What must be true |
 |---|---|---|
 | Resource access | Developer and mineral-rights holder | Productive superhot reservoir |
 | Drilling and completion | Technology provider and service partners | Faster, more reliable deep wells |
 | Delivered firm power | Utility, offtaker, and plant owner | Interconnection, availability, and contractable output |
 
-This is why a founder should begin with one site archetype, not “heat anywhere.” A near-grid high-heat site with a willing industrial counterparty is strategically more valuable than a global resource map.
+The initial commercial question is therefore narrow: **can one candidate site clear a financeable flow-test envelope?** Do not use hypothetical per-well megawatts or LCOE to answer it.
 
-## 08 · The proposed inventions need hard gates
+## 06 · How the first system works
 
-### Good metaphors are not engineering evidence
+### INTEGRATE THE BOREHOLE; DO NOT MISTAKE THE BEAM FOR THE PRODUCT
 
-**Downhole micro-gyrotrons.** Moving the source to the drill face would reduce long-waveguide alignment and transmission risk. It introduces a harder package: high-voltage power delivery, electron-beam hardware, magnet and vacuum requirements, cooling, diameter limits, shock, and 400°C ambient conditions. The near-term experiment is not a well. It is a sustained high-pressure, high-temperature chamber test of a packaged source at a useful power level.
+MMW drilling replaces the mechanical bit at the rock face with electromagnetic energy delivered through a corrugated waveguide. It may avoid forcing a bit to survive the hottest rock, but it does not remove the surrounding system requirements: efficient energy delivery, rock removal, purge and pressure control, borehole stability, steering, sensing, completion, and a reservoir flow loop.
 
-**Acoustic ash fluidization.** Acoustic energy might reduce particle adhesion or help mobilize fines in a controlled flow loop. It may also attenuate in the same hot multiphase environment, damage its own transducer, or vibrate the waveguide enough to worsen mode conversion. Its first test is a coupled high-temperature particle-flow experiment with measured deposition, pressure drop, vibration, and net energy cost.
-
-| Hypothesis | Minimum credible experiment | Pass criterion | Failure that ends the branch |
+| Subsystem | Plausible mechanism | Evidence status | Founder design rule |
 |---|---|---|---|
-| Downhole source | HTHP chamber endurance test | Stable output in a borehole-sized package | Cooling, insulation, or package volume dominates |
-| Acoustic fluidization | Hot gas/particle flow loop | Lower deposition without harmful vibration | Net transport improvement vanishes at relevant conditions |
+| Energy delivery | Surface gyrotron sends MMW through a waveguide | Relevant laboratory and field work; multi-km reliability unproven | Measure transmission and failure rate at depth |
+| Rock removal | Thermal spallation breaks rock into particles before bulk melting | Material- and lithology-dependent | Test actual site rock, not idealized granite |
+| Purge | Gas carries fines and vapor upward | Design requirement, not deep-hole proof | Measure deposition, pressure drop, and spoil recovery |
+| Vitrification | Melted wall material may form a glassy lining | Local formation is not structural casing evidence | Do not substitute it for completion qualification |
+| Steering and sensing | Directional drilling needs heat-tolerant telemetry | Major unresolved constraint | Instrument the well before optimizing speed |
 
-Neither idea belongs in a project valuation until it clears its own laboratory gate.
+Two original hypotheses deserve laboratory gates, not valuation: a **downhole micro-gyrotron** could reduce long-waveguide risk but introduces high-voltage, magnet, vacuum, cooling, diameter, shock, and 400 C ambient challenges; **acoustic ash fluidization** could reduce particle adhesion but might attenuate, damage its transducer, or disturb waveguide alignment. Both are open hypotheses.
 
-## 09 · The first investable proof is a flow test
+## 07 · The proof before a power plant
 
-### Finance the evidence, not the full power plant
+### CURRENT REALITY: THE RESERVOIR AND ECONOMICS ARE NOT YET BANKABLE
 
-The appropriate first commitment is a staged technical program, with no automatic escalation from drilling success to plant construction. A credible program should have one accountable owner for each gate: drilling, completion/materials, reservoir, chemistry, and commercial/offtake.
+The value of temperature appears only when the reservoir delivers heat for years. At superhot conditions, rock can creep or change permeability; water may be lost; and fluid chemistry can defeat the hardware. Fervo's $421 million non-recourse financing for Cape Station demonstrates that lenders will finance a better-understood EGS configuration. It is not comparable cost of capital for first-of-a-kind SHR. [Fervo financing release](https://fervoenergy.com/fervo-energy-secures-421-million-in-non-recourse-project-financing-for-cape-station/)
+
+| Proof question | Measure it directly | Stop condition |
+|---|---|---|
+| Flow | Mass flow, pressure drawdown, thermal decline | Output falls before a financeable test window |
+| Permeability | Tracer recovery, injectivity, fracture response | Flow path self-seals or shortcuts |
+| Water | Recovery, make-up requirement, local availability | Water loss makes the site impractical |
+| Chemistry | Silica, dissolved metals, corrosion rate | Scaling or corrosion defeats the loop |
+| Well integrity | Casing, cement, telemetry, waveguide condition | The completion cannot survive the operating envelope |
+
+The project only wins if a successful well replaces several ordinary wells. The honest sensitivity frame is:
+
+```text
+annual MWh = net MW x capacity factor x 8,760
+subsurface $/kW = (exploration + unsuccessful wells + successful wells + completion) / dependable net kW
+LCOE = (annualized capital + O&M + water/chemistry/interconnection cost) / annual delivered MWh
+```
+
+| Analyst scenario input | Downside | Base | Upside | Why it dominates |
+|---|---:|---:|---:|---|
+| Productive wells per campaign | 1 | 2 | 3 | Exploration and completion capital are lumpy |
+| Dependable net MW per production well | 5 | 15 | 30 | The central SHR value proposition |
+| Useful operating life | 3 years | 10 years | 20 years | Thermal, chemical, and mechanical survival are unproven |
+| Surface and grid reuse | None | Partial | Existing-plant reuse | Can materially change schedule and capex |
+
+These are analyst scenarios, not forecasts. A claimed flow result is incomplete without duration, pressure, chemistry, well condition, and thermal decline.
+
+## 08 · The path of attack
+
+### FINANCE DECISIVE EVIDENCE, NOT THE FULL POWER PLANT
+
+The company should make every uncertainty earn its next dollar. No automatic escalation from drilling success to plant construction.
 
 | Stage | Decision | Evidence required | Stop / go rule |
 |---|---|---|---|
-| 0–6 months | Select site and materials stack | Heat, stress, water, chemistry, permitting baseline | Stop if no credible path through all five |
-| 6–15 months | Drill and complete pathfinder | Drilling energy, time, losses, casing and sensing data | Stop if access technology cannot meet the operating envelope |
-| 15–24 months | Run paired-well circulation | Sustained temperature, mass flow, decline, scaling, seismicity | Go only if the reservoir and well survive a financeable-duration test |
-| After proof | Design power plant | Independent data room, offtake and interconnection path | Finance a plant only after the data supports reliability claims |
+| 0-6 months | Select site and materials stack | Heat, stress, water, chemistry, permitting baseline | Stop if no credible path through all five |
+| 6-15 months | Drill and complete pathfinder | Drilling energy, time, losses, casing, telemetry, and sensing data | Stop if access cannot meet the operating envelope |
+| 15-24 months | Run paired-well circulation | Sustained temperature, mass flow, decline, scaling, and seismicity | Go only if the well and reservoir survive a financeable-duration test |
+| After proof | Design power plant | Independent data room, offtake, and interconnection path | Finance only when reliability is supportable |
 
-**Operator test for next week:** recruit a geothermal reservoir lead, a high-temperature completion/materials lead, and a power-project developer to score one candidate site against the same gate table. If any gate has no instrumentable experiment, it is not yet a development plan.
+| Open hypothesis | Minimum credible experiment | Pass criterion | Failure that ends the branch |
+|---|---|---|---|
+| Downhole MMW source | High-temperature, high-pressure chamber endurance test | Stable output in a borehole-sized package | Cooling, insulation, or package volume dominates |
+| Acoustic fluidization | Hot gas-particle flow loop | Lower deposition without harmful vibration | Net transport improvement disappears at relevant conditions |
 
-## 10 · What would change the conclusion
+The founding team is therefore specific: a geothermal reservoir lead, high-temperature completion/materials lead, drilling systems lead, and power-project developer. Before spending on a well, they should score one candidate site against this gate table. If a gate lacks an instrumentable experiment, it is not yet a development plan.
 
-### A transparent source and falsification ledger
+## 09 · Why this company can win
 
-The conclusion changes materially if a developer publishes a long-duration superhot flow test with independently inspectable well-integrity, chemistry, and decline data; or if an MMW system shows multi-kilometer continuous drilling with stable transmission and spoil removal. It weakens if deep tests show that ductile-zone permeability, water loss, or completion life cannot reach a financeable envelope.
+### OWN THE INTEGRATION LAYER THAT OTHERS LEAVE OPEN
 
-| Item | Status in this edition | Source |
+Fervo is proving repeatable EGS execution. Quaise is attempting to bend the deep-access cost curve. Materials and drilling suppliers will each optimize their component. The field-development company wins by making those capabilities cohere at an exceptional site, creating the data package that a utility, insurer, and capital provider can actually use.
+
+| Capability | Adjacent players validate | The opening to own |
 |---|---|---|
-| Supercritical threshold for fresh water | Verified physical fact | [CATF glossary](https://www.catf.us/superhot-rock/glossary/) |
-| Fervo Project Red and Cape Station development status | Primary-company disclosure; commercial performance still developing | [Fervo 2026 filing](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15) |
-| Quaise Series B and MMW development | Primary-company disclosure | [Quaise announcement](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b) |
-| High-temperature technical gaps | Synthesized, source-backed sector assessment | [CATF synthesis](https://www.catf.us/resource/gaps-challenges-pathways-forward-superhot-rock-energy-summary-report/) |
-| MMW multikilometer well economics | Unverified scenario | Requires a public, sustained field demonstration |
-| Per-well power, project LCOE, and pilot capex ranges | Analyst scenario only | Do not use as a bankability claim |
+| Drilling | Deep access and directional-drilling innovation | Select, qualify, and integrate a system against SHR operating conditions |
+| Reservoir | EGS stimulation and production practice | Measure and manage superhot permeability, decline, water, and seismicity together |
+| Completion | High-temperature materials work | Turn materials, chemistry, sensing, and well integrity into a proven operating envelope |
+| Commercialization | EGS project finance and grid offtake | Convert a SHR test into a site-specific, independently inspectable investment case |
 
-**Visual provenance.** Cover, drilling mechanism, reservoir loop, and pilot-gate illustrations are original OpenAI Image Generation assets created for this Fieldbook. They are editorial explanations, not measurements. The system, actor, and economics cards link to their supporting primary or technical sources above.
+The defensible asset is not an untested global claim. It is a compounding operating dataset, site rights, qualified partner stack, and a repeatable gate process. The company must be honest about what remains supplier-dependent until it has earned deeper vertical integration.
 
-**Confidence:** high that SHR is a distinct, high-potential resource class; medium that near-term sites can be accessed and flowed; low that an integrated SHR power plant is presently financeable without milestone-based risk capital.
+## 10 · The founder decision
+
+### BUILD A 24-MONTH EVIDENCE COMPANY BEFORE BUILDING A POWER PLANT
+
+The near-term company is small, technical, and ruthless about gates: secure one site; recruit the four functional owners; sign a drilling, materials, and offtake partner; publish a test protocol; and raise or commit only enough capital to reach the first decisive circulation evidence.
+
+| Next move | Owner | Evidence that unlocks the next move |
+|---|---|---|
+| Choose a near-grid, high-heat site | Project developer + reservoir lead | Heat, stress, water, chemistry, and permitting baseline |
+| Qualify access and completion stack | Drilling + materials leads | Measured energy per metre, losses, integrity, telemetry, and borehole condition |
+| Prove the reservoir | Reservoir lead | Sustained temperature, flow, pressure, decline, and tracer data |
+| Convert proof into a project | Commercial lead | Independent data room, interconnection path, and credible offtake |
+
+**What changes the conclusion:** it strengthens materially if a developer publishes a long-duration SHR flow test with independently inspectable well-integrity, chemistry, and decline data, or if an MMW system demonstrates multi-kilometer continuous drilling with stable transmission and spoil removal. It weakens if deep tests show that ductile-zone permeability, water loss, or completion life cannot reach a financeable envelope.
+
+| Item | Reality label | Source |
+|---|---|---|
+| Supercritical threshold for fresh water | Verified fact | [CATF glossary](https://www.catf.us/superhot-rock/glossary/) |
+| Fervo Project Red and Cape Station status | Company disclosure; commercial performance still developing | [Fervo 2026 filing](https://ir.fervoenergy.com/static-files/fbd47c90-4741-4479-b5fa-0cff42940f15) |
+| Quaise Series B and MMW development | Company disclosure | [Quaise announcement](https://www.quaise.energy/news/quaise-energy-closes-180-million-series-b) |
+| High-temperature technical gaps | Source-backed technical synthesis | [CATF synthesis](https://www.catf.us/resource/gaps-challenges-pathways-forward-superhot-rock-energy-summary-report/) |
+| MMW multi-kilometer economics | Open hypothesis / analyst scenario | Requires sustained public field evidence |
+| Per-well power, LCOE, and pilot-capex ranges | Analyst scenario only | Do not use as a bankability claim |
+
+**Visual provenance.** Cover, drilling mechanism, reservoir loop, and pilot-gate illustrations are original OpenAI Image Generation assets created for this Fieldbook. They are editorial explanations, not measurements.
+
+**Confidence:** high that SHR is a distinct, high-potential resource class; medium that a well can be accessed and flowed at a near-term site; low that an integrated SHR power plant is financeable today without milestone-based risk capital.
