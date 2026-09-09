@@ -1483,3 +1483,31 @@ body.research-swipe .story-slide.swiper-slide-active {
     margin: 1.1rem auto 1.4rem !important;
   }
 }
+
+/* The Fieldbook mobile root font size is 10px; use explicit reading sizes here. */
+@media (max-width: 700px) {
+  body.research-swipe .story-slide .story-scroll > p,
+  body.research-swipe .story-slide .story-scroll > ul,
+  body.research-swipe .story-slide .story-scroll > ol,
+  body.research-swipe .story-slide .story-scroll > blockquote {
+    font-size: 17px !important;
+    line-height: 1.58 !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h1 {
+    font-size: 34px !important;
+    line-height: 0.98 !important;
+  }
+
+  body.research-swipe .story-slide--cover .story-scroll > h1 {
+    font-size: 46px !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h2 {
+    font-size: 28px !important;
+  }
+
+  body.research-swipe .story-slide .story-scroll > h3 {
+    font-size: 13px !important;
+  }
+}
