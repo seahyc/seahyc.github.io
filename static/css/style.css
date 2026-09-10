@@ -292,6 +292,57 @@ img { max-width: 100%; height: auto; display: block; }
     letter-spacing: 0.01em;
 }
 
+/* Writing index — compact editorial rows with optional, supporting imagery. */
+.writing-post-link {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    align-items: center;
+}
+
+.writing-post-copy {
+    min-width: 0;
+}
+
+.writing-post-list .post-title {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.writing-post-list .post-excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 62ch;
+    -webkit-box-orient: vertical;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    -webkit-line-clamp: 1;
+}
+
+.writing-post-list .post-item a {
+    padding: 1.3rem 0;
+}
+
+.writing-post-list .post-meta {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 0.4rem;
+    font-size: 1.1rem;
+}
+
+.writing-post-list .post-meta span::before {
+    margin-right: 1.2rem;
+    content: "/";
+    color: var(--border-hover);
+}
+
+.post-thumbnail {
+    width: 12rem;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    background: var(--bg-card);
+}
+
 /* Single post / page */
 .page-header {
     padding: 3rem 0 1.6rem;
@@ -586,6 +637,8 @@ p.page-meta {
     .main-wide { padding: 0 1rem; }
     .fieldbook-row a { grid-template-columns: 1fr auto; gap: 0.8rem; }
     .fieldbook-row__meta { flex-direction: row; grid-column: 1 / -1; }
+    .writing-post-link { gap: 1.2rem; }
+    .post-thumbnail { width: 8.8rem; }
 }
 
 /* Mobile research swipe report */
