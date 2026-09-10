@@ -26,7 +26,7 @@ function outputPath(urlPath) {
 }
 
 const privateUrls = [];
-for (const filename of await readdir(contentDir)) {
+for (const filename of await readdir(contentDir, { recursive: true })) {
   if (!filename.endsWith(".md") || filename === "_index.md") continue;
   const metadata = frontMatter(await readFile(path.join(contentDir, filename), "utf8"));
   if (!new Set(["public", "private"]).has(metadata.visibility)) {
@@ -34,7 +34,7 @@ for (const filename of await readdir(contentDir)) {
   }
   if (metadata.visibility === "public") continue;
 
-  const slug = filename.replace(/\.md$/, "");
+  const slug = filename.replace(/(?:\/index)?\.md$/, "");
   privateUrls.push(`/projects/${slug}/`);
   if (metadata.link?.startsWith("/")) privateUrls.push(metadata.link);
 }

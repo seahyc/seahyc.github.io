@@ -1,5 +1,6 @@
 ---
 title: "Bishan Ridges — Renovation"
+visibility: public
 description: "Our BTO reno hub: electrical & smart switches, an interactive 3D living-room layout, and the travertine dining-table duel."
 tech: ["Three.js", "Hugo", "Comfort Home Interior"]
 weight: -1
