@@ -360,7 +360,7 @@
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
-    var nativeCardScroll = window.matchMedia('(max-width: 700px)').matches;
+    var nativeCardScroll = window.matchMedia('(max-width: 900px)').matches;
     scroll._cardOffset = 0;
     function cardMaxOffset() {
       if (nativeCardScroll) return Math.max(0, scroll.scrollHeight - scroll.clientHeight);
@@ -461,7 +461,7 @@
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
     if (!activeScroll) return;
-    if (window.matchMedia('(max-width: 700px)').matches) return;
+    if (window.matchMedia('(max-width: 900px)').matches) return;
     var styles = getComputedStyle(activeScroll);
     var bottomGap = parseFloat(styles.marginBottom) || 0;
     var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
