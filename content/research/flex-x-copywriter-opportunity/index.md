@@ -5,6 +5,7 @@ date = 2026-08-28
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+aliases = ["/research/flex-x-copywriter-opportunity/"]
 
 [fieldbook]
 theme = "freight-finance"

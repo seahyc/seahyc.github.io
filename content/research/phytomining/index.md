@@ -5,6 +5,7 @@ date = 2026-09-10
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+aliases = ["/research/phytomining/"]
 
 [fieldbook]
 theme = "botanical"

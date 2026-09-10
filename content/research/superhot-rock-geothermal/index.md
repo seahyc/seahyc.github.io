@@ -5,6 +5,7 @@ date = 2026-09-09
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+aliases = ["/research/superhot-rock-geothermal/"]
 
 [fieldbook]
 theme = "geothermal"
@@ -85,7 +86,13 @@ The difficult part is that nature rarely gives us all the pieces in one place. T
 
 Engineers are trying two ways around that limit. One is to create or improve the tiny cracks that let water move through hot rock. That is called an **enhanced geothermal system**, or EGS. The other is to go much deeper, to much hotter rock. That is the superhot-rock idea.
 
-At about **374 C** and **22.1 MPa**, pure water crosses a boundary where it stops behaving like the ordinary liquid or steam we know. Salt changes the exact boundary. Past that point, the water, pipes, cement, sensors, and power equipment all behave differently. [Clean Air Task Force](https://www.catf.us/superhot-rock/glossary/)
+So what happens to the water down there?
+
+At about **374 C** and **22.1 MPa**, pure water reaches its **critical point**. Below that boundary, liquid water can boil and become steam: there is a visible dividing line between the two. Above it, that dividing line disappears. There is only one phase, called a **supercritical fluid**. It does not form bubbles or boil in the ordinary sense. [The Iceland Deep Drilling Project](https://doi.org/10.1016/j.geothermics.2013.03.001)
+
+That strange state is part of the prize. Under the right pressure, this fluid can remain denser than ordinary geothermal steam while carrying a great deal of energy in every kilogram. A well can therefore bring more heat to the surface without moving proportionally more fluid. But its properties change sharply near the critical point: a modest change in pressure or temperature can produce a large change in density and in how the fluid transfers heat. [Multiphase flow modelling study](https://doi.org/10.1016/j.renene.2021.03.107)
+
+And the fluid underground is not pure water. It may contain salt, acid, and gases, which shift its phase boundaries and determine what happens as it rises and loses pressure. Minerals can drop out and clog the path; acidic liquid can condense and attack the well lining. Iceland's IDDP-1 well reached roughly **440 C**, but also showed how these chemical effects can damage the hardware meant to contain the resource. [IDDP-1 fluid study](https://doi.org/10.1016/j.geothermics.2018.11.002)
 
 The heat is common. A long-lived underground plumbing system is not.
 
