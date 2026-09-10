@@ -858,6 +858,7 @@ body.card-frame-full .story-slide > .story-scroll {
 }
 
 .card-scroll-cue {
+    display: none !important;
     position: absolute;
     top: 50%;
     right: clamp(.8rem, 2vw, 1.5rem);
