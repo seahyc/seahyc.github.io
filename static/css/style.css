@@ -1459,6 +1459,11 @@ body.research-swipe .story-scroll {
   -ms-overflow-style: none;
 }
 
+html.research-swipe-root,
+body.research-swipe {
+  overflow: hidden !important;
+}
+
 html.research-swipe-root::-webkit-scrollbar,
 body.research-swipe::-webkit-scrollbar,
 body.research-swipe .story-scroll::-webkit-scrollbar {
