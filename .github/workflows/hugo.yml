@@ -91,6 +91,8 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Prune non-runtime planner sources from public
         run: node projects-src/retirement-planning/prune-public.mjs
+      - name: Prune private projects from public
+        run: node scripts/prune-private-projects.mjs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

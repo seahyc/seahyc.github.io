@@ -1,5 +1,6 @@
 ---
 title: "Project Orion — The Long Way Through"
+visibility: private
 description: "A cinematic Three.js story of a strategic process and the people living through it. Private; Google sign-in required."
 tech: ["Three.js", "React", "Interactive Storytelling"]
 weight: -2

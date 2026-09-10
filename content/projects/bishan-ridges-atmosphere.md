@@ -1,5 +1,6 @@
 ---
 title: "Bishan Ridges Atmosphere"
+visibility: public
 description: "A public, mobile-first isometric 3D neighbourhood model with live wind, rain and air-quality context."
 tech: ["Three.js", "data.gov.sg", "Hugo"]
 weight: -2

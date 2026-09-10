@@ -5,7 +5,7 @@
 
 <div class="page-content">
     <ul class="project-list">
-        {{ range .Pages }}
+        {{ range where .Pages "Params.visibility" "public" }}
         <li class="project-row">
             <a href="{{ with .Params.link }}{{ . }}{{ else }}{{ with .Params.github }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}{{ end }}"{{ with .Params.github }} target="_blank"{{ end }}>
                 <span class="project-name">{{ .Title }}</span>

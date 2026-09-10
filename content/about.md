@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "Being"
 ---
 
 I'm YC. I cofounded [Glints](https://glints.com/id) in 2013. Over the years I've worked across product, engineering, and market expansion, and supported fundraising. I also spent several years in Indonesia and Vietnam focused on product-market fit.
