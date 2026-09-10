@@ -11,6 +11,7 @@
 {{ define "main" }}
 <div class="swipe-report fieldbook{{ with .Params.fieldbook.theme }} fieldbook--{{ . }}{{ end }}">
     {{ partial "fieldbook/config.html" . }}
+    <a class="fieldbook-back" href="/learning/" aria-label="Back to all learning">← All learning</a>
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>

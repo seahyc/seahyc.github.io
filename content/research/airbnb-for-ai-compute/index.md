@@ -5,6 +5,7 @@ date = 2026-08-26
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+aliases = ["/research/airbnb-for-ai-compute/", "/research/distributed-inference/"]
 
 [fieldbook]
 theme = "distributed-compute"
@@ -12,7 +13,6 @@ theme = "distributed-compute"
 [fieldbook.illustrations.cover]
 src = "/images/distributed-inference-cover-doodle-1280.webp"
 alt = "A field of distributed computers contributing useful inference work"
-aliases = ["/research/distributed-inference/"]
 +++
 
 # AIRBNB FOR AI COMPUTE

@@ -5,6 +5,7 @@ date = 2026-09-01
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+aliases = ["/research/ai-inference-market/"]
 
 [fieldbook]
 theme = "inference"
