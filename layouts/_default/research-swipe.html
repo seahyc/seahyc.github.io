@@ -163,11 +163,6 @@
     Array.prototype.forEach.call(scroll.querySelectorAll('img[src*="distributed-inference-"], img[src*="airbnb-ai-"]'), function (image) {
       image.classList.add('editorial-plate');
     });
-    var scrollCue = document.createElement('div');
-    scrollCue.className = 'card-scroll-cue';
-    scrollCue.setAttribute('aria-hidden', 'true');
-    scrollCue.innerHTML = '<i></i>';
-    slide.appendChild(scrollCue);
     track.appendChild(slide);
   });
   viewport.appendChild(track);
