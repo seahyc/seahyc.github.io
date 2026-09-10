@@ -1,5 +1,6 @@
 ---
 title: "Coding Practice"
+visibility: private
 description: "One coding practice step at a time, adapting to test results, independent recall and interview feedback."
 tech: ["Python", "Pyodide", "Learning design"]
 weight: -3
