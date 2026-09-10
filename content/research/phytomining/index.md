@@ -5,6 +5,25 @@ date = 2026-09-10
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+
+[fieldbook]
+theme = "botanical"
+
+[fieldbook.illustrations.cover]
+src = "/images/phytomining-cover.webp"
+alt = "A scientist holding a nickel-accumulating plant beside crop rows leading toward a processing horizon"
+
+[fieldbook.illustrations."02-the-biological-machine"]
+src = "/images/phytomining-plant.webp"
+alt = "A cutaway of roots taking up nickel ions and moving them into a plant's leaves"
+
+[fieldbook.illustrations."04-the-part-hidden-by-the-plant"]
+src = "/images/phytomining-process.webp"
+alt = "The chain from crop harvest through drying, thermal treatment, chemical processing, and nickel product"
+
+[fieldbook.illustrations."08-the-smallest-company-worth-testing"]
+src = "/images/phytomining-pilot.webp"
+alt = "Farmers, scientists, and a processor operator measuring a field qualification pilot together"
 +++
 
 # GROWING METAL

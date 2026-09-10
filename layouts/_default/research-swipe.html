@@ -9,7 +9,8 @@
 {{ end }}
 
 {{ define "main" }}
-<div class="swipe-report">
+<div class="swipe-report fieldbook{{ with .Params.fieldbook.theme }} fieldbook--{{ . }}{{ end }}">
+    {{ partial "fieldbook/config.html" . }}
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
@@ -23,6 +24,9 @@
 <script>
 (function () {
   document.documentElement.classList.add('research-swipe-root');
+  var configNode = document.getElementById('fieldbook-config');
+  var fieldbookConfig = configNode ? JSON.parse(configNode.textContent || '{}') : {};
+  var illustrations = fieldbookConfig.illustrations || {};
   var frameMode = new URLSearchParams(window.location.search).get('frame');
   if (frameMode === 'full' || frameMode === 'raised') document.body.classList.add('card-frame-' + frameMode);
   var viewport = document.querySelector('.swipe-content');
@@ -58,89 +62,17 @@
     current.appendChild(node);
   });
 
-  // Replace the old collage plates with small, topic-specific notebook vignettes.
-  var truckingFinanceFieldbook = window.location.pathname.indexOf('/research/flex-x-copywriter-opportunity/') === 0;
-  var inferenceMarketFieldbook = window.location.pathname.indexOf('/research/ai-inference-market/') === 0;
-  var superhotRockFieldbook = window.location.pathname.indexOf('/research/superhot-rock-geothermal/') === 0;
-  var phytominingFieldbook = window.location.pathname.indexOf('/research/phytomining/') === 0;
   slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
-    var title = heading ? heading.textContent.toLowerCase() : '';
     var label = heading ? heading.textContent : (slide.querySelector('h1') ? slide.querySelector('h1').textContent : 'cover');
     slide.dataset.cardSlug = index === 0 ? 'cover' : cardSlug(label, 'card-' + (index + 1));
     slide.id = 'card-' + slide.dataset.cardSlug;
-    Array.prototype.forEach.call(slide.querySelectorAll('img[src*="darkbloom-fieldbook"], img[src*="distributed-inference-"]'), function (image) {
-      image.remove();
-    });
-    var illustration = null;
-    if (index === 0) illustration = phytominingFieldbook ? {
-      src: '/images/phytomining-cover.webp',
-      alt: 'A scientist holding a nickel-accumulating plant beside crop rows leading toward a processing horizon'
-    } : superhotRockFieldbook ? {
-      src: '/images/superhot-rock-geothermal-cover.webp',
-      alt: 'A drilling rig reaching a glowing deep-rock heat resource'
-    } : truckingFinanceFieldbook ? {
-      src: '/images/trucking-finance-cover.png',
-      alt: 'A trucking operator turning delivery proof into cash and bank-account activity'
-    } : inferenceMarketFieldbook ? {
-      src: '/images/ai-inference-market-cover.webp',
-      alt: 'An engineer choosing between real-time transport, memory fabric, secure appliances, and speculative serving paths'
-    } : {
-      src: '/images/distributed-inference-cover-doodle.png',
-      alt: 'A small room welcoming a cloud beside a laptop'
-    };
-    if (title.indexOf('demand map') !== -1) illustration = {
-      src: '/images/distributed-inference-demand-doodle.png',
-      alt: 'Three small computers passing a parcel along a crooked path'
-    };
-    if (title.indexOf('supply map') !== -1) illustration = {
-      src: '/images/distributed-inference-supply-doodle.png',
-      alt: 'A small hand-drawn laptop carrying an oversized stack of computer boxes'
-    };
-    if (title.indexOf('fleet-owner') !== -1) illustration = {
-      src: '/images/distributed-inference-fleet-doodle.png',
-      alt: 'A cheerful fleet operator beside a row of computers'
-    };
-    if (title.indexOf('multi-platform') !== -1 || title.indexOf('make the multi-platform') !== -1) illustration = {
-      src: '/images/distributed-inference-network-doodle.png',
-      alt: 'Mismatched computers connected around a shared parcel'
-    };
-    if (superhotRockFieldbook && title.indexOf('how the first system works') !== -1) illustration = {
-      src: '/images/superhot-rock-geothermal-drilling.webp',
-      alt: 'A millimeter-wave drill face, rock spalls, and a thin glassy borehole wall'
-    };
-    if (superhotRockFieldbook && title.indexOf('the broken status quo') !== -1) illustration = {
-      src: '/images/superhot-rock-geothermal-reservoir.webp',
-      alt: 'Two deep wells showing the full reservoir system that must work before heat becomes power'
-    };
-    if (superhotRockFieldbook && title.indexOf('the wedge') !== -1) illustration = {
-      src: '/images/superhot-rock-geothermal-wedge.webp',
-      alt: 'A retiring thermal plant repowered through paired geothermal wells and an existing grid connection'
-    };
-    if (superhotRockFieldbook && title.indexOf('the proof before a power plant') !== -1) illustration = {
-      src: '/images/superhot-rock-geothermal-flow-test.webp',
-      alt: 'An instrumented paired-well flow test with injection, production, sampling, and reservoir circulation'
-    };
-    if (superhotRockFieldbook && title.indexOf('the path of attack') !== -1) illustration = {
-      src: '/images/superhot-rock-geothermal-pilot.webp',
-      alt: 'An engineer assessing staged geothermal pilot milestones before a power plant'
-    };
-    if (phytominingFieldbook && title.indexOf('the biological machine') !== -1) illustration = {
-      src: '/images/phytomining-plant.webp',
-      alt: 'A cutaway of roots taking up nickel ions and moving them into a plant\'s leaves'
-    };
-    if (phytominingFieldbook && title.indexOf('the part hidden by the plant') !== -1) illustration = {
-      src: '/images/phytomining-process.webp',
-      alt: 'The chain from crop harvest through drying, thermal treatment, chemical processing, and nickel product'
-    };
-    if (phytominingFieldbook && title.indexOf('the smallest company worth testing') !== -1) illustration = {
-      src: '/images/phytomining-pilot.webp',
-      alt: 'Farmers, scientists, and a processor operator measuring a field qualification pilot together'
-    };
-    if (!illustration) return;
+    Array.prototype.forEach.call(slide.querySelectorAll('.story-illustration'), function (image) { image.remove(); });
+    var illustration = illustrations[slide.dataset.cardSlug];
+    if (!illustration || !illustration.src) return;
     var image = document.createElement('img');
     image.src = illustration.src;
-    image.alt = illustration.alt;
+    image.alt = illustration.alt || '';
     image.className = 'story-illustration' + (index === 0 ? ' cover-illustration' : '');
     (heading || slide.querySelector('h1')).insertAdjacentElement('afterend', image);
   });

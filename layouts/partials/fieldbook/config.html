@@ -1,0 +1,2 @@
+{{- $fieldbook := .Params.fieldbook | default dict -}}
+<script id="fieldbook-config" type="application/json">{{ $fieldbook | jsonify | safeJS }}</script>

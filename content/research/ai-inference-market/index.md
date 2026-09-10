@@ -5,6 +5,13 @@ date = 2026-09-01
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+
+[fieldbook]
+theme = "inference"
+
+[fieldbook.illustrations.cover]
+src = "/images/ai-inference-market-cover.webp"
+alt = "An engineer choosing between real-time transport, memory fabric, secure appliances, and speculative serving paths"
 +++
 
 # THE AI INFERENCE MARKET
