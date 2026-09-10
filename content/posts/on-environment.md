@@ -1,5 +1,7 @@
 ---
 title: "I realise today that my work environment affects my mood more than I'd like to admit"
+slug: "i-realise-today-that-my-work-environment-affects-my-mood-more-than-id-like-to-admit"
+aliases: ["/posts/on-environment/"]
 date: 2021-12-09
 ---
 

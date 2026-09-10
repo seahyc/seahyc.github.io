@@ -1,5 +1,7 @@
 ---
 title: "Don't mistake the review for the recipe"
+slug: "dont-mistake-the-review-for-the-recipe"
+aliases: ["/posts/review-for-the-recipe/"]
 date: 2023-10-29
 ---
 

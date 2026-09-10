@@ -1,5 +1,7 @@
 ---
 title: "Copywriting Axioms of Joseph Sugarman"
+slug: "copywriting-axioms-of-joseph-sugarman"
+aliases: ["/posts/17-copywriting-axioms-of-joseph-sugarman/"]
 date: 2023-07-18
 ---
 

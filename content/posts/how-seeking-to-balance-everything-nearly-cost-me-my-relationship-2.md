@@ -1,5 +1,7 @@
 ---
 title: "How Seeking To Balance Everything Nearly Cost Me My Relationship"
+slug: "how-seeking-to-balance-everything-nearly-cost-me-my-relationship"
+aliases: ["/posts/how-seeking-to-balance-everything-nearly-cost-me-my-relationship-2/"]
 date: 2021-09-26
 feature_image: "__GHOST_URL__/content/images/2021/09/Feature-image_how-seeking-to-balance-everything-almost-cost-me-my-relationship-01.png"
 ---

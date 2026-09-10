@@ -1,5 +1,7 @@
 ---
 title: "The To-Ignore List"
+slug: "the-to-ignore-list"
+aliases: ["/posts/10-may-18-minutes/"]
 date: 2023-05-10
 ---
 

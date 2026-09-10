@@ -1,5 +1,7 @@
 ---
 title: "Gathering of energy"
+slug: "gathering-of-energy"
+aliases: ["/posts/gathering-energy/"]
 date: 2022-03-16
 ---
 

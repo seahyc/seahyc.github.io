@@ -1,5 +1,7 @@
 ---
 title: "Tale of AI in SEA"
+slug: "tale-of-ai-in-sea"
+aliases: ["/posts/untitled/"]
 date: 2023-02-09
 ---
 

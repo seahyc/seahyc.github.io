@@ -1,5 +1,7 @@
 ---
 title: "fast.ai chapter 5 questionnaire"
+slug: "fast-ai-chapter-5-questionnaire"
+aliases: ["/posts/fast-ai-chapter-5/"]
 date: 2022-10-05
 ---
 

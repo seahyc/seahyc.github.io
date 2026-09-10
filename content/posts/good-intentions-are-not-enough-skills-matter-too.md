@@ -1,5 +1,7 @@
 ---
 title: "Good intentions are not enough"
+slug: "good-intentions-are-not-enough"
+aliases: ["/posts/good-intentions-are-not-enough-skills-matter-too/"]
 date: 2022-04-28
 ---
 
