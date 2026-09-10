@@ -15,3 +15,7 @@ Penn CS and Wharton Economics.
 - [GitHub](https://github.com/seahyc)
 - [Email](mailto:seahyingcong@gmail.com)
 - [LinkedIn](https://linkedin.com/in/seahyc)
+
+## Also
+
+- [Agent skills I’m sharing](/skills/)
