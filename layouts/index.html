@@ -1,34 +1,9 @@
+{{ define "head" }}
+    <link rel="canonical" href="{{ "/posts/" | absURL }}">
+    <meta http-equiv="refresh" content="0; url=/posts/">
+    <script>window.location.replace('/posts/');</script>
+{{ end }}
+
 {{ define "main" }}
-<section class="hero">
-    <h1 class="hero-name">Seah Ying Cong</h1>
-    <p class="hero-tagline">I build AI agent systems and investigate awkwardly real opportunities.</p>
-    <div class="hero-bio">
-        <p>Notes from what I’m learning, things I’m making, and source-led fieldbooks for ideas worth testing.</p>
-    </div>
-    <div class="hero-links">
-        <a href="/posts/">Writing</a>
-        <a href="/projects/">Making</a>
-        <a href="/research/">Learning</a>
-        <a href="/about/">Being</a>
-    </div>
-</section>
-
-<section class="writing-section">
-    <h2 class="section-title">Recent writing</h2>
-
-    <ul class="post-list">
-        {{ range first 8 (where .Site.RegularPages "Section" "posts") }}
-        <li class="post-item">
-            <a href="{{ .Permalink }}">
-                <h3 class="post-title">{{ .Title }}</h3>
-                {{ with .Description }}<p class="post-excerpt">{{ . }}</p>{{ end }}
-                <div class="post-meta">
-                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-                    &mdash; {{ .ReadingTime }} min read
-                </div>
-            </a>
-        </li>
-        {{ end }}
-    </ul>
-</section>
+<p><a href="/posts/">Continue to Writing</a></p>
 {{ end }}
