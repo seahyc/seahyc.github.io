@@ -41,7 +41,7 @@
   nodes.forEach(function (node) {
     var isSection = node.tagName === 'H2';
     if (isSection) h2Count += 1;
-    if (isSection && h2Count > 1) {
+    if (isSection) {
       current = document.createElement('section');
       current.className = 'story-slide';
       current.setAttribute('tabindex', '0');
@@ -61,6 +61,7 @@
   var truckingFinanceFieldbook = window.location.pathname.indexOf('/research/flex-x-copywriter-opportunity/') === 0;
   var inferenceMarketFieldbook = window.location.pathname.indexOf('/research/ai-inference-market/') === 0;
   var superhotRockFieldbook = window.location.pathname.indexOf('/research/superhot-rock-geothermal/') === 0;
+  var phytominingFieldbook = window.location.pathname.indexOf('/research/phytomining/') === 0;
   slides.forEach(function (slide, index) {
     var heading = slide.querySelector('h2');
     var title = heading ? heading.textContent.toLowerCase() : '';
@@ -71,7 +72,10 @@
       image.remove();
     });
     var illustration = null;
-    if (index === 0) illustration = superhotRockFieldbook ? {
+    if (index === 0) illustration = phytominingFieldbook ? {
+      src: '/images/phytomining-cover.webp',
+      alt: 'A scientist holding a nickel-accumulating plant beside crop rows leading toward a processing horizon'
+    } : superhotRockFieldbook ? {
       src: '/images/superhot-rock-geothermal-cover.webp',
       alt: 'A drilling rig reaching a glowing deep-rock heat resource'
     } : truckingFinanceFieldbook ? {
@@ -120,6 +124,18 @@
       src: '/images/superhot-rock-geothermal-pilot.webp',
       alt: 'An engineer assessing staged geothermal pilot milestones before a power plant'
     };
+    if (phytominingFieldbook && title.indexOf('the biological machine') !== -1) illustration = {
+      src: '/images/phytomining-plant.webp',
+      alt: 'A cutaway of roots taking up nickel ions and moving them into a plant\'s leaves'
+    };
+    if (phytominingFieldbook && title.indexOf('the part hidden by the plant') !== -1) illustration = {
+      src: '/images/phytomining-process.webp',
+      alt: 'The chain from crop harvest through drying, thermal treatment, chemical processing, and nickel product'
+    };
+    if (phytominingFieldbook && title.indexOf('the smallest company worth testing') !== -1) illustration = {
+      src: '/images/phytomining-pilot.webp',
+      alt: 'Farmers, scientists, and a processor operator measuring a field qualification pilot together'
+    };
     if (!illustration) return;
     var image = document.createElement('img');
     image.src = illustration.src;
@@ -167,6 +183,11 @@
   var requestedSlug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
   var initialSlide = requestedSlug ? slides.findIndex(function (slide) { return slide.dataset.cardSlug === requestedSlug; }) : 0;
   if (initialSlide < 0) initialSlide = 0;
+  // A direct hash makes the browser scroll the horizontal viewport before
+  // Swiper starts. Reset that native anchor movement so the initial slide is
+  // positioned exactly once by Swiper.
+  viewport.scrollLeft = 0;
+  viewport.scrollTop = 0;
   var swiper = new Swiper(viewport, {
     effect: 'slide',
     grabCursor: true,
@@ -339,8 +360,10 @@
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
+    var nativeCardScroll = window.matchMedia('(max-width: 700px)').matches;
     scroll._cardOffset = 0;
     function cardMaxOffset() {
+      if (nativeCardScroll) return Math.max(0, scroll.scrollHeight - scroll.clientHeight);
       var styles = getComputedStyle(scroll);
       var bottomGap = parseFloat(styles.marginBottom) || 0;
       var available = slide.clientHeight - scroll.offsetTop - bottomGap;
@@ -354,7 +377,12 @@
       var clampedOffset = Math.max(0, Math.min(max, offset));
       scroll._cardMaxOffset = max;
       scroll._cardOffset = clampedOffset;
-      scroll.style.setProperty('--card-scroll-y', (-clampedOffset).toFixed(2) + 'px');
+      if (nativeCardScroll) {
+        scroll.style.setProperty('--card-scroll-y', '0px');
+        if (Math.abs(scroll.scrollTop - clampedOffset) > 1) scroll.scrollTop = clampedOffset;
+      } else {
+        scroll.style.setProperty('--card-scroll-y', (-clampedOffset).toFixed(2) + 'px');
+      }
       scroll.parentElement.style.setProperty('--edge-tilt', '0deg');
       clearEdgeFlipPreview(false);
       var progress = max > 0 ? scroll._cardOffset / max : 0;
@@ -404,29 +432,36 @@
         event.stopPropagation();
       }
       if (gesture.vertical) {
-        event.preventDefault();
         scroll.classList.add('is-vertical-dragging');
-        gesture.rawOffset = gesture.offset - dy;
-        renderCardOffset(gesture.rawOffset);
+        if (!nativeCardScroll) {
+          event.preventDefault();
+          gesture.rawOffset = gesture.offset - dy;
+          renderCardOffset(gesture.rawOffset);
+        }
       }
     }, { passive: false });
     scroll.addEventListener('touchend', function () {
       scroll.classList.remove('is-vertical-dragging');
-      if (!crossCardBoundary(gesture && typeof gesture.rawOffset === 'number' ? gesture.rawOffset : scroll._cardOffset)) renderCardOffset(scroll._cardOffset);
+      if (nativeCardScroll) renderCardOffset(scroll.scrollTop);
+      else if (!crossCardBoundary(gesture && typeof gesture.rawOffset === 'number' ? gesture.rawOffset : scroll._cardOffset)) renderCardOffset(scroll._cardOffset);
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
     scroll.addEventListener('touchcancel', function () {
       scroll.classList.remove('is-vertical-dragging');
-      renderCardOffset(scroll._cardOffset);
+      renderCardOffset(nativeCardScroll ? scroll.scrollTop : scroll._cardOffset);
       gesture = null;
       swiper.allowTouchMove = true;
     }, { passive: true });
+    if (nativeCardScroll) {
+      scroll.addEventListener('scroll', function () { renderCardOffset(scroll.scrollTop); }, { passive: true });
+    }
   });
   viewport.addEventListener('wheel', function (event) {
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
     if (!activeScroll) return;
+    if (window.matchMedia('(max-width: 700px)').matches) return;
     var styles = getComputedStyle(activeScroll);
     var bottomGap = parseFloat(styles.marginBottom) || 0;
     var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
