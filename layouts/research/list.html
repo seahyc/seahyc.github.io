@@ -12,7 +12,7 @@
         <li class="fieldbook-row">
             <a href="{{ $book.RelPermalink }}">
                 <div class="fieldbook-row__meta">
-                    <span>Fieldbook {{ printf "%02d" (add $index 1) }}</span>
+                    <span>Fieldbook {{ printf "%02d" (sub (len $fieldbooks) $index) }}</span>
                     <time datetime="{{ $book.Date.Format "2006-01-02" }}">{{ $book.Date.Format "2006" }}</time>
                 </div>
                 <div class="fieldbook-row__content">
