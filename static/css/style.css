@@ -714,6 +714,7 @@ body.research-swipe .main-research-swipe {
 .story-slide > .story-scroll.is-vertical-dragging { transition: none; }
 .story-slide > .story-scroll.is-edge-preview { transition: none; }
 .story-slide.is-dragging > .story-scroll { transition: none; }
+.story-slide.has-vertical-overflow > .story-scroll { transition: none; }
 
 body.card-frame-full .swipe-content { background: var(--paper); }
 body.card-frame-full .story-slide > .story-scroll {
