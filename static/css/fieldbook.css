@@ -383,7 +383,7 @@ body.card-frame-full .story-slide > .story-scroll {
 .fieldbook-index {
     max-width: 1080px;
     margin: 0 auto;
-    padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 4vw, 3rem) 6rem;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 3rem) 6rem;
 }
 
 .fieldbook-index__eyebrow,
@@ -396,19 +396,14 @@ body.card-frame-full .story-slide > .story-scroll {
 }
 
 .fieldbook-index__intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1.5rem;
-    align-items: end;
-    margin-bottom: clamp(2rem, 5vw, 3.25rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .fieldbook-index h1 {
-    max-width: 11ch;
-    margin: .6rem 0 1.1rem;
+    margin: .35rem 0 .55rem;
     color: var(--ink);
-    font: 700 clamp(2.8rem, 6vw, 4.5rem)/.98 Georgia, 'Times New Roman', serif;
-    letter-spacing: -.055em;
+    font: 700 clamp(2.5rem, 5vw, 3.6rem)/1 Georgia, 'Times New Roman', serif;
+    letter-spacing: -.045em;
 }
 
 .fieldbook-index__description {
@@ -416,12 +411,6 @@ body.card-frame-full .story-slide > .story-scroll {
     margin: 0;
     color: var(--muted);
     font: 400 clamp(1.12rem, 2vw, 1.4rem)/1.55 Georgia, 'Times New Roman', serif;
-}
-
-.fieldbook-index__count {
-    align-self: start;
-    padding-top: .75rem;
-    white-space: nowrap;
 }
 
 .fieldbook-list {
@@ -482,8 +471,6 @@ body.card-frame-full .story-slide > .story-scroll {
 }
 
 @media (max-width: 680px) {
-    .fieldbook-index__intro { grid-template-columns: 1fr; }
-    .fieldbook-index__count { padding-top: 0; }
     .fieldbook-row a {
         grid-template-columns: 1fr auto;
         gap: .8rem;
