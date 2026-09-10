@@ -195,7 +195,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .project-row {
-    padding: 1.2rem 0;
+    padding: 2.4rem 0;
     border-bottom: 1px solid var(--border);
 }
 
@@ -220,26 +220,29 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .project-name {
-    font-size: 1.6rem;
+    display: block;
+    font-size: 2.2rem;
     font-weight: 600;
     color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
 }
 
 .project-dash {
-    margin: 0 0.6rem;
-    color: var(--text-muted);
-    font-size: 1.5rem;
+    display: none;
 }
 
 .project-desc {
-    font-size: 1.5rem;
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 1.6rem;
     line-height: 1.5;
     color: var(--text-secondary);
 }
 
 .project-tech {
     display: block;
-    margin-top: 0.4rem;
+    margin-top: 0.8rem;
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--text-muted);
@@ -248,21 +251,24 @@ img { max-width: 100%; height: auto; display: block; }
 /* Post list */
 .post-list {
     list-style: none;
+    border-top: 1px solid var(--border);
 }
 
 .post-item + .post-item {
-    margin-top: 4rem;
+    margin-top: 0;
 }
 
 .post-item a {
     display: block;
+    padding: 2.4rem 0;
+    border-bottom: 1px solid var(--border);
 }
 
 .post-item a:hover { opacity: 1; }
 .post-item a:hover .post-title { opacity: 0.7; }
 
 .post-title {
-    font-size: 2.6rem;
+    font-size: 2.2rem;
     font-weight: 600;
     color: var(--text);
     letter-spacing: -0.02em;
@@ -288,11 +294,11 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Single post / page */
 .page-header {
-    padding: 6rem 0 3rem;
+    padding: 4.8rem 0 2.4rem;
 }
 
 .page-title {
-    font-size: 4rem;
+    font-size: clamp(3.2rem, 6vw, 4rem);
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.03em;
@@ -300,9 +306,76 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .page-meta {
-    margin-top: 1.2rem;
+    margin-top: 0.8rem;
     font-size: 1.4rem;
     color: var(--text-muted);
+}
+
+p.page-meta {
+    max-width: 58ch;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.collection-meta {
+    margin-top: 1.2rem;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Learning index — uses the same section and row scale as the rest of the site. */
+.fieldbook-index {
+    padding-bottom: 5.6rem;
+}
+
+.fieldbook-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--border);
+}
+
+.fieldbook-row {
+    border-bottom: 1px solid var(--border);
+}
+
+.fieldbook-row a {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    gap: 1.6rem;
+    align-items: center;
+    padding: 2.4rem 0;
+}
+
+.fieldbook-row__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.fieldbook-row__content h2 {
+    color: var(--text);
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+.fieldbook-row__content p {
+    margin-top: 0.6rem;
+    color: var(--text-secondary);
+    font-size: 1.6rem;
+    line-height: 1.5;
+}
+
+.fieldbook-row__arrow {
+    color: var(--text-muted);
+    font-size: 1.5rem;
 }
 
 .page-content {
@@ -509,12 +582,10 @@ img { max-width: 100%; height: auto; display: block; }
     .hero { padding-top: 4rem; }
     .hero-name { font-size: 3.6rem; }
     .hero-tagline { font-size: 2rem; }
-    .project-desc { display: block; margin-top: 0.4rem; }
-    .project-dash { display: none; }
     .hero-links { gap: 1.6rem; }
-    .page-title { font-size: 3.2rem; }
-    .post-title { font-size: 2.2rem; }
     .main-wide { padding: 0 1rem; }
+    .fieldbook-row a { grid-template-columns: 1fr auto; gap: 0.8rem; }
+    .fieldbook-row__meta { flex-direction: row; grid-column: 1 / -1; }
 }
 
 /* Mobile research swipe report */

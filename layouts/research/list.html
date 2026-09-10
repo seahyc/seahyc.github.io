@@ -1,12 +1,10 @@
 {{ define "main" }}
 {{ $fieldbooks := where .RegularPages "Params.layout" "research-swipe" }}
 <section class="fieldbook-index">
-    <header class="fieldbook-index__intro">
-        <div>
-            <p class="fieldbook-index__eyebrow">Fieldbooks · {{ len $fieldbooks }} published</p>
-            <h1>Learning</h1>
-            <p class="fieldbook-index__description">Source-led investigations into ideas worth understanding and testing.</p>
-        </div>
+    <header class="page-header">
+        <h1 class="page-title">Learning</h1>
+        <p class="page-meta">Source-led investigations into ideas worth understanding and testing.</p>
+        <p class="collection-meta">{{ len $fieldbooks }} fieldbooks</p>
     </header>
 
     <ol class="fieldbook-list">
@@ -14,7 +12,7 @@
         <li class="fieldbook-row">
             <a href="{{ $book.RelPermalink }}">
                 <div class="fieldbook-row__meta">
-                    <p>Fieldbook {{ printf "%02d" (add $index 1) }}</p>
+                    <span>Fieldbook {{ printf "%02d" (add $index 1) }}</span>
                     <time datetime="{{ $book.Date.Format "2006-01-02" }}">{{ $book.Date.Format "2006" }}</time>
                 </div>
                 <div class="fieldbook-row__content">
