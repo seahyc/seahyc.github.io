@@ -1,6 +1,7 @@
 ---
 title: "Running Effective Staff Meetings"
 date: 2021-10-31
+blurb: "A compact set of principles for making staff meetings purposeful, human, and decisive."
 ---
 
 **Groundwork**

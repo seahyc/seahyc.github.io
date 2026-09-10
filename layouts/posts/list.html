@@ -14,8 +14,13 @@
             <a class="writing-post-link" href="{{ .Permalink }}">
                 <div class="writing-post-copy">
                     <h2 class="post-title">{{ .Title }}</h2>
-                    {{ $summary := .Description | default (.Summary | plainify) }}
-                    {{ with $summary }}<p class="post-excerpt">{{ . | truncate 150 }}</p>{{ end }}
+                    {{ $blurb := .Params.blurb | default .Description }}
+                    {{ if not $blurb }}
+                        {{ $plain := .Plain | htmlUnescape | strings.TrimSpace }}
+                        {{ $sentences := findRE `(?s)^.*?[.!?](?:\s|$)` $plain 1 }}
+                        {{ $blurb = cond (gt (len $sentences) 0) (index $sentences 0 | strings.TrimSpace) $plain }}
+                    {{ end }}
+                    {{ with $blurb }}<p class="post-excerpt">{{ . }}</p>{{ end }}
                     <div class="post-meta">
                         {{ if .Date }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>{{ end }}
                         <span>{{ .ReadingTime }} min read</span>

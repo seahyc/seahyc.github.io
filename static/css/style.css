@@ -310,13 +310,9 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .writing-post-list .post-excerpt {
-    display: -webkit-box;
-    overflow: hidden;
     max-width: 62ch;
-    -webkit-box-orient: vertical;
     font-size: 1.4rem;
     line-height: 1.4;
-    -webkit-line-clamp: 1;
 }
 
 .writing-post-list .post-item a {

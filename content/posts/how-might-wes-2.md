@@ -1,6 +1,7 @@
 ---
 title: "How Might We's"
 date: 2021-10-16
+blurb: "Five early product prompts spanning trading, birdwatching, documentation, running, and learning."
 ---
 
 * HMW help indie algo traders gain capital via verified results
