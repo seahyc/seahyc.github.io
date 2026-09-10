@@ -1450,6 +1450,23 @@ body.research-swipe .story-slide.swiper-slide-active {
   outline: none !important;
 }
 
+/* The top progress rail is the Fieldbook's position indicator. Keep page and
+   card scrolling functional while removing redundant native scrollbar tracks. */
+html.research-swipe-root,
+body.research-swipe,
+body.research-swipe .story-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.research-swipe-root::-webkit-scrollbar,
+body.research-swipe::-webkit-scrollbar,
+body.research-swipe .story-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* Narrow windows and tablets use native card scrolling. At these widths,
    trackpad wheel deltas are too large and variable for the translated-card
    reader, and can otherwise be mistaken for a request to change cards. */
@@ -1466,6 +1483,22 @@ body.research-swipe .story-slide.swiper-slide-active {
     overflow-y: auto;
     overscroll-behavior-y: contain;
   }
+}
+
+/* One reading model at every width: native vertical scrolling inside each
+   card. The old translated-card reader misread trackpad wheel deltas as
+   horizontal card changes on desktop and wide tablet layouts. */
+body.research-swipe .story-slide {
+  height: 100%;
+  min-height: 0;
+}
+
+body.research-swipe .story-slide .story-scroll {
+  height: calc(100% - 2.5rem);
+  min-height: 0;
+  max-height: calc(100% - 2.5rem);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 @media (max-width: 700px) {

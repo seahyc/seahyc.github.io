@@ -22,6 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function () {
+  document.documentElement.classList.add('research-swipe-root');
   var frameMode = new URLSearchParams(window.location.search).get('frame');
   if (frameMode === 'full' || frameMode === 'raised') document.body.classList.add('card-frame-' + frameMode);
   var viewport = document.querySelector('.swipe-content');
@@ -302,6 +303,7 @@
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('slideChangeTransitionStart', animateArrowCards);
   var boundaryLanding = 0;
+  var nativeCardScroll = true;
   swiper.on('transitionEnd', function () {
     if (arrowRaf) cancelAnimationFrame(arrowRaf);
     if (boundaryLanding) {
@@ -360,7 +362,6 @@
   slides.forEach(function (slide) {
     var scroll = slide.querySelector('.story-scroll');
     if (!scroll) return;
-    var nativeCardScroll = window.matchMedia('(max-width: 900px)').matches;
     scroll._cardOffset = 0;
     function cardMaxOffset() {
       if (nativeCardScroll) return Math.max(0, scroll.scrollHeight - scroll.clientHeight);
@@ -461,7 +462,7 @@
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
     var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
     if (!activeScroll) return;
-    if (window.matchMedia('(max-width: 900px)').matches) return;
+    if (nativeCardScroll) return;
     var styles = getComputedStyle(activeScroll);
     var bottomGap = parseFloat(styles.marginBottom) || 0;
     var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
