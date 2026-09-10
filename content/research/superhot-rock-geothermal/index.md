@@ -5,6 +5,33 @@ date = 2026-09-09
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+
+[fieldbook]
+theme = "geothermal"
+
+[fieldbook.illustrations.cover]
+src = "/images/superhot-rock-geothermal-cover.webp"
+alt = "A drilling rig reaching a glowing deep-rock heat resource"
+
+[fieldbook.illustrations."03-the-broken-status-quo"]
+src = "/images/superhot-rock-geothermal-reservoir.webp"
+alt = "Two deep wells showing the full reservoir system that must work before heat becomes power"
+
+[fieldbook.illustrations."05-the-wedge"]
+src = "/images/superhot-rock-geothermal-wedge.webp"
+alt = "A retiring thermal plant repowered through paired geothermal wells and an existing grid connection"
+
+[fieldbook.illustrations."06-how-the-first-system-works"]
+src = "/images/superhot-rock-geothermal-drilling.webp"
+alt = "A millimeter-wave drill face, rock spalls, and a thin glassy borehole wall"
+
+[fieldbook.illustrations."07-the-proof-before-a-power-plant"]
+src = "/images/superhot-rock-geothermal-flow-test.webp"
+alt = "An instrumented paired-well flow test with injection, production, sampling, and reservoir circulation"
+
+[fieldbook.illustrations."08-the-path-of-attack"]
+src = "/images/superhot-rock-geothermal-pilot.webp"
+alt = "An engineer assessing staged geothermal pilot milestones before a power plant"
 +++
 
 # CLEAN, LIMITLESS ENERGY

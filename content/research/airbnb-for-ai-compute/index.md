@@ -5,6 +5,13 @@ date = 2026-08-26
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+
+[fieldbook]
+theme = "distributed-compute"
+
+[fieldbook.illustrations.cover]
+src = "/images/distributed-inference-cover-doodle-1280.webp"
+alt = "A field of distributed computers contributing useful inference work"
 aliases = ["/research/distributed-inference/"]
 +++
 

@@ -5,6 +5,13 @@ date = 2026-08-28
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
+
+[fieldbook]
+theme = "freight-finance"
+
+[fieldbook.illustrations.cover]
+src = "/images/trucking-finance-cover.png"
+alt = "A trucking operator turning delivery proof into cash and bank-account activity"
 +++
 
 # THE TRUCKING FINANCE OS OPPORTUNITY
