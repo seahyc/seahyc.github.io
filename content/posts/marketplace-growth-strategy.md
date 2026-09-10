@@ -1,5 +1,7 @@
 ---
 title: "Marketplace Growth Strategy and Growth Model by Lenny and Dan Hokenmaier"
+slug: "marketplace-growth-strategy-and-growth-model-by-lenny-and-dan-hokenmaier"
+aliases: ["/posts/marketplace-growth-strategy/"]
 date: 2023-05-02
 ---
 

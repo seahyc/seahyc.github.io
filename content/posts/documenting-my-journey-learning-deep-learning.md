@@ -1,5 +1,7 @@
 ---
 title: "Documenting my journey learning deep learning - Rough notes"
+slug: "documenting-my-journey-learning-deep-learning-rough-notes"
+aliases: ["/posts/documenting-my-journey-learning-deep-learning/"]
 date: 2022-08-29
 ---
 

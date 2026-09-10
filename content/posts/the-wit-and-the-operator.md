@@ -1,5 +1,7 @@
 ---
 title: "The wit and the grinder"
+slug: "the-wit-and-the-grinder"
+aliases: ["/posts/the-wit-and-the-operator/"]
 date: 2023-09-05
 ---
 
