@@ -1,12 +1,10 @@
 ---
 title: "Marketplace Shopping"
 description: "A practical agent workflow for comparing real marketplace listings, judging seller trust, and stopping safely at the cart."
-source_repo: "https://github.com/seahyc/agent-skills"
+skill_bundle: true
 ---
 
 <!-- Generated from seahyc/agent-skills. Do not edit here. -->
-
-# Marketplace Shopping
 
 Help the user buy the *right* listing on cluttered Asian marketplaces (Taobao, Shopee, AliExpress, Pinduoduo — and Amazon when asked) where the same product appears dozens of times at wildly different prices, ratings, and trust levels. The job is **judgment, not just search**: the cheapest listing, the "official" listing, and the first result are usually three different things, and often none of them is the best buy. You surface the real tradeoffs and make a defensible pick.
 
@@ -50,7 +48,7 @@ Keep one message to one conversational turn: a single question mark, no greeting
 
 Multi-platform asks: harvest **apps for PDD/Taobao/Shopee** + **browser (or app) for AE/Amazon**, then one merged shortlist.
 
-### Mobile path — follow `references/mobile.md`
+### Mobile path — follow [the mobile marketplace guide](references/mobile/)
 
 That reference is the executable playbook (session prep, command primitives, generic deep-harvest loop, per-app key steps for PDD/Shopee/Taobao, crash/WDA recovery, artifacts). In short:
 
@@ -187,11 +185,11 @@ Once the user confirms: open the chosen listing, select the exact variant (color
 ## Platform specifics
 
 Read the relevant reference for sort controls, seller-trust tiers, coupon mechanics, and gotchas before working a platform you're less sure about:
-- `references/mobile.md` — phone-app harvest via MobileCLI (preferred for Taobao / Shopee / PDD)
-- `references/taobao.md` — Taobao / Tmall (淘宝/天猫), Chinese UI, 销量 sort, 旗舰店, often needs a CN logistics forwarder
-- `references/shopee.md` — Shopee (SEA), Shopee Mall, Preferred sellers, Shopee Coins/vouchers
-- `references/aliexpress.md` — AliExpress, Choice, Certified Original, coin discounts, cross-border shipping
-- Pinduoduo (拼多多): prefer the **iPhone/Android app**; web often masks prices. Sort by 销量; watch Zigbee vs Wi‑Fi SKU traps; SG 包邮/集运/GST belong in all-in cost
+- [Mobile marketplaces](references/mobile/) — phone-app harvest via MobileCLI (preferred for Taobao / Shopee / PDD)
+- [Taobao / Tmall](references/taobao/) — Chinese UI, 销量 sort, 旗舰店, and cross-border logistics
+- [Shopee](references/shopee/) — Shopee Mall, Preferred sellers, Coins, and vouchers
+- [AliExpress](references/aliexpress/) — Choice, Certified Original, coin discounts, and cross-border shipping
+- Pinduoduo (拼多多): prefer the **iPhone/Android app** because the web often masks prices. Sort by 销量, verify the selected SKU rather than the headline offer, and include shipping, 集运, and GST in the total.
 
 For Taobao/Tmall item pages, the evidence pass must explicitly cover both `图集` (the gallery/variant image set) and `图文详情` (the long-form image-and-text detail section). These are separate sources: `图集` commonly contains SKU-specific product views, preview dimensions, and colour/variant differences, while `图文详情` commonly contains dimension diagrams, materials, construction, use instructions, packaging, and other specifications omitted from the gallery or text fields. Select each relevant SKU, inspect `图集`, then scroll/load the complete `图文详情` section and inspect its images; do not treat the initially visible page text or hero image as complete evidence.
 
