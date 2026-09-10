@@ -9,7 +9,7 @@
     <title>{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
     <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
     <link rel="stylesheet" href="/css/style.css?v={{ now.Unix }}">
-    {{ if eq .Params.layout "research-swipe" }}
+    {{ if or (eq .Params.layout "research-swipe") (eq .Section "research") }}
     <link rel="stylesheet" href="/css/fieldbook.css?v={{ now.Unix }}">
     {{ end }}
     {{ block "head" . }}{{ end }}
