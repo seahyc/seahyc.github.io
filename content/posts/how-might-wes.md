@@ -1,6 +1,7 @@
 ---
 title: "How might we’s"
 date: 2021-10-13
+blurb: "A collection of product prompts drawn from everyday problems with habits, goals, and accountability."
 ---
 
 Problems I observe in my life that are worth solving:
