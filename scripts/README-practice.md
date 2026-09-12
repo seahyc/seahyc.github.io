@@ -84,6 +84,6 @@ CI additionally runs `node scripts/browser-explorer.mjs` after `npx playwright i
 
 ## Publishing availability
 
-Coding practice uses `visibility: unlisted`: its direct URL remains available, while its project card and sitemap entries are omitted. `private` removes both the project page and linked runtime route; do not use it for an accessible practice path. Unlisted is discoverability control, not authentication.
+Coding practice uses `visibility: public`: its listing appears on Projects and links directly to `/practice/path/`. `private` removes both the project page and linked runtime route; do not use it for an accessible practice path. Unlisted is discoverability control, not authentication.
 
 After Hugo and both cleanup steps, deployment runs `node scripts/verify-practice-publication.mjs public` before uploading. It requires the path, editor and runtime assets in the actual published artifact. `node --test scripts/practice-publication.test.mjs` covers preservation of practice, pruning of private routes and rejection of a missing path.
