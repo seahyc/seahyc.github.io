@@ -1,10 +1,10 @@
 name: Verify coding practice
 on:
   pull_request:
-    paths: ['static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
   push:
     branches: [main]
-    paths: ['static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
 permissions:
   contents: read
 jobs:

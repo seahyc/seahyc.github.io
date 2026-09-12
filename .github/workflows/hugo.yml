@@ -93,6 +93,8 @@ jobs:
         run: node projects-src/retirement-planning/prune-public.mjs
       - name: Prune private projects from public
         run: node scripts/prune-private-projects.mjs
+      - name: Verify published practice routes after cleanup
+        run: node scripts/verify-practice-publication.mjs public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
