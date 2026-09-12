@@ -14,6 +14,30 @@ theme = "liquid-cooling"
 [fieldbook.illustrations.cover]
 src = "/images/liquid-cooling-cold-plate-cover.png"
 alt = "A hand-drawn copper cold plate carrying heat from an AI processor into a monitored liquid loop"
+
+[fieldbook.illustrations."01-the-heat-problem-we-can-feel"]
+src = "/images/cold-plate-heat-path.svg"
+alt = "Schematic heat path from an accelerator through thermal interface material and a cold plate into the rack cooling loop"
+
+[fieldbook.illustrations."04-the-corrected-market-reality"]
+src = "/images/cold-plate-qualification-stack.svg"
+alt = "Qualification evidence stack connecting platform inputs, controlled manufacturing, and measured release records"
+
+[fieldbook.illustrations."07-the-wedge"]
+src = "/images/cold-plate-qualification-wedge.svg"
+alt = "A narrow qualification wedge between a platform owner, contract manufacturer, and rack integrator, ending in an auditable pilot lot"
+
+[fieldbook.illustrations."10-the-path-of-attack"]
+src = "/images/cold-plate-four-gates.svg"
+alt = "Four-gate two-year path from paid buyer feasibility through repeatable pilot lots, with stop checks at each gate"
+
+[fieldbook.illustrations."13-the-first-90-days"]
+src = "/images/cold-plate-90-day-sprint.svg"
+alt = "A 90-day qualification sprint moving from buyer interface to supplier audit to paid feasibility and a serialised report"
+
+[fieldbook.illustrations."16-the-plate-is-a-component-inside-somebody-else-s-safety-system"]
+src = "/images/cold-plate-safety-stack.svg"
+alt = "Layered cooling safety system showing plate sensors, rack leak detection, CDU and facility controls, with service ownership boundaries"
 +++
 
 # LEAK-PROOF AI COLD PLATES

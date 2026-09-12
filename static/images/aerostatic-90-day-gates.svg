@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">First ninety days gates</title>
+  <desc id="desc">A three-stage timeline: learn the error-budget language, ask buyers for a real constraint, then sell a paid feasibility experiment with acceptance criteria.</desc>
+  <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#9d4c3f"/></marker></defs>
+  <g font-family="Arial,Helvetica,sans-serif" fill="#27231e">
+    <text x="53" y="55" font-size="28" font-weight="700" letter-spacing="2">THE FIRST 90 DAYS: LEARN → ASK → SELL THE TEST</text><text x="55" y="87" font-size="18" fill="#81766a">Every phase ends with evidence or a stop condition, not a prettier prototype.</text>
+    <path d="M106 355H1082" stroke="#9d4c3f" stroke-width="8" marker-end="url(#arrow)"/><g stroke="#27231e" stroke-width="4"><circle cx="214" cy="355" r="48" fill="#e4c9ac"/><circle cx="584" cy="355" r="48" fill="#c6d9d4"/><circle cx="954" cy="355" r="48" fill="#a86e58"/></g>
+    <g font-size="20" font-weight="700" text-anchor="middle"><text x="214" y="362">0–30</text><text x="584" y="362">31–60</text><text x="954" y="362">61–90</text></g>
+    <g font-size="23" font-weight="700"><text x="84" y="173">LEARN THE LANGUAGE</text><text x="454" y="173">ASK BUYERS</text><text x="822" y="173">SELL THE EXPERIMENT</text></g>
+    <g font-size="17" fill="#81766a"><text x="84" y="209">glossary + hypothesis tree</text><text x="84" y="235">draft error-budget packet</text><text x="84" y="261">map 20 OEMs / integrators</text><text x="454" y="209">10 technical discovery calls</text><text x="454" y="235">payload / trajectory / air state</text><text x="454" y="261">five incumbent alternatives</text><text x="822" y="209">scope + acceptance criteria</text><text x="822" y="235">paid feasibility NRE</text><text x="822" y="261">witness owner + payment milestone</text></g>
+    <path d="M214 424V507M584 424V507M954 424V507" stroke="#9d4c3f" stroke-width="4" marker-end="url(#arrow)"/><g font-size="19" font-weight="700"><text x="85" y="552" fill="#9d4c3f">STOP</text><text x="454" y="552" fill="#9d4c3f">STOP</text><text x="822" y="552" fill="#9d4c3f">GO TO BUILD</text></g>
+    <g font-size="16" fill="#81766a"><text x="85" y="580">no motion metric tied to money</text><text x="454" y="580">no named acceptance owner</text><text x="822" y="580">signed SOW + paid test</text></g>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Environmental error budget</title>
+  <desc id="desc">Schematic showing environmental inputs converging on the artifact, stage, and interferometer, then becoming uncertainty in the reported measurement.</desc>
+  <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#9d4c3f"/></marker></defs>
+  <g font-family="Arial,Helvetica,sans-serif" fill="#27231e">
+    <text x="52" y="55" font-size="28" font-weight="700" letter-spacing="2">THE ROOM ENTERS THE MEASUREMENT</text><text x="54" y="86" font-size="18" fill="#81766a">Inputs that look peripheral become motion error or uncertainty at the artifact.</text>
+    <g stroke="#27231e" stroke-width="3"><rect x="60" y="142" width="242" height="90" rx="15" fill="#e4c9ac"/><rect x="60" y="272" width="242" height="90" rx="15" fill="#c6d9d4"/><rect x="60" y="402" width="242" height="90" rx="15" fill="#d9c8b1"/><rect x="60" y="532" width="242" height="90" rx="15" fill="#e8d9c7"/><rect x="451" y="250" width="309" height="271" rx="22" fill="#f0e6d7" stroke="#9d4c3f" stroke-width="5"/><rect x="844" y="307" width="291" height="158" rx="22" fill="#9d4c3f"/></g>
+    <g font-size="20" font-weight="700"><text x="95" y="180">temperature</text><text x="95" y="310">vibration</text><text x="95" y="440">air pressure</text><text x="95" y="570">particles / ESD</text></g>
+    <g font-size="16" fill="#81766a"><text x="95" y="208">thermal expansion</text><text x="95" y="338">floor + machine modes</text><text x="95" y="468">film stiffness / landing</text><text x="95" y="598">contamination / attraction</text></g>
+    <path d="M302 187C361 187 386 273 451 303M302 317C367 317 384 339 451 352M302 447C366 447 390 412 451 402M302 577C361 577 386 474 451 454" fill="none" stroke="#9d4c3f" stroke-width="5" marker-end="url(#arrow)"/>
+    <text x="486" y="300" font-size="24" font-weight="700">artifact + stage +</text><text x="486" y="334" font-size="24" font-weight="700">interferometer</text><text x="486" y="383" font-size="18" fill="#81766a">the physical test setup</text><path d="M607 423V472" stroke="#9d4c3f" stroke-width="5" marker-end="url(#arrow)"/><text x="497" y="457" font-size="17">coupled disturbances</text>
+    <path d="M760 385H844" stroke="#9d4c3f" stroke-width="6" marker-end="url(#arrow)"/><text x="887" y="355" font-size="24" font-weight="700" fill="#fff">reported result</text><text x="887" y="389" font-size="21" fill="#fff">error + uncertainty</text><text x="887" y="432" font-size="17" fill="#f5eadb">not just the bearing spec</text>
+    <text x="454" y="615" font-size="19" fill="#9d4c3f" font-weight="700">Control what you measure, log what you cannot.</text>
+  </g>
+</svg>
