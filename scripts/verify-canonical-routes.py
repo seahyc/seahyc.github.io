@@ -87,6 +87,12 @@ for canonical, legacy in (("/writing/", "/posts/"), ("/making/", "/projects/"), 
     if legacy and not output(legacy).exists():
         errors.append(f"{legacy}: section alias is missing")
 
+hand_walk = output("/making/hand-walk/")
+if hand_walk.exists():
+    hand_walk_html = hand_walk.read_text()
+    if "Hand Walk — Follow me" not in hand_walk_html or "/making/hand-walk/assets/" not in hand_walk_html:
+        errors.append("/making/hand-walk/: canonical route does not contain the deployed game")
+
 if errors:
     raise SystemExit("Canonical route verification failed:\n- " + "\n- ".join(errors))
 
