@@ -1,13 +1,15 @@
 ---
 title: "Coding Practice"
-visibility: unlisted
-description: "One coding practice step at a time, adapting to test results, independent recall and interview feedback."
+visibility: public
+description: "Hands-on Python practice for the age of AI coding. Build fluency through small challenges, real feedback and spaced recall."
 tech: ["Python", "Pyodide", "Learning design"]
 weight: -3
 date: 2026-09-06
 link: "/practice/path/"
 ---
 
-Build coding fluency through guided examples, independent reconstruction and realistic multi-file challenges. Run Python in your browser, inspect the first error, and revisit working solutions from a fresh scaffold on later days.
+AI can help write the code. Hands-on practice helps you understand it, debug it and make it your own.
+
+Build Python fluency one small challenge at a time: write code in your browser, try real inputs and see what happens. A guided path adapts to your progress and brings skills back for spaced recall, so what you learn stays usable.
 
 [Continue your practice](/practice/path/).
