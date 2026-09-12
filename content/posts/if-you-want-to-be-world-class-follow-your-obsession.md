@@ -1,5 +1,8 @@
 ---
 title: "If you want to be world-class, follow your obsession"
+slug: "if-you-want-to-be-world-class-follow-your-obsession"
+aliases:
+  - "/posts/if-you-want-to-be-world-class-follow-your-obsession/"
 date: 2021-12-05
 ---
 

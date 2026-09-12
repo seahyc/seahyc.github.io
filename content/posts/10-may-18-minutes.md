@@ -1,7 +1,9 @@
 ---
 title: "The To-Ignore List"
 slug: "the-to-ignore-list"
-aliases: ["/posts/10-may-18-minutes/"]
+aliases:
+  - "/posts/10-may-18-minutes/"
+  - "/posts/the-to-ignore-list/"
 date: 2023-05-10
 ---
 

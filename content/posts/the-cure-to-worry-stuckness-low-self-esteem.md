@@ -1,5 +1,8 @@
 ---
 title: "The cure to worry, stuckness, low self-esteem"
+slug: "the-cure-to-worry-stuckness-low-self-esteem"
+aliases:
+  - "/posts/the-cure-to-worry-stuckness-low-self-esteem/"
 date: 2022-01-05
 ---
 

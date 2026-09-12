@@ -1,7 +1,9 @@
 ---
 title: "How I appreciated non-Self more finely after my 6-day retreat"
 slug: "how-i-appreciated-non-self-more-finely-after-my-6-day-retreat"
-aliases: ["/posts/my-new-daily-affirmations/"]
+aliases:
+  - "/posts/my-new-daily-affirmations/"
+  - "/posts/how-i-appreciated-non-self-more-finely-after-my-6-day-retreat/"
 date: 2021-12-30
 ---
 

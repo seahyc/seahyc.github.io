@@ -35,9 +35,10 @@ for (const filename of await readdir(contentDir, { recursive: true })) {
   }
   if (metadata.visibility === "public") continue;
 
-  const slug = filename.replace(/(?:\/index)?\.md$/, "");
+  const sourceSlug = filename.replace(/(?:\/index)?\.md$/, "");
+  const canonicalSlug = metadata.slug || sourceSlug;
   const routes = metadata.visibility === "private" ? privateUrls : unlistedUrls;
-  routes.push(`/projects/${slug}/`);
+  routes.push(`/making/${canonicalSlug}/`, `/projects/${sourceSlug}/`);
   if (metadata.link?.startsWith("/")) routes.push(metadata.link);
 }
 

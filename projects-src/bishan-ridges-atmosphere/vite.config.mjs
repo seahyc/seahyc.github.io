@@ -6,7 +6,7 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   root,
-  base: "/projects/bishan-ridges-atmosphere/",
+  base: "/making/bishan-ridges-atmosphere/",
   publicDir: path.join(root, "../reno-atmosphere/public"),
   define: { __PUBLIC_PROJECT__: "true" },
   build: {

@@ -1,5 +1,8 @@
 ---
 title: "Doing it is easy, thinking about it is difficult"
+slug: "doing-it-is-easy-thinking-about-it-is-difficult"
+aliases:
+  - "/posts/doing-it-is-easy-thinking-about-it-is-difficult/"
 date: 2022-01-18
 ---
 

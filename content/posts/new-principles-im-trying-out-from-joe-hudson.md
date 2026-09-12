@@ -1,5 +1,8 @@
 ---
 title: "New principles I'm trying out from Joe Hudson"
+slug: "new-principles-im-trying-out-from-joe-hudson"
+aliases:
+  - "/posts/new-principles-im-trying-out-from-joe-hudson/"
 date: 2024-03-22
 ---
 

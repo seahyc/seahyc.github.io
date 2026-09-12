@@ -1,5 +1,8 @@
 ---
 title: "I realised I have succumbed to low-risk thinking"
+slug: "i-realised-i-have-succumbed-to-low-risk-thinking"
+aliases:
+  - "/posts/i-realised-i-have-succumbed-to-low-risk-thinking/"
 date: 2021-12-21
 ---
 

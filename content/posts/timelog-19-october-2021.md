@@ -1,5 +1,8 @@
 ---
 title: "Timelog - 19 October 2021"
+slug: "timelog-19-october-2021"
+aliases:
+  - "/posts/timelog-19-october-2021/"
 date: 2021-10-18
 ---
 

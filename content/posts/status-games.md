@@ -1,5 +1,8 @@
 ---
 title: "Status games"
+slug: "status-games"
+aliases:
+  - "/posts/status-games/"
 date: 2022-02-15
 ---
 

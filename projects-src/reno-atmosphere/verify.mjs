@@ -20,7 +20,7 @@ const html = await readFile(path.join(output, "index.html"), "utf8");
 const sourceBundle = `${source}\n${authoredHtml}`;
 const privateWorker = await readFile(path.join(siteRoot, "worker/reno-private-api/index.js"), "utf8");
 
-const basePath = publicProject ? "/projects/bishan-ridges-atmosphere/" : "/reno/orientation/";
+const basePath = publicProject ? "/making/bishan-ridges-atmosphere/" : "/reno/orientation/";
 assert.match(html, new RegExp(`<script[^>]+type="module"[^>]+src="${basePath}assets/`), "Production HTML should reference the bundled model module");
 assert.match(html, new RegExp(`<link[^>]+stylesheet[^>]+${basePath}assets/`), "Production HTML should reference the bundled model CSS");
 

@@ -1,5 +1,8 @@
 ---
 title: "Everyone knows it already"
+slug: "everyone-knows-it-already"
+aliases:
+  - "/posts/everyone-knows-it-already/"
 date: 2021-10-13
 ---
 

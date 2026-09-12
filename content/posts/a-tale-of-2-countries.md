@@ -1,7 +1,9 @@
 ---
 title: "A tale of 2 nations"
 slug: "a-tale-of-2-nations"
-aliases: ["/posts/a-tale-of-2-countries/"]
+aliases:
+  - "/posts/a-tale-of-2-countries/"
+  - "/posts/a-tale-of-2-nations/"
 date: 2022-02-28
 ---
 

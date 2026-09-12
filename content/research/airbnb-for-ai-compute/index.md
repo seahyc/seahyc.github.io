@@ -1,11 +1,12 @@
 +++
 title = "Airbnb for AI Compute"
+slug = "airbnb-for-ai-compute"
+aliases = ["/research/airbnb-for-ai-compute/", "/research/distributed-inference/"]
 description = "An operator-first fieldbook on Darkbloom, heterogeneous hardware, cybercafés, and the next inference layer."
 date = 2026-08-26
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
-aliases = ["/research/airbnb-for-ai-compute/", "/research/distributed-inference/"]
 
 [fieldbook]
 theme = "distributed-compute"

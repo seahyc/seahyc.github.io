@@ -1,5 +1,8 @@
 ---
 title: "Active delegation"
+slug: "active-delegation"
+aliases:
+  - "/posts/active-delegation/"
 date: 2022-03-17
 ---
 

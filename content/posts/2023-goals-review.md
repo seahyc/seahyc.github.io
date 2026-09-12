@@ -1,5 +1,8 @@
 ---
 title: "2023 Goals Review"
+slug: "2023-goals-review"
+aliases:
+  - "/posts/2023-goals-review/"
 date: 2023-02-17
 ---
 

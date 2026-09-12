@@ -1,5 +1,8 @@
 ---
 title: "Direct experience"
+slug: "direct-experience"
+aliases:
+  - "/posts/direct-experience/"
 date: 2022-05-25
 ---
 

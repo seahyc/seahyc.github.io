@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root,
-    base: publicProject ? "/projects/bishan-ridges-atmosphere/" : "/reno/orientation/",
+    base: publicProject ? "/making/bishan-ridges-atmosphere/" : "/reno/orientation/",
     define: { __PUBLIC_PROJECT__: JSON.stringify(publicProject) },
     plugins: !publicProject && localMarkerPlugin ? [localMarkerPlugin] : [],
     build: {

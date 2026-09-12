@@ -1,5 +1,8 @@
 ---
 title: "As Glints CTO, this is what I want you to know about building an engineering team in Southeast Asia"
+slug: "as-glints-cto-this-is-what-i-want-you-to-know-about-building-an-engineering-team-in-southeast-asia"
+aliases:
+  - "/posts/as-glints-cto-this-is-what-i-want-you-to-know-about-building-an-engineering-team-in-southeast-asia/"
 date: 2021-09-26
 feature_image: "__GHOST_URL__/content/images/2021/09/0D129248-9612-4194-B7A1-8B3BEAEFAAB1.png"
 ---

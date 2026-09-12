@@ -1,5 +1,8 @@
 ---
 title: "What is truly left of \"me\""
+slug: "what-is-truly-left-of-me"
+aliases:
+  - "/posts/what-is-truly-left-of-me/"
 date: 2022-03-23
 ---
 

@@ -1,5 +1,8 @@
 ---
 title: "1st aquathlon done"
+slug: "1st-aquathlon-done"
+aliases:
+  - "/posts/1st-aquathlon-done/"
 date: 2022-02-14
 ---
 

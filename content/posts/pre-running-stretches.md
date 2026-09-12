@@ -1,5 +1,8 @@
 ---
 title: "Pre-running stretches"
+slug: "pre-running-stretches"
+aliases:
+  - "/posts/pre-running-stretches/"
 date: 2023-01-26
 ---
 

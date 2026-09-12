@@ -1,5 +1,8 @@
 ---
 title: "Timelog 15 Oct 2021"
+slug: "timelog-15-oct-2021"
+aliases:
+  - "/posts/timelog-15-oct-2021/"
 date: 2021-10-14
 feature_image: "__GHOST_URL__/content/images/2021/10/image.jpg"
 ---

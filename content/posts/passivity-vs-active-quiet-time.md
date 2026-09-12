@@ -1,7 +1,9 @@
 ---
 title: "Back from hiatus"
 slug: "back-from-hiatus"
-aliases: ["/posts/passivity-vs-active-quiet-time/"]
+aliases:
+  - "/posts/passivity-vs-active-quiet-time/"
+  - "/posts/back-from-hiatus/"
 date: 2022-08-17
 ---
 

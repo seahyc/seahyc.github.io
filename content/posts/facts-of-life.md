@@ -1,5 +1,8 @@
 ---
 title: "Facts of Life"
+slug: "facts-of-life"
+aliases:
+  - "/posts/facts-of-life/"
 date: 2021-10-20
 ---
 

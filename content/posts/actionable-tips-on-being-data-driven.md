@@ -1,5 +1,8 @@
 ---
 title: "Actionable Tips on being Data-Driven"
+slug: "actionable-tips-on-being-data-driven"
+aliases:
+  - "/posts/actionable-tips-on-being-data-driven/"
 date: 2023-07-26
 ---
 

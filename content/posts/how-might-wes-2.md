@@ -1,5 +1,8 @@
 ---
-title: "How Might We's"
+title: "How Might We's II"
+slug: "how-might-wes-ii"
+aliases:
+  - "/posts/how-might-wes-2/"
 date: 2021-10-16
 blurb: "Five early product prompts spanning trading, birdwatching, documentation, running, and learning."
 ---

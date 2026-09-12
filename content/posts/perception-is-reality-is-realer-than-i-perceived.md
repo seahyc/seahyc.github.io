@@ -1,5 +1,8 @@
 ---
 title: "Perception is reality is realer than I perceived"
+slug: "perception-is-reality-is-realer-than-i-perceived"
+aliases:
+  - "/posts/perception-is-reality-is-realer-than-i-perceived/"
 date: 2024-05-13
 ---
 

@@ -1,5 +1,8 @@
 ---
 title: "Learnings in 2022"
+slug: "learnings-in-2022"
+aliases:
+  - "/posts/learnings-in-2022/"
 date: 2022-11-09
 ---
 

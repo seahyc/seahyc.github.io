@@ -1,5 +1,8 @@
 ---
 title: "What's my life's task"
+slug: "whats-my-lifes-task"
+aliases:
+  - "/posts/whats-my-lifes-task/"
 date: 2021-11-15
 ---
 

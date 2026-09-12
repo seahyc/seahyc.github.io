@@ -1,5 +1,8 @@
 ---
 title: "All is temporary"
+slug: "all-is-temporary"
+aliases:
+  - "/posts/all-is-temporary/"
 date: 2021-12-06
 ---
 

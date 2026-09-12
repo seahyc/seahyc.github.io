@@ -1,5 +1,8 @@
 ---
 title: "Workshopping the talk later today"
+slug: "workshopping-the-talk-later-today"
+aliases:
+  - "/posts/workshopping-the-talk-later-today/"
 date: 2022-04-25
 ---
 

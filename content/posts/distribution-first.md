@@ -1,5 +1,8 @@
 ---
 title: "Distribution First"
+slug: "distribution-first"
+aliases:
+  - "/posts/distribution-first/"
 date: 2021-10-12
 feature_image: "__GHOST_URL__/content/images/2021/10/DSC_9830.JPG"
 ---

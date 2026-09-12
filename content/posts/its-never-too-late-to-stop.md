@@ -1,5 +1,8 @@
 ---
 title: "It's never too late to stop"
+slug: "its-never-too-late-to-stop"
+aliases:
+  - "/posts/its-never-too-late-to-stop/"
 date: 2021-12-07
 ---
 

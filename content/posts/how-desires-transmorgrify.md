@@ -1,5 +1,8 @@
 ---
 title: "How desires transmorgrify"
+slug: "how-desires-transmorgrify"
+aliases:
+  - "/posts/how-desires-transmorgrify/"
 date: 2022-04-26
 ---
 

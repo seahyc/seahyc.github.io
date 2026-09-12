@@ -1,5 +1,8 @@
 ---
 title: "Been feeling down on self-respect"
+slug: "been-feeling-down-on-self-respect"
+aliases:
+  - "/posts/been-feeling-down-on-self-respect/"
 date: 2022-02-09
 ---
 

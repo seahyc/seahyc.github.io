@@ -1,7 +1,9 @@
 ---
 title: "Gathering of energy"
 slug: "gathering-of-energy"
-aliases: ["/posts/gathering-energy/"]
+aliases:
+  - "/posts/gathering-energy/"
+  - "/posts/gathering-of-energy/"
 date: 2022-03-16
 ---
 

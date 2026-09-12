@@ -1,5 +1,8 @@
 ---
 title: "Soak in the present"
+slug: "soak-in-the-present"
+aliases:
+  - "/posts/soak-in-the-present/"
 date: 2021-12-08
 ---
 

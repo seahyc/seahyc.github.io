@@ -1,6 +1,9 @@
 ---
 title: "Taobao / Tmall (淘宝 / 天猫)"
 description: "Reference for Marketplace Shopping."
+slug: "taobao-tmall"
+aliases:
+  - "/skills/marketplace-shopping/references/taobao/"
 ---
 
 <!-- Generated from seahyc/agent-skills. Do not edit here. -->

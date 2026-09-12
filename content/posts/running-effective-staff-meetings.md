@@ -1,5 +1,8 @@
 ---
 title: "Running Effective Staff Meetings"
+slug: "running-effective-staff-meetings"
+aliases:
+  - "/posts/running-effective-staff-meetings/"
 date: 2021-10-31
 blurb: "A compact set of principles for making staff meetings purposeful, human, and decisive."
 ---

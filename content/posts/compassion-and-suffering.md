@@ -1,5 +1,8 @@
 ---
 title: "Compassion and suffering"
+slug: "compassion-and-suffering"
+aliases:
+  - "/posts/compassion-and-suffering/"
 date: 2021-11-17
 ---
 
