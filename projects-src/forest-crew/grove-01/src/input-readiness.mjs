@@ -13,13 +13,13 @@ export function classifyTrackerResult({hidden,captureTime,receivedAt,maxCaptureA
  return {accept:true,reason:ageMs>220?'late-inference':'fresh',ageMs};
 }
 
-export function readinessReason({hidden,cameraReady,workerReady,busy,lastDispatchAgeMs,lastResultAgeMs,rawHands,sampledHands}){
+export function readinessReason({hidden,cameraReady,workerReady,busy,lastDispatchAgeMs,lastResultAgeMs,rawHands,sampledHands,staleMs=220}){
  if(hidden)return 'document-hidden';
  if(!cameraReady)return 'camera-not-decoding';
  if(!workerReady)return 'worker-not-ready';
  if(busy&&lastDispatchAgeMs>2500)return 'worker-stalled';
  if(!Number.isFinite(lastResultAgeMs))return 'awaiting-first-result';
- if(lastResultAgeMs>220)return 'result-stale';
+ if(lastResultAgeMs>staleMs)return 'result-stale';
  if(rawHands===0)return 'no-hands-detected';
  if(sampledHands===0)return 'landmarks-invalid';
  return 'hands-ready';
