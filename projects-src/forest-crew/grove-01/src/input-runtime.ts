@@ -2,7 +2,7 @@ import './controls.css';
 import {drawHandFeedback} from './hand-feedback';
 import {sampleHand} from './handwalk/input/hand-features.mjs';
 import {TwoHandController} from './handwalk/input/two-hand-controller.mjs';
-import {OneHandController} from './one-hand-controller.mjs';
+import {OneHandController,withNavigationPoint} from './one-hand-controller.mjs';
 import {createBrowserRecordingStore} from './handwalk/browser-recording-store.mjs';
 import {CompactRecorder} from './handwalk/compact-recorder';
 import {MirroredPlaytestSession} from './handwalk/mirrored-playtest-session.mjs';
@@ -16,14 +16,14 @@ type InputMode='one-hand'|'two-hand';
 type InputFrame={active:boolean;forward:number;turn:number;headingTarget?:number|null;gait:any;mode:Mode;aim:{x:number;y:number};spraying:boolean};
 type Options={canvas:HTMLCanvasElement;container:HTMLElement;getHeading:()=>number;onEvent?:(type:string,data:any)=>void};
 
-const BUILD_ID='grove-01',SCENARIO='hose-baseline',STALE_MS=220;
+const BUILD_ID='grove-01',SCENARIO='hose-baseline',STALE_MS=220,ONE_HAND_STALE_MS=450;
 const clamp=(value:number)=>Math.max(0,Math.min(1,value));
 const emptyGait=()=>({left:0,right:0,leftLift:0,rightLift:0,stride:0,cadence:0,run:0});
 const formatBytes=(bytes:number)=>bytes<1024?`${bytes} B`:bytes<1048576?`${Math.round(bytes/1024)} KiB`:`${(bytes/1048576).toFixed(1)} MiB`;
 
 export function createInputRuntime({canvas,container,getHeading,onEvent}:Options){
  const walker=new TwoHandController();
- const oneHand=new OneHandController({staleMs:STALE_MS,pointDwellMs:250});
+ const oneHand=new OneHandController({staleMs:ONE_HAND_STALE_MS,pointDwellMs:350});
  const hose=new HoseGestureController({dwellMs:250,staleMs:STALE_MS});
  const root=document.createElement('section');root.className='forest-input';root.setAttribute('aria-label','Forest Crew hand controls');
  root.innerHTML=`<div class="forest-input__status" role="status" aria-live="polite">Allow camera access, then show your hand.</div>
@@ -66,7 +66,7 @@ export function createInputRuntime({canvas,container,getHeading,onEvent}:Options
  const qaMode=new URLSearchParams(location.search).get('qa')==='1';
  const criticalEvents=new Set(['complete','extinguish','gesture-select','calibrated','focus','reset','camera-error','tracker-error']);
  const emit=(type:string,data:any={})=>{const payload={buildId:BUILD_ID,scenario:SCENARIO,fixture:qaMode,inputSource:qaInjected?'sampled-hand-fixture':'camera',...data};playtest.record(type,payload);const now=performance.now();if(playtest.state==='recording'&&(criticalEvents.has(type)||now-lastFlush>=1200)){lastFlush=now;void playtest.flushTelemetry();}onEvent?.(type,payload);};
- const recorder=new CompactRecorder({world:canvas,camera:video,session:()=>playtest.session,startedAt:()=>playtest.started,record:emit,uploadClip:(blob,startMs,endMs)=>playtest.uploadClip(blob,startMs,endMs),publicMode:true,overlay:()=>({phase:lastFrameState.mode,reason:lastFrameState.spraying?'spraying':lastFrameState.active?'moving':'idle',choice:uiTarget?.dataset.action||'',dwell:uiTarget?clamp((performance.now()-uiTargetSince)/900):0,cursorX:lastPointer.x,cursorY:lastPointer.y,cursorVisible:true,cursorTracked:pointerTracked}),onStatus:(state,detail)=>{if(state==='error'){recordingError=detail;recorder.setEnabled(false);playtest.fail(detail);}updateRecordingStatus(playtest);}});
+ const recorder=new CompactRecorder({world:canvas,camera:video,session:()=>playtest.session,startedAt:()=>playtest.started,record:emit,uploadClip:(blob,startMs,endMs)=>playtest.uploadClip(blob,startMs,endMs),publicMode:true,captureWidth:480,captureHeight:270,captureFrameRate:5,videoBitsPerSecond:220000,overlay:()=>({phase:lastFrameState.mode,reason:inputMode==='one-hand'?oneHand.diagnostics(performance.now()).decision:lastFrameState.spraying?'spraying':lastFrameState.active?'moving':'idle',choice:uiTarget?.dataset.action||'',dwell:uiTarget?clamp((performance.now()-uiTargetSince)/900):0,cursorX:lastPointer.x,cursorY:lastPointer.y,cursorVisible:true,cursorTracked:pointerTracked}),onStatus:(state,detail)=>{if(state==='error'){recordingError=detail;recorder.setEnabled(false);playtest.fail(detail);}updateRecordingStatus(playtest);}});
 
  function updateRecordingStatus(snapshot:any){
   localLabel.textContent=snapshot.error||recordingError?'LOCAL · SAVE UNAVAILABLE':snapshot.state==='recording'?`LOCAL · SAVING ${formatBytes(snapshot.savedBytes||0)}`:snapshot.state==='starting'?'LOCAL · OPENING':snapshot.state==='stopped'?'LOCAL · SAVED':snapshot.state==='opted-out'?'LOCAL · OFF':'LOCAL · READY';
@@ -75,13 +75,14 @@ export function createInputRuntime({canvas,container,getHeading,onEvent}:Options
   for(const button of recordButtons)button.textContent=['recording','starting','undecided'].includes(snapshot.state)?'Play without recording':'Record this playtest';
  }
  function setStatus(message:string){const hidden=!message;if(status.textContent===message&&status.hidden===hidden)return;status.textContent=message;status.hidden=hidden;}
+ const staleLimit=()=>inputMode==='one-hand'?ONE_HAND_STALE_MS:STALE_MS;
  const targetHands=()=>inputMode==='one-hand'?1:2;
- const setupInstruction=()=>inputMode==='one-hand'?'Hold one hand comfortably in view for 2 seconds.':'Hold both hands comfortably in view for 2 seconds.';
- function updateModeCopy(){root.dataset.inputMode=inputMode;modeButton.textContent=inputMode==='one-hand'?'Use two-hand controls':'Use one-hand controls';controlsCopy.textContent=inputMode==='one-hand'?'Walk your index and middle fingers. Shift your hand left/right to steer; lower it below the centre to walk backward. Open your palm to stop and recenter. Point and hold to spray.':'Walk your fingers to move. Tilt both hands to turn. Point with one hand and hold the other palm open to spray.';}
+ const setupInstruction=()=>inputMode==='one-hand'?'Hold your two walking fingers comfortably for 2 seconds.':'Hold both hands comfortably in view for 2 seconds.';
+ function updateModeCopy(){root.dataset.inputMode=inputMode;modeButton.textContent=inputMode==='one-hand'?'Use two-hand controls':'Use one-hand controls';controlsCopy.textContent=inputMode==='one-hand'?'Walk your two fingers to move. Point them left or right to turn; the arrow shows your turn. Stop stepping to stop walking. Thumb out while stepping reverses; tuck it to go forward. Open palm stops and resets straight ahead. Point one finger and hold to spray.':'Walk your fingers to move. Tilt both hands to turn. Point with one hand and hold the other palm open to spray.';}
  function updateFraming(show:boolean,count=rawHands.length){root.classList.toggle('is-framing',show);framing.textContent=framingPrompt(count,targetHands());}
  function drawHands(value:RawHand[]){
   const state=oneHand.diagnostics(performance.now());
-  drawHandFeedback(overlayContext,value,{single:inputMode==='one-hand',anchor:state.anchor,decision:state.decision,fresh:performance.now()-lastResult<=STALE_MS&&hands.length>0});
+  drawHandFeedback(overlayContext,value,{single:inputMode==='one-hand',decision:state.decision,fresh:performance.now()-lastResult<=staleLimit()&&hands.length>0,turn:state.turn,reverse:state.reverse});
  }
  function clearUiAuthority(){uiTarget=null;uiTargetSince=0;uiTargetFired=false;root.querySelectorAll('.forest-input__hover').forEach(node=>node.classList.remove('forest-input__hover'));cursor.style.setProperty('--dwell','0');}
  function setHud(open:boolean){hud.classList.toggle('is-open',open);hud.setAttribute('aria-hidden',String(!open));hudOpen.hidden=open;clearUiAuthority();emit('hud',{open});}
@@ -128,15 +129,15 @@ export function createInputRuntime({canvas,container,getHeading,onEvent}:Options
  function ingest(sampled:any[],landmarks:RawHand[],now:number,sampleLatency=0){
   if(!Number.isFinite(now))return;lastResult=now;latency=sampleLatency;hands=Array.isArray(sampled)?sampled.filter(hand=>hand&&hand.id!==undefined&&['indexFlex','middleFlex','roll'].every(key=>Number.isFinite(hand[key]))):[];rawHands=Array.isArray(landmarks)?landmarks:[];if(baseMode==='setup')updateFraming(true,rawHands.length);if(rawHands.length){noHandsSince=null;zeroHandsWarned=false;}else{noHandsSince??=now;if(!zeroHandsWarned&&now-noHandsSince>=2000){zeroHandsWarned=true;emit('recognition-empty',{durationMs:Math.round(now-noHandsSince),videoWidth:video.videoWidth,videoHeight:video.videoHeight,videoTime:+video.currentTime.toFixed(3),readyState:video.readyState});}}
   if(baseMode==='setup'){
-   if(hands.length===targetHands()){calibrationSince??=now;const remaining=Math.max(0,2000-(now-calibrationSince));setStatus(remaining?`${inputMode==='one-hand'?'Hand':'Both hands'} ready · starting in ${Math.ceil(remaining/1000)}…`:'Calibrated · walk your fingers.');if(!remaining){if(inputMode==='one-hand')oneHand.calibrate(hands,now,getHeading());else walker.calibrate(hands,now,getHeading());baseMode='walk';suspended=false;updateFraming(false);emit('calibrated',{hands:targetHands(),inputMode});}}
+   if(hands.length===targetHands()){calibrationSince??=now;const remaining=Math.max(0,2000-(now-calibrationSince));setStatus(remaining?`${inputMode==='one-hand'?'Hand':'Both hands'} ready · starting in ${Math.ceil(remaining/1000)}…`:'Calibrated · walk your fingers.');if(!remaining){if(inputMode==='one-hand')oneHand.calibrate(hands,now);else walker.calibrate(hands,now,getHeading());baseMode='walk';suspended=false;updateFraming(false);emit('calibrated',{hands:targetHands(),inputMode});}}
    else{calibrationSince=null;setStatus(inputMode==='two-hand'&&hands.length===1?'Bring your other hand into view.':noHandsSince!==null&&now-noHandsSince>=2000?`Show ${inputMode==='one-hand'?'one hand':'both hands'} below your face.`:setupInstruction());}
   }
   const overUi=updatePointer(now);if(inputMode==='one-hand'){if(baseMode==='walk')oneHand.update(hands,now,{overUi});}else{const hoseState=hose.update(hands,now,{overUi});if(baseMode==='walk'&&!hoseState.active)walker.update(hands,now);else if(hoseState.active)walker.reset();}
-  drawHands(rawHands);const singleState=inputMode==='one-hand'?oneHand.read(now,{overUi}):null,hoseTelemetry=inputMode==='two-hand'?hose.read(now,{overUi}):null;emit('hands',{timestamp:Math.round(now),latency,mode:baseMode,inputMode,stance:singleState?.mode??(hoseTelemetry?.active?'hose':'walk'),aim:singleState?.aim??hoseTelemetry?.aim,landmarks:rawHands});
+  drawHands(rawHands);const singleState=inputMode==='one-hand'?oneHand.read(now,{overUi}):null,hoseTelemetry=inputMode==='two-hand'?hose.read(now,{overUi}):null;emit('hands',{timestamp:Math.round(now),latency,mode:baseMode,inputMode,control:inputMode==='one-hand'?oneHand.diagnostics(now):null,stance:singleState?.mode??(hoseTelemetry?.active?'hose':'walk'),aim:singleState?.aim??hoseTelemetry?.aim,landmarks:rawHands});
  }
  function onWorkerMessage({data}:MessageEvent){
   if(disposed)return;if(data.type==='ready'){workerReady=true;return;}if(data.type==='error'){const wasReady=workerReady;busy=false;workerReady=false;emit('tracker-error',{message:data.message});if(wasReady&&restartAttempts<1)void recoverTracker('worker-error');else if(wasReady)setStatus('Hand tracking stopped. Reload to retry.');return;}if(data.type!=='result')return;if(qaInjected){busy=false;return;}
-  busy=false;workerFrame=Number(data.frame)||workerFrame+1;const now=performance.now(),classification=classifyTrackerResult({hidden:document.hidden,captureTime:data.time,receivedAt:now});inferenceAge=classification.ageMs??0;if(!classification.accept){emit('stale-inference',{ageMs:classification.ageMs,reason:classification.reason,workerFrame});return;}const landmarks:RawHand[]=data.hands??[],aspect=video.videoWidth&&video.videoHeight?video.videoWidth/video.videoHeight:4/3;const sampled=landmarks.flatMap(hand=>{const sample=sampleHand(hand.id,hand.landmarks,aspect);return sample?[sample]:[];});ingest(sampled,landmarks,now,Number(data.latency)||0);if(classification.reason==='late-inference')emit('late-inference',{ageMs:classification.ageMs,latency:data.latency,workerFrame});
+  busy=false;workerFrame=Number(data.frame)||workerFrame+1;const now=performance.now(),classification=classifyTrackerResult({hidden:document.hidden,captureTime:data.time,receivedAt:now,maxCaptureAgeMs:inputMode==='one-hand'?450:1000});inferenceAge=classification.ageMs??0;if(!classification.accept){emit('stale-inference',{ageMs:classification.ageMs,reason:classification.reason,workerFrame});return;}const landmarks:RawHand[]=data.hands??[],aspect=video.videoWidth&&video.videoHeight?video.videoWidth/video.videoHeight:4/3;const sampled=landmarks.flatMap(hand=>{const sample=withNavigationPoint(sampleHand(hand.id,hand.landmarks,aspect),hand.landmarks,aspect);return sample?[sample]:[];});ingest(sampled,landmarks,now,Number(data.latency)||0);if(classification.reason==='late-inference')emit('late-inference',{ageMs:classification.ageMs,latency:data.latency,workerFrame});
  }
  async function initializeWorker(token:number){
   const local=new Worker(`${import.meta.env.BASE_URL}hand-worker.js`);worker=local;local.onmessage=onWorkerMessage;
@@ -163,14 +164,14 @@ export function createInputRuntime({canvas,container,getHeading,onEvent}:Options
   const visible=!document.hidden,cameraReady=Boolean(stream)&&video.readyState>=2;
   if(!qaInjected&&now-lastDispatch>=33&&shouldDispatchFrame({hidden:document.hidden,workerReady,cameraReady,busy})){lastDispatch=now;busy=true;createImageBitmap(video).then(bitmap=>{if(disposed||!worker){bitmap.close();busy=false;return;}worker.postMessage({type:'frame',bitmap,time:now},[bitmap]);}).catch(error=>{busy=false;resetControllers();emit('frame-error',{message:String(error)});});}
   if(busy&&now-lastDispatch>2500){if(restartAttempts<1)void recoverTracker('frame-timeout');else{busy=false;workerReady=false;worker?.terminate();worker=null;setStatus('Hand tracking stopped. Reload to retry.');emit('tracker-stopped',{reason:'repeated-frame-timeout'});}}
-  const stale=now-lastResult>STALE_MS||hands.length===0||!visible||suspended;if(stale){walker.reset();oneHand.read(now);hose.read(now);drawHands(rawHands);pointerTracked=false;cursor.classList.add('is-lost');clearUiAuthority();}
+  const stale=now-lastResult>staleLimit()||hands.length===0||!visible||suspended;if(stale){walker.reset();oneHand.read(now);hose.read(now);drawHands(rawHands);pointerTracked=false;cursor.classList.add('is-lost');clearUiAuthority();}
   const overUi=Boolean(uiTarget),single=oneHand.read(now,{overUi}),hoseState=hose.read(now,{overUi}),walking=inputMode==='one-hand'?single:walker.read(now),hoseActive=inputMode==='one-hand'?single.mode==='hose':hoseState.active,hoseAim=inputMode==='one-hand'?single.aim:hoseState.aim,hoseSpraying=inputMode==='one-hand'?single.spraying:hoseState.spraying;const mode:Mode=baseMode==='menu'?'menu':baseMode==='setup'?'setup':stale?'lost':hoseActive?'hose':'walk';const active=mode==='walk'||mode==='hose';
   const result:InputFrame={active:active&&visible&&!suspended,forward:mode==='walk'&&visible&&!suspended?walking.forward:0,turn:mode==='walk'&&visible&&!suspended?walking.turn:0,headingTarget:mode==='walk'&&visible&&!suspended?walking.headingTarget:null,gait:mode==='walk'&&visible&&!suspended?walking.gait:emptyGait(),mode,aim:hoseAim as {x:number;y:number},spraying:mode==='hose'&&visible&&!suspended&&hoseSpraying===true};
   aimNode.style.left=`${result.aim.x*innerWidth}px`;aimNode.style.top=`${result.aim.y*innerHeight}px`;aimNode.classList.toggle('is-idle',mode!=='hose');
   if(mode==='hose'||mode==='walk'||mode==='menu')setStatus('');else if(mode==='lost'&&baseMode==='walk')setStatus(`${inputMode==='one-hand'?'Hand':'Hands'} lost · bring ${inputMode==='one-hand'?'it':'them'} back into view.`);
   if(now-lastTelemetry>100){lastTelemetry=now;emit('input-frame',{timestamp:Math.round(now),inputMode,active:result.active,forward:result.forward,turn:result.turn,headingTarget:result.headingTarget,gait:result.gait,mode:result.mode,aim:result.aim,spraying:result.spraying,trackingAge:Number.isFinite(lastResult)?now-lastResult:null});}
   if(playtest.state==='recording'&&now-lastFlush>5000){lastFlush=now;void playtest.flushTelemetry();}
-  const readiness=readinessReason({hidden:document.hidden,cameraReady,workerReady,busy,lastDispatchAgeMs:now-lastDispatch,lastResultAgeMs:Number.isFinite(lastResult)?now-lastResult:Infinity,rawHands:rawHands.length,sampledHands:hands.length});if(readiness!==lastReadiness){emit('input-readiness',{from:lastReadiness,to:readiness,cameraReady,workerReady,busy,inferenceAge,latency,workerFrame,rawHands:rawHands.length,sampledHands:hands.length,noHandsDurationMs:noHandsSince===null?0:Math.max(0,now-noHandsSince),video:{width:video.videoWidth,height:video.videoHeight,time:+video.currentTime.toFixed(3),readyState:video.readyState},focused:document.hasFocus()});lastReadiness=readiness;}
+  const readiness=readinessReason({staleMs:staleLimit(),hidden:document.hidden,cameraReady,workerReady,busy,lastDispatchAgeMs:now-lastDispatch,lastResultAgeMs:Number.isFinite(lastResult)?now-lastResult:Infinity,rawHands:rawHands.length,sampledHands:hands.length});if(readiness!==lastReadiness){emit('input-readiness',{from:lastReadiness,to:readiness,cameraReady,workerReady,busy,inferenceAge,latency,workerFrame,rawHands:rawHands.length,sampledHands:hands.length,noHandsDurationMs:noHandsSince===null?0:Math.max(0,now-noHandsSince),video:{width:video.videoWidth,height:video.videoHeight,time:+video.currentTime.toFixed(3),readyState:video.readyState},focused:document.hasFocus()});lastReadiness=readiness;}
   lastFrameState=result;return result;
  }
  function record(type:string,data:any){emit(type,data);}

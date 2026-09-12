@@ -55,9 +55,10 @@ function updateHose(now:number,origin:Vector3){
  hose=MeshBuilder.CreateTube('ivory supply hose',{path:hosePath,instance:hose});
 }
 function renderFrame(){
- const now=performance.now(),dt=Math.min(.05,(now-last)/1000);last=now;nowSeconds+=dt;
+ const now=performance.now(),wallDt=Math.max(0,(now-last)/1000),dt=Math.min(.05,wallDt);last=now;nowSeconds+=dt;
  if(!ready){env.scene.render();return;}
- const frame=qaOverride??input.frame(now);
+ const liveFrame=input.frame(now),frame=qaOverride??liveFrame;
+ env.observePerformance({dt:wallDt,fps:env.engine.getFps(),active:!sceneReview&&frame.mode!=='setup'&&frame.mode!=='menu'&&!document.hidden});
  const state=movement.update(dt,{...frame,active:!sceneReview&&frame.active,toolActive:frame.mode==='hose'});
  if(sceneReview)env.setEstablishingView();
  const origin=Vector3.TransformCoordinates(new Vector3(HOSE_ANCHOR.x,HOSE_ANCHOR.y,HOSE_ANCHOR.z+.22),movement.player.getWorldMatrix());

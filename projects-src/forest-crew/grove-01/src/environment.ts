@@ -1,14 +1,15 @@
 import {Engine,Scene,Color3,Color4,Vector3,Vector4,HemisphericLight,DirectionalLight,FreeCamera,MeshBuilder,StandardMaterial,PBRMaterial,TransformNode,Mesh,VertexData,Texture,DynamicTexture,HDRCubeTexture,MirrorTexture,Plane,FresnelParameters,ShadowGenerator,DefaultRenderingPipeline,ParticleSystem,ShaderMaterial,ImportMeshAsync,Matrix,Quaternion,SSAO2RenderingPipeline} from '@babylonjs/core';
 
-import {renderQuality} from './render-quality.mjs';
+import {createRenderQualityPolicy,renderQuality} from './render-quality.mjs';
 
 const C=(hex:string)=>Color3.FromHexString(hex);
 const base=import.meta.env.BASE_URL;
 export function createEnvironment(canvas:HTMLCanvasElement){
  const engine=new Engine(canvas,true,{preserveDrawingBuffer:true,stencil:true,powerPreference:'high-performance'});
- engine.maxFPS=60;
  const mobile=matchMedia('(pointer: coarse)').matches&&navigator.maxTouchPoints>0;
- const quality=()=>renderQuality({width:canvas.clientWidth,height:canvas.clientHeight,dpr:devicePixelRatio,mobile,maxSamples:engine.getCaps().maxMSAASamples});
+ const performancePolicy=createRenderQualityPolicy({mobile});
+ const quality=()=>({...renderQuality({width:canvas.clientWidth,height:canvas.clientHeight,dpr:devicePixelRatio,mobile,maxSamples:engine.getCaps().maxMSAASamples,tier:performancePolicy.diagnostics().tier}),...performancePolicy.diagnostics()});
+ engine.maxFPS=quality().maxFPS;
  engine.setHardwareScalingLevel(quality().hardwareScaling);
  const scene=new Scene(engine);scene.clearColor=new Color4(.53,.76,.82,1);
  scene.fogMode=Scene.FOGMODE_EXP2;scene.fogDensity=.0016;scene.fogColor=C('#99c4cb');
@@ -116,7 +117,7 @@ export function createEnvironment(canvas:HTMLCanvasElement){
  ]);
  const sea=MeshBuilder.CreateGround('reflective blue ocean',{width:2800,height:2800},scene);sea.position.y=-.39;sea.isPickable=false;
  const seaMat=new StandardMaterial('deep blue reflective water',scene);seaMat.diffuseColor=C('#061d2e');seaMat.specularColor=C('#e5f7ff');seaMat.specularPower=190;seaMat.disableLighting=true;seaMat.emissiveColor=C('#063951').toLinearSpace();seaMat.ambientColor=C('#020a12');
- const mirror=new MirrorTexture('sea reflection',quality().reflectionSize,scene,true);mirror.mirrorPlane=new Plane(0,-1,0,-.4);mirror.refreshRate=2;mirror.adaptiveBlurKernel=.4;mirror.level=.55;mirror.renderList=scene.meshes.filter(m=>m!==sea);seaMat.reflectionTexture=mirror;
+ const mirror=new MirrorTexture('sea reflection',quality().reflectionSize,scene,true);mirror.mirrorPlane=new Plane(0,-1,0,-.4);mirror.refreshRate=quality().reflectionRefreshRate;mirror.adaptiveBlurKernel=.4;mirror.level=.55;mirror.renderList=scene.meshes.filter(m=>m!==sea);seaMat.reflectionTexture=mirror;
  const fresnel=new FresnelParameters();fresnel.bias=.08;fresnel.power=3;fresnel.leftColor=Color3.White();fresnel.rightColor=new Color3(.08,.08,.08);seaMat.reflectionFresnelParameters=fresnel;
  const ripple=new DynamicTexture('water small ripples',256,scene,true);const rc=ripple.getContext(),id=new ImageData(256,256);for(let y=0;y<256;y++)for(let x=0;x<256;x++){const n=Math.sin(y*.6+Math.sin(x*.04)*3)+.3*Math.sin(x*.35+y*.8);const i=(y*256+x)*4;id.data[i]=128+n*12;id.data[i+1]=128+Math.cos(y*.6)*25;id.data[i+2]=252;id.data[i+3]=255;}rc.putImageData(id,0,0);ripple.update();ripple.uScale=130;ripple.vScale=130;ripple.level=.5;seaMat.bumpTexture=ripple;
  const ocean=new ShaderMaterial('sunlit rippled ocean',scene,{vertexSource:`precision highp float;attribute vec3 position;uniform mat4 world;uniform mat4 worldViewProjection;varying vec3 worldPos;varying vec4 clipPos;void main(){worldPos=(world*vec4(position,1.)).xyz;clipPos=worldViewProjection*vec4(position,1.);gl_Position=clipPos;}`,fragmentSource:`precision highp float;varying vec3 worldPos;varying vec4 clipPos;uniform sampler2D reflected;uniform vec3 eye;uniform float time;
@@ -126,6 +127,7 @@ export function createEnvironment(canvas:HTMLCanvasElement){
  let reflectionCount=scene.meshes.length;
  function update(t:number){ocean.setFloat('time',t);ocean.setVector3('eye',camera.position);ripple.uOffset=Math.sin(t*.03)*.003;ripple.vOffset=t*.0008;if(scene.meshes.length!==reflectionCount){reflectionCount=scene.meshes.length;mirror.renderList=scene.meshes.filter(m=>m!==sea&&m.isVisible&&m.name!=='fern understory'&&m.name!=='deck fasteners'&&!m.name.startsWith('water '));}}
  function resize(){engine.setHardwareScalingLevel(quality().hardwareScaling);camera.fovMode=canvas.clientWidth<canvas.clientHeight?1:0;engine.resize();}
+ function observePerformance(sample:{dt:number;fps:number;active:boolean}){const before=performancePolicy.diagnostics(),after=performancePolicy.observe(sample);if(after.tier!==before.tier){mirror.refreshRate=after.reflectionRefreshRate;pipeline.bloomEnabled=after.bloomEnabled;if(after.tier==='reduced-resolution'){engine.setHardwareScalingLevel(quality().hardwareScaling);engine.resize();}}return quality();}
  resize();
- return {resize,renderQuality:quality,assetsReady,engine,scene,camera,colliders,canOccupy,shadows,terrainMeshes,spawn:new Vector3(0,0,-3),update,dispose:()=>engine.dispose(),setEstablishingView:()=>{camera.position.set(8.5,3.2,-10);camera.setTarget(new Vector3(-2,2.1,14));},materials:{ivory,chrome,dark},tube};
+ return {resize,renderQuality:quality,observePerformance,assetsReady,engine,scene,camera,colliders,canOccupy,shadows,terrainMeshes,spawn:new Vector3(0,0,-3),update,dispose:()=>engine.dispose(),setEstablishingView:()=>{camera.position.set(8.5,3.2,-10);camera.setTarget(new Vector3(-2,2.1,14));},materials:{ivory,chrome,dark},tube};
 }
