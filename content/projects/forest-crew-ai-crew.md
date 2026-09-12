@@ -1,6 +1,8 @@
 ---
-title: "Forest Crew — AI supply crew"
+title: "Forest Crew — AI crew"
 slug: "forest-crew-ai-crew"
+aliases:
+  - "/projects/forest-crew-ai-crew/"
 visibility: public
 description: "Two AI firefighters negotiate hose and pump jobs while you fight the fire. A local collaboration preview, with public code."
 tech: ["Babylon.js", "Codex", "Agent tools"]
