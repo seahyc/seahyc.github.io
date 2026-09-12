@@ -10,7 +10,7 @@ weight: -4
 date: 2026-09-12
 link: "/making/forest-crew-grove-01/"
 cover: "/images/making/forest-crew-grove-01.webp"
-cover_alt: "An ivory-suited firefighter on a pink deck facing a burning volcanic grove"
+cover_alt: "A firefighter in tan turnout gear on a pink deck facing a burning volcanic grove"
 ---
 
 [Play Forest Crew — Grove 01](/making/forest-crew-grove-01/)

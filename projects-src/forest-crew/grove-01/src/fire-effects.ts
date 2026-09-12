@@ -7,10 +7,12 @@ import {
   ParticleSystem,
   PointLight,
   Scene,
+  ShaderStore,
   StandardMaterial,
   Texture,
   Vector3,
 } from '@babylonjs/core';
+import {particlesPixelShader} from '@babylonjs/core/Shaders/particles.fragment';
 
 type FirePatchSnapshot = {
   id: string;
@@ -28,6 +30,7 @@ type SprayState = {active: boolean; origin: Vector3; impact: Vector3 | null};
 type PatchEffects = {
   outerFlame: ParticleSystem;
   coreFlame: ParticleSystem;
+  crownFlame: ParticleSystem;
   smoke: ParticleSystem;
   embers: ParticleSystem;
   light: PointLight;
@@ -74,70 +77,49 @@ function radialSprite(
   });
 }
 
-function flameSprite(scene: Scene, name: string, core: boolean): DynamicTexture {
-  return makeTexture(scene, name, (context, size) => {
-    const gradient = context.createLinearGradient(0, size, 0, 0);
-    if (core) {
-      gradient.addColorStop(0, 'rgba(255,245,180,.98)');
-      gradient.addColorStop(0.34, 'rgba(255,216,52,.98)');
-      gradient.addColorStop(0.72, 'rgba(255,104,4,.72)');
-      gradient.addColorStop(1, 'rgba(255,55,0,0)');
-    } else {
-      gradient.addColorStop(0, 'rgba(255,192,18,.94)');
-      gradient.addColorStop(0.35, 'rgba(255,87,4,.9)');
-      gradient.addColorStop(0.72, 'rgba(196,26,0,.58)');
-      gradient.addColorStop(1, 'rgba(90,0,0,0)');
-    }
-    context.save();
-    context.fillStyle = gradient;
-    context.shadowColor = core ? 'rgba(255,190,30,.65)' : 'rgba(255,55,0,.48)';
-    context.shadowBlur = core ? size * 0.055 : size * 0.075;
-    context.beginPath();
-    context.moveTo(size * 0.16, size * 0.94);
-    context.bezierCurveTo(size * 0.04, size * 0.7, size * 0.34, size * 0.59, size * 0.25, size * 0.38);
-    context.bezierCurveTo(size * 0.2, size * 0.22, size * 0.45, size * 0.22, size * 0.52, size * 0.04);
-    context.bezierCurveTo(size * 0.72, size * 0.26, size * 0.55, size * 0.38, size * 0.74, size * 0.49);
-    context.bezierCurveTo(size * 0.96, size * 0.65, size * 0.86, size * 0.86, size * 0.78, size * 0.94);
-    context.closePath();
-    context.fill();
-    context.restore();
-
-    // Feather every edge of the silhouette. A vertical-only color gradient leaves
-    // an opaque, flat base which reads as the boundary of the particle quad.
-    context.globalCompositeOperation = 'destination-in';
-    const horizontalFade = context.createLinearGradient(0, 0, size, 0);
-    horizontalFade.addColorStop(0, 'rgba(255,255,255,0)');
-    horizontalFade.addColorStop(0.16, 'rgba(255,255,255,.72)');
-    horizontalFade.addColorStop(0.34, 'rgba(255,255,255,1)');
-    horizontalFade.addColorStop(0.72, 'rgba(255,255,255,.96)');
-    horizontalFade.addColorStop(0.9, 'rgba(255,255,255,.38)');
-    horizontalFade.addColorStop(1, 'rgba(255,255,255,0)');
-    context.fillStyle = horizontalFade;
-    context.fillRect(0, 0, size, size);
-    const verticalFade = context.createLinearGradient(0, 0, 0, size);
-    verticalFade.addColorStop(0, 'rgba(255,255,255,0)');
-    verticalFade.addColorStop(0.1, 'rgba(255,255,255,.75)');
-    verticalFade.addColorStop(0.3, 'rgba(255,255,255,1)');
-    verticalFade.addColorStop(0.78, 'rgba(255,255,255,.92)');
-    verticalFade.addColorStop(0.94, 'rgba(255,255,255,.3)');
-    verticalFade.addColorStop(1, 'rgba(255,255,255,0)');
-    context.fillStyle = verticalFade;
-    context.fillRect(0, 0, size, size);
-    context.globalCompositeOperation = 'source-over';
-  });
-}
-
 function setEmitterBox(system: ParticleSystem, radius: number, low: number, high: number): void {
   system.minEmitBox.set(-radius, low, -radius);
   system.maxEmitBox.set(radius, high, radius);
+}
+
+// Feather each atlas frame and its contact with the ground in the shader.
+// The source images remain unchanged; both passes must use the same alpha fade.
+function softenFlameEdges(system: ParticleSystem, scene: Scene): void {
+  ShaderStore.ShadersStore.forestFlamePixelShader = particlesPixelShader.shader
+    .replace('varying vec2 vUV;', 'varying vec3 vPositionW;varying vec2 vUV;')
+    .replace('vec4 baseColor=', `
+      vec2 cellUV=fract(vUV*8.0);
+      float edge=smoothstep(0.0,0.055,cellUV.x)*smoothstep(0.0,0.055,1.0-cellUV.x);
+      float baseFade=smoothstep(0.0,0.32,1.0-cellUV.y);
+      float groundFade=smoothstep(-0.1,0.55,vPositionW.y);
+      textureColor.a*=edge*baseFade*groundFade;
+      vec4 baseColor=`);
+  for (const blend of [ParticleSystem.BLENDMODE_MULTIPLY,ParticleSystem.BLENDMODE_ADD]) {
+    const defines=['#define POSITIONW_AS_VARYING'];
+    system.fillDefines(defines,blend);
+    system.setCustomEffect(scene.getEngine().createEffectForParticles(
+      'forestFlame',[],[],defines.join('\n'),undefined,undefined,undefined,system,
+    ),blend);
+  }
 }
 
 export function createFireEffects(scene: Scene): {
   update(dt: number, t: number, snapshot: FireSnapshot, spray: SprayState): void;
   dispose(): void;
 } {
-  const outerFlameTexture = flameSprite(scene, 'procedural irregular flame edge', false);
-  const coreFlameTexture = flameSprite(scene, 'procedural hot flame core', true);
+  const outerFlameTexture = new Texture(
+    `${import.meta.env.BASE_URL}textures/fire/fire-atlas-01.png`, scene, true, false, Texture.BILINEAR_SAMPLINGMODE,
+  );
+  const coreFlameTexture = new Texture(
+    `${import.meta.env.BASE_URL}textures/fire/fire-atlas-02.png`, scene, true, false, Texture.BILINEAR_SAMPLINGMODE,
+  );
+  const crownFlameTexture = new Texture(
+    `${import.meta.env.BASE_URL}textures/fire/fire-atlas-03.png`, scene, true, false, Texture.BILINEAR_SAMPLINGMODE,
+  );
+  for (const texture of [outerFlameTexture, coreFlameTexture, crownFlameTexture]) {
+    texture.wrapU = Texture.CLAMP_ADDRESSMODE;
+    texture.wrapV = Texture.CLAMP_ADDRESSMODE;
+  }
   const smokeTexture = radialSprite(scene, 'procedural smoke sprite', [
     [0, 'rgba(92,83,78,.32)'],
     [0.55, 'rgba(71,67,66,.17)'],
@@ -164,86 +146,161 @@ export function createFireEffects(scene: Scene): {
   const patches = new Map<string, PatchEffects>();
 
   const makePatch = (patch: FirePatchSnapshot): PatchEffects => {
-    const emitter = new Vector3(patch.x, 0.05, patch.z);
-    const outerFlame = new ParticleSystem(`irregular flame edges ${patch.id}`, 95, scene);
+    // Babylon billboards pivot around their centre. The source frames keep
+    // their dense base near the cell bottom, so sink that edge just below the
+    // uneven terrain while leaving the curling upper body visible.
+    const emitter = new Vector3(patch.x, 0.64, patch.z);
+    const outerFlame = new ParticleSystem(`animated turbulent flame body ${patch.id}`, 9, scene, undefined, true);
     outerFlame.particleTexture = outerFlameTexture;
     outerFlame.emitter = emitter;
-    setEmitterBox(outerFlame, patch.radius * 0.64, 0, 0.1);
-    outerFlame.direction1.set(-0.22, 1.18, -0.2);
-    outerFlame.direction2.set(0.25, 1.75, 0.22);
-    outerFlame.minEmitPower = 0.6;
-    outerFlame.maxEmitPower = 1.18;
-    outerFlame.minLifeTime = 0.42;
-    outerFlame.maxLifeTime = 0.88;
-    outerFlame.minSize = 0.34;
-    outerFlame.maxSize = 0.88;
-    outerFlame.minScaleX = 0.48;
-    outerFlame.maxScaleX = 0.82;
-    outerFlame.minScaleY = 1.15;
-    outerFlame.maxScaleY = 1.75;
-    outerFlame.minAngularSpeed = -0.42;
-    outerFlame.maxAngularSpeed = 0.42;
-    outerFlame.color1 = new Color4(1, 0.62, 0.12, 0.95);
-    outerFlame.color2 = new Color4(1, 0.17, 0.015, 0.78);
-    outerFlame.colorDead = new Color4(0.28, 0.01, 0, 0);
-    outerFlame.blendMode = ParticleSystem.BLENDMODE_STANDARD;
-    outerFlame.gravity.set(0.04, 0.42, -0.025);
-    outerFlame.updateSpeed = 0.011;
-    outerFlame.addSizeGradient(0, 0.28, 0.42);
-    outerFlame.addSizeGradient(0.28, 1, 1.22);
-    outerFlame.addSizeGradient(0.72, 0.68, 0.9);
-    outerFlame.addSizeGradient(1, 0.05);
+    setEmitterBox(outerFlame, patch.radius * 0.72, -0.08, 0.14);
+    outerFlame.direction1.set(-0.07, 0.08, -0.07);
+    outerFlame.direction2.set(0.07, 0.18, 0.07);
+    outerFlame.minEmitPower = 0.08;
+    outerFlame.maxEmitPower = 0.2;
+    outerFlame.minLifeTime = 1.3;
+    outerFlame.maxLifeTime = 1.75;
+    outerFlame.minSize = 1.5;
+    outerFlame.maxSize = 2.35;
+    outerFlame.minScaleX = 0.78;
+    outerFlame.maxScaleX = 1.16;
+    outerFlame.minScaleY = 1.25;
+    outerFlame.maxScaleY = 1.72;
+    outerFlame.minInitialRotation = -0.12;
+    outerFlame.maxInitialRotation = 0.12;
+    outerFlame.color1 = new Color4(1, 1, 1, 1);
+    outerFlame.color2 = new Color4(1, 1, 1, 1);
+    outerFlame.colorDead = new Color4(1, 1, 1, 0);
+    outerFlame.blendMode = ParticleSystem.BLENDMODE_MULTIPLYADD;
+    outerFlame.gravity.set(0.015, 0.035, -0.01);
+    outerFlame.updateSpeed = 0.016;
+    outerFlame.startSpriteCellID = 0;
+    outerFlame.endSpriteCellID = 63;
+    outerFlame.spriteCellWidth = 128;
+    outerFlame.spriteCellHeight = 128;
+    outerFlame.spriteCellChangeSpeed = 1;
+    outerFlame.spriteCellLoop = true;
+    outerFlame.spriteRandomStartCell = true;
+    outerFlame.preWarmCycles = 28;
+    outerFlame.preWarmStepOffset = 1;
+    outerFlame.addColorGradient(0, new Color4(1, 1, 1, 0));
+    outerFlame.addColorGradient(0.1, new Color4(1, 1, 1, 0.6));
+    outerFlame.addColorGradient(0.9, new Color4(1, 1, 1, 0.6));
+    outerFlame.addColorGradient(1, new Color4(1, 1, 1, 0));
+    outerFlame.addRampGradient(0, new Color3(1, 1, 1));
+    outerFlame.addRampGradient(1, new Color3(0.7968, 0.3685, 0.1105));
+    outerFlame.addColorRemapGradient(0, 0.2, 1);
+    outerFlame.addColorRemapGradient(1, 0.2, 1);
+    outerFlame.useRampGradients = true;
+    softenFlameEdges(outerFlame, scene);
     outerFlame.start();
 
-    const coreFlame = new ParticleSystem(`white hot flame cores ${patch.id}`, 62, scene);
+    const coreFlame = new ParticleSystem(`animated hot flame core ${patch.id}`, 6, scene, undefined, true);
     coreFlame.particleTexture = coreFlameTexture;
     coreFlame.emitter = emitter;
-    setEmitterBox(coreFlame, patch.radius * 0.47, 0, 0.08);
-    coreFlame.direction1.set(-0.1, 1.25, -0.1);
-    coreFlame.direction2.set(0.11, 1.62, 0.1);
-    coreFlame.minEmitPower = 0.45;
-    coreFlame.maxEmitPower = 0.88;
-    coreFlame.minLifeTime = 0.28;
-    coreFlame.maxLifeTime = 0.58;
-    coreFlame.minSize = 0.22;
-    coreFlame.maxSize = 0.58;
-    coreFlame.minScaleX = 0.4;
-    coreFlame.maxScaleX = 0.68;
-    coreFlame.minScaleY = 1.05;
-    coreFlame.maxScaleY = 1.48;
-    coreFlame.minAngularSpeed = -0.28;
-    coreFlame.maxAngularSpeed = 0.28;
-    coreFlame.color1 = new Color4(1, 1, 0.78, 1);
-    coreFlame.color2 = new Color4(1, 0.67, 0.06, 0.94);
-    coreFlame.colorDead = new Color4(1, 0.12, 0, 0);
-    coreFlame.blendMode = ParticleSystem.BLENDMODE_STANDARD;
-    coreFlame.gravity.set(-0.02, 0.32, 0.02);
-    coreFlame.updateSpeed = 0.01;
-    coreFlame.addSizeGradient(0, 0.3);
-    coreFlame.addSizeGradient(0.35, 1);
-    coreFlame.addSizeGradient(1, 0.04);
+    setEmitterBox(coreFlame, patch.radius * 0.55, -0.16, 0.02);
+    coreFlame.direction1.set(-0.035, 0.05, -0.035);
+    coreFlame.direction2.set(0.035, 0.12, 0.035);
+    coreFlame.minEmitPower = 0.04;
+    coreFlame.maxEmitPower = 0.12;
+    coreFlame.minLifeTime = 1.15;
+    coreFlame.maxLifeTime = 1.55;
+    coreFlame.minSize = 1.05;
+    coreFlame.maxSize = 1.72;
+    coreFlame.minScaleX = 0.72;
+    coreFlame.maxScaleX = 1;
+    coreFlame.minScaleY = 1.08;
+    coreFlame.maxScaleY = 1.46;
+    coreFlame.color1 = new Color4(1, 1, 1, 1);
+    coreFlame.color2 = new Color4(1, 1, 1, 1);
+    coreFlame.colorDead = new Color4(1, 1, 1, 0);
+    coreFlame.blendMode = ParticleSystem.BLENDMODE_MULTIPLYADD;
+    coreFlame.gravity.set(-0.01, 0.02, 0.01);
+    coreFlame.updateSpeed = 0.016;
+    coreFlame.startSpriteCellID = 0;
+    coreFlame.endSpriteCellID = 63;
+    coreFlame.spriteCellWidth = 128;
+    coreFlame.spriteCellHeight = 128;
+    coreFlame.spriteCellChangeSpeed = 1.08;
+    coreFlame.spriteCellLoop = true;
+    coreFlame.spriteRandomStartCell = true;
+    coreFlame.preWarmCycles = 24;
+    coreFlame.preWarmStepOffset = 1;
+    coreFlame.addColorGradient(0, new Color4(1, 1, 1, 0));
+    coreFlame.addColorGradient(0.1, new Color4(1, 1, 1, 0.68));
+    coreFlame.addColorGradient(0.9, new Color4(1, 1, 1, 0.68));
+    coreFlame.addColorGradient(1, new Color4(1, 1, 1, 0));
+    coreFlame.addRampGradient(0, new Color3(1, 1, 0.92));
+    coreFlame.addRampGradient(1, new Color3(0.92, 0.49, 0.12));
+    coreFlame.addColorRemapGradient(0, 0.2, 1);
+    coreFlame.addColorRemapGradient(1, 0.2, 1);
+    coreFlame.useRampGradients = true;
+    softenFlameEdges(coreFlame, scene);
     coreFlame.start();
 
-    const smoke = new ParticleSystem(`soft shaped smoke ${patch.id}`, 22, scene);
+    const crownFlame = new ParticleSystem(`animated broken flame crown ${patch.id}`, 5, scene, undefined, true);
+    crownFlame.particleTexture = crownFlameTexture;
+    crownFlame.emitter = emitter;
+    setEmitterBox(crownFlame, patch.radius * 0.64, 0.12, 0.38);
+    crownFlame.direction1.set(-0.08, 0.12, -0.08);
+    crownFlame.direction2.set(0.08, 0.25, 0.08);
+    crownFlame.minEmitPower = 0.08;
+    crownFlame.maxEmitPower = 0.2;
+    crownFlame.minLifeTime = 1.05;
+    crownFlame.maxLifeTime = 1.45;
+    crownFlame.minSize = 1.15;
+    crownFlame.maxSize = 2.05;
+    crownFlame.minScaleX = 0.7;
+    crownFlame.maxScaleX = 1.08;
+    crownFlame.minScaleY = 1.18;
+    crownFlame.maxScaleY = 1.65;
+    crownFlame.color1 = new Color4(1, 1, 1, 1);
+    crownFlame.color2 = new Color4(1, 1, 1, 1);
+    crownFlame.colorDead = new Color4(1, 1, 1, 0);
+    crownFlame.blendMode = ParticleSystem.BLENDMODE_MULTIPLYADD;
+    crownFlame.gravity.set(0.012, 0.05, 0.006);
+    crownFlame.updateSpeed = 0.016;
+    crownFlame.startSpriteCellID = 0;
+    crownFlame.endSpriteCellID = 63;
+    crownFlame.spriteCellWidth = 128;
+    crownFlame.spriteCellHeight = 128;
+    crownFlame.spriteCellChangeSpeed = 0.92;
+    crownFlame.spriteCellLoop = true;
+    crownFlame.spriteRandomStartCell = true;
+    crownFlame.preWarmCycles = 20;
+    crownFlame.preWarmStepOffset = 1;
+    crownFlame.addColorGradient(0, new Color4(1, 1, 1, 0));
+    crownFlame.addColorGradient(0.1, new Color4(1, 1, 1, 0.52));
+    crownFlame.addColorGradient(0.88, new Color4(1, 1, 1, 0.52));
+    crownFlame.addColorGradient(1, new Color4(1, 1, 1, 0));
+    crownFlame.addRampGradient(0, new Color3(1, 0.93, 0.72));
+    crownFlame.addRampGradient(1, new Color3(0.72, 0.24, 0.055));
+    crownFlame.addColorRemapGradient(0, 0.2, 1);
+    crownFlame.addColorRemapGradient(1, 0.2, 1);
+    crownFlame.useRampGradients = true;
+    softenFlameEdges(crownFlame, scene);
+    crownFlame.start();
+
+    const smoke = new ParticleSystem(`soft shaped smoke ${patch.id}`, 30, scene);
     smoke.particleTexture = smokeTexture;
     smoke.emitter = emitter;
-    setEmitterBox(smoke, patch.radius * 0.48, 0.45, 0.85);
+    setEmitterBox(smoke, patch.radius * 0.58, 0.55, 1.05);
     smoke.direction1.set(-0.12, 0.58, -0.08);
     smoke.direction2.set(0.18, 0.9, 0.12);
     smoke.minEmitPower = 0.35;
     smoke.maxEmitPower = 0.65;
     smoke.minLifeTime = 1.5;
     smoke.maxLifeTime = 2.6;
-    smoke.minSize = 0.4;
-    smoke.maxSize = 1.05;
+    smoke.minSize = 1.05;
+    smoke.maxSize = 2.35;
     smoke.minScaleX = 0.75;
     smoke.maxScaleX = 1.18;
     smoke.minScaleY = 0.82;
     smoke.maxScaleY = 1.25;
     smoke.minAngularSpeed = -0.18;
     smoke.maxAngularSpeed = 0.18;
-    smoke.color1 = new Color4(0.2, 0.18, 0.17, 0.2);
-    smoke.color2 = new Color4(0.47, 0.43, 0.4, 0.09);
+    smoke.color1 = new Color4(0.16, 0.135, 0.12, 0.31);
+    smoke.color2 = new Color4(0.36, 0.32, 0.29, 0.18);
     smoke.colorDead = new Color4(0.5, 0.5, 0.5, 0);
     smoke.blendMode = ParticleSystem.BLENDMODE_STANDARD;
     smoke.gravity.set(0.025, 0.08, 0.01);
@@ -293,7 +350,7 @@ export function createFireEffects(scene: Scene): {
     groundMaterial.useAlphaFromDiffuseTexture = true;
     groundMaterial.zOffset = -2;
     ground.material = groundMaterial;
-    return {outerFlame, coreFlame, smoke, embers, light, ground, groundMaterial};
+    return {outerFlame, coreFlame, crownFlame, smoke, embers, light, ground, groundMaterial};
   };
 
   const jetOrigin = new Vector3();
@@ -451,18 +508,23 @@ export function createFireEffects(scene: Scene): {
       const wetness = clamp01(patch.wetness);
       const flicker = 0.88 + 0.12 * Math.sin(t * 12.7 + patch.x * 3.1 + patch.z);
       const secondFlicker = 0.82 + 0.18 * Math.sin(t * 17.3 + patch.x * 1.7 - patch.z * 0.4);
-      effects.outerFlame.emitRate = heat > 0.005 ? 118 * heat * flicker : 0;
-      effects.outerFlame.minSize = 0.22 + heat * 0.18;
-      effects.outerFlame.maxSize = 0.34 + heat * 0.7;
-      effects.outerFlame.maxEmitPower = 0.52 + heat * 0.78;
-      effects.coreFlame.emitRate = heat > 0.015 ? 82 * heat * secondFlicker : 0;
-      effects.coreFlame.minSize = 0.16 + heat * 0.1;
-      effects.coreFlame.maxSize = 0.26 + heat * 0.43;
-      effects.coreFlame.maxEmitPower = 0.38 + heat * 0.58;
-      effects.smoke.emitRate = heat > 0.42 ? 10 * (heat - 0.38) : 0;
+      effects.outerFlame.emitRate = heat > 0.005 ? 6.8 * heat * flicker : 0;
+      effects.outerFlame.minSize = 0.95 + heat * 0.65;
+      effects.outerFlame.maxSize = 1.35 + heat * 1.15;
+      effects.outerFlame.maxEmitPower = 0.06 + heat * 0.15;
+      effects.coreFlame.emitRate = heat > 0.015 ? 4.7 * heat * secondFlicker : 0;
+      effects.coreFlame.minSize = 0.7 + heat * 0.4;
+      effects.coreFlame.maxSize = 0.92 + heat * 0.9;
+      effects.coreFlame.maxEmitPower = 0.035 + heat * 0.1;
+      effects.crownFlame.emitRate = heat > 0.08 ? 3.8 * heat * flicker : 0;
+      effects.crownFlame.minSize = 0.72 + heat * 0.5;
+      effects.crownFlame.maxSize = 1 + heat * 1.16;
+      effects.crownFlame.maxEmitPower = 0.06 + heat * 0.16;
+      effects.smoke.emitRate = heat > 0.35 ? 24 * (heat - 0.3) : 0;
       effects.embers.emitRate = heat > 0.16 ? 7 * heat : 0;
       effects.light.intensity = heat > 0.01 ? heat * (0.48 + 0.13 * flicker + 0.09 * secondFlicker) : 0;
       effects.groundMaterial.alpha = 0.055 + 0.12 * heat + 0.1 * wetness;
+      effects.groundMaterial.emissiveColor.set(0.22 * heat, 0.045 * heat, 0.004 * heat);
       effects.groundMaterial.specularPower = 24 + wetness * 72;
     }
 
@@ -470,6 +532,7 @@ export function createFireEffects(scene: Scene): {
       if (seen.has(id)) continue;
       effects.outerFlame.emitRate = 0;
       effects.coreFlame.emitRate = 0;
+      effects.crownFlame.emitRate = 0;
       effects.smoke.emitRate = 0;
       effects.embers.emitRate = 0;
       effects.light.intensity = 0;
@@ -489,6 +552,7 @@ export function createFireEffects(scene: Scene): {
     for (const effects of patches.values()) {
       effects.outerFlame.dispose();
       effects.coreFlame.dispose();
+      effects.crownFlame.dispose();
       effects.smoke.dispose();
       effects.embers.dispose();
       effects.light.dispose();
@@ -501,6 +565,7 @@ export function createFireEffects(scene: Scene): {
     steam.dispose();
     outerFlameTexture.dispose();
     coreFlameTexture.dispose();
+    crownFlameTexture.dispose();
     smokeTexture.dispose();
     emberTexture.dispose();
     waterTexture.dispose();
