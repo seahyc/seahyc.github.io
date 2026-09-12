@@ -17,3 +17,9 @@ projects-src/reno-atmosphere/.env.local
 # Python verification caches
 __pycache__/
 *.pyc
+
+# Forest Crew runtime sources and generated release output
+!projects-src/forest-crew/*/public/
+!projects-src/forest-crew/*/public/**
+projects-src/forest-crew/*/dist-public/
+.build/

@@ -212,6 +212,15 @@ img { max-width: 100%; height: auto; display: block; }
     opacity: 1;
 }
 
+.project-cover {
+    display: block;
+    width: min(100%, 44rem);
+    aspect-ratio: 16 / 9;
+    margin-bottom: 1rem;
+    object-fit: cover;
+    border: 1px solid var(--border);
+}
+
 .project-row a:hover .project-name {
     color: var(--text);
     text-decoration: underline;

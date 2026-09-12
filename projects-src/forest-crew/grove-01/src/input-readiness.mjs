@@ -1,0 +1,31 @@
+export const MAX_CAPTURE_AGE_MS=1000;
+
+export function shouldDispatchFrame({hidden,workerReady,cameraReady,busy}){
+ return !hidden&&workerReady&&cameraReady&&!busy;
+}
+
+export function classifyTrackerResult({hidden,captureTime,receivedAt,maxCaptureAgeMs=MAX_CAPTURE_AGE_MS}){
+ if(hidden)return {accept:false,reason:'document-hidden',ageMs:null};
+ if(!Number.isFinite(captureTime)||!Number.isFinite(receivedAt))return {accept:false,reason:'invalid-timestamp',ageMs:null};
+ const ageMs=receivedAt-captureTime;
+ if(ageMs<0)return {accept:false,reason:'future-timestamp',ageMs};
+ if(ageMs>maxCaptureAgeMs)return {accept:false,reason:'capture-too-old',ageMs};
+ return {accept:true,reason:ageMs>220?'late-inference':'fresh',ageMs};
+}
+
+export function readinessReason({hidden,cameraReady,workerReady,busy,lastDispatchAgeMs,lastResultAgeMs,rawHands,sampledHands}){
+ if(hidden)return 'document-hidden';
+ if(!cameraReady)return 'camera-not-decoding';
+ if(!workerReady)return 'worker-not-ready';
+ if(busy&&lastDispatchAgeMs>2500)return 'worker-stalled';
+ if(!Number.isFinite(lastResultAgeMs))return 'awaiting-first-result';
+ if(lastResultAgeMs>220)return 'result-stale';
+ if(rawHands===0)return 'no-hands-detected';
+ if(sampledHands===0)return 'landmarks-invalid';
+ return 'hands-ready';
+}
+
+export function framingPrompt(rawHands){
+ const count=Number.isFinite(rawHands)?Math.max(0,Math.min(2,Math.trunc(rawHands))):0;
+ return `Show both hands at chest height · ${count}/2 detected`;
+}
