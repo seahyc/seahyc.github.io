@@ -14,6 +14,30 @@ theme = "aerostatic"
 [fieldbook.illustrations.cover]
 src = "/images/aerostatic-stage-cover.png"
 alt = "A precision motion table floating on a thin film of air above a granite base"
+
+[fieldbook.illustrations."01-the-table-that-never-touches"]
+src = "/images/aerostatic-air-film-cross-section.svg"
+alt = "Cross-section diagram showing compressed air feeding opposed bearing pads that support a moving carriage without contact"
+
+[fieldbook.illustrations."04-the-lithography-trap"]
+src = "/images/aerostatic-wedge-architecture.svg"
+alt = "Comparison diagram separating an integrated magnetic lithography stage from a qualification-led aerostatic packaging module"
+
+[fieldbook.illustrations."07-the-room-is-part-of-the-machine"]
+src = "/images/aerostatic-environment-error-budget.svg"
+alt = "Environmental error-budget diagram linking temperature, vibration, air quality, particles, and ESD to measured stage uncertainty"
+
+[fieldbook.illustrations."10-the-moat-is-trust"]
+src = "/images/aerostatic-trust-stack.svg"
+alt = "Layered diagram showing how a bearing idea becomes a trusted motion module through metrology, qualification, integration, and service"
+
+[fieldbook.illustrations."13-the-first-ninety-days"]
+src = "/images/aerostatic-90-day-gates.svg"
+alt = "Ninety-day discovery flow from learning the error budget to buyer calls and a paid feasibility experiment"
+
+[fieldbook.illustrations."16-nre-make-buy-and-the-service-business"]
+src = "/images/aerostatic-make-buy-service-flow.svg"
+alt = "Decision flow showing when to partner for components and capability, then make in-house only after paid repeat demand and measured bottlenecks"
 +++
 
 # THE TABLE THAT FLOATS

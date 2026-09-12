@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Cooling safety stack and ownership boundaries</title>
+  <desc id="desc">Layered view from cold plate and tray sensors to rack, CDU and facility controls, with the startup's component boundary marked.</desc>
+  <defs><style>
+    .ink{fill:#27231e;stroke:#27231e;stroke-linecap:round;stroke-linejoin:round}.muted{fill:#81766a}.label{font:600 22px Arial,Helvetica,sans-serif;letter-spacing:1px}.small{font:21px Georgia,serif}.edge{fill:none;stroke:#9d4c3f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  </style></defs>
+  <g transform="rotate(1 600 360)">
+    <text x="82" y="95" class="label muted">ONE PLATE · MANY SAFETY OWNERS</text>
+    <path d="M83 145h1032" stroke="#81766a" stroke-width="3" stroke-dasharray="3 13"/>
+    <rect x="118" y="188" width="964" height="86" rx="17" fill="#e7bd91" stroke="#9d4c3f" stroke-width="4"/>
+    <text x="600" y="227" text-anchor="middle" class="label ink">TRAY · COLD PLATE + INNER MANIFOLD</text><text x="600" y="258" text-anchor="middle" class="small muted">temperature / leak sensing at the component boundary</text>
+    <path d="M600 276v34" class="edge"/>
+    <rect x="118" y="310" width="964" height="86" rx="17" fill="#d3c4aa" stroke="#81766a" stroke-width="4"/>
+    <text x="600" y="349" text-anchor="middle" class="label ink">RACK · SENSING ROPE + SPOT SENSORS</text><text x="600" y="380" text-anchor="middle" class="small muted">isolate liquid and power through the rack/BMS path</text>
+    <path d="M600 398v34" class="edge"/>
+    <rect x="118" y="432" width="964" height="86" rx="17" fill="#b7d5d0" stroke="#28625d" stroke-width="4"/>
+    <text x="600" y="471" text-anchor="middle" class="label ink">CDU · FACILITY WATER · MANAGEMENT</text><text x="600" y="502" text-anchor="middle" class="small muted">redundancy, alarms, commissioning and residual air load</text>
+    <path d="M72 170v370M72 170h30M72 540h30" stroke="#9d4c3f" stroke-width="5" fill="none"/><text x="54" y="370" transform="rotate(-90 54 370)" text-anchor="middle" class="label muted">STARTUP OWNS TESTED COMPONENT EVIDENCE</text>
+    <path d="M118 584h964" stroke="#81766a" stroke-width="2" stroke-dasharray="2 12"/><text x="118" y="636" class="small muted">System success still depends on the integrator's interfaces, controls, service plan and contract boundary.</text>
+  </g>
+</svg>

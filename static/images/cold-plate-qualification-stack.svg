@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Cold-plate qualification evidence stack</title>
+  <desc id="desc">A three-level stack links customer platform inputs to controlled processes and serialised release evidence.</desc>
+  <defs><style>
+    .ink{fill:#27231e;stroke:#27231e;stroke-linecap:round;stroke-linejoin:round}.muted{fill:#81766a}.label{font:600 24px Arial,Helvetica,sans-serif;letter-spacing:1px}.small{font:22px Georgia,serif}.line{fill:none;stroke:#9d4c3f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  </style><marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 11 6 1 11Z" fill="#9d4c3f"/></marker></defs>
+  <g transform="rotate(1 600 360)">
+    <path d="M78 95c210-24 422 18 642-3s313 0 405 18" fill="none" stroke="#81766a" stroke-width="3" stroke-dasharray="3 13"/>
+    <text x="90" y="153" class="label muted">01 · SPECIFY</text>
+    <rect x="80" y="177" width="300" height="180" rx="18" fill="#e7bd91" stroke="#9d4c3f" stroke-width="4"/>
+    <text x="230" y="222" text-anchor="middle" class="label ink">PLATFORM INPUTS</text>
+    <text x="115" y="267" class="small ink">package + TIM</text><text x="115" y="301" class="small ink">heat / flow / pressure</text><text x="115" y="335" class="small ink">fluid + service limits</text>
+    <path d="M382 268h86" class="line"/>
+    <text x="495" y="153" class="label muted">02 · CONTROL</text>
+    <rect x="480" y="177" width="300" height="180" rx="18" fill="#d3c4aa" stroke="#81766a" stroke-width="4"/>
+    <text x="630" y="222" text-anchor="middle" class="label ink">PROCESS LOCK</text>
+    <text x="515" y="267" class="small ink">alloy + temper traceability</text><text x="515" y="301" class="small ink">joining parameters + FMEA</text><text x="515" y="335" class="small ink">clean assembly + calibration</text>
+    <path d="M782 268h86" class="line"/>
+    <text x="895" y="153" class="label muted">03 · RELEASE</text>
+    <rect x="880" y="177" width="240" height="180" rx="18" fill="#b7d5d0" stroke="#28625d" stroke-width="4"/>
+    <text x="1000" y="222" text-anchor="middle" class="label ink">EVIDENCE PACK</text>
+    <text x="910" y="267" class="small ink">leak + flow</text><text x="910" y="301" class="small ink">thermal + flatness</text><text x="910" y="335" class="small ink">serial record + sign-off</text>
+    <path d="M230 357v83M630 357v83M1000 357v83" class="line"/>
+    <rect x="195" y="460" width="870" height="103" rx="18" fill="#f5e7d1" stroke="#9d4c3f" stroke-width="4"/>
+    <text x="630" y="505" text-anchor="middle" class="label ink">QUALIFIED PLATFORM SLOT</text><text x="630" y="540" text-anchor="middle" class="small muted">a buyer can install, service, and audit the result</text>
+    <path d="M80 643h1040" stroke="#81766a" stroke-width="2" stroke-dasharray="2 12"/><text x="80" y="683" class="small muted">Demand becomes real when the input sheet and acceptance method are paid and named.</text>
+  </g>
+</svg>

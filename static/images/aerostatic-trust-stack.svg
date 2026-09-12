@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Trust stack for a motion module</title>
+  <desc id="desc">A staircase from the air-bearing concept to a qualified, serviceable motion module. Each layer removes a different customer risk.</desc>
+  <g font-family="Arial,Helvetica,sans-serif" fill="#27231e">
+    <text x="55" y="56" font-size="28" font-weight="700" letter-spacing="2">THE MOAT IS THE STACK AROUND THE BEARING</text><text x="56" y="88" font-size="18" fill="#81766a">A customer buys a controlled risk boundary, not a friction coefficient.</text>
+    <g stroke="#27231e" stroke-width="4"><path d="M96 623H1062L1010 522H148Z" fill="#8e8578"/><path d="M148 504H959L910 417H197Z" fill="#a86e58"/><path d="M197 399H856L811 324H242Z" fill="#c4d9d3"/><path d="M242 306H753L709 230H286Z" fill="#d9c8b1"/><path d="M286 212H646L613 152H320Z" fill="#e4c9ac"/></g>
+    <g font-size="22" font-weight="700"><text x="375" y="188">bearing concept</text><text x="346" y="280">integrated motion</text><text x="376" y="374">metrology + map</text><text x="364" y="483" fill="#fff">customer qualification</text><text x="405" y="591" fill="#fff">service + uptime</text></g>
+    <g font-size="16" fill="#81766a"><text x="820" y="180">low friction</text><text x="887" y="272">motor / encoder / control</text><text x="880" y="365">traceable data</text><text x="926" y="474">witnessed ICD test</text><text x="912" y="579" fill="#f3eadb">spares / recovery / response</text></g>
+    <path d="M1050 570C1107 519 1107 250 1054 193" fill="none" stroke="#9d4c3f" stroke-width="5"/><path d="M1054 193L1042 218M1054 193L1029 201" stroke="#9d4c3f" stroke-width="5"/>
+    <text x="1057" y="335" font-size="18" fill="#9d4c3f" transform="rotate(90 1057 335)">customer risk decreases as evidence accumulates</text><text x="96" y="692" font-size="19" fill="#9d4c3f" font-weight="700">Trust is cumulative: skip a layer and the buyer inherits the uncertainty.</text>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Qualification wedge between platform, manufacturer, and integrator</title>
+  <desc id="desc">A narrow founder-owned evidence layer connects a platform owner and contract manufacturer to a rack integrator and paid pilot lot.</desc>
+  <defs><style>
+    .ink{fill:#27231e;stroke:#27231e;stroke-linecap:round;stroke-linejoin:round}.muted{fill:#81766a}.label{font:600 23px Arial,Helvetica,sans-serif;letter-spacing:1px}.small{font:22px Georgia,serif}.line{fill:none;stroke:#9d4c3f;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  </style><marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 11 6 1 11Z" fill="#9d4c3f"/></marker></defs>
+  <g transform="rotate(-1 600 350)">
+    <path d="M72 100c260-25 478 14 700-5s286 2 360 19" fill="none" stroke="#81766a" stroke-width="3" stroke-dasharray="3 13"/>
+    <rect x="80" y="183" width="247" height="165" rx="19" fill="#e7bd91" stroke="#9d4c3f" stroke-width="4"/>
+    <text x="203" y="229" text-anchor="middle" class="label ink">PLATFORM OWNER</text><text x="115" y="274" class="small ink">real package + TIM</text><text x="115" y="310" class="small ink">load / fluid / limits</text>
+    <rect x="873" y="183" width="247" height="165" rx="19" fill="#d3c4aa" stroke="#81766a" stroke-width="4"/>
+    <text x="996" y="229" text-anchor="middle" class="label ink">CONTRACT MAKER</text><text x="908" y="274" class="small ink">machining + joining</text><text x="908" y="310" class="small ink">controlled lot</text>
+    <path d="M330 264h168" class="line"/><path d="M870 264H702" class="line"/>
+    <path d="M500 146 700 146 760 403 440 403z" fill="#b7d5d0" stroke="#28625d" stroke-width="5"/>
+    <text x="600" y="218" text-anchor="middle" class="label ink">FOUNDER-OWNED</text><text x="600" y="255" text-anchor="middle" class="label ink">QUALIFICATION</text>
+    <text x="600" y="303" text-anchor="middle" class="small ink">DFM · BOM · fixtures</text><text x="600" y="335" text-anchor="middle" class="small ink">leak / flow / thermal records</text><text x="600" y="367" text-anchor="middle" class="small ink">service + provenance</text>
+    <path d="M600 407v65" class="line"/>
+    <rect x="338" y="493" width="524" height="98" rx="18" fill="#f5e7d1" stroke="#9d4c3f" stroke-width="4"/>
+    <text x="600" y="535" text-anchor="middle" class="label ink">PAID PILOT LOT</text><text x="600" y="570" text-anchor="middle" class="small muted">customer-owned acceptance, serialised evidence</text>
+    <text x="80" y="658" class="small muted">The wedge is the evidence that lets metal move safely between organisations.</text>
+  </g>
+</svg>

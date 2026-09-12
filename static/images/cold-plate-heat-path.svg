@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Heat path through a liquid-cooled accelerator rack</title>
+  <desc id="desc">A schematic from an accelerator die through thermal interface material and a cold plate into the rack liquid loop and facility heat rejection.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 11 6 1 11Z" fill="#9d4c3f"/></marker>
+    <style>
+      .ink{fill:#27231e;stroke:#27231e;stroke-linecap:round;stroke-linejoin:round}.muted{fill:#81766a}.label{font:600 25px Arial,Helvetica,sans-serif;letter-spacing:1px}.small{font:22px Georgia,serif}.flow{fill:none;stroke:#9d4c3f;stroke-width:6;marker-end:url(#arrow);stroke-linecap:round;stroke-linejoin:round}.cool{fill:#b7d5d0;stroke:#28625d;stroke-width:4}.warm{fill:#e7bd91;stroke:#9d4c3f;stroke-width:4}
+    </style>
+  </defs>
+  <g transform="rotate(-1 600 340)">
+    <path d="M78 118 C250 82 425 103 575 91 S900 95 1128 120" fill="none" stroke="#81766a" stroke-width="3" stroke-dasharray="3 14" opacity=".7"/>
+    <rect x="70" y="164" width="230" height="150" rx="20" class="warm"/>
+    <path d="M108 223h154M108 255h154M145 181v116M200 181v116" fill="none" stroke="#9d4c3f" stroke-width="3" opacity=".65"/>
+    <text x="185" y="205" text-anchor="middle" class="label ink">ACCELERATOR</text><text x="185" y="344" text-anchor="middle" class="small muted">heat starts here</text>
+    <path d="M300 240h78" class="flow"/>
+    <rect x="386" y="191" width="122" height="98" rx="13" fill="#f5e7d1" stroke="#81766a" stroke-width="4"/>
+    <text x="447" y="230" text-anchor="middle" class="label ink">TIM</text><text x="447" y="321" text-anchor="middle" class="small muted">defined load</text>
+    <path d="M508 240h74" class="flow"/>
+    <path d="M591 170h245v142H591z" class="cool"/>
+    <path d="M620 207c55-42 79 45 133 0s79 45 133 0M620 252c55-42 79 45 133 0s79 45 133 0" fill="none" stroke="#28625d" stroke-width="5"/>
+    <text x="714" y="300" text-anchor="middle" class="label ink">COLD PLATE</text><text x="714" y="352" text-anchor="middle" class="small muted">channels carry coolant</text>
+    <path d="M836 240h80" class="flow"/>
+    <rect x="924" y="164" width="206" height="150" rx="20" fill="#d3c4aa" stroke="#81766a" stroke-width="4"/>
+    <path d="M958 205h138v35H958zM958 258h138v35H958z" fill="#f5e7d1" stroke="#81766a" stroke-width="3"/>
+    <text x="1027" y="187" text-anchor="middle" class="label ink" font-size="20">RACK LOOP</text><text x="1027" y="357" text-anchor="middle" class="small muted">manifold · QD · CDU</text>
+    <path d="M1027 314v89c0 32-31 51-72 51H266c-62 0-88-25-88-75v-65" class="flow"/>
+    <path d="M286 445h280" class="flow"/>
+    <rect x="607" y="395" width="255" height="105" rx="18" fill="#dce6d2" stroke="#54724c" stroke-width="4"/>
+    <text x="734" y="435" text-anchor="middle" class="label ink" font-size="21">HEAT REJECTION</text><text x="734" y="474" text-anchor="middle" class="small muted">facility side / CDU</text>
+    <text x="80" y="603" class="small muted">The sale is a controlled path, not a block of copper.</text>
+  </g>
+</svg>

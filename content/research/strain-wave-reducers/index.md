@@ -14,6 +14,38 @@ theme = "strain-wave"
 [fieldbook.illustrations.cover]
 src = "/images/harmonic-drive-cover.png"
 alt = "A hand-drawn strain-wave reducer with an elliptical wave generator inside a thin flexspline"
+
+[fieldbook.illustrations."02-the-mechanism"]
+src = "/images/strain-wave-mechanism.png"
+alt = "Cutaway diagram showing the elliptical wave generator deforming the flexspline into two engagement zones inside the circular spline"
+
+[fieldbook.illustrations."05-the-material-and-fatigue-moat"]
+src = "/images/strain-wave-fatigue.png"
+alt = "Cutaway showing tooth-root, flexspline cup and diaphragm, and wave-generator bearing risk zones that couple material, lubrication, geometry, and load spectrum"
+
+[fieldbook.illustrations."07-the-outsourced-pilot"]
+src = "/images/strain-wave-pilot-flow.png"
+alt = "Traceability flow from a frozen customer specification through supplier audits and pilot lots to calibrated measurement, teardown, and a signed decision"
+
+[fieldbook.illustrations."08-what-the-economics-actually-say"]
+src = "/images/strain-wave-economics.png"
+alt = "Scenario bars splitting reducer selling price into manufacturing, test and quality reserve, with contribution per unit labeled for low, base, and high cases"
+
+[fieldbook.illustrations."10-the-12-24-month-attack"]
+src = "/images/strain-wave-scale-gates.png"
+alt = "Twelve-to-twenty-four-month path from customer specification through pilot evidence and design-in to scale, with measurable go or stop gates"
+
+[fieldbook.illustrations."13-the-founder-s-ladder"]
+src = "/images/strain-wave-ladder.png"
+alt = "Four-step development ladder from polymer demonstrator through engineering mule and pilot article to customer qualification article"
+
+[fieldbook.illustrations."14-the-rig-must-be-boring"]
+src = "/images/strain-wave-rig.png"
+alt = "Guarded endurance test cell showing motor, reducer, load, sensors, recorder, and an independent emergency-stop safety loop"
+
+[fieldbook.illustrations."16-own-the-evidence-before-the-factory"]
+src = "/images/strain-wave-bottleneck.png"
+alt = "Three-stage ownership plan moving from outsourced manufacturing to in-house measurement and selective capital expenditure at the demonstrated bottleneck"
 +++
 
 # THE JOINT THAT HAS TO SURVIVE
