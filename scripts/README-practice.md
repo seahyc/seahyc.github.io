@@ -81,3 +81,9 @@ Every coding exercise must have an entry in `static/practice/examples.json`. The
 `node --test scripts/explorer.test.mjs` enforces complete catalog coverage and input/output contracts. `python3 scripts/verify-explorer-examples.py` checks starter interfaces and all variant examples against reference fixtures. `python3 scripts/verify-runner.py` executes the actual runner Python, covering arguments, async callbacks, object state, errors and output bounds.
 
 CI additionally runs `node scripts/browser-explorer.mjs` after `npx playwright install --with-deps chromium`. This test owns an ephemeral localhost server and fresh browser contexts; it cannot use production learning state. It checks every exercise panel, real edited-code execution, invalid inputs, unchanged learning evidence, official test counts and the next-step action. New exercises without working explorer metadata fail CI.
+
+## Publishing availability
+
+Coding practice uses `visibility: unlisted`: its direct URL remains available, while its project card and sitemap entries are omitted. `private` removes both the project page and linked runtime route; do not use it for an accessible practice path. Unlisted is discoverability control, not authentication.
+
+After Hugo and both cleanup steps, deployment runs `node scripts/verify-practice-publication.mjs public` before uploading. It requires the path, editor and runtime assets in the actual published artifact. `node --test scripts/practice-publication.test.mjs` covers preservation of practice, pruning of private routes and rejection of a missing path.
