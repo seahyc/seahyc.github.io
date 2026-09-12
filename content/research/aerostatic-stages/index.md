@@ -207,6 +207,62 @@ The wedge is disproved if three OEMs prefer existing stages at lower total cost;
 
 That is a good opportunity shape: ambitious enough to matter, narrow enough to test, and honest enough to stop.
 
+## 13 · The first ninety days
+
+# LEARN, THEN ASK FOR THE DRAWING
+
+The follow-up execution is not “buy a cell and start machining.” It is a short learning path that turns a vague precision idea into a paid, falsifiable specification.
+
+**Days 0–30 — learn the language.** I would study preload, restrictor flow, servo following error, thermal expansion, uncertainty, and service economics. Then I would speak with motion-control engineers, metrologists, and tool-service engineers and map 20 packaging/metrology OEMs and integrators. The output is a glossary, a hypothesis tree, a draft error-budget packet, and a shortlist of safe partner labs. If three experts cannot point to a motion metric that could affect yield, throughput, uptime, or lead time, I stop the air-bearing thesis—not the learning.
+
+**Days 31–60 — ask buyers, not the internet.** Run ten technical discovery calls. Ask for an anonymised payload, travel, duty cycle, trajectory, air/vacuum state, incumbent architecture, acceptance test, service burden, and procurement owner. Obtain five comparable incumbent quotes or catalog alternatives. A polite “interesting” is not urgency. I need a measurable problem and a named acceptance owner.
+
+**Days 61–90 — sell the experiment.** Convert the strongest packet into a statement of work: deliverables, customer inputs, safety boundary, test method, acceptance criteria, IP, change control, and payment milestones. Audit a candidate host and line up external accredited metrology. I only build a demonstrator with paid feasibility NRE (a planning placeholder is $25k–$60k, not a market quote) or equivalent customer-funded access.
+
+The first proof is therefore a signed specification and paid test—not a beautiful CAD model.
+
+## 14 · The buyer packet
+
+# FIND THE ERROR BUDGET OWNER
+
+The customer is one equipment team with one process constraint. The discovery packet should force clarity:
+
+| Buyer | Questions | Evidence before proposal |
+|---|---|---|
+| Tool OEM systems engineer | Which axis, payload, trajectory, and process step are constrained? Which error term fails? | Anonymised ICD, trajectory, payload, air/vacuum state, and acceptance test. |
+| Fab/OSAT process owner | Is the excursion motion-related rather than optics, recipe, warpage, chemistry, or software? What correlation matters? | Baseline data, measurand/datum, uncertainty budget, and witness-test owner. |
+| Manufacturing/quality | What inspection, calibration, FMEA, traceability, ESD/EMC, particle, and change-control records are mandatory? | Supplier-quality checklist and sample report pack. ISO 9001 is a quality-management framework, not stage qualification ([ISO 9001](https://www.iso.org/standard/9001)). |
+| Service/operations | What does air, encoder, pad, or controller failure do to the tool? How fast must a spare arrive? | Failure modes, landing/recovery procedure, spare policy, response-time and uptime target. |
+| Procurement/finance | Is the choice about price, lead time, single-source risk, service, or compliance? Who funds NRE? | Incumbent TCO/lead-time comparison, NRE terms, warranty boundary, and design-change owner. |
+
+The packet records travel, speed, acceleration, duty cycle, settling definition, straightness/flatness/pitch/yaw/roll, temperature, vibration, pressure, particle, ESD/EMC, cleanliness, calibration method, uncertainty, controller ownership, uptime, spares, and service. “Nanometer” is not a requirement until the measurand, datum, bandwidth, payload, and test method are named.
+
+## 15 · Demonstrator to qualified module
+
+# MEASURE SAFELY, THEN MAKE THE CLAIM
+
+The first hardware is a guarded, low-energy engineering demonstrator with an inert payload. It can use rented instruments and report repeatability and error trends as engineering data. It does not touch production substrates, run unreviewed high pressure or vacuum, or claim lithography performance.
+
+A qualified module is different: it meets a customer ICD under stated payload and trajectory, uses calibrated instruments with a traceable uncertainty budget, survives the agreed pressure-loss/power-loss behavior, and ships with serialised calibration, FMEA, change control, and service documentation. ISO/IEC 17025 describes competence, impartiality, and consistent operation for testing and calibration laboratories ([ISO/IEC 17025](https://www.iso.org/standard/66912.html)); ILAC says the accreditation scope must cover the specific calibration ([ILAC P10](https://ilac.org/?ddownload=123220)). SAC-SINGLAS and Malaysia’s SAMM are regional routes, but each certificate is scope-specific ([SAC](https://www.sac-accreditation.gov.sg/services/accreditation-services/laboratories/), [Standards Malaysia](https://www.jsm.gov.my/component/content/article/252-skim-akreditasi-makmal-malaysia-samm?Itemid=448&catid=12&highlight=WyJzYW1tIiwiYWNjcmVkaXRlZCIsImxhYm9yYXRvcnkiLCJtYWxheXNpYSJd)).
+
+Thermal and contouring tests should be agreed before design freeze. ISO 230-3 covers environmental temperature variation and thermal distortion of moving axes; ISO 230-4 covers circular and coordinated-axis contouring tests ([ISO 230-3](https://www.iso.org/standard/73291.html), [ISO 230-4](https://www.iso.org/standard/79155.html)). The test setup, uncertainty, and customer witness matter more than a screenshot of a controller.
+
+Safety is a hard boundary. Pressure relief, guarding, interlocks, emergency landing, and power-loss behavior need a documented hazard review. ISO 12100 provides a machinery risk-assessment framework, and ISO 13849-1 addresses safety-related control-system design ([ISO 12100](https://www.iso.org/standard/51528.html), [ISO 13849-1](https://www.iso.org/standard/73481.html)). I would not recommend casual DIY high-energy, high-pressure, vacuum, or high-speed precision machinery.
+
+## 16 · NRE, make/buy, and the service business
+
+# EARN THE RIGHT TO OWN THE CELL
+
+Quote the work in paid stages: discovery/ICD ($5k–$15k planning placeholder), feasibility/design ($25k–$60k), prototype and witnessed test ($80k–$200k), then qualification and sustaining service. Each SOW names customer-furnished data, excluded claims, pressure and energy limits, instrument responsibility, acceptance and retest rules, IP, warranty, and the payment event. A free prototype before an acceptance owner shares the risk is a bad business.
+
+Buy or partner for air pads, restrictors, motors, encoders, precision bases, and calibration while volume and yield are unknown. Consider making a component only when a paid platform repeats across customers, the supplier’s yield or lead time is the bottleneck, the process is measurable in-house, and the utilisation pays for the tooling. Cost-down starts with removing specification ambiguity and rework; only then test rough/finish supplier separation, near-net-shape processes, in-line metrology, or upstream material contracts. Gemini’s cost-down sequence is a useful hypothesis, not evidence of Chinese parity.
+
+The service ledger is part of the product: uptime, mean time to repair, intervention hours, spare-pad/encoder/controller lead time, calibration interval, safe landing recovery, warranty reserve, and return-material analysis. SEMI E10 offers a common RAM/utilisation vocabulary for supplier-user performance and service negotiations ([SEMI E10](https://www.semi.org/en/standards-watch-2021March/e-ramp-standard-updated)); it does not provide a target for this stage.
+
+At every review, compare air against crossed-roller, magnetic, voice-coil, and hybrid alternatives on error budget, stiffness, vacuum/cleanliness, fail-safe behavior, installed cost, lead time, service, and qualification time. If a hybrid wins the customer’s budget, sell the hybrid or stop. The company’s job is to remove process risk, not to defend an air-bearing identity.
+
+The final captive-cell gate is evidence: a paid specification, safe demonstrator, external metrology path, witnessed acceptance test, repeat demand, and a host audit covering floor spectrum, temperature, air, particles, ESD, calibration scope, data control, insurance, and liability. Until then, rent capability.
+
 ### Research receipts
 
 - [TSMC 2024 Annual Report](https://investor.tsmc.com/static/annualReports/2024/english/index.html)
@@ -226,3 +282,12 @@ That is a good opportunity shape: ambitious enough to matter, narrow enough to t
 - [Newport SinguLYS S-370](https://www.newport.com/p/SinguLYS-S-370)
 - [ALIO air-bearing systems](https://alioindustries.com/air-bearing-systems/)
 - [IBS air-bearing application guide](https://www.ibspe.com/hubfs/Documents/Knowledge%20library/04.0%20Components/401%20Air%20Bearing%20Application%20Guide.pdf)
+- [ISO/IEC 17025 testing and calibration laboratories](https://www.iso.org/standard/66912.html)
+- [ILAC MRA and Signatories](https://ilac.org/ilac-mra-and-signatories/)
+- [Singapore Accreditation Council laboratories](https://www.sac-accreditation.gov.sg/services/accreditation-services/laboratories/)
+- [Standards Malaysia SAMM](https://www.jsm.gov.my/component/content/article/252-skim-akreditasi-makmal-malaysia-samm?Itemid=448&catid=12&highlight=WyJzYW1tIiwiYWNjcmVkaXRlZCIsImxhYm9yYXRvcnkiLCJtYWxheXNpYSJd)
+- [ISO 230-3 thermal effects](https://www.iso.org/standard/73291.html)
+- [ISO 230-4 circular tests](https://www.iso.org/standard/79155.html)
+- [ISO 12100 machinery risk assessment](https://www.iso.org/standard/51528.html)
+- [ISO 13849-1 safety-related control systems](https://www.iso.org/standard/73481.html)
+- [SEMI E10 RAM and utilization](https://www.semi.org/en/standards-watch-2021March/e-ramp-standard-updated)
