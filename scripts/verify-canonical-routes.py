@@ -93,6 +93,12 @@ if hand_walk.exists():
     if "Hand Walk — Follow me" not in hand_walk_html or "/making/hand-walk/assets/" not in hand_walk_html:
         errors.append("/making/hand-walk/: canonical route does not contain the deployed game")
 
+forest_crew = output("/making/forest-crew-grove-01/")
+if forest_crew.exists():
+    forest_crew_html = forest_crew.read_text()
+    if "Forest Crew" not in forest_crew_html:
+        errors.append("/making/forest-crew-grove-01/: canonical route does not contain the deployed game")
+
 if errors:
     raise SystemExit("Canonical route verification failed:\n- " + "\n- ".join(errors))
 

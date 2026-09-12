@@ -54,6 +54,10 @@ jobs:
           && sudo dpkg -i ${{ runner.temp }}/hugo.deb
       - name: Install planner build dependencies
         run: npm ci
+      - name: Verify Forest Crew publication manifests
+        run: node scripts/publish-forest-crew.mjs check
+      - name: Build Forest Crew milestone releases
+        run: node scripts/publish-forest-crew.mjs build
       - name: Build retirement planner bundle
         run: npm run build:retirement-planning
       - name: Build renovation field notes
@@ -108,12 +112,16 @@ jobs:
           cp -R public/projects/family-road-book/. public/making/family-road-book/
           cp -R .build/hand-walk/dist-public/. public/making/hand-walk/
           rsync -a --exclude index.html public/projects/retirement-planning/ public/making/retirement-planning/
+      - name: Publish Forest Crew milestone releases
+        run: node scripts/publish-forest-crew.mjs publish public
       - name: Prune non-runtime planner sources from public
         run: node projects-src/retirement-planning/prune-public.mjs
       - name: Prune private projects from public
         run: node scripts/prune-private-projects.mjs
       - name: Verify canonical routes and legacy aliases
         run: python3 scripts/verify-canonical-routes.py public
+      - name: Verify Forest Crew publication privacy boundary
+        run: node scripts/verify-forest-crew-publication.mjs public
       - name: Verify published practice routes after cleanup
         run: node scripts/verify-practice-publication.mjs public
       - name: Upload artifact
