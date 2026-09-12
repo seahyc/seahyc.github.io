@@ -305,6 +305,16 @@ The following remain boundaries, not facts: actual market share, ASPs, lead time
 | S26 | SEMI E78 addresses equipment ESD/ESA and particle attraction risk. | Fact; high | https://store-us.semi.org/products/e07800-semi-e78-guide-to-assess-and-control-electrostatic-discharge-esd-and-electrostatic-attraction-esa-for-equipment | SEMI paid product page | Relevant equipment qualification dimension. | Full guide is paid; no customer limit. | ESD/EMC test failure blocks deployment. |
 | S27 | IEST RP-CC024 covers vibration measurement/reporting in microelectronics/metrology facilities. | Fact; medium | https://www.iest.org/Standards-RPs/Recommended-Practices/IEST-RP-CC024 | Standards body page | Vibration is a measured facility variable. | Recommended practice, not performance requirement. | Floor spectrum outside budget; host rejected. |
 | S28 | Multi-DOF air-bearing error motions can be measured and angular errors may dominate. | Fact; medium | https://www.sciencedirect.com/science/article/abs/pii/S0141635905000978 | Abstract; 403/paywall | Directly supports error-motion focus. | Full paper inaccessible; no numeric use beyond abstract. | Independent test required before design freeze. |
+| S29 | ISO/IEC 17025 sets competence, impartiality, and consistent-operation requirements for testing and calibration laboratories. | Fact; high | https://www.iso.org/standard/66912.html | Official ISO page | Basis for choosing an external calibration/testing partner. | Accreditation is scope-specific; it does not prove the lab can measure this stage. | Partner scope/uncertainty does not cover the measurand; reject the lab. |
+| S30 | ILAC MRA recognition depends on an accreditation body’s peer evaluation and a laboratory’s relevant accredited scope. | Fact; high | https://ilac.org/ilac-mra-and-signatories/ and https://ilac.org/?ddownload=123220 | ILAC pages/P10 guidance | International recognition and traceability route. | Does not set the customer’s acceptance limit or make an unsuitable method suitable. | Certificate lacks relevant scope, mark, or traceability statement; use another lab. |
+| S31 | SAC-SINGLAS assesses technical competence and grants reports only for specific accredited tests/calibrations. | Fact; high | https://www.sac-accreditation.gov.sg/services/accreditation-services/laboratories/ | Singapore government accreditation body | A concrete regional route for external metrology. | No claim that a particular stage calibration is in the directory. | Host cannot show exact scope and current certificate. |
+| S32 | Malaysia’s SAMM scheme covers testing and calibration under MS ISO/IEC 17025 and pursues international acceptance through ILAC/APAC arrangements. | Fact; high | https://www.jsm.gov.my/component/content/article/252-skim-akreditasi-makmal-malaysia-samm?Itemid=448&catid=12&highlight=WyJzYW1tIiwiYWNjcmVkaXRlZCIsImxhYm9yYXRvcnkiLCJtYWxheXNpYSJd | Standards Malaysia page | A Penang/Malaysia search route for accredited labs. | Scheme existence is not proof of a local lab’s length/angle/force scope. | No matching scope or available booking; use Singapore/NMI/other ILAC route. |
+| S33 | ISO 230-3 defines tests for environmental temperature variation and thermal distortion of moving axes. | Fact; high | https://www.iso.org/standard/73291.html | Official ISO page | A public test-method anchor for thermal drift and compensation uncertainty. | Full standard is paid; not a customer-specific acceptance limit. | Requirements cannot be mapped to a reproducible test; negotiate the method before design freeze. |
+| S34 | ISO 230-4 specifies tests for bi-directional circular, radial, and coordinated-axis contouring errors. | Fact; high | https://www.iso.org/standard/79155.html | Official ISO page | A public test-method anchor for multi-axis demonstrator behavior. | Full standard is paid; circular performance is not the complete process error budget. | Test setup or calibrated instrument is unavailable; do not claim contouring performance. |
+| S35 | ISO 12100 provides a methodology for machinery hazard identification, risk assessment, and risk reduction. | Fact; high | https://www.iso.org/standard/51528.html | Official ISO page | Safety-review framework for a pressurised moving demonstrator. | It does not define the customer’s required protective measures or certify a machine. | Unresolved hazard or missing risk record; stop the test. |
+| S36 | ISO 13849-1 covers design/integration methodology for safety-related control-system parts, including pneumatic and mechanical energy. | Fact; high | https://www.iso.org/standard/73481.html | Official ISO page | Safety-control design reference for interlocks and landing behavior. | It does not specify the required performance level for this application. | Safety function/PLr is undefined; obtain customer/competent safety review. |
+| S37 | SEMI E10 supplies common RAM/utilisation metrics and supports equipment performance requirements and service negotiations. | Fact; high | https://www.semi.org/en/standards-watch-2021March/e-ramp-standard-updated | SEMI explanatory page; underlying standard paid | Service-economics and uptime vocabulary for a semiconductor customer. | No stage-specific target, price, or guarantee. | Customer cannot map module events to RAM states; define an agreed metric first. |
+| S38 | ISO 9001 provides a general quality-management framework for customer and applicable requirements; certification is not stage qualification. | Fact; high | https://www.iso.org/standard/9001 | Official ISO page | Frames QMS/process control as distinct from technical acceptance. | Does not certify metrology, stage performance, safety, or customer-specific process capability. | Buyer requires technical evidence beyond QMS; add tests and traceability. |
 
 ## 15. Provider disagreement and claim calibration log
 
@@ -322,7 +332,113 @@ The following remain boundaries, not facts: actual market share, ASPs, lead time
 3. **Owner:** QA/host partner; **when:** months 6–12; **data:** particle/ESD/EMC, endurance, power-loss landing, calibration uncertainty; **metric:** customer witness acceptance and 1,000-hour log; **stop:** unresolved drift or contamination.
 4. **Owner:** finance/operations; **when:** months 3–9; **data:** room lease, utilities, instrument rental, machining quotes, staff salaries, insurance; **metric:** base-case runway ≥18 months and module gross contribution ≥40%; **stop:** cell requires >$750k before second design-in.
 
-## 17. Bibliography (direct URLs)
+## 17. Execution appendix — the follow-up questions that decide whether this becomes a company
+
+### 17.1 Gemini lead triage: accepted, rejected, unknown
+
+The linked Gemini thread is useful as a prompt for execution, not as evidence. It describes a generic precision-component cost-down path: move material closer to net shape, separate rough work from scarce finishing capacity, use in-process metrology to improve yield, and negotiate upstream material only after volume exists. Those are **hypotheses to test** for an aerostatic-stage module. They do not establish a Penang wage advantage, tariff treatment, Chinese scrap rate, 100,000-unit market, or a four-year path to a $120 cost basis.
+
+For this opportunity I accept four leads as questions: (1) can a supplier form or otherwise reduce waste in the carriage/base or restrictor subassembly; (2) can rough machining, precision finishing, lapping, coating, and calibration be routed to different vendors without losing traceability; (3) can in-process geometry/flow checks reduce rework; and (4) when does a material or restrictor vendor warrant a dedicated tool? I reject any plan that assumes cheap qualified cells, casual high-pressure machinery, or a volume curve before a customer has paid for a design-in.
+
+**Still unknown:** the customer’s actual stage BOM and annual volume; the share of cost in base, pads, restrictors, motor, encoder, controls, calibration, and service; local supplier capability and yield; landed cost to the customer’s factory; and whether a lower-cost hybrid or magnetic stage makes the air-bearing premise irrelevant. These require quotes, drawings, witnessed tests, and field data—not more desk research.
+
+### 17.2 A 30/60/90-day founder learning path
+
+| Window | Founder work | Tangible artifact | Go / stop rule |
+|---|---|---|---|
+| Days 0–30: learn and map | Learn bearing preload, restrictor flow, servo following error, thermal expansion, uncertainty, and customer equipment economics. Speak with 3 motion-control engineers, 2 metrologists, and 2 tool-service engineers. Map 20 packaging/metrology OEMs and integrators without claiming demand. | One-page glossary; hypothesis tree; initial 20-account map; draft error-budget packet; list of safe partner labs. | Continue only if at least 3 experts identify a motion metric that can plausibly affect yield, throughput, uptime, or lead time. Otherwise stop the air-bearing thesis, not the learning. |
+| Days 31–60: specify with buyers | Run 10 technical discovery calls. Ask for anonymised payload/travel/duty-cycle data, interface constraints, air/vacuum state, environment, incumbent architecture, acceptance test, service burden, and procurement owner. Obtain 5 comparable incumbent quotes or documented catalog alternatives. | Three completed buyer/spec packets; two alternative architectures; five quote/lead-time records; named qualification owner for one account. | No machining if nobody will share a measurable problem and an acceptance owner. No invented urgency from a polite exploratory call. |
+| Days 61–90: earn a paid experiment | Convert one packet into a written SOW: deliverables, customer inputs, safety boundary, test method, acceptance criteria, schedule, change control, IP, and payment milestones. Audit a candidate host and line up external accredited metrology. | Signed paid feasibility/NRE or a written no-go; host-audit report; demonstrator test plan; cash/runway model. | Go to a demonstrator only with paid NRE (planning placeholder: $25k–$60k) or equivalent customer-funded access. Stop if the buyer will not fund the uncertainty it wants removed. |
+
+The founder’s learning target is not “become a master machinist in 90 days.” It is to become fluent enough to translate a buyer’s process loss into a falsifiable motion specification, price the risk, and know which measurements must be independent.
+
+### 17.3 Buyer personas, interview questions, and the error-budget packet
+
+| Persona | Questions that reveal a real buying problem | Evidence required before a proposal |
+|---|---|---|
+| Tool OEM systems/application engineer | Which axis, payload, trajectory, and process step are constrained? What is the current error budget and what term is failing? What stays in the OEM controller and ICD? | An anonymised ICD, trajectory, payload, air/vacuum state, and named acceptance test. |
+| Metrology/process owner at fab or OSAT | Which measurement uncertainty, defect map, or excursion is motion-related rather than optics, recipe, warpage, chemistry, or software? What correlation would justify a change? | Baseline data, measurand/datum, uncertainty budget, and a witness-test owner. |
+| Manufacturing/quality engineer | What incoming inspection, calibration, FMEA, traceability, ESD/EMC, particles, and change-control records are mandatory? | Supplier-quality checklist and sample report pack; no claim that ISO 9001 alone qualifies a stage. |
+| Service/operations owner | What does a failed air supply, encoder, pad, or controller do to the tool? How fast must a spare arrive? What is the allowed intervention window? | Failure modes, safe landing/recovery procedure, spare policy, response-time and uptime target. |
+| Procurement/finance | Is the decision driven by price, lead time, single-source risk, service, or customer compliance? What NRE is reimbursable, and who owns design changes? | Incumbent quote/lead-time comparison, NRE terms, warranty boundary, and total-cost-of-ownership model. |
+
+The packet sent after an interview should contain: (a) application and payload; (b) travel, speed, acceleration, duty cycle, and settling definition; (c) straightness/flatness/pitch/yaw/roll and position requirements, each with datum and bandwidth; (d) thermal, vibration, pressure, particle, ESD/EMC, and cleanliness limits; (e) interface-control document and controller ownership; (f) calibration method and uncertainty budget; (g) uptime, spare, service, and change-control requirements; and (h) the incumbent and substitution baseline. A customer’s assertion that a stage is “nanometer” is not a specification until these fields exist.
+
+### 17.4 Demonstrator versus metrology-qualified module
+
+| Boundary | Benchtop demonstrator | Metrology-qualified module |
+|---|---|---|
+| Purpose | Test bearing/preload/servo hypotheses with an inert, guarded payload. | Meet a customer ICD and witnessed acceptance test in the stated environment. |
+| Measurement | Rented or partner instruments; repeatability and error trends are engineering data. | Calibrated instruments with a traceable uncertainty budget; use an external ISO/IEC 17025 laboratory when the result is customer-critical. ISO/IEC 17025 sets competence, impartiality, and consistent-operation requirements for testing/calibration labs ([ISO](https://www.iso.org/standard/66912.html)); ILAC says the accreditation scope must cover the specific calibration ([ILAC P10](https://ilac.org/?ddownload=123220)). |
+| Environment | Low-pressure, low-speed, non-production tests inside guards; no customer product, vacuum, or unreviewed stored-energy experiment. | Customer-selected clean/air/thermal/vibration/ESD conditions; serialised calibration, FMEA, change control, and service procedure. |
+| Safety | Follow a documented hazard review; pressure relief, interlocks, emergency landing, guarding, and power-loss behavior are mandatory. Do not improvise high-energy/high-pressure precision machinery. | Safety functions and risk reduction are designed and documented against the applicable customer and machinery requirements; ISO 12100 provides the risk-assessment framework and ISO 13849-1 covers safety-related control-system design ([ISO 12100](https://www.iso.org/standard/51528.html), [ISO 13849-1](https://www.iso.org/standard/73481.html)). |
+| Claim allowed | “Engineering demonstrator; results are not a product guarantee.” | Only the measured, scoped claim: e.g. repeatability/error motion under named payload, trajectory, temperature, pressure, and test method. Never “lithography-grade” by analogy. |
+
+The safe sequence is instrument access first, a guarded low-energy demonstrator second, and customer qualification only after the hazard analysis and acceptance method are agreed. A rented cleanroom is not permission to run a pressurised or high-speed machine without a competent host review.
+
+### 17.5 Paid NRE and statement-of-work shape
+
+Quote the risk as work packages, not as an underpriced promise to “build a stage.” The figures below are **planning placeholders**, not market quotes:
+
+1. **Discovery and ICD (about $5k–$15k):** confirm payload/trajectory, architecture alternatives, interface, test method, and data rights. Deliverable: signed requirements and assumptions register.
+2. **Feasibility and design (about $25k–$60k):** restrictor/preload model, thermal/structural analysis, supplier plan, safety concept, and demonstrator design. Deliverable: design review and go/no-go report.
+3. **Prototype and witnessed test (about $80k–$200k):** precision parts, controller integration, fixtures, calibrated measurement, rework allowance, and acceptance report. Deliverable: serialised module, raw data, uncertainty budget, and failure log.
+4. **Qualification and sustaining (priced separately):** customer environmental tests, endurance, software/API changes, spares, field service, and engineering-change notices. Deliverable: qualification matrix and service pack.
+
+Every SOW should identify customer-furnished data and fixtures, excluded claims, pressure and energy limits, instrument responsibility, acceptance and retest rules, warranty boundary, IP ownership, export/customer confidentiality, and the event that releases the next payment. If a buyer wants a free prototype before sharing an acceptance owner, the answer is no.
+
+### 17.6 Exact host / captive-cell audit
+
+Do not call a room a qualification cell until the host can produce evidence for every row:
+
+| Audit item | Evidence to request | Fail condition |
+|---|---|---|
+| Metrology | Instrument model/serial, current calibration certificate, uncertainty and scope; external lab’s ISO/IEC 17025 accreditation and ILAC/SAC/SAMM recognition where applicable. SAC notes accreditation is only for specific tests/calibrations ([SAC](https://www.sac-accreditation.gov.sg/services/accreditation-services/laboratories/)); Malaysia’s SAMM scheme is based on MS ISO/IEC 17025 and ILAC/APAC recognition ([Standards Malaysia](https://www.jsm.gov.my/component/content/article/252-skim-akreditasi-makmal-malaysia-samm?Itemid=448&catid=12&highlight=WyJzYW1tIiwiYWNjcmVkaXRlZCIsImxhYm9yYXRvcnkiLCJtYWxheXNpYSJd)). | Certificate scope does not cover the actual length/angle/force/temperature calibration, or calibration is expired. |
+| Geometry and thermal drift | Artifact/datum definition, instrument setup, temperature history, warm-up, and drift method. ISO 230-3 explicitly addresses environmental temperature variation and thermal distortion of moving axes ([ISO 230-3](https://www.iso.org/standard/73291.html)). | Host offers “CMM access” but cannot state uncertainty, thermal conditions, or setup repeatability. |
+| Circular/contouring behavior | Ball-bar/laser or equivalent method, calibration, test parameters, and feedback-vs-external measurement distinction. ISO 230-4 provides public methods for circular and contouring tests ([ISO 230-4](https://www.iso.org/standard/79155.html)). | Only a controller screenshot or vendor repeatability number is available. |
+| Facility | Floor spectrum/isolation data, temperature/humidity history, HVAC flow, particle/oil/outgassing limits, ESD grounding, pressure/dew point/flow logs, and utility redundancy. | Host supplies an ISO room class only; vibration, thermal, air, or ESD evidence is missing. |
+| Governance and liability | Access control, IP segregation, insurance, incident response, maintenance/cleaning boundary, export-control policy, and who signs the test report. | Startup cannot control raw data/configuration, or host disclaims all responsibility for a customer acceptance test. |
+
+The first external metrology partner should be chosen by **scope and uncertainty**, not by a logo or proximity. Accreditation does not make an unsuitable measurement suitable; the actual artifact, range, method, and uncertainty still have to fit the customer’s error budget.
+
+### 17.7 Make/buy gates and long-term cost-down
+
+| Work package | Buy/partner initially when… | Consider making in-house only when… |
+|---|---|---|
+| Air pads/restrictors | A specialist has repeatable flow/stiffness data and the startup lacks process history. | A paid platform repeats across customers and the startup can instrument flow, geometry, and yield without losing traceability. |
+| Granite/SiC base and precision carriage | A qualified shop can hold the drawing and provide inspection records; capacity is intermittent. | Utilisation is high enough to amortise tooling and inspection, and the shop’s yield/lead time is the bottleneck. |
+| Motors, encoders, controller | A catalog component meets the packet and has a service path. | Customer volume, interface ownership, or lifecycle availability creates a documented reason to redesign; never vertically integrate for prestige. |
+| Calibration and qualification | Rent or use an external accredited lab; preserve raw data and acceptance ownership. | Weekly use, stable demand, and instrument utilisation justify ownership; buy the difficult-to-rent instrument first. |
+| Clean assembly and service | Use a validated host while volumes and contamination controls are unknown. | Repeat orders, documented process capability, and service response data support a controlled cell. |
+
+The cost-down order is deliberate: first remove specification ambiguity and rework, then separate rough/finish suppliers, then validate near-net-shape or dedicated tooling against measured volume, and only then negotiate upstream material. In-line metrology is valuable if it closes a control loop; buying a scanner without a response plan is decoration. No stage cost model should assume China-parity economics until it has actual yield, cycle-time, material, calibration, freight, and service data.
+
+### 17.8 Service economics and substitution risk
+
+Track the customer’s total cost of ownership, not only the module invoice:
+
+```text
+annual customer value = avoided downtime + avoided rework/yield loss
+                      + throughput value + service/lead-time value
+                      − module price − utilities − spares − integration
+                      − calibration − planned maintenance − failure reserve
+```
+
+For the startup, track `contribution = ASP + paid NRE amortisation + service revenue − build/test − rework − warranty reserve − field support − allocated cell cost`. Report the result by serialised module and customer. Service should include spare-pad/encoder/controller lead time, remote diagnostics, safe landing recovery, calibration interval, mean time to repair, intervention hours, and return-material analysis. SEMI E10 is a useful customer vocabulary for reliability, availability, maintainability, utilisation, and supplier-user performance negotiation ([SEMI](https://www.semi.org/en/standards-watch-2021March/e-ramp-standard-updated)); it does not supply a stage-specific target.
+
+The substitution test runs at every design review: compare the proposed air stage with crossed-roller, magnetic, voice-coil, and hybrid alternatives on error budget, stiffness, vacuum/cleanliness, fail-safe behavior, installed cost, lead time, service, and qualification time. Air wins only if it creates a measurable advantage in the customer’s process. If a hybrid is cheaper and meets the budget, sell the hybrid or stop; protecting the air-bearing identity is not a business objective.
+
+### 17.9 Execution falsifiers and unknowns
+
+- **Customer falsifier:** three qualified OEMs provide a comparable incumbent that meets the process budget at lower TCO, including service and qualification.
+- **Technical falsifier:** independent measurement cannot reproduce the required error motion, thermal drift, pressure sensitivity, or endurance at the stated payload and trajectory.
+- **Cell falsifier:** no host can provide instrument scope, uncertainty, environmental records, liability, and raw-data control; do not sign a lease.
+- **Economic falsifier:** paid NRE and service cannot cover rework, cell utilisation, and field support before a second design-in; do not vertically integrate.
+- **Safety falsifier:** pressure-loss, power-loss, landing, guarding, or control-system hazards remain unresolved; stop testing and use a competent external facility.
+
+This appendix changes the practical recommendation from “build a cell” to “buy evidence.” The company earns the right to own a cell only after a paid specification, a safe demonstrator, an external metrology path, a witnessed acceptance test, and repeat demand.
+
+## 18. Bibliography (direct URLs)
 
 1. TSMC, Q1 2024 earnings transcript — https://investor.tsmc.com/english/encrypt/files/encrypt_file/reports/2024-04/34ff75e23e53246302ce3a8d90d0423c57c6b120/TSMC%201Q24%20Transcript.pdf
 2. TSMC, 2024 annual report — https://investor.tsmc.com/static/annualReports/2024/english/index.html
@@ -352,8 +468,19 @@ The following remain boundaries, not facts: actual market share, ASPs, lead time
 26. SEMI E78 — https://store-us.semi.org/products/e07800-semi-e78-guide-to-assess-and-control-electrostatic-discharge-esd-and-electrostatic-attraction-esa-for-equipment
 27. IEST-RP-CC024 — https://www.iest.org/Standards-RPs/Recommended-Practices/IEST-RP-CC024
 28. Gao et al., multi-degree-of-freedom error motions — https://www.sciencedirect.com/science/article/abs/pii/S0141635905000978
+29. ISO/IEC 17025:2017 — https://www.iso.org/standard/66912.html
+30. ILAC MRA and Signatories — https://ilac.org/ilac-mra-and-signatories/
+31. ILAC P10, metrological traceability — https://ilac.org/?ddownload=123220
+32. Singapore Accreditation Council, Laboratories — https://www.sac-accreditation.gov.sg/services/accreditation-services/laboratories/
+33. Standards Malaysia, SAMM — https://www.jsm.gov.my/component/content/article/252-skim-akreditasi-makmal-malaysia-samm?Itemid=448&catid=12&highlight=WyJzYW1tIiwiYWNjcmVkaXRlZCIsImxhYm9yYXRvcnkiLCJtYWxheXNpYSJd
+34. ISO 230-3:2020, thermal effects — https://www.iso.org/standard/73291.html
+35. ISO 230-4:2022, circular tests — https://www.iso.org/standard/79155.html
+36. ISO 12100:2010, machinery risk assessment — https://www.iso.org/standard/51528.html
+37. ISO 13849-1:2023, safety-related control systems — https://www.iso.org/standard/73481.html
+38. ISO 9001 quality-management systems — https://www.iso.org/standard/9001
+39. SEMI E10 RAM/utilization overview — https://www.semi.org/en/standards-watch-2021March/e-ramp-standard-updated
 
-## 18. Verification record
+## 19. Verification record
 
 Required local checks run after writing:
 
@@ -363,4 +490,4 @@ rg -n '^## |https?://|fail|falsif|Counter|Confidence' research-dossiers/2026-09-
 wc -l -w research-dossiers/2026-09-12/aerostatic-stages.md
 ```
 
-Spot-open results for every relied-on URL are recorded in the ledger. Successfully opened at least once in this session: S1–S22, S24–S27. Intermittent internal errors occurred in the final batch for PI (S5), InvestPenang (S10–S11), Onto (S13), and ISO 230-2 (S22), despite earlier successful opens; repeat before publication. Inaccessible or incomplete: **S23 NIST PDF (internal fetch error), S28 ScienceDirect abstract (403/paywall/fetch error)**. S23/S28 are not used as sole support for a headline conclusion; replace them with customer or independent evidence before investment.
+Spot-open results for every relied-on URL are recorded in the ledger. Successfully opened in this revision: S29–S38 (ISO/IEC 17025, ILAC MRA/P10, SAC, Standards Malaysia/SAMM, ISO 230-3, ISO 230-4, ISO 12100, ISO 13849-1, ISO 9001, and SEMI E10); these are public primary or standards-body pages, with the underlying standards marked paid where applicable. Earlier sources S1–S22, S24–S27 were opened at least once in the prior research pass; intermittent errors for PI (S5), InvestPenang (S10–S11), Onto (S13), and ISO 230-2 (S22) remain a repeat-check item. Inaccessible or incomplete: **S23 NIST PDF (internal fetch error), S28 ScienceDirect abstract (403/paywall/fetch error)**. S23/S28 are not used as sole support for a headline conclusion; replace them with customer or independent evidence before investment.

@@ -206,6 +206,76 @@ I would walk away if customers ask for free prototypes; if no buyer reports a me
 
 The opportunity is not proven by a market-size headline. It is proven when a real rack runs safely, a buyer signs the release, and the next lot repeats the result.
 
+---
+
+## 13 · The first 90 days
+
+# A SMALL TEAM CAN MOVE FAST—IF THE CUSTOMER OPENS THE INTERFACE
+
+The asset-light version is not “buy no equipment.” It is “buy no irreversible equipment before a buyer supplies an interface.” I would outsource machining and joining, rent metrology, and keep the fixtures, test method, configuration control, serialised data and customer relationship.
+
+**Days 0–30: buyer and interface.** Interview thermal/mechanical, rack/CDU integration, procurement/supplier-quality, field-service and CM-quality owners. Ask for a platform revision, heat envelope, fluid, flow/pressure limits, QD/manifold, service procedure, reliability test and country-of-origin policy. A redacted drawing or test vehicle is evidence; “liquid cooling is coming” is not. The goal is one named design owner and one written paid-feasibility proposal.
+
+**Days 31–60: process and test.** Audit three contract manufacturers for alloy traceability, joining records, cleanliness, CMM access, pressure/leak, flow, thermal testing, calibration and engineering-change control. Send a coupon and sacrificial plate through each candidate. Freeze the first acceptance matrix with the buyer.
+
+**Days 61–90: paid feasibility.** Build 3–5 geometries only after the interface is frozen. Measure thermal resistance versus flow, pressure drop, flatness, leak rate, cleanliness and connector fit. Deliver a serialised report and ask the buyer to fund the next NRE gate. **Stop** if the result is technically interesting but nobody will pay for the next lot.
+
+These are proposed operating gates, not market benchmarks. The first 90-day output is not a factory; it is a buyer-owned requirement sheet, a controlled test method and a paid reason to continue.
+
+## 14 · Who actually buys
+
+# INTERVIEW THE PEOPLE WHO CAN SAY “YES,” “NO,” AND “THIS WILL LEAK”
+
+I would not invent an exact person or pretend a famous robotics company is accessible. I would find the current role through a warm introduction, a target integrator’s public team, or the buyer’s own contact.
+
+| Persona | Questions that expose a real opportunity |
+|---|---|
+| Platform thermal/mechanical owner | What package and TIM are fixed? What are sustained/transient heat loads, inlet temperature, allowable case/junction temperature, flow range and pressure-drop budget? Which mounting and keep-out dimensions cannot move? What test vehicle can we use? |
+| Rack/CDU and data-centre integration owner | Where is the TCS/FWS boundary? Which manifold, QD, CDU, BMS and Redfish signals are required? Who can isolate liquid and power after a leak? What residual air load remains, and who owns it? |
+| Procurement and supplier quality | What is the approved-vendor list and current lead time? Is a second source authorized? Which first-article, process-audit, warranty and country-of-origin records are mandatory? What price and annual volume justify qualification? |
+| Field service and operations | What does a technician replace in the rack? How are drained plates, coolant, QDs and contaminated parts packaged? What serial records must follow the part? How quickly must a leak alert be isolated? |
+
+The evidence bar is a signed design-input sheet, buyer-supplied drawing or test vehicle, written acceptance method, identified supplier gap and paid next step. A LinkedIn reply, public RFP search, or enthusiastic call is not customer evidence.
+
+## 15 · NRE buys learning; the test stack buys trust
+
+# THE SOW MUST SAY WHAT “PASSED” MEANS
+
+A paid NRE statement of work should name the platform revision and define the inputs: package/TIM, heat-load points, coolant chemistry, supply/return temperatures, flow/pressure, QD/manifold, mechanical loads, environmental profile, applicable standards and exclusions. It should deliver controlled CAD/BOM, DFM review, fixture drawings, material certificates, process flow/control plan, FMEA, test procedure, raw data, serialised reports, nonconformance log, service instructions and change history.
+
+Acceptance must be numeric: thermal resistance and uniformity; pressure-drop/flow curve; leak detection limit, pressure and duration; hydrostatic and cycle conditions; cleanliness/particle limit; corrosion and compatibility; connector fit; sample sizes and re-test rules. The [OCP qualification guide](https://www.opencompute.org/documents/ocp-cold-plate-development-and-qualification-with-integrated-comments-pdf) calls for a representative processor stack and TIM, stable bubble-free flow, recording case temperature, inlet-liquid temperature, applied power, flow and pressure drop, plus X-ray or equivalent inspection, hydrostatic testing and fluid-compatibility work.
+
+The minimum bench stack is:
+
+- CMM/flatness and connector-fit inspection, with X-ray or destructive coupons for joining defects.
+- Buyer-selected pressure-decay, bubble or helium leak method; report the detection limit rather than “zero leak.”
+- A calibrated heater or representative board that sweeps flow and computes `R=(Tc−TL)/Q`, alongside pressure-drop/flow curves.
+- Named-fluid corrosion, elastomer compatibility, leach/particle and post-test inspection.
+- Pressure/thermal cycling, vibration/handling, QD cycles, shipping/flush/dry and a controlled leak-response drill.
+
+The Gemini suggestion of a roughly $1,500 accelerated-life rig is a useful learning hypothesis, not a production-life certificate. Fatigue and system reliability need a buyer-defined load spectrum, destructive analysis and—where the contract requires it—an independent lab. The NRE quote is customer-specific; a universal $25,000 prototype or easy margin is not evidence.
+
+## 16 · The plate is a component inside somebody else’s safety system
+
+# EARN THE RIGHT TO SELL THE LOOP
+
+NVIDIA’s public GB300 NVL72 reference describes a liquid-cooled MGX rack, integrated tray/rack leak detection, eight 33 kW power shelves and a full rack up to 142 kW. That is a useful reminder that cooling, power, management and service are one integration problem. [NVIDIA NVL72 AI Factory components](https://docs.nvidia.com/enterprise-reference-architectures/nvl72-ai-factory/latest/components.html)
+
+NVIDIA documents three leak-detection layers for GB200/GB300 NVL72 systems: cold-plate and inner-manifold sensors at tray level, sensing rope/spot sensors at rack level, and CDU/datacentre sensors. Rack-level handling belongs to the customer’s BMS, while the compute system exposes signals through its management path. [NVIDIA Mission Control BMS integration](https://docs.nvidia.com/mission-control/docs/nmc-software-installation-guide/2.2.0/integration-of-bms-with-bcm.html) [NVIDIA leak detection operations](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.0.0/leak-detection.html)
+
+That creates system-supplier risk. The platform owner or integrator may bundle the plate, own the approved-vendor list, require one accountable warranty, or change the QD/fluid/manifold before the startup is qualified. NVIDIA’s release notes even document firmware-update edge cases for leak-detector settings and recommend standard Redfish leak-detection endpoints rather than raw sensor voltage. [NVIDIA DGX GB300 release notes](https://docs.nvidia.com/dgx/dgxgb300nvl72-release-notes/known-issues.html)
+
+My migration path would be explicit:
+
+1. **Platform plate:** one package and fluid; outsourced machining/joining; paid NRE; serialised thermal, hydraulic, leak and cleanliness records.
+2. **Qualified plate family:** reuse only proven mounting/TIM/flow interfaces; add a second CM and repeat lot.
+3. **TCS subassembly:** integrate plate, hose/QD and manifold only when the integrator supplies the rack interface and acceptance test, and pays for the added pressure-drop, leak, service and field-return responsibility.
+4. **Thermal subsystem:** add CDU controls, leak telemetry, commissioning and residual-air coordination only with a system partner under a new system-level SOW. This is a different liability and support business, not a natural next SKU.
+
+Captive assembly/test is an option after two paid platform programmes, two repeat lots with stable distributions, measured test-cycle economics, a second-source plan and customer acceptance of the startup’s records. Those are internal gates, not public benchmarks. Until then, buy evidence and flexibility. Cost-down comes from measured yield, rework, cycle time, material use, tool life, test automation and committed volume—not from an unverified Chinese-price target, a $500k factory assumption, or a promised 80%→99% yield jump.
+
+The Gemini thread’s useful leads were hands-on validation, buyer-persona interviews, paid platform NRE, and treating provenance as a requirement to verify. Its exact robotics specifications, “desperate buyers,” universal NRE price, cheap fatigue certification, labour-rate comparisons and named-person access were downgraded or rejected. The unknowns remain the point: actual SKU and thermal envelope, approved-vendor gap, paid pilot quantity, accepted tests, CM capability and yield, country-of-origin scope, field liability, and whether the buyer pays for a plate, a tested subassembly or a full subsystem.
+
 ### Research receipts
 
 - [NVIDIA Vera Rubin NVL72](https://www.nvidia.com/en-au/data-center/vera-rubin-nvl72/) — 72 GPUs, HBM4, 45°C inlet for the stated 100 MW factory configuration; no public 2,300 W GPU TDP on the reviewed page.
@@ -221,3 +291,11 @@ The opportunity is not proven by a market-size headline. It is proven when a rea
 - [TrendForce public penetration release](https://www.trendforce.com/presscenter/news/20250821-12682.html) — public 14% 2024 / 33% 2025 estimate; no 53% 2026 figure.
 - [BYD Electronic HKEX filing](https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0327/2026032702072.pdf) — repeats the 33% 2025 figure and contains no 2026 penetration forecast.
 - [DFARS prohibited sources](https://www.acquisition.gov/dfars/subpart-225.7-prohibited-sources) — narrow government/defense provenance context, not a blanket commercial ban.
+- [OCP cold-plate development and qualification](https://www.opencompute.org/documents/ocp-cold-plate-development-and-qualification-with-integrated-comments-pdf) — representative thermal, hydraulic, X-ray, hydrostatic, cleanliness and compatibility methods.
+- [OCP cold-plate workstreams](https://www.opencompute.org/wiki/Cooling_Environments/Cold_Plate) — current fluid, quick-disconnect and interoperability workstreams; evidence that interfaces continue to evolve.
+- [NVIDIA NVL72 AI Factory components](https://docs.nvidia.com/enterprise-reference-architectures/nvl72-ai-factory/latest/components.html) — GB300 rack architecture, power shelves and integrated leakage detection.
+- [NVIDIA Mission Control BMS integration](https://docs.nvidia.com/mission-control/docs/nmc-software-installation-guide/2.2.0/integration-of-bms-with-bcm.html) — tray-, rack- and datacentre-level leak sensing and BMS boundary.
+- [NVIDIA Mission Control leak detection](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.0.0/leak-detection.html) — cold-plate/manifold leak metrics and rack liquid-isolation signals.
+- [NVIDIA DGX GB300 release notes](https://docs.nvidia.com/dgx/dgxgb300nvl72-release-notes/known-issues.html) — Redfish leak-detection guidance and firmware-update caveat.
+- [ASHRAE Handbook Chapter 20](https://handbook.ashrae.org/Handbooks/A23/SI/A23_Ch20/a23_ch20_si.aspx) — hybrid DTC/air architecture and liquid-loop redundancy considerations.
+- [OCP advanced liquid cooling design](https://www.opencompute.org/documents/an-advanced-liquid-cooling-design-for-data-center-final-v3-1-pdf) — pressure-drop/thermal-resistance trade-off and flow-dependent cold-plate design.

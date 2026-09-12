@@ -158,6 +158,67 @@ I would pursue this conditionally. I would fund the $60k–$180k learning lot on
 
 The company I want to build sells proof: this exact reducer, from this material lot, through this process, measured on this calibrated fixture, survived this customer spectrum, with this acceptance record. If a customer pays for that proof and signs the design-in, manufacturing scale becomes a question worth answering. If not, the honest outcome is a small test business—or no company.
 
+## 13 · The founder’s ladder
+
+# LEARN IN PUBLIC, QUALIFY IN PRIVATE
+
+The founder does not need to cosplay as a thirty-year gear veteran. Credibility comes from a narrow question, an external reviewer, calibrated measurement and a clear statement of what each experiment cannot prove. I would hire a contract gear designer, an independent test engineer and a trained metallography laboratory for specialist work while I own the requirements, supplier comparison, data trail and customer loop.
+
+There are four different articles in the development ladder:
+
+| Article | Purpose | Boundary |
+|---|---|---|
+| Polymer kinematic demonstrator | A hand-cranked or low-energy printed model makes the tooth-count difference, engagement and ratio obvious | It says nothing about metal stress, torque, wear or life |
+| Engineering mule | A commercial reducer or non-flight metal prototype proves the fixture, controls, interface and teardown workflow | It does not validate the candidate material or process |
+| Pilot article | Serialised units from a controlled lot test repeatability, CTQs and failure modes under a named spectrum | It is not flight acceptance or a 10,000-hour claim |
+| Qualification article | A frozen design is tested in the customer-approved environment with agreed margins and evidence | Qualification belongs to this configuration and programme, not to a marketing adjective |
+
+The first 30 days are education and customer discovery: build the polymer demonstrator, read public NASA/ESA test programmes, interview the people who own joints, reliability, suppliers, qualification, returns and procurement, and write a one-page specification packet. Public RFPs are vocabulary and hypothesis material; they are not permission to infer demand.
+
+## 14 · The rig must be boring
+
+# A SHORT TEST IS A SCREEN, NOT A LIFE CLAIM
+
+I would rent a calibrated dynamometer for the first mule. The test record should contain input speed, output torque, angle, temperature at the housing and bearing, lubricant, vibration/noise where relevant, raw time series, stopping criteria and a failure definition. ASTM E467 makes dynamic verification specific to the actual machine configuration and specimen; a transducer calibration certificate alone is not enough. [ASTM E467](https://store.astm.org/standards/e467)
+
+Only after that fixture is understood would I commission a founder rig: rigid reaction frame, positive retention, interlocked full enclosure, independent emergency stop, overspeed and overtemperature trips, load shedding, physical limits, remote video, data heartbeat and a tested restart inhibit. Rotating parts and stored energy need guarding and lockout/tagout. An unattended overnight run is not a clever shortcut; it requires a written hazard analysis and a demonstrated safe state. [OSHA machine guarding](https://www.osha.gov/etools/machine-guarding/introduction/general-requirements) [OSHA hazardous-energy control](https://www.osha.gov/sites/default/files/lockouttagout_final2000.pdf)
+
+Nor would I follow improvised heat-treatment or Nital recipes. A thin flexspline needs controlled process records, distortion control, hardness/microstructure evidence and witness coupons. Nitric acid is corrosive/oxidising; ethanol is flammable; OSHA has recorded both serious nitric-acid burns and an explosion involving acid and alcohol. Send polished sections to a trained metallography lab with a chemical-hygiene plan instead. [OSHA nitric acid](https://www.osha.gov/chemicaldata/627) [OSHA laboratory chemical hygiene](https://www.osha.gov/laws-regs/regulations/standardnumber/1910.1450AppA) [OSHA incident](https://www.osha.gov/ords/imis/accidentsearch.accident_detail?id=14217319)
+
+For variable loading, use the customer’s measured history and cycle-count it under ASTM E1049. A Basquin/S–N fit can support interpolation inside a tested regime; ASTM E739 warns against extrapolation outside that interval and against sparse low-percentile claims. Miner’s linear damage sum is a model to validate, not a magic conversion from a 100-hour over-torque run to 10,000 hours. NASA’s reliability guidance likewise separates gross-defect screening from statistically credible reliability evidence. [ASTM E739](https://store.astm.org/e0739-10.html) [ASTM E1049](https://store.astm.org/standards/e1049) [NASA reliability test methods](https://ntrs.nasa.gov/api/citations/20000099772/downloads/20000099772.pdf)
+
+Every result gets an uncertainty budget and a teardown. Report repeatability, drift, calibration traceability and expanded uncertainty; NIST treats uncertainty as a property of the specific measurement configuration. Record crack location, tooth wear, fretting, bearing damage, grease condition, hardness/microstructure and dimensional drift. A survivor is evidence of survival in one fixture, not evidence that a competing failure mode does not exist. [NIST TN 1297](https://www.nist.gov/pml/nist-technical-note-1297/nist-guidelines-evaluating-and-expressing-uncertainty-nist-measurement)
+
+## 15 · Ask for the packet, then ask for the cheque
+
+# THE FIRST CUSTOMER BUYS RISK REDUCTION
+
+The first design partner should be a robotics or motion-control OEM with one painful, non-flight axis. I would ask for an interface drawing, continuous/peak/overload torque, speed and duty cycle, lost-motion definition and test torque, torsional stiffness, efficiency, temperature, lubricant and contamination constraints, target life/reliability/confidence, acceptance tests for every unit, qualification/environment tests for the design, provenance clauses, forecast, incumbent price and lead time. Public NASA verification guidance and a SAM.gov custom-gearbox solicitation both show why “a gearbox” is not a sufficient specification. [NASA product verification](https://www.nasa.gov/reference/5-3-product-verification/) [SAM.gov custom gearbox solicitation](https://sam.gov/opp/2ad419ca17e54937ab78034bc8869f5b/view)
+
+Interview by responsibility, not by fame: joint/motion engineering; reliability and test; manufacturing and supplier quality; programme qualification; field service and returns; procurement and finance. Ask for the smallest anonymised artefact they can share under NDA—a duty-cycle trace, acceptance template, supplier scorecard or returned-part teardown. Do not scrape or publish personal names.
+
+The offer is a four-to-six-week paid requirements-and-evidence sprint. The partner gets a requirements baseline, FMEA, supplier process plan, metrology correlation, test matrix, costed design and a go/no-go review. The founder gets a fixed NRE fee, a representative spectrum or agreed proxy, an incumbent unit or benchmark and a named acceptance decision-maker. Data rights, witness rights, change notification, liability and no-exclusivity terms go in writing. A free sample with no load spectrum is a marketing prop.
+
+ESA’s public EuroSMG record is a helpful precedent: it names a user specification, interfaces, an engineering model and a qualification model as distinct steps. That is the language to borrow—not the conclusion that any new reducer is qualified. [ESA EuroSMG](https://resilience.esa.int/archives/projects/eurosmg)
+
+## 16 · Own the evidence before the factory
+
+# COST-DOWN FOLLOWS THE BOTTLENECK
+
+Stage 1 outsources blanking, heat treatment, tooth finishing and specialist metrology to audited suppliers while the founder owns drawings, CTQs, acceptance tests, genealogy and teardown. Stage 2 brings measurement, cleaning, assembly, grease control, final test and nonconformance data in-house. Stage 3 buys only the process whose demonstrated yield, lead time or IP exposure justifies it—often fixtures, finishing or metrology before a furnace. Keep two approved sources for every critical process and requalify after a material, recipe, tool or subcontractor change.
+
+The cost model must include first-pass yield, scrap/rework, outsourced charges, inspection and test minutes, freight, financing, warranty reserve and customer audits. A lower nominal piece price is not cost-down if it increases escapes, inspection or qualification risk. China may be a supplier geography; it is not a universal competitiveness conclusion or legal moat. Provenance means the actual manufacturer, beneficial ownership, material origin, process location, subcontractors and change controls.
+
+Here is the execution clock:
+
+| Day | Deliverable | Stop/go gate |
+|---|---|---|
+| 30 | Six role-based interviews, one-page packet, one named non-flight axis, two supplier calls, lab quote, hazard register and polymer demonstrator | Go only if a buyer shares a spectrum or defensible proxy and agrees to paid NRE |
+| 60 | Signed NRE, incumbent benchmark, frozen interfaces, FMEA, test procedure, lab booking, supplier audit and cost/yield model | Go only if acceptance criteria are named and measurable with an uncertainty budget |
+| 90 | Mule data, supplier-lot plan, guarded-fixture review, metrology correlation plan, pilot PO and witness dates | Go only if the main measurement risks close and the written forecast can clear 35% gross margin after scrap, test and warranty |
+
+Stop after two failed controlled pilot iterations; repeatable crack, wear, ratcheting or drift before the requirement; missing genealogy/change control; critical-dimension Cpk below 1.33 after process lock; learning yield below 70% or pre-scale yield below 90%; no certifying authority and acceptance matrix for aerospace; or no customer design-in by month 18. A short over-torque test can stop the project. It cannot create a 10,000-hour claim.
+
 ### Research receipts
 
 - [Harmonic Drive technology](https://www.harmonicdrive.net/technology/harmonicdrive)
@@ -176,3 +237,16 @@ The company I want to build sells proof: this exact reducer, from this material 
 - [IAQG 9100](https://iaqg.org/standard/9100-qms-requirements-for-aviation-space-and-defense-organizations/)
 - [Strain-wave fatigue study](https://www.sciencedirect.com/science/article/pii/S0094114X16300866)
 - [Space tribology study](https://journals.sagepub.com/doi/10.1243/13506501JET415)
+- [ASTM E466](https://store.astm.org/e0466-15.html)
+- [ASTM E467](https://store.astm.org/standards/e467)
+- [ASTM E739](https://store.astm.org/e0739-10.html)
+- [ASTM E1049](https://store.astm.org/standards/e1049)
+- [NASA reliability test methods](https://ntrs.nasa.gov/api/citations/20000099772/downloads/20000099772.pdf)
+- [NIST TN 1297](https://www.nist.gov/pml/nist-technical-note-1297/nist-guidelines-evaluating-and-expressing-uncertainty-nist-measurement)
+- [OSHA machine guarding](https://www.osha.gov/etools/machine-guarding/introduction/general-requirements)
+- [OSHA lockout/tagout](https://www.osha.gov/sites/default/files/lockouttagout_final2000.pdf)
+- [OSHA nitric acid](https://www.osha.gov/chemicaldata/627)
+- [OSHA laboratory chemical hygiene](https://www.osha.gov/laws-regs/regulations/standardnumber/1910.1450AppA)
+- [NASA actuator paper](https://ntrs.nasa.gov/api/citations/20220006415/downloads/46th_AMS_Proceedings_Final.pdf)
+- [SAM.gov custom gearbox solicitation](https://sam.gov/opp/2ad419ca17e54937ab78034bc8869f5b/view)
+- [ESA EuroSMG](https://resilience.esa.int/archives/projects/eurosmg)
