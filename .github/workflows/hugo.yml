@@ -36,6 +36,18 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 22
+      - name: Checkout Hand Walk app
+        uses: actions/checkout@v7
+        with:
+          repository: seahyc/hand-walk
+          path: .build/hand-walk
+      - name: Build Hand Walk app for its canonical route
+        working-directory: .build/hand-walk
+        run: |
+          npm ci
+          npm run assets
+          npm run build:public
+          grep -rl '/projects/hand-walk' dist-public | xargs sed -i 's#/projects/hand-walk#/making/hand-walk#g'
       - name: Install Hugo CLI
         run: |
           wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
@@ -91,9 +103,10 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Publish standalone apps at canonical Making routes
         run: |
-          mkdir -p public/making/bishan-ridges-atmosphere public/making/family-road-book public/making/retirement-planning
+          mkdir -p public/making/bishan-ridges-atmosphere public/making/family-road-book public/making/hand-walk public/making/retirement-planning
           cp -R public/projects/bishan-ridges-atmosphere/. public/making/bishan-ridges-atmosphere/
           cp -R public/projects/family-road-book/. public/making/family-road-book/
+          cp -R .build/hand-walk/dist-public/. public/making/hand-walk/
           rsync -a --exclude index.html public/projects/retirement-planning/ public/making/retirement-planning/
       - name: Prune non-runtime planner sources from public
         run: node projects-src/retirement-planning/prune-public.mjs
