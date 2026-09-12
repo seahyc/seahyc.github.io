@@ -25,7 +25,11 @@ export function readinessReason({hidden,cameraReady,workerReady,busy,lastDispatc
  return 'hands-ready';
 }
 
-export function framingPrompt(rawHands){
- const count=Number.isFinite(rawHands)?Math.max(0,Math.min(2,Math.trunc(rawHands))):0;
- return `Show both hands at chest height · ${count}/2 detected`;
+export function framingPrompt(rawHands,targetHands=2){
+ const target=targetHands===1?1:2,count=Number.isFinite(rawHands)?Math.max(0,Math.min(target,Math.trunc(rawHands))):0;
+ return `Show ${target===1?'one hand':'both hands'} at chest height · ${count}/${target} detected`;
+}
+
+export function preferredInputMode({coarsePointer=false,maxTouchPoints=0}={}){
+ return coarsePointer&&maxTouchPoints>0?'one-hand':'two-hand';
 }

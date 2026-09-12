@@ -6,13 +6,25 @@ const REMOTE_WAIT_MS=3000;
 const textBytes=value=>new TextEncoder().encode(JSON.stringify(value)).byteLength;
 const delay=ms=>new Promise(resolve=>setTimeout(()=>resolve('timeout'),ms));
 
+export function createBoundedFetch(fetchImpl,timeoutMs){
+ return async (url,init={})=>{
+  const controller=new AbortController(),external=init.signal;
+  const forwardAbort=()=>controller.abort(external.reason);
+  if(external?.aborted)forwardAbort();
+  else external?.addEventListener('abort',forwardAbort,{once:true});
+  const timer=setTimeout(()=>controller.abort(new DOMException('Remote request timed out','TimeoutError')),timeoutMs);
+  try{return await fetchImpl(url,{...init,signal:controller.signal});}
+  finally{clearTimeout(timer);external?.removeEventListener('abort',forwardAbort);}
+ };
+}
+
 export class MirroredPlaytestSession{
  constructor({now=()=>performance.now(),onStatus=(_status)=>{},store,baseUrl='/',fetchImpl=globalThis.fetch,remoteEnabled=true,remoteTimeoutMs=2500,remoteWaitMs=REMOTE_WAIT_MS}={}){
   this.now=now;
   this.onStatus=onStatus;
   this.local=new BrowserPlaytestSession({now,store,onStatus:()=>this.status()});
   this.remoteEnabled=remoteEnabled&&typeof fetchImpl==='function';
-  const boundedFetch=(url,init={})=>fetchImpl(url,{...init,signal:AbortSignal.any([init.signal,AbortSignal.timeout(remoteTimeoutMs)])});
+	  const boundedFetch=createBoundedFetch(fetchImpl,remoteTimeoutMs);
   this.createRemote=()=>this.remoteEnabled?new PlaytestSession({now,baseUrl,fetchImpl:boundedFetch,retryDelays:[]}):null;
   this.remote=this.createRemote();
   this.remoteState=this.remoteEnabled?'pending':'unavailable';
