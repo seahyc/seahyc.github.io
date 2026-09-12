@@ -37,8 +37,9 @@ jobs:
           TITLE=$(sed -n 's/^title: *"\(.*\)"/\1/p' "$POST_FILE" | head -1)
           echo "title=$TITLE" >> $GITHUB_OUTPUT
 
-          # Extract slug from filename
-          SLUG=$(basename "$POST_FILE" .md)
+          # Prefer the explicit canonical slug; fall back to the source filename.
+          SLUG=$(sed -n 's/^slug: *"\{0,1\}\([^" ]*\)"\{0,1\}/\1/p' "$POST_FILE" | head -1)
+          [ -n "$SLUG" ] || SLUG=$(basename "$POST_FILE" .md)
           echo "slug=$SLUG" >> $GITHUB_OUTPUT
 
           # Extract description if present
@@ -85,7 +86,7 @@ jobs:
           MSMTP
           chmod 600 ~/.msmtprc
 
-          POST_URL="https://seahyingcong.com/posts/${POST_SLUG}/"
+          POST_URL="https://seahyingcong.com/writing/${POST_SLUG}/"
 
           while IFS= read -r email; do
             email=$(echo "$email" | tr -d '[:space:]')

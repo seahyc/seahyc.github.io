@@ -89,10 +89,18 @@ jobs:
             --gc \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Publish standalone apps at canonical Making routes
+        run: |
+          mkdir -p public/making/bishan-ridges-atmosphere public/making/family-road-book public/making/retirement-planning
+          cp -R public/projects/bishan-ridges-atmosphere/. public/making/bishan-ridges-atmosphere/
+          cp -R public/projects/family-road-book/. public/making/family-road-book/
+          rsync -a --exclude index.html public/projects/retirement-planning/ public/making/retirement-planning/
       - name: Prune non-runtime planner sources from public
         run: node projects-src/retirement-planning/prune-public.mjs
       - name: Prune private projects from public
         run: node scripts/prune-private-projects.mjs
+      - name: Verify canonical routes and legacy aliases
+        run: python3 scripts/verify-canonical-routes.py public
       - name: Verify published practice routes after cleanup
         run: node scripts/verify-practice-publication.mjs public
       - name: Upload artifact

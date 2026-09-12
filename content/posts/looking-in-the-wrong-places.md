@@ -1,5 +1,8 @@
 ---
 title: "Looking in the wrong places"
+slug: "looking-in-the-wrong-places"
+aliases:
+  - "/posts/looking-in-the-wrong-places/"
 date: 2022-03-14
 ---
 

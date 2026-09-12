@@ -1,5 +1,8 @@
 ---
 title: "How to take over the world"
+slug: "how-to-take-over-the-world"
+aliases:
+  - "/posts/how-to-take-over-the-world/"
 date: 2021-12-08
 ---
 

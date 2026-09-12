@@ -1,5 +1,8 @@
 ---
 title: "Our cittas are like open mouths"
+slug: "our-cittas-are-like-open-mouths"
+aliases:
+  - "/posts/our-cittas-are-like-open-mouths/"
 date: 2023-04-23
 ---
 

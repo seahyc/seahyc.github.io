@@ -1,4 +1,4 @@
-const BASE = "/projects/family-road-book";
+const BASE = "/making/family-road-book";
 const CACHE = "family-road-book-v4";
 const MAP_CACHE = "family-road-book-map-v1";
 const APP_SHELL = [

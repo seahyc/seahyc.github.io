@@ -1,5 +1,8 @@
 ---
 title: "List, rank, iterate"
+slug: "list-rank-iterate"
+aliases:
+  - "/posts/list-rank-iterate/"
 date: 2024-05-20
 ---
 

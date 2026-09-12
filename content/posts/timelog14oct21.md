@@ -1,7 +1,9 @@
 ---
 title: "Timelog ⏰ 14 October 2021"
 slug: "timelog-14-october-2021"
-aliases: ["/posts/timelog14oct21/"]
+aliases:
+  - "/posts/timelog14oct21/"
+  - "/posts/timelog-14-october-2021/"
 date: 2021-10-14
 feature_image: "__GHOST_URL__/content/images/2021/10/5F27F344-1644-45AA-B9B5-F6E6F67CA3F3.jpeg"
 ---

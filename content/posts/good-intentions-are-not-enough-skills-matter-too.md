@@ -1,7 +1,9 @@
 ---
 title: "Good intentions are not enough"
 slug: "good-intentions-are-not-enough"
-aliases: ["/posts/good-intentions-are-not-enough-skills-matter-too/"]
+aliases:
+  - "/posts/good-intentions-are-not-enough-skills-matter-too/"
+  - "/posts/good-intentions-are-not-enough/"
 date: 2022-04-28
 ---
 

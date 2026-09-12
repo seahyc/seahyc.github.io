@@ -15,4 +15,6 @@ title = 'Seah Ying Cong'
   pagerSize = 20
 
 [permalinks]
-  research = '/learning/:contentbasename/'
+  posts = '/writing/:slug/'
+  projects = '/making/:slug/'
+  research = '/learning/:slug/'

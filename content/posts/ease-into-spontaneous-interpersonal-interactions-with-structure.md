@@ -1,7 +1,9 @@
 ---
 title: "How to use structure to create spontaneous group social interactions remotely"
 slug: "how-to-use-structure-to-create-spontaneous-group-social-interactions-remotely"
-aliases: ["/posts/ease-into-spontaneous-interpersonal-interactions-with-structure/"]
+aliases:
+  - "/posts/ease-into-spontaneous-interpersonal-interactions-with-structure/"
+  - "/posts/how-to-use-structure-to-create-spontaneous-group-social-interactions-remotely/"
 date: 2022-02-16
 ---
 

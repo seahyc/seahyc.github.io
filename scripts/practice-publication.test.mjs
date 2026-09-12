@@ -12,18 +12,20 @@ test('publishing preserves the public practice path and sitemap entries while re
  const output=await mkdtemp(path.join(tmpdir(),'practice-publication-'));
  try{
   await cp(path.join(repo,'static/practice'),path.join(output,'practice'),{recursive:true});
-  for(const route of ['projects/coding-practice','projects/project-orion','projects/orion']){
+  for(const route of ['making/coding-practice','projects/coding-practice','making/project-orion-the-long-way-through','projects/project-orion','projects/orion']){
    await mkdir(path.join(output,route),{recursive:true});await writeFile(path.join(output,route,'index.html'),'project');
   }
-  const urls=['/practice/path/','/projects/coding-practice/','/projects/project-orion/','/projects/orion/','/writing/'];
+  const urls=['/practice/path/','/making/coding-practice/','/projects/coding-practice/','/making/project-orion-the-long-way-through/','/projects/project-orion/','/projects/orion/','/writing/'];
   await writeFile(path.join(output,'sitemap.xml'),'<urlset>'+urls.map(url=>`<url><loc>https://seahyingcong.com${url}</loc></url>`).join('')+'</urlset>');
   execFileSync(process.execPath,['scripts/prune-private-projects.mjs',output],{cwd:repo});
   assert.ok(await verifyPracticePublication(output));
+  await access(path.join(output,'making/coding-practice/index.html'));
   await access(path.join(output,'projects/coding-practice/index.html'));
+  await assert.rejects(access(path.join(output,'making/project-orion-the-long-way-through/index.html')));
   await assert.rejects(access(path.join(output,'projects/orion/index.html')));
   await assert.rejects(access(path.join(output,'projects/project-orion/index.html')));
   const sitemap=await readFile(path.join(output,'sitemap.xml'),'utf8');
-  assert.match(sitemap,/\/writing\//);assert.match(sitemap,/\/practice\/path\//);assert.match(sitemap,/\/projects\/coding-practice\//);assert.doesNotMatch(sitemap,/orion/);
+  assert.match(sitemap,/\/writing\//);assert.match(sitemap,/\/practice\/path\//);assert.match(sitemap,/\/making\/coding-practice\//);assert.match(sitemap,/\/projects\/coding-practice\//);assert.doesNotMatch(sitemap,/orion/);
   // Reproduce the former deployment failure: the final artifact check must catch it.
   await rm(path.join(output,'practice/path'),{recursive:true});
   await assert.rejects(verifyPracticePublication(output),/Missing published practice asset: practice\/path\/index.html/);

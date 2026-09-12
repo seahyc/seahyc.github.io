@@ -1,7 +1,9 @@
 ---
 title: "What the story of the Gordian Knot taught me about approaching intractable problems"
 slug: "what-the-story-of-the-gordian-knot-taught-me-about-approaching-intractable-problems"
-aliases: ["/posts/what-the-story-of-the-gordian-knot-taught-me-in-approaching-intractable-problems/"]
+aliases:
+  - "/posts/what-the-story-of-the-gordian-knot-taught-me-in-approaching-intractable-problems/"
+  - "/posts/what-the-story-of-the-gordian-knot-taught-me-about-approaching-intractable-problems/"
 date: 2021-12-10
 ---
 

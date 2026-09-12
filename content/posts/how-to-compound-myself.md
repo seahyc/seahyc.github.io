@@ -1,5 +1,8 @@
 ---
 title: "How to compound myself"
+slug: "how-to-compound-myself"
+aliases:
+  - "/posts/how-to-compound-myself/"
 date: 2021-12-15
 ---
 

@@ -1,7 +1,9 @@
 ---
 title: "Tale of AI in SEA"
 slug: "tale-of-ai-in-sea"
-aliases: ["/posts/untitled/"]
+aliases:
+  - "/posts/untitled/"
+  - "/posts/tale-of-ai-in-sea/"
 date: 2023-02-09
 ---
 

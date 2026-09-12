@@ -1,5 +1,8 @@
 ---
 title: "Intensity and energy"
+slug: "intensity-and-energy"
+aliases:
+  - "/posts/intensity-and-energy/"
 date: 2021-11-14
 ---
 

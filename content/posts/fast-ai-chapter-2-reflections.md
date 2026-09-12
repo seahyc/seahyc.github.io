@@ -1,5 +1,8 @@
 ---
 title: "fast.ai Chapter 2 reflections"
+slug: "fast-ai-chapter-2-reflections"
+aliases:
+  - "/posts/fast-ai-chapter-2-reflections/"
 date: 2022-09-15
 ---
 

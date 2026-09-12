@@ -1,7 +1,9 @@
 ---
 title: "Back at track and chatGPT"
 slug: "back-at-track-and-chatgpt"
-aliases: ["/posts/my-running-time-trial/"]
+aliases:
+  - "/posts/my-running-time-trial/"
+  - "/posts/back-at-track-and-chatgpt/"
 date: 2023-02-07
 ---
 

@@ -1,5 +1,8 @@
 ---
 title: "Learnings from Erik Bernhardsson's parable"
+slug: "learnings-from-erik-bernhardssons-parable"
+aliases:
+  - "/posts/learnings-from-erik-bernhardssons-parable/"
 date: 2021-10-13
 ---
 

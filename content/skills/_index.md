@@ -1,5 +1,5 @@
 ---
-title: "Agent skills"
+title: "Skills"
 description: "Reusable instructions I give coding and research agents."
 ---
 

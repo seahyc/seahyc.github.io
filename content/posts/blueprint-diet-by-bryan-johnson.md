@@ -1,5 +1,8 @@
 ---
 title: "Blueprint Diet by Bryan Johnson"
+slug: "blueprint-diet-by-bryan-johnson"
+aliases:
+  - "/posts/blueprint-diet-by-bryan-johnson/"
 date: 2023-02-02
 ---
 

@@ -1,5 +1,8 @@
 ---
 title: "Claude Radio"
+slug: "claude-radio"
+aliases:
+  - "/projects/claude-radio/"
 visibility: public
 description: "Voice-first multi-agent command center via Telegram. Attach to any running Claude Code session, send voice commands, get live audio updates. Chief of Staff LLM routes rambling voice input to the right agents. Spawn agents, approve diffs, fix CI - all by voice note."
 tech: ["Python", "Claude API", "Telegram"]

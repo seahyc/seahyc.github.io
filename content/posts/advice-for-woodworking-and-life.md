@@ -1,5 +1,8 @@
 ---
 title: "Advice for woodworking and life"
+slug: "advice-for-woodworking-and-life"
+aliases:
+  - "/posts/advice-for-woodworking-and-life/"
 date: 2023-01-13
 ---
 

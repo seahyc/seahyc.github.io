@@ -1,7 +1,9 @@
 ---
 title: "A subtler view of how I self-sabotage"
 slug: "a-subtler-view-of-how-i-self-sabotage"
-aliases: ["/posts/how-i-self-sabotage/"]
+aliases:
+  - "/posts/how-i-self-sabotage/"
+  - "/posts/a-subtler-view-of-how-i-self-sabotage/"
 date: 2022-01-03
 ---
 

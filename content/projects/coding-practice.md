@@ -1,5 +1,8 @@
 ---
 title: "Coding Practice"
+slug: "coding-practice"
+aliases:
+  - "/projects/coding-practice/"
 visibility: public
 description: "Hands-on Python practice for the age of AI coding. Build fluency through small challenges, real feedback and spaced recall."
 tech: ["Python", "Pyodide", "Learning design"]

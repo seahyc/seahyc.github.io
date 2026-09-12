@@ -1,5 +1,8 @@
 ---
 title: "Geek to Freak protocol"
+slug: "geek-to-freak-protocol"
+aliases:
+  - "/posts/geek-to-freak-protocol/"
 date: 2023-01-14
 ---
 

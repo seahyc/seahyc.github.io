@@ -1,5 +1,8 @@
 ---
 title: "How to transfer files from Linux to iPhone wirelessly (without a USB)"
+slug: "how-to-transfer-files-from-linux-to-iphone-wirelessly-without-a-usb"
+aliases:
+  - "/posts/how-to-transfer-files-from-linux-to-iphone-wirelessly-without-a-usb/"
 date: 2023-01-30
 ---
 

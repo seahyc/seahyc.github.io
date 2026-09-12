@@ -1,5 +1,8 @@
 ---
 title: "Practical life tips"
+slug: "practical-life-tips"
+aliases:
+  - "/posts/practical-life-tips/"
 date: 2022-09-11
 ---
 

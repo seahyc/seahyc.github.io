@@ -1,5 +1,8 @@
 ---
 title: "The Mundanity of Excellence"
+slug: "the-mundanity-of-excellence"
+aliases:
+  - "/posts/the-mundanity-of-excellence/"
 date: 2024-05-20
 ---
 

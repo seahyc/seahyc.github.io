@@ -1,5 +1,8 @@
 ---
 title: "Swim Technique Analysis"
+slug: "swim-technique-analysis"
+aliases:
+  - "/posts/swim-technique-analysis/"
 date: 2023-01-29
 ---
 

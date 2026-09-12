@@ -1,5 +1,8 @@
 ---
 title: "My renewed set of daily affirmations"
+slug: "my-renewed-set-of-daily-affirmations"
+aliases:
+  - "/posts/my-renewed-set-of-daily-affirmations/"
 date: 2021-12-31
 ---
 

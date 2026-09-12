@@ -1,7 +1,9 @@
 ---
 title: "Learnings about Sleep Pro Systems"
 slug: "learnings-about-sleep-pro-systems"
-aliases: ["/posts/learnings-about/"]
+aliases:
+  - "/posts/learnings-about/"
+  - "/posts/learnings-about-sleep-pro-systems/"
 date: 2023-01-29
 ---
 

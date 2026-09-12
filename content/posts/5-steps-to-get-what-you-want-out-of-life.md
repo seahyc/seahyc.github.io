@@ -1,5 +1,8 @@
 ---
 title: "5 Steps to Get What You Want out of Life"
+slug: "5-steps-to-get-what-you-want-out-of-life"
+aliases:
+  - "/posts/5-steps-to-get-what-you-want-out-of-life/"
 date: 2021-10-20
 ---
 

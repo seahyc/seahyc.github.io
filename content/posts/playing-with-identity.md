@@ -1,5 +1,8 @@
 ---
 title: "Playing with identity"
+slug: "playing-with-identity"
+aliases:
+  - "/posts/playing-with-identity/"
 date: 2022-04-12
 ---
 

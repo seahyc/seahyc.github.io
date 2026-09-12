@@ -1,5 +1,8 @@
 ---
 title: "John Carmack"
+slug: "john-carmack"
+aliases:
+  - "/posts/john-carmack/"
 date: 2022-09-11
 ---
 

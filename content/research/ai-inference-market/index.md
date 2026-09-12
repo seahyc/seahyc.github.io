@@ -1,11 +1,12 @@
 +++
 title = "The AI Inference Market"
+slug = "the-ai-inference-market"
+aliases = ["/research/ai-inference-market/", "/learning/ai-inference-market/"]
 description = "A strategic Fieldbook on the physical bottlenecks, software fault lines, and four possible blue-ocean wedges in AI inference."
 date = 2026-09-01
 layout = "research-swipe"
 body_class = "research-swipe"
 main_class = "main-research-swipe"
-aliases = ["/research/ai-inference-market/"]
 
 [fieldbook]
 theme = "inference"

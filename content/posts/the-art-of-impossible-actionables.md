@@ -1,5 +1,8 @@
 ---
 title: "The Art of Impossible Actionables"
+slug: "the-art-of-impossible-actionables"
+aliases:
+  - "/posts/the-art-of-impossible-actionables/"
 date: 2023-02-06
 ---
 
