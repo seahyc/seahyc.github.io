@@ -961,37 +961,19 @@ body.research-swipe .story-scroll::-webkit-scrollbar {
   height: 0;
 }
 
-/* Narrow windows and tablets use native card scrolling. At these widths,
-   trackpad wheel deltas are too large and variable for the translated-card
-   reader, and can otherwise be mistaken for a request to change cards. */
-@media (max-width: 900px) {
-  body.research-swipe .story-slide {
-    height: 100%;
-    min-height: 0;
-  }
-
-  body.research-swipe .story-slide .story-scroll {
-    height: 100%;
-    min-height: 0;
-    max-height: 100%;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-  }
-}
-
-/* One reading model at every width: native vertical scrolling inside each
-   card. The old translated-card reader misread trackpad wheel deltas as
-   horizontal card changes on desktop and wide tablet layouts. */
+/* One physical-sheet reading model at every width. The page stays fixed while
+   vertical reading translates the raised card itself; continued movement at
+   either edge previews and then turns to the adjacent card. */
 body.research-swipe .story-slide {
   height: 100%;
   min-height: 0;
 }
 
 body.research-swipe .story-slide .story-scroll {
-  height: calc(100% - 2.5rem);
-  min-height: 0;
-  max-height: calc(100% - 2.5rem);
-  overflow-y: auto;
+  height: auto;
+  min-height: calc(100% - 2.5rem);
+  max-height: none;
+  overflow-y: visible;
   overscroll-behavior-y: contain;
 }
 
@@ -1002,10 +984,10 @@ body.research-swipe .story-slide .story-scroll {
   }
 
   body.research-swipe .story-slide .story-scroll {
-    height: 100%;
-    min-height: 0;
-    max-height: 100%;
-    overflow-y: auto;
+    height: auto;
+    min-height: 100%;
+    max-height: none;
+    overflow-y: visible;
     overscroll-behavior-y: contain;
   }
 
