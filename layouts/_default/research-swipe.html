@@ -88,6 +88,14 @@
     while (slide.firstChild) scroll.appendChild(slide.firstChild);
     slide.appendChild(scroll);
     Array.prototype.forEach.call(scroll.querySelectorAll('table'), function (table) {
+      var headers = Array.prototype.map.call(table.querySelectorAll('thead th'), function (header) {
+        return header.textContent.trim();
+      });
+      Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (row) {
+        Array.prototype.forEach.call(row.children, function (cell, cellIndex) {
+          if (headers[cellIndex]) cell.dataset.label = headers[cellIndex];
+        });
+      });
       var wide = document.createElement('div');
       wide.className = 'wide-object';
       table.parentNode.insertBefore(wide, table);

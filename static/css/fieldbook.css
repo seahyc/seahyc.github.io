@@ -924,7 +924,7 @@ body.research-swipe .story-scroll .wide-object td {
     display: block;
     margin-bottom: 0.22rem;
     color: rgba(71, 42, 34, 0.62);
-    content: "DETAIL";
+    content: attr(data-label);
     font-family: var(--font-sans, sans-serif);
     font-size: 11px;
     font-weight: 800;
@@ -932,13 +932,6 @@ body.research-swipe .story-scroll .wide-object td {
     line-height: 1;
   }
 
-  body.research-swipe .story-scroll .wide-object td:nth-child(3)::before {
-    content: "EVIDENCE / IMPLICATION";
-  }
-
-  body.research-swipe .story-scroll .wide-object td:nth-child(4)::before {
-    content: "NEXT DECISION";
-  }
 }
 
 /* Mobile Fieldbook QA correction: readable copy and no browser focus outline. */
@@ -1095,3 +1088,6 @@ body.research-swipe .story-slide .story-scroll {
 .fieldbook--inference { --fieldbook-accent: #476f89; }
 .fieldbook--distributed-compute { --fieldbook-accent: #6f5a87; }
 .fieldbook--freight-finance { --fieldbook-accent: #89613e; }
+.fieldbook--strain-wave { --fieldbook-accent: #5e6f7f; }
+.fieldbook--liquid-cooling { --fieldbook-accent: #39778d; }
+.fieldbook--aerostatic { --fieldbook-accent: #536d88; }
