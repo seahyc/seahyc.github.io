@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "test:fieldbook-reader": "node scripts/fieldbook-reader.test.mjs",
     "build:practice-editor": "node scripts/build-practice-editor.mjs",
     "build:retirement-planning": "node projects-src/retirement-planning/build.mjs",
     "build:reno-field-notes": "vite build --config projects-src/reno-field-notes/vite.config.mjs",

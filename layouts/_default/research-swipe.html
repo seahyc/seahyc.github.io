@@ -239,7 +239,7 @@
   swiper.on('setTranslate', applyCardTilt);
   swiper.on('slideChangeTransitionStart', animateArrowCards);
   var boundaryLanding = 0;
-  var nativeCardScroll = true;
+  var nativeCardScroll = false;
   swiper.on('transitionEnd', function () {
     if (arrowRaf) cancelAnimationFrame(arrowRaf);
     if (boundaryLanding) {
@@ -320,8 +320,13 @@
       } else {
         scroll.style.setProperty('--card-scroll-y', (-clampedOffset).toFixed(2) + 'px');
       }
-      scroll.parentElement.style.setProperty('--edge-tilt', '0deg');
-      clearEdgeFlipPreview(false);
+      var beyond = offset < 0 ? -offset : (offset > max ? offset - max : 0);
+      if (beyond > 0) {
+        renderEdgeFlipPreview(offset > max ? 1 : -1, beyond / boundaryThreshold());
+      } else {
+        scroll.parentElement.style.setProperty('--edge-tilt', '0deg');
+        clearEdgeFlipPreview(false);
+      }
       var progress = max > 0 ? scroll._cardOffset / max : 0;
       var slide = scroll.parentElement;
       slide._cardScrollProgress = progress;
@@ -414,7 +419,15 @@
       activeScroll._boundaryPush = Math.sign(previous) === Math.sign(beyond) ? previous + event.deltaY : beyond;
       var raw = activeScroll._boundaryPush < 0 ? activeScroll._boundaryPush : max + activeScroll._boundaryPush;
       activeScroll.renderCardOffset(raw);
-      if (activeScroll.crossCardBoundary && activeScroll.crossCardBoundary(raw)) activeScroll._boundaryPush = 0;
+      if (activeScroll._boundaryTimer) clearTimeout(activeScroll._boundaryTimer);
+      if (activeScroll.crossCardBoundary && activeScroll.crossCardBoundary(raw)) {
+        activeScroll._boundaryPush = 0;
+      } else {
+        activeScroll._boundaryTimer = setTimeout(function () {
+          activeScroll._boundaryPush = 0;
+          clearEdgeFlipPreview(true);
+        }, 220);
+      }
     }
     event.preventDefault();
   }, { passive: false });
