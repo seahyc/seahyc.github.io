@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {classifyTrackerResult,framingPrompt,readinessReason,shouldDispatchFrame} from '../src/input-readiness.mjs';
+import {classifyTrackerResult,framingPrompt,preferredInputMode,readinessReason,shouldDispatchFrame} from '../src/input-readiness.mjs';
 
 test('visible embedded viewport dispatches without document focus',()=>{
  assert.equal(shouldDispatchFrame({hidden:false,workerReady:true,cameraReady:true,busy:false,focused:false}),true);
@@ -27,4 +27,12 @@ test('framing prompt reports the detector count without overstating readiness',(
  assert.equal(framingPrompt(0),'Show both hands at chest height · 0/2 detected');
  assert.equal(framingPrompt(1),'Show both hands at chest height · 1/2 detected');
  assert.equal(framingPrompt(9),'Show both hands at chest height · 2/2 detected');
+ assert.equal(framingPrompt(0,1),'Show one hand at chest height · 0/1 detected');
+ assert.equal(framingPrompt(2,1),'Show one hand at chest height · 1/1 detected');
+});
+
+test('coarse touch devices prefer one-hand controls',()=>{
+ assert.equal(preferredInputMode({coarsePointer:true,maxTouchPoints:5}),'one-hand');
+ assert.equal(preferredInputMode({coarsePointer:false,maxTouchPoints:5}),'two-hand');
+ assert.equal(preferredInputMode({coarsePointer:true,maxTouchPoints:0}),'two-hand');
 });

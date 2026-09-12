@@ -1,3 +1,5 @@
+import {selectRecordingMimeType} from './recording-codec.mjs';
+
 export type RecorderOverlay={phase:string;reason:string;choice:string;dwell:number;cursorX:number;cursorY:number;cursorVisible:boolean;cursorTracked?:boolean};
 export type RecorderStatus='recording'|'paused'|'off'|'error'|'uploading';
 type Options={world:HTMLCanvasElement;camera?:HTMLVideoElement;session:string|(()=>string);startedAt:number|(()=>number);record:(type:string,data:Record<string,unknown>)=>void;overlay:()=>RecorderOverlay;onStatus?:(status:RecorderStatus,detail:string)=>void;segmentMs?:number;allowed?:boolean;publicMode?:boolean;legacyHttpStore?:boolean;uploadClip?:(blob:Blob,startMs:number,endMs:number)=>Promise<boolean|void>};
@@ -15,9 +17,9 @@ export class CompactRecorder{
  stop(reason='walk-ended'){this.active=false;this.stopSegment(reason);if(!this.enabled)this.emit('off','Recording disabled');}
  async stopAndFlush(reason='walk-ended'){this.stop(reason);for(let i=0;i<50&&this.recorder;i++)await new Promise(resolve=>setTimeout(resolve,20));await this.uploads;}
  destroy(){this.destroyed=true;this.active=false;this.stopSegment('pagehide');document.removeEventListener('visibilitychange',this.focusChanged);window.removeEventListener('focus',this.focusChanged);window.removeEventListener('blur',this.focusChanged);}
- private codec(){for(const type of ['video/webm;codecs=vp8','video/webm'])if(MediaRecorder.isTypeSupported(type))return type;return '';}
+	private codec(){const recorder=globalThis.MediaRecorder;return selectRecordingMimeType(recorder?.isTypeSupported?.bind(recorder));}
  private beginSegment(){if(this.recorder||!this.active||!this.enabled||!this.focused())return;try{
-  this.stream=this.canvas.captureStream(8);this.mimeType=this.codec();if(!this.mimeType)throw new Error('This browser cannot record WebM video.');this.timer=window.setInterval(()=>this.draw(),125);this.draw();
+	 this.stream=this.canvas.captureStream(8);this.mimeType=this.codec();if(!this.mimeType)throw new Error('This browser cannot record a supported video format.');this.timer=window.setInterval(()=>this.draw(),125);this.draw();
  }catch(error){this.disposeStream();this.emit('error',String(error));return;}
  try{const recorder=new MediaRecorder(this.stream,{mimeType:this.mimeType,videoBitsPerSecond:300000}),chunks:Blob[]=[],startMs=Math.round(performance.now()-this.startedAt());let size=0,oversize=false;this.recorder=recorder;recorder.ondataavailable=e=>{if(!e.data.size)return;size+=e.data.size;if(size<=MAX_SEGMENT)chunks.push(e.data);else if(!oversize){oversize=true;if(recorder.state==='recording')recorder.stop();}};recorder.onerror=()=>this.emit('error','Browser video encoder failed');recorder.onstop=()=>{clearTimeout(this.segmentTimer);if(this.recorder===recorder)this.recorder=null;this.disposeStream();this.finishedSegment(chunks,size,startMs,oversize);};recorder.start(1000);this.segmentTimer=window.setTimeout(()=>this.stopSegment('segment-complete'),this.options.segmentMs??10000);this.emit('recording','Saving game + webcam on this device; no audio');}catch(error){this.recorder=null;this.disposeStream();this.emit('error',String(error));}}
  private stopSegment(reason:string){clearTimeout(this.segmentTimer);const recorder=this.recorder;if(!recorder){if(this.enabled&&this.active)this.emit('paused',reason);return;}if(recorder.state!=='inactive')recorder.stop();this.options.record('recording-segment-stop',{reason,segment:this.segment});}

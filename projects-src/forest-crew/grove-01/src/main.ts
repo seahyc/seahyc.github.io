@@ -26,7 +26,8 @@ let nozzleVisible=true,lastAimValid='',lastMode='',lastComplete='',lastPatchCoun
 function reset(){movement.reset();fire.reset();$('completion').hidden=true;input?.record('scenario-reset',{scenario:'hose-baseline',seed:73011});}
 input=createInputRuntime({canvas,container:$('controls'),getHeading:()=>movement.player.rotation.y,onEvent:(type)=>{if(type==='reset')reset();}});
 function impactAt(aim:{x:number,y:number},origin:Vector3){
- const x=aim.x*env.engine.getRenderWidth(),y=aim.y*env.engine.getRenderHeight();
+ // Babylon converts CSS picking coordinates to render pixels internally.
+ const x=aim.x*canvas.clientWidth,y=aim.y*canvas.clientHeight;
  const ray=env.scene.createPickingRay(x,y,Matrix.Identity(),env.camera,false);
  if(ray.direction.y>=-.008)return null;
  const distance=-ray.origin.y/ray.direction.y;if(distance<0||distance>120)return null;
@@ -63,7 +64,7 @@ function renderFrame(){
  updateHose(now,origin);
  const showNozzle=frame.mode==='hose'||sceneReview;if(showNozzle!==nozzleVisible){nozzleVisible=showNozzle;nozzle.setEnabled(showNozzle);}env.update(nowSeconds);env.scene.render();
  latestState={...state,fire:fireState,input:frame,impact:impact?{x:impact.x,y:impact.y,z:impact.z}:null,frameMs:dt*1000};
- if(now-lastTrace>100){lastTrace=now;input.record('world-state',{position:state.position,yaw:state.yaw,speed:state.speed,displacement:state.displacement,blocked:state.blocked,gait:state.gait,camera:state.camera,fire:fireState,impact:latestState.impact,pressure:1,mode:frame.mode,dt,fps:env.engine.getFps(),quality:'grove-high',seed:73011});}
+ if(now-lastTrace>100){lastTrace=now;input.record('world-state',{position:state.position,yaw:state.yaw,speed:state.speed,displacement:state.displacement,blocked:state.blocked,gait:state.gait,camera:state.camera,fire:fireState,impact:latestState.impact,pressure:1,mode:frame.mode,dt,fps:env.engine.getFps(),quality:env.renderQuality(),seed:73011});}
  if(now-lastHud>150){lastHud=now;const progress=`${fireState.progress*100}%`,patchCount=`${fireState.extinguished} / 3 fires out`,rangeNote=frame.mode==='hose'?(impact?'Water on target':'Aim lower or move closer'):'Supply connected',fps=`${Math.round(env.engine.getFps())} fps`,complete=String(fireState.complete);if(progress!==lastProgress){lastProgress=progress;$('progress-fill').style.width=progress;}if(patchCount!==lastPatchCount){lastPatchCount=patchCount;$('patch-count').textContent=patchCount;}if(rangeNote!==lastRangeNote){lastRangeNote=rangeNote;$('range-note').textContent=rangeNote;}if(fps!==lastFps){lastFps=fps;$('fps').textContent=fps;}if($('completion').hidden===fireState.complete)$('completion').hidden=!fireState.complete;if(frame.mode!==lastMode){lastMode=frame.mode;document.documentElement.dataset.mode=frame.mode;}if(complete!==lastComplete){lastComplete=complete;document.documentElement.dataset.complete=complete;}}
 }
 function syncRendering(){
@@ -73,6 +74,6 @@ function syncRendering(){
 document.addEventListener('visibilitychange',syncRendering);
 syncRendering();
 void Promise.all([movement.ready,env.assetsReady]).then(async()=>{finishAstronaut(movement.player.getChildMeshes());for(const mesh of movement.player.getChildMeshes()){mesh.receiveShadows=true;env.shadows.addShadowCaster(mesh);}ready=true;await env.scene.whenReadyAsync();$('loading').hidden=true;if(sceneReview)env.setEstablishingView();else await input.start();}).catch(error=>{$('loading').hidden=false;$('load-message').textContent=`Could not start: ${String(error)}`;console.error(error);});
-window.addEventListener('resize',()=>env.engine.resize());
+window.addEventListener('resize',()=>env.resize());
 window.addEventListener('pagehide',()=>{disposed=true;document.removeEventListener('visibilitychange',syncRendering);env.engine.stopRenderLoop(renderFrame);input.dispose();effects.dispose();movement.dispose();env.dispose();});
 if(qa){(window as any).__forestQA={ready:()=>ready,snapshot:()=>latestState,avatar:()=>movement.avatar.modelStatus(),input:()=>input.diagnostics(),reset,override:(value:any)=>{qaOverride=value;},clear:()=>{qaOverride=null;},aimFor:(x:number,z:number)=>{const point=Vector3.Project(new Vector3(x,.03,z),Matrix.Identity(),env.scene.getTransformMatrix(),env.camera.viewport.toGlobal(env.engine.getRenderWidth(),env.engine.getRenderHeight()));return {x:point.x/env.engine.getRenderWidth(),y:point.y/env.engine.getRenderHeight()};},scene:env.scene,renderSize:()=>({width:env.engine.getRenderWidth(),height:env.engine.getRenderHeight()})};}
