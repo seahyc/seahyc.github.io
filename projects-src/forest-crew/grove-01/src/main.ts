@@ -64,6 +64,7 @@ function renderFrame(){
  const origin=Vector3.TransformCoordinates(new Vector3(HOSE_ANCHOR.x,HOSE_ANCHOR.y,HOSE_ANCHOR.z+.22),movement.player.getWorldMatrix());
  let impact=qaOverride?.impact?new Vector3(qaOverride.impact.x,.03,qaOverride.impact.z):impactAt(frame.aim,origin);
  const spraying=frame.spraying&&!sceneReview;
+ input.setHoseFeedback(frame.mode==='hose'&&!impact?'Aim lower or walk closer':'');
  const fireState=fire.update(dt,{active:frame.active&&!sceneReview,spraying,impact:impact?{x:impact.x,z:impact.z}:null,pressure:1});
  let heat=playerHeat.update(dt,{position:state.position,patches:fireState.patches,active:frame.active&&!sceneReview});
  if(heat.needsRescue){movement.reset();playerHeat.reset();rescueUntil=now+3500;input.record('rescued',{reason:'fire-contact',fireProgress:fireState.progress});}
