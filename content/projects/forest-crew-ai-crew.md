@@ -13,7 +13,7 @@ cover: "/images/making/forest-crew-ai-crew.webp"
 cover_alt: "The player and two firefighter teammates beside a pink water pump, facing a burning volcanic grove"
 ---
 
-Two model-driven firefighters work alongside the player in the same pink-deck volcanic grove. They negotiate who fetches and connects the hose and who repairs and operates the pump. Their actions determine whether the player's hose has water pressure.
+Two model-driven firefighters work alongside the player in the same pink-deck volcanic grove. They negotiate who fetches and connects the hose and who repairs and operates the pump. Their actions determine whether the player's hose has water pressure. Teal and amber gear distinguish the teammates, with visible travel, connection, repair and pump-operation gestures. Either actor can choose either job; after supply setup, one maintains the pump and the other stands by.
 
 ![In-engine capture from the local AI crew test](/images/making/forest-crew-ai-crew.webp)
 
@@ -27,10 +27,10 @@ With Node 24 and your own logged-in Codex CLI:
 git clone https://github.com/seahyc/forest-crew.git
 cd forest-crew
 npm ci
-npm run crew:server
+npm run dev
 ```
 
-In a second terminal, run `npm run dev`, then open `http://127.0.0.1:4180/?crew=1` and show your hands. Model calls consume your Codex account usage. The ordinary local game runs without the agent bridge.
+Open `http://127.0.0.1:4180/` and show your hands. The development command starts the local crew bridge too. Model calls consume your Codex account usage; `?crew=0` selects the solo baseline.
 
 In the first real test, the two Sol actors made conflicting requests, negotiated complementary jobs, completed the supply chain, and produced full pressure in the rendered game. One actor also wrote a literal learned `SKILL.md` backed by successful game events. Skill transfer, adaptation to another incident, and human team playtests still need work.
 
