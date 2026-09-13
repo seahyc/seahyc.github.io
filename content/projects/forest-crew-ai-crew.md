@@ -17,7 +17,7 @@ Two model-driven firefighters work alongside the player in the same pink-deck vo
 
 ![In-engine capture from the local AI crew test](/images/making/forest-crew-ai-crew.webp)
 
-**The hosted AI crew is an invitation-only demo.** Two Sol teammates run on the owner’s server and use the owner’s Codex account. Show your hands to start after opening a private invitation link. Only one crew session can run at a time, with a daily session limit. The [public Grove 01 game](/making/forest-crew-grove-01/) remains the stable gesture playtest without model actors.
+**The hosted AI crew is an invitation-only demo.** Two Sol teammates run on the owner’s server and use the owner’s Codex account. The waiting crew appears beside you after opening a private invitation link. Show your hands to begin their work. Only one crew session can run at a time, with a daily session limit. The [public Grove 01 game](/making/forest-crew-grove-01/) remains the stable gesture playtest without model actors.
 
 [Get the code and contribute on GitHub](https://github.com/seahyc/forest-crew)
 
