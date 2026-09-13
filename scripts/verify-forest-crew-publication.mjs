@@ -6,8 +6,8 @@ import { manifests } from "./publish-forest-crew.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const publicRoot = path.resolve(root, process.argv[2] ?? "public");
-const forbiddenNames = /(^|\/)(?:\.env(?:\..*)?|design|playtests|recordings|node_modules|\.git)(\/|$)/i;
-const secretText = /(?:PLAYTEST_SERVICE_KEY|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/;
+const forbiddenNames = /(^|\/)(?:\.env(?:\..*)?|design|playtests|recordings|server|deploy|\.agent-data|node_modules|\.git)(\/|$)/i;
+const secretText = /(?:PLAYTEST_SERVICE_KEY|FOREST_CREW_EDGE_KEY|FOREST_CREW_INVITE_KEY|BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/;
 const runtimeExtensions = new Set([
   ".bin", ".css", ".glb", ".gltf", ".hdr", ".html", ".ico", ".jpeg", ".jpg",
   ".js", ".json", ".map", ".md", ".mp3", ".ogg", ".png", ".svg", ".task",

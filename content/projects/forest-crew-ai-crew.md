@@ -4,7 +4,7 @@ slug: "forest-crew-ai-crew"
 aliases:
   - "/projects/forest-crew-ai-crew/"
 visibility: public
-description: "Two AI firefighters negotiate hose and pump jobs while you fight the fire. A local collaboration preview, with public code."
+description: "Two AI firefighters negotiate hose and pump jobs while you fight the fire. An invitation-only playable cooperation test, with public code."
 tech: ["Babylon.js", "Codex", "Agent tools"]
 weight: -5
 date: 2026-09-12
@@ -17,7 +17,7 @@ Two model-driven firefighters work alongside the player in the same pink-deck vo
 
 ![In-engine capture from the local AI crew test](/images/making/forest-crew-ai-crew.webp)
 
-**This is a local AI preview.** The [public Grove 01 game](/making/forest-crew-grove-01/) remains the stable hand-gesture playtest without model actors. The AI crew currently runs through a local Codex account; it is not yet a hosted multi-user service.
+**The hosted AI crew is an invitation-only demo.** Two Sol teammates run on the owner’s server and use the owner’s Codex account. Show your hands to start after opening a private invitation link. Only one crew session can run at a time, with a daily session limit. The [public Grove 01 game](/making/forest-crew-grove-01/) remains the stable gesture playtest without model actors.
 
 [Get the code and contribute on GitHub](https://github.com/seahyc/forest-crew)
 
