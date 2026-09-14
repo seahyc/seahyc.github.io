@@ -178,7 +178,7 @@ function stop(message='Execution stopped. Your code is saved.'){if(worker)worker
 function run(mode,probe){
   if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
   runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,executionMode:mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock,fresh:!!s.freshExercise};
-  if(mode==='tests'){clearRunOutcome();notice('');}else $('first-feedback').hidden=true;
+  if(mode==='tests'){clearRunOutcome();$('run-results').scrollTop=0;notice('');}else $('first-feedback').hidden=true;
   busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
   worker=new Worker(new URL('./runner.mjs?v=explorer-2026-09-07-2',import.meta.url),{type:'module'});
   runTimeout=setTimeout(()=>stop('Python could not load within 90 seconds. Check your connection, then try again.'),90000);

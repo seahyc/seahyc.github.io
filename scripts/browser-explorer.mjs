@@ -89,6 +89,12 @@ try{
  assert.ok(await p.locator('#journey-next').isVisible());
  await p.setViewportSize({width:1280,height:900});
  console.log('PASS expanded workspace stays bounded on desktop and mobile; editor and actions remain usable');
+ await editor.fill('def ready_jobs(jobs):\n    return []\n');
+ await p.locator('#run').click();
+ await p.waitForFunction(()=>document.querySelector('#runtime-state').textContent.includes('repair needed'),null,{timeout:120000});
+ assert.equal(await p.locator('.check-details').evaluate(el=>el.open),true,'Failing checks should open automatically');
+ assert.equal(await p.locator('#run-results').evaluate(el=>el.scrollTop),0,'A fresh run starts feedback at the first result');
+ console.log('PASS failed checks open automatically at the top of the feedback pane');
 
  // A representative function with multiple arguments.
  await p.goto(base+'?library=1&case=arguments#probe-windows');await p.locator('#title').filter({hasText:'Rolling Totals'}).waitFor();await editor.waitFor();
