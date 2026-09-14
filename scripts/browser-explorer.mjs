@@ -65,6 +65,31 @@ try{
  assert.match(await p.locator('#case-feedback').textContent(),/6 of 6 checks passed/);
  assert.equal(await p.locator('#journey-next').isVisible(),true);
  console.log('PASS actual test suite reports all six checks and a visible next step');
+ assert.equal(await p.locator('.check-details').evaluate(el=>el.open),false,'Passing checks start collapsed');
+ assert.ok(await p.evaluate(()=>{const next=document.querySelector('#journey-next').getBoundingClientRect(),results=document.querySelector('#run-results').getBoundingClientRect();return next.top>=results.top&&next.bottom<=results.bottom;}),'Next step must be visible within the feedback pane after passing');
+ const pageHeight=await p.evaluate(()=>document.documentElement.scrollHeight);
+ await p.locator('.worked-example > summary').click();
+ await p.locator('.check-details > summary').click();
+ await p.locator('#full-output > summary').click();
+ const layout=()=>p.evaluate(()=>{
+  const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height};};
+  return {editor:rect('#code-editor'),run:rect('#run'),panes:rect('.panes'),brief:rect('.brief-pane'),height:innerHeight,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,pageHeight:document.documentElement.scrollHeight};
+ });
+ let bounds=await layout();
+ assert.ok(bounds.pageHeight<=pageHeight+2,'Expanded support and results must not lengthen the page');
+ for(const height of [900,720]){
+  await p.setViewportSize({width:1280,height});bounds=await layout();
+  assert.ok(bounds.editor.height>=140,'Editor must stay usable with expanded results');
+  assert.ok(bounds.run.top>=0&&bounds.run.bottom<=height,'Run action stays in viewport');
+  assert.ok(bounds.panes.bottom<=height+2,'Desktop workspace stays within the viewport');
+ }
+ await p.setViewportSize({width:390,height:844});bounds=await layout();
+ assert.ok(bounds.scrollWidth<=bounds.width,'Mobile layout must not overflow horizontally');
+ assert.ok(bounds.brief.height<=500,'Expanded mobile brief stays bounded');
+ assert.ok(await p.locator('#journey-next').isVisible());
+ await p.setViewportSize({width:1280,height:900});
+ console.log('PASS expanded workspace stays bounded on desktop and mobile; editor and actions remain usable');
+
  // A representative function with multiple arguments.
  await p.goto(base+'?library=1&case=arguments#probe-windows');await p.locator('#title').filter({hasText:'Rolling Totals'}).waitFor();await editor.waitFor();
  await editor.fill('def rolling_totals(values, width):\n    if width <= 0 or width > len(values):\n        return []\n    return [sum(values[i:i+width]) for i in range(len(values)-width+1)]\n');

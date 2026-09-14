@@ -21,7 +21,7 @@ test('the input lab labels examples separately from experimental output',()=>{
 
 test('the exercise has one title and it lives inside the notebook brief',()=>{
   assert.equal((html.match(/id="title"/g)||[]).length,1);
-  const briefStart=html.indexOf('<section class="brief-pane">');
+  const briefStart=html.indexOf('<section class="brief-pane"');
   const briefEnd=html.indexOf('</section>',briefStart);
   const title=html.indexOf('id="title"');
   assert.ok(briefStart<title&&title<briefEnd);
