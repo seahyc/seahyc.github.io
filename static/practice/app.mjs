@@ -101,10 +101,11 @@ function renderExample(){
 }
 function renderCases(cases){
  const target=$('case-feedback');target.replaceChildren();target.hidden=!cases?.length;if(!cases?.length)return;
- const summary=document.createElement('p');summary.className=cases.every(c=>c.status==='pass')?'checks-pass':'checks-fail';summary.textContent=`${cases.filter(c=>c.status==='pass').length} of ${cases.length} checks passed`;target.append(summary);
- for(const c of [...cases.filter(c=>c.status!=='pass'),...cases.filter(c=>c.status==='pass')].slice(0,8)){
+ const disclosure=document.createElement('details');disclosure.className='check-details';disclosure.open=cases.some(c=>c.status!=='pass');
+ const summary=document.createElement('summary');summary.className=disclosure.open?'checks-fail':'checks-pass';summary.textContent=`${cases.filter(c=>c.status==='pass').length} of ${cases.length} checks passed · Details`;disclosure.append(summary);target.append(disclosure);
+ for(const c of [...cases.filter(c=>c.status!=='pass'),...cases.filter(c=>c.status==='pass')]){
   const item=document.createElement(c.detail?'details':'div'),label=document.createElement(c.detail?'summary':'p');label.textContent=`${c.status==='pass'?'✓':'○'} ${c.name.replace(/^.*\.test_/,'').replace(/^test_/,'').replaceAll('_',' ')}`;item.append(label);
-  if(c.detail){const detail=document.createElement('pre');detail.textContent=c.detail;item.append(detail);}target.append(item);
+  if(c.detail){const detail=document.createElement('pre');detail.textContent=c.detail;item.append(detail);}disclosure.append(item);
  }
 }
 $('example-input').oninput=()=>{const demo=examples[current.id];$('example-actual').textContent='';if(demo)$('example-expected').textContent=expectedForInput(demo,$('example-input').value);};
@@ -165,11 +166,11 @@ function fresh(mode){
 }
 function recordExposure(){const s=session();if(s.lastExposureDay===day())return;s.lastExposureDay=day();addLearningEvent(state,current.id,{kind:'exposure',passed:false,cold:!!s.cold,assisted:!!s.assisted,fresh:!!s.freshExercise,sessionId:s.started});}
 function renderSupport(){
- const card=$('learning-support');card.replaceChildren();const key=taskSkills[current.id]?.primary?.[0],item=supports[key];
+ const card=$('learning-support');const wasOpen=card.dataset.exercise===current.id&&!!card.querySelector('.worked-example')?.open;card.replaceChildren();card.dataset.exercise=current.id;const key=taskSkills[current.id]?.primary?.[0],item=supports[key];
  card.hidden=!item||supported(current.id)||(session().mode!=='practice'&&!session().assisted);if(card.hidden)return;
- const title=document.createElement('h2');title.textContent=item.title;const explanation=document.createElement('p');explanation.textContent=item.explanation;
+ const worked=document.createElement('details');worked.className='worked-example';worked.open=wasOpen;const title=document.createElement('summary');title.textContent='Worked example: '+item.title;const explanation=document.createElement('p');explanation.textContent=item.explanation;
  const pre=document.createElement('pre'),code=document.createElement('code');code.textContent=item.code;pre.append(code);const prompt=document.createElement('p');prompt.textContent=item.prompt;
- const reveal=document.createElement('details'),summary=document.createElement('summary'),answer=document.createElement('pre');summary.textContent='Check your prediction';answer.textContent=item.answer;reveal.append(summary,answer);card.append(title,explanation,pre,prompt,reveal);
+ const reveal=document.createElement('details'),summary=document.createElement('summary'),answer=document.createElement('pre');summary.textContent='Check your prediction';answer.textContent=item.answer;reveal.append(summary,answer);worked.append(title,explanation,pre,prompt,reveal);card.append(worked);
 }
 function assisted(reason){const wasAssisted=session().assisted;session().cold=false;session().assisted=true;if(!wasAssisted)addLearningEvent(state,current.id,{kind:'assistance',passed:false,cold:false,assisted:true,fresh:!!session().freshExercise,sessionId:session().started});renderSupport();persist();refresh();if(reason)notice(reason);}
 function busy(on){['syntax','run','new-attempt','mode','file','timer-button'].forEach(id=>$(id).disabled=on);const explorerUnavailable=!examples[current?.id];$('example-input').disabled=on||explorerUnavailable;$('example-run').disabled=on||explorerUnavailable;$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;codeEditor.setReadOnly(on||!editable(file)||storageStale);}
@@ -177,7 +178,7 @@ function stop(message='Execution stopped. Your code is saved.'){if(worker)worker
 function run(mode,probe){
   if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
   runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,executionMode:mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock,fresh:!!s.freshExercise};
-  if(mode==='tests'){clearRunOutcome();notice('');}else $('first-feedback').hidden=true;
+  if(mode==='tests'){clearRunOutcome();$('run-results').scrollTop=0;notice('');}else $('first-feedback').hidden=true;
   busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
   worker=new Worker(new URL('./runner.mjs?v=explorer-2026-09-07-2',import.meta.url),{type:'module'});
   runTimeout=setTimeout(()=>stop('Python could not load within 90 seconds. Check your connection, then try again.'),90000);
@@ -200,7 +201,7 @@ function run(mode,probe){
          }
         }
         persist();refresh();
-        if(data.passed&&guidedFlow&&!document.hidden){$('journey-next').focus({preventScroll:true});$('journey-feedback').scrollIntoView({block:'nearest',behavior:'instant'});}
+        if(data.passed&&guidedFlow&&!document.hidden){$('run-results').scrollTop=0;$('journey-next').focus({preventScroll:true});}
       }
     }
   };
