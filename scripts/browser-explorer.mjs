@@ -67,6 +67,8 @@ try{
  console.log('PASS actual test suite reports all six checks and a visible next step');
  assert.equal(await p.locator('.check-details').evaluate(el=>el.open),false,'Passing checks start collapsed');
  assert.ok(await p.evaluate(()=>{const next=document.querySelector('#journey-next').getBoundingClientRect(),results=document.querySelector('#run-results').getBoundingClientRect();return next.top>=results.top&&next.bottom<=results.bottom;}),'Next step must be visible within the feedback pane after passing');
+ await p.locator('#hint-details > summary').click();
+ await p.locator('.worked-example > summary').waitFor();
  const pageHeight=await p.evaluate(()=>document.documentElement.scrollHeight);
  await p.locator('.worked-example > summary').click();
  await p.locator('.check-details > summary').click();
