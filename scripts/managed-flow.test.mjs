@@ -6,8 +6,11 @@ const app=readFileSync(new URL('../static/practice/app.mjs',import.meta.url),'ut
 const html=readFileSync(new URL('../static/practice/index.html',import.meta.url),'utf8');
 const explorer=readFileSync(new URL('../static/practice/explorer.mjs',import.meta.url),'utf8');
 
-test('the optional input lab starts collapsed and retains its controls',()=>{
-  assert.match(html,/<details id="example-lab" hidden><summary>Try a real input<\/summary>/);
+test('the input lab is an always-visible section in the testing pane and retains its controls',()=>{
+  assert.match(html,/<section class="testing-pane"[^>]*><section id="example-lab" hidden[^>]*><h2[^>]*>Try an input<\/h2>/);
+  assert.doesNotMatch(html,/<details id="example-lab"/);
+  const testing=html.indexOf('<section class="testing-pane"'),lab=html.indexOf('id="example-lab"'),results=html.indexOf('id="run-results"');
+  assert.ok(testing<lab&&lab<results);
   for(const id of ['example-input','example-run','example-expected','example-actual'])assert.match(html,new RegExp(`id="${id}"`));
 });
 

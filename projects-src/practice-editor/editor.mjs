@@ -41,7 +41,7 @@ const pythonHighlight=HighlightStyle.define([
 
 const editorTheme=EditorView.theme({
   '&': {
-    height: '360px',
+    height: '100%',
     backgroundColor: 'var(--color-code, #18241e)',
     color: 'var(--color-code-ink, #eef4ee)',
     fontSize: '14px'
