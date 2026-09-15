@@ -50,11 +50,11 @@ try{
   await page.locator('.lesson').nth(i).click();
   assert.equal(await page.locator('#title').textContent(),catalog[i].title);
   assert.equal(await page.locator('#example-lab').evaluate(e=>e.hidden),false,`${catalog[i].id}: missing explorer`);
-  await page.locator('#example-lab summary').click();
+  assert.equal(await page.locator('#example-lab').evaluate(e=>e.tagName),'SECTION',`${catalog[i].id}: explorer must be an always-visible section`);
+  assert.equal(await page.locator('#example-lab > h2').isVisible(),true,`${catalog[i].id}: explorer heading must stay visible`);
   await page.locator('#example-input').waitFor({state:'visible'});
   assert.ok((await page.locator('#example-input').inputValue()).trim(),`${catalog[i].id}: missing input`);
   assert.equal(await page.locator('#example-run').isEnabled(),true);
-  await page.locator('#example-lab summary').click();
  }
  console.log(`PASS browser explorer is available with runnable input for all ${catalog.length} coding tasks`);
  await context.close();
@@ -62,7 +62,7 @@ try{
  const managed=await browser.newContext({viewport:{width:1280,height:900}}),p=await managed.newPage();
  p.on('pageerror',error=>errors.push(error.message));
  await p.goto(base+'?learn=1');await p.locator('#title').filter({hasText:'Keep Ready Jobs'}).waitFor();
- await p.locator('#example-lab summary').click();
+ assert.equal(await p.locator('.testing-pane').evaluate((pane)=>pane.contains(document.querySelector('#example-lab'))&&pane.contains(document.querySelector('#run-results'))),true,'Explorer and run feedback share the testing pane');
  const evidence=()=>p.evaluate(()=>{const s=JSON.parse(localStorage.getItem('coding-practice-v1'));const e=s.exercises['probe-filtering'];return {attempts:s.attempts,events:s.learningEvents,passed:e.passed,cold:e.session.cold,assisted:e.session.assisted};});
  const before=await evidence();assert.equal(before.assisted,false);assert.equal(before.cold,true);
  await p.locator('#example-input').fill('[{"ready":true,"id":"custom"}]');
@@ -87,7 +87,7 @@ try{
  assert.equal(await p.locator('#journey-next').isVisible(),true);
  console.log('PASS actual test suite reports all six checks and a visible next step');
  assert.equal(await p.locator('.check-details').evaluate(el=>el.open),false,'Passing checks start collapsed');
- assert.ok(await p.evaluate(()=>{const next=document.querySelector('#journey-next').getBoundingClientRect(),results=document.querySelector('#run-results').getBoundingClientRect();return next.top>=results.top&&next.bottom<=results.bottom;}),'Next step must be visible within the feedback pane after passing');
+ assert.ok(await p.evaluate(()=>{const next=document.querySelector('#journey-next').getBoundingClientRect(),results=document.querySelector('#run-results').getBoundingClientRect();return next.top>=results.top&&next.bottom<=results.bottom&&next.top-results.top<=Math.min(180,results.height*.4); }),'Next step must be visible near the top of the feedback pane after passing');
  await p.locator('#hint-details > summary').click();
  await p.locator('.worked-example > summary').waitFor();
  const pageHeight=await p.evaluate(()=>document.documentElement.scrollHeight);
@@ -95,16 +95,25 @@ try{
  await p.locator('.check-details > summary').click();
  await p.locator('#full-output > summary').click();
  const layout=()=>p.evaluate(()=>{
-  const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height};};
-  return {editor:rect('#code-editor'),run:rect('#run'),panes:rect('.panes'),brief:rect('.brief-pane'),height:innerHeight,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,pageHeight:document.documentElement.scrollHeight};
+  const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {top:r.top,right:r.right,bottom:r.bottom,left:r.left,width:r.width,height:r.height};};
+  const results=document.querySelector('#run-results');
+  return {header:rect('header'),editor:rect('#code-editor'),run:rect('#run'),exampleInput:rect('#example-input'),exampleRun:rect('#example-run'),panes:rect('.panes'),brief:rect('.brief-pane'),code:rect('.code-pane'),testing:rect('.testing-pane'),results:rect('#run-results'),resultsOverflow:getComputedStyle(results).overflowY,height:innerHeight,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,pageHeight:document.documentElement.scrollHeight};
  });
  let bounds=await layout();
  assert.ok(bounds.pageHeight<=pageHeight+2,'Expanded support and results must not lengthen the page');
  for(const height of [900,720]){
   await p.setViewportSize({width:1280,height});bounds=await layout();
-  assert.ok(bounds.editor.height>=140,'Editor must stay usable with expanded results');
+  assert.ok(bounds.header.height<=64,'Desktop header stays compact');
+  assert.ok(bounds.panes.top<=110&&bounds.panes.bottom<=height+2,'Desktop workspace stays within the viewport');
+  assert.ok(bounds.panes.width>=bounds.width*.95,'Desktop panes use at least 95% of the viewport width');
+  assert.ok(bounds.panes.left<=12&&bounds.width-bounds.panes.right<=12,'Desktop workspace keeps at most 12px side gutters');
+  assert.ok(bounds.brief.left<bounds.code.left&&bounds.code.left<bounds.testing.left,'Desktop workspace keeps task, code, and testing as three columns');
+  assert.ok(bounds.editor.height>=bounds.code.height-180,'Editor fills the height available in the code pane');
   assert.ok(bounds.run.top>=0&&bounds.run.bottom<=height,'Run action stays in viewport');
-  assert.ok(bounds.panes.bottom<=height+2,'Desktop workspace stays within the viewport');
+  assert.ok(bounds.exampleInput.top>=0&&bounds.exampleInput.bottom<=height,'Example input stays in the viewport');
+  assert.ok(bounds.exampleRun.top>=0&&bounds.exampleRun.bottom<=height,'Example run action stays in the viewport');
+  assert.ok(bounds.results.top>=bounds.testing.top&&bounds.results.bottom<=bounds.testing.bottom+2,'Run feedback stays bounded by the testing pane');
+  assert.match(bounds.resultsOverflow,/auto|scroll/,'Run feedback owns its scrolling area');
  }
  await p.setViewportSize({width:390,height:844});bounds=await layout();
  assert.ok(bounds.scrollWidth<=bounds.width,'Mobile layout must not overflow horizontally');
@@ -122,13 +131,12 @@ try{
  // A representative function with multiple arguments.
  await p.goto(base+'?library=1&case=arguments#probe-windows');await p.locator('#title').filter({hasText:'Rolling Totals'}).waitFor();await editor.waitFor();
  await editor.fill('def rolling_totals(values, width):\n    if width <= 0 or width > len(values):\n        return []\n    return [sum(values[i:i+width]) for i in range(len(values)-width+1)]\n');
- await p.locator('#example-lab summary').click();await p.locator('#example-input').fill('[[1, 4, 2], 2]');await p.locator('#example-run').click();
+ await p.locator('#example-input').fill('[[1, 4, 2], 2]');await p.locator('#example-run').click();
  await p.waitForFunction(()=>document.querySelector('#example-actual').textContent.replace(/\s/g,'')==='[5,6]',null,{timeout:120000});
  console.log('PASS browser multiple-argument input produces real output');
  // Callback exercises need a small Python driver, not JSON pretending to encode functions.
  await p.goto(base+'?library=1&case=callback#probe-routing');await p.locator('#title').filter({hasText:'Route Named Actions'}).waitFor();await editor.waitFor();
  await editor.fill('def route_action(handlers, request):\n    name = request["action"]\n    if name not in handlers:\n        return {"ok": False, "error": "unknown"}\n    return {"ok": True, "value": handlers[name](request.get("payload"))}\n');
- await p.locator('#example-lab summary').click();
  await p.locator('#example-input').fill('from task import route_action\nprint(route_action({"double": lambda value: value * 2}, {"action": "double", "payload": 7}))');
  await p.locator('#example-run').click();await p.waitForFunction(()=>document.querySelector('#example-actual').textContent.includes('14'),null,{timeout:120000});
  console.log('PASS browser Python callback driver uses learner implementation');

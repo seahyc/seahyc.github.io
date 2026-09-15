@@ -95,9 +95,9 @@ function updateJourney(){
  }
 }
 function renderExample(){
- const demo=examples[current.id],lab=$('example-lab');lab.hidden=false;lab.open=false;$('example-actual').textContent='';
+ const demo=examples[current.id],lab=$('example-lab');lab.hidden=false;$('example-actual').textContent='';
  if(!demo){$('example-caption').textContent='Input explorer unavailable: this exercise is missing its example configuration.';$('example-input-label').textContent='Input unavailable';$('example-help').textContent='Please report this exercise ID: '+current.id;$('example-input').value='';$('example-input').disabled=true;$('example-run').disabled=true;$('example-expected').textContent='Unavailable';return;}
- const presentation=explorerPresentation(demo);$('example-caption').textContent=demo.caption;$('example-input-label').textContent=presentation.label;$('example-help').textContent=presentation.help;$('example-input').rows=presentation.rows;$('example-input').disabled=false;$('example-run').disabled=false;$('example-input').value=getInitialInput(demo);$('example-expected').textContent=expectedForInput(demo,$('example-input').value);
+ lab.dataset.mode=demo.mode||'value';const presentation=explorerPresentation(demo);$('example-caption').textContent=demo.caption;$('example-input-label').textContent=presentation.label;$('example-help').textContent=presentation.help;$('example-input').rows=presentation.rows;$('example-input').disabled=false;$('example-run').disabled=false;$('example-input').value=demo.mode==='python'?getInitialInput(demo):JSON.stringify(JSON.parse(getInitialInput(demo)));$('example-expected').textContent=expectedForInput(demo,$('example-input').value);
 }
 function renderCases(cases){
  const target=$('case-feedback');target.replaceChildren();target.hidden=!cases?.length;if(!cases?.length)return;
