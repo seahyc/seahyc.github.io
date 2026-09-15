@@ -25,6 +25,27 @@ try{
  const catalog=packs.flatMap(p=>p.exercises);
  await page.goto(base+'?library=1#probe-filtering');
  await page.getByRole('textbox',{name:'Python code editor'}).waitFor();
+ // Exercise real keyboard events: filling a finished solution misses keymap bugs.
+ const keyboardEditor=page.getByRole('textbox',{name:'Python code editor'});
+ await keyboardEditor.fill('');
+ await keyboardEditor.pressSequentially('def f():');
+ await keyboardEditor.press('Enter');
+ await keyboardEditor.pressSequentially('for x in xs:');
+ await keyboardEditor.press('Enter');
+ await keyboardEditor.pressSequentially('out.append(x)');
+ assert.equal(await keyboardEditor.innerText(),'def f():\n    for x in xs:\n        out.append(x)');
+ await keyboardEditor.press('Tab');
+ assert.equal(await keyboardEditor.innerText(),'def f():\n    for x in xs:\n        out.append(x)   ','Tab must not shift the statement');
+ await keyboardEditor.press('Enter');
+ await keyboardEditor.pressSequentially('done = True');
+ assert.match(await keyboardEditor.innerText(),/\n        done = True$/);
+ await keyboardEditor.press('Shift+Tab');
+ assert.match(await keyboardEditor.innerText(),/\n    done = True$/);
+ await keyboardEditor.press('Escape');
+ await keyboardEditor.press('Tab');
+ assert.equal(await keyboardEditor.evaluate(el=>el===document.activeElement),false,'Esc then Tab must leave the editor');
+ console.log('PASS real editor keyboard: nested Enter, inline soft Tab, dedent, keyboard escape');
+
  for(let i=0;i<catalog.length;i++){
   await page.locator('.lesson').nth(i).click();
   assert.equal(await page.locator('#title').textContent(),catalog[i].title);

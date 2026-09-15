@@ -12,8 +12,7 @@ import {
 import {
   defaultKeymap,
   history,
-  historyKeymap,
-  indentWithTab
+  historyKeymap
 } from '@codemirror/commands';
 import {
   bracketMatching,
@@ -27,6 +26,7 @@ import {python} from '@codemirror/lang-python';
 import {closeBrackets, closeBracketsKeymap} from '@codemirror/autocomplete';
 import {highlightSelectionMatches, searchKeymap} from '@codemirror/search';
 import {lintGutter, setDiagnostics as applyDiagnostics} from '@codemirror/lint';
+import {pythonTabKey} from './indentation.mjs';
 
 const pythonHighlight=HighlightStyle.define([
   {tag:[tags.keyword,tags.controlKeyword,tags.operatorKeyword],color:'var(--color-code-keyword, #f0b86e)'},
@@ -93,8 +93,9 @@ export function createCodeEditor({parent,doc='',onChange=()=>{},onPaste=()=>{},o
       lintGutter(),
       python(),
       indentUnit.of('    '),
+      EditorState.tabSize.of(4),
       syntaxHighlighting(pythonHighlight),
-      keymap.of([runKey,indentWithTab,...closeBracketsKeymap,...defaultKeymap,...searchKeymap,...historyKeymap]),
+      keymap.of([runKey,pythonTabKey,...closeBracketsKeymap,...defaultKeymap,...searchKeymap,...historyKeymap]),
       EditorView.contentAttributes.of({'aria-label':'Python code editor','aria-multiline':'true'}),
       EditorView.domEventHandlers({paste:event=>{onPaste(event);return false;}}),
       EditorView.updateListener.of(update=>{if(update.docChanged&&!suppressChange)onChange(update.state.doc.toString());}),
