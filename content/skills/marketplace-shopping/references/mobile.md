@@ -1,9 +1,6 @@
 ---
 title: "Mobile marketplace harvest (MobileCLI)"
 description: "Reference for Marketplace Shopping."
-slug: "mobile-marketplace-harvest-mobilecli"
-aliases:
-  - "/skills/marketplace-shopping/references/mobile/"
 ---
 
 <!-- Generated from seahyc/agent-skills. Do not edit here. -->
@@ -25,7 +22,28 @@ Goal: give a reasonable model enough **key steps** to execute a deep sales-sorte
 2. Phone **unlocked** (deep links and app launch fail on lock screen)
 3. **Auto-Lock → Never** (Settings → Display & Brightness). Automation taps do **not** keep the screen awake
 4. Note the device UDID; pass `--device "$DEV"` on every command
-5. Confirm control works: `apps foreground` or a screenshot succeeds. If RPC/WDA times out, restart Device Kit / re-open the MobileCLI agent on-device, then retry — don't thrash Shopee/Taobao taps while the bridge is dead
+5. Confirm control works: `apps foreground` or a screenshot succeeds. If RPC/WDA times out, follow **Device Kit SOP** below — don't thrash Shopee/Taobao taps while the bridge is dead
+
+## Device Kit SOP (iOS bridge)
+
+Device Kit (`com.mobilenext.devicekit-iosUITests.xctrunner`) is an **XCTest runner**, not a normal app. Treat it as infrastructure MobileCLI starts — not something the user babysits.
+
+**Normal path (default)**
+1. Unlock phone; leave Device Kit alone (do **not** open it from the Home Screen)
+2. Run any MobileCLI command that needs UI (`screenshot`, `dump ui`, `io tap`, …) — MobileCLI starts WebDriverAgent / Device Kit itself
+3. Proceed with the harvest
+
+**Do not** tell the user to open Device Kit by hand as a warm-up. SpringBoard often launches then immediately kills the xctrunner; that bounce does **not** prime the bridge.
+
+**When the bridge is dead** (RPC timeout / “timed out waiting for WebDriverAgent”)
+1. Confirm phone unlocked + Auto-Lock Never
+2. From the Mac, relaunch the runner:  
+   `npx --yes mobilecli@1.0.9 apps launch --device "$DEV" com.mobilenext.devicekit-iosUITests.xctrunner`
+3. Retry `apps foreground` or `screenshot`
+4. Only if Mac-side launch also fails: ask the user to unlock / re-trust the computer. Hand-opening Device Kit is last-ditch and usually still crashes — prefer fixing USB/network trust or reinstalling Device Kit via MobileCLI tooling
+5. Pause marketplace taps until a screenshot succeeds
+
+**One phone owner at a time** — don't run two harvests (or a harvest + another automation) against the same device in parallel.
 
 ## Command primitives
 
@@ -111,13 +129,13 @@ Headline SERP prices often belong to the cheapest accessory, smallest size, or i
 | Symptom | Action |
 |---|---|
 | Marketplace app closed / white screen | `apps terminate` + `apps launch`; continue from jsonl |
-| `apps foreground` / dump UI RPC timeout | Screenshot if possible; restart MobileCLI Device Kit on phone; re-check `devices`; pause harvest until bridge is healthy |
+| `apps foreground` / dump UI RPC timeout | Follow **Device Kit SOP** (CLI `apps launch` of the xctrunner — not hand-open); re-check `devices`; pause harvest until a screenshot succeeds |
 | Lock screen | Stop; user unlocks; confirm Auto-Lock Never; resume |
 | Repeated CAPTCHA / forced login | Stop; user completes auth in-app; then resume |
 
 ## Artifacts & merge
 
-Per platform, write under a known folder (e.g. Desktop or task workspace):
+Per platform, write under a task folder — prefer `Desktop/Agent Scratch/<task>/` (or `/tmp`). **Never** dump harvest screenshots/json on the Desktop root:
 
 - `<platform>-<product>-harvest.jsonl` — one object per candidate (title, price, sold, rating, SKU, shipping, screenshot path, source query)
 - `<platform>-<product>-final.md` — sales-aware table of keepers

@@ -48,7 +48,7 @@ Keep one message to one conversational turn: a single question mark, no greeting
 
 Multi-platform asks: harvest **apps for PDD/Taobao/Shopee** + **browser (or app) for AE/Amazon**, then one merged shortlist.
 
-### Mobile path — follow [the mobile marketplace guide](references/mobile-marketplace-harvest-mobilecli/)
+### Mobile path — follow [the mobile marketplace guide](references/mobile/)
 
 That reference is the executable playbook (session prep, command primitives, generic deep-harvest loop, per-app key steps for PDD/Shopee/Taobao, crash/WDA recovery, artifacts). In short:
 
@@ -56,7 +56,7 @@ That reference is the executable playbook (session prep, command primitives, gen
 2. Launch app or deep-link search; **sort by sales**; multi-query; scroll deep
 3. Open **12–20** PDPs; select the real variant; capture all-in + shipping; no cart yet
 4. Persist jsonl + markdown; merge platforms; recommend; cart only after user yes
-5. On app crash or RPC timeout: terminate/relaunch or fix Device Kit before more taps
+5. On app crash or RPC timeout: terminate/relaunch marketplace app; for WDA/RPC timeouts follow the **Device Kit SOP** in [the mobile marketplace guide](references/mobile/) (CLI launch of xctrunner — never hand-open as warm-up)
 
 Avoid Dynamic Island / status-bar taps (y ≲ 80–90). Never enter passcodes or payment secrets.
 
@@ -185,8 +185,8 @@ Once the user confirms: open the chosen listing, select the exact variant (color
 ## Platform specifics
 
 Read the relevant reference for sort controls, seller-trust tiers, coupon mechanics, and gotchas before working a platform you're less sure about:
-- [Mobile marketplaces](references/mobile-marketplace-harvest-mobilecli/) — phone-app harvest via MobileCLI (preferred for Taobao / Shopee / PDD)
-- [Taobao / Tmall](references/taobao-tmall/) — Chinese UI, 销量 sort, 旗舰店, and cross-border logistics
+- [Mobile marketplaces](references/mobile/) — phone-app harvest via MobileCLI (preferred for Taobao / Shopee / PDD)
+- [Taobao / Tmall](references/taobao/) — Chinese UI, 销量 sort, 旗舰店, and cross-border logistics
 - [Shopee](references/shopee/) — Shopee Mall, Preferred sellers, Coins, and vouchers
 - [AliExpress](references/aliexpress/) — Choice, Certified Original, coin discounts, and cross-border shipping
 - Pinduoduo (拼多多): prefer the **iPhone/Android app** because the web often masks prices. Sort by 销量, verify the selected SKU rather than the headline offer, and include shipping, 集运, and GST in the total.
