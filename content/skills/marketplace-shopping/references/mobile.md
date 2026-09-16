@@ -1,6 +1,9 @@
 ---
 title: "Mobile marketplace harvest (MobileCLI)"
 description: "Reference for Marketplace Shopping."
+slug: "mobile-marketplace-harvest-mobilecli"
+aliases:
+  - "/skills/marketplace-shopping/references/mobile/"
 ---
 
 <!-- Generated from seahyc/agent-skills. Do not edit here. -->
