@@ -38,4 +38,4 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Verify input-output exploration in Chromium
         timeout-minutes: 8
-        run: node scripts/browser-explorer.mjs && node scripts/browser-lab.mjs
+        run: node scripts/browser-explorer.mjs && node scripts/browser-lab.mjs && node scripts/browser-shell.mjs

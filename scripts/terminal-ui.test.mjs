@@ -11,7 +11,8 @@ for (const path of ['static/practice/index.html', 'static/practice/path/index.ht
     assert.match(html, /class="terminal-footer"/);
     assert.match(html, /href="(?:\.\.\/)?lab\/">Experiments<\/a>/);
     const sheets = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)];
-    assert.match(sheets.at(-1)[1], /terminal\.css/);
+    assert.match(sheets.at(-2)[1], /terminal\.css/);
+    assert.match(sheets.at(-1)[1], /shell\.css/);
     assert.doesNotMatch(html, /Coding practice|Coding Practice|Target interview loop|Frontier interview qualification/);
   });
 }
