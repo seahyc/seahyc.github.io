@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "assessments": [
+    {
+      "id": "gym-ppo",
+      "title": "Reproduce PPO in Gymnasium CartPole",
+      "prerequisites": [
+        "rl-bench",
+        "ppo-control"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "gae_and_policy_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            },
+            {
+              "name": "heldout_control",
+              "metric": "heldout_return",
+              "op": "gte",
+              "value": 70
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 30
+            },
+            {
+              "name": "policy_learned",
+              "metric": "policy_output_delta",
+              "op": "gt",
+              "value": 0.001
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "gae_and_policy_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            },
+            {
+              "name": "heldout_control",
+              "metric": "heldout_return",
+              "op": "gte",
+              "value": 150
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 30
+            },
+            {
+              "name": "policy_learned",
+              "metric": "policy_output_delta",
+              "op": "gt",
+              "value": 0.001
+            }
+          ],
+          "unsupported": false
+        }
+      }
+    }
+  ]
+}
