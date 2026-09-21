@@ -1,12 +1,17 @@
 // Core user journey regression; run only on an isolated local origin.
 import {execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
+import {readFile,mkdtemp,cp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {releasePractice} from './release-practice.mjs';
 import {createServer} from 'node:http';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
-const root=path.resolve(fileURLToPath(new URL('../static/',import.meta.url)));
+const sourceRoot=path.resolve(fileURLToPath(new URL('../static/',import.meta.url)));
+const root=await mkdtemp(path.join(tmpdir(),'released-lab-'));
+await cp(path.join(sourceRoot,'practice'),path.join(root,'practice'),{recursive:true});
+await releasePractice(path.join(root,'practice'),'browser-release-test');
 const server=createServer(async(req,res)=>{
  try{
   let relative=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
@@ -104,4 +109,4 @@ try{
  await page.getByRole('textbox',{name:'Python code editor'}).fill(refs['gradient-check']);await page.locator('#run').click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('coding-practice-v1')||'{}').exercises?.['gradient-check']?.lastResult==='pass',{},{timeout:120000});
  await page.goto(base+'lab/');await page.locator('#next').click();await page.locator('#title').filter({hasText:'A complete learning loop'}).waitFor();
  assert.deepEqual(errors,[]);console.log('PASS browser execution: 4 CPU kits + 4 full fault suites, 3-seed run, Stop, drafts, scoped reports, navigation, journal/backup, mobile and primitive regression');
-}finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
+}finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));await rm(root,{recursive:true,force:true});}
