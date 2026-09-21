@@ -88,7 +88,11 @@ try{
  await p.locator('#example-run').click();
  assert.match(await p.locator('#example-actual').textContent(),/JSON|invalid|unexpected|expected/i);
  console.log('PASS managed explorer: unfinished code error, real edited-code output, custom expectations, invalid JSON, no evidence changes');
+ await p.locator('#toggle-output').click();
+ assert.equal(await p.locator('.testing-pane').isVisible(),false);
  await p.locator('#run').click();
+ assert.equal(await p.locator('.testing-pane').isVisible(),true,'Running checks reveals hidden results');
+ assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('workspace-layout-v1')).output),false,'Temporary result reveal preserves saved layout');
  await p.waitForFunction(()=>document.querySelector('#runtime-state').textContent==='6 checks passed',null,{timeout:120000});
  assert.match(await p.locator('#case-feedback').textContent(),/6 of 6 checks passed/);
  assert.equal(await p.locator('#journey-next').isVisible(),true);
