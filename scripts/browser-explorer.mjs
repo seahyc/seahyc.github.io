@@ -21,8 +21,9 @@ try{
  browser=await chromium.launch({headless:true});
  const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage();
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
- const packs=await Promise.all(['ramp','curriculum','variations'].map(async name=>JSON.parse(await readFile(path.join(root,'practice',name+'.json'),'utf8'))));
+ const packs=await Promise.all(['ramp','curriculum','frontier','variations'].map(async name=>JSON.parse(await readFile(path.join(root,'practice',name+'.json'),'utf8'))));
  const catalog=packs.flatMap(p=>p.exercises);
+ const frontierIds=new Set(packs[2].exercises.map(e=>e.id));
  await page.goto(base+'?library=1#probe-filtering');
  await page.getByRole('textbox',{name:'Python code editor'}).waitFor();
  // Exercise real keyboard events: filling a finished solution misses keymap bugs.
@@ -49,6 +50,12 @@ try{
  for(let i=0;i<catalog.length;i++){
   await page.locator('.lesson').nth(i).click();
   assert.equal(await page.locator('#title').textContent(),catalog[i].title);
+  if(frontierIds.has(catalog[i].id)){
+   assert.equal(await page.locator('#example-lab').evaluate(e=>e.hidden),false,`${catalog[i].id}: input availability remains explicit`);
+   assert.equal(await page.locator('#example-input').isEnabled(),false,`${catalog[i].id}: multi-file mocks do not pretend to accept one JSON input`);
+   assert.equal(await page.locator('#example-run').isEnabled(),false);
+   continue;
+  }
   assert.equal(await page.locator('#example-lab').evaluate(e=>e.hidden),false,`${catalog[i].id}: missing explorer`);
   assert.equal(await page.locator('#example-lab').evaluate(e=>e.tagName),'SECTION',`${catalog[i].id}: explorer must be an always-visible section`);
   assert.equal(await page.locator('#example-lab > h2').isVisible(),true,`${catalog[i].id}: explorer heading must stay visible`);
@@ -56,7 +63,7 @@ try{
   assert.ok((await page.locator('#example-input').inputValue()).trim(),`${catalog[i].id}: missing input`);
   assert.equal(await page.locator('#example-run').isEnabled(),true);
  }
- console.log(`PASS browser explorer is available with runnable input for all ${catalog.length} coding tasks`);
+ console.log(`PASS browser explorer is available for ${catalog.length-frontierIds.size} single-input tasks and explicitly unavailable for ${frontierIds.size} multi-file mocks`);
  await context.close();
  // The managed default must expose the same feature, with real Python execution.
  const managed=await browser.newContext({viewport:{width:1280,height:900}}),p=await managed.newPage();
