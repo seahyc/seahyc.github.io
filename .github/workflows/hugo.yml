@@ -93,6 +93,9 @@ jobs:
           python3 scripts/verify-lab-kit.py
           python3 scripts/verify-lab-coach.py
           python3 scripts/verify-lab-workspace.py
+          python3 scripts/verify-advanced-systems.py
+          python3 scripts/verify-advanced-workspaces.py
+          python3 scripts/sync-assessment-catalog.py
           python3 scripts/verify-explorer-examples.py
       - name: Build coding practice editor
         run: npm run build:practice-editor

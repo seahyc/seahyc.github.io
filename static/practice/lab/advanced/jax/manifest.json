@@ -1,0 +1,620 @@
+{
+  "schemaVersion": 2,
+  "reportSchemaVersion": 2,
+  "assessments": [
+    {
+      "id": "jax-training",
+      "title": "Autoregressive arithmetic transformer with Flax and Optax",
+      "prerequisites": [
+        "autodiff",
+        "gradient-descent"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Inspect causal transformer architecture and generation code",
+        "Explain optimizer checkpoint and heldout generalization limits",
+        "Extended model-quality gate: improve heldout arithmetic accuracy substantially beyond this minimum engineering check; explain remaining generalization gap"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    {
+      "id": "dense-moe",
+      "title": "Dense versus top-k MoE",
+      "prerequisites": [
+        "jax-training"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Inspect sparse dispatch in code or profiler",
+        "Explain router, dispatch and communication overhead"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "full_shapes",
+              "metric": "full_contract_error",
+              "op": "lt",
+              "value": 1
+            },
+            {
+              "name": "comparative_training",
+              "metric": "comparative_loss_ratio",
+              "op": "lt",
+              "value": 0.2
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "full_shapes",
+              "metric": "full_contract_error",
+              "op": "lt",
+              "value": 1
+            },
+            {
+              "name": "comparative_training",
+              "metric": "comparative_loss_ratio",
+              "op": "lt",
+              "value": 0.2
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    {
+      "id": "scaling-laws",
+      "title": "Compute-optimal scaling derivation",
+      "prerequisites": [
+        "derivatives",
+        "logarithms"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Review written symbolic derivation and uniqueness argument"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    {
+      "id": "pallas-ragged",
+      "title": "Pallas ragged expert expansion",
+      "prerequisites": [
+        "dense-moe"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Accelerator benchmark on real hardware; CPU interpretation earns no performance credit",
+        "Review measured throughput and speedup; justify optimization or lack of speedup against ragged_dot"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "accelerator_benchmark",
+              "metric": "tokens_per_second",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "name": "accelerator_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "accelerator_benchmark",
+              "metric": "tokens_per_second",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "name": "accelerator_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    }
+  ]
+}

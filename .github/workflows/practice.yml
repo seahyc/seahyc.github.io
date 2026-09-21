@@ -33,9 +33,34 @@ jobs:
       - run: python3 scripts/verify-lab-kit.py
       - run: python3 scripts/verify-lab-coach.py
       - run: python3 scripts/verify-lab-workspace.py
+      - run: python3 scripts/verify-advanced-systems.py
+      - run: python3 scripts/verify-advanced-workspaces.py
+      - run: python3 scripts/sync-assessment-catalog.py
       - run: python3 scripts/verify-explorer-examples.py
       - name: Install browser for core experience regression
         run: npx playwright install --with-deps chromium
       - name: Verify input-output exploration in Chromium
         timeout-minutes: 8
         run: node scripts/browser-explorer.mjs && node scripts/browser-lab.mjs && node scripts/browser-shell.mjs
+
+  framework-assessments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [jax, torch]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      OMP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: static/practice/lab/advanced/${{ matrix.package }}/requirements.txt
+      - name: Install pinned CPU framework
+        run: python -m pip install -r static/practice/lab/advanced/${{ matrix.package }}/requirements.txt
+      - name: Run real framework references and negative controls
+        run: python scripts/verify-advanced-${{ matrix.package }}.py

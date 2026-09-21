@@ -1,3 +1,4 @@
+import {validateAdvanced,scopedReports} from './grading.mjs';
 export const KEY='experiment-workspace-v1';
 export const fresh=()=>({version:1,track:'shared',selected:'gradient-check',entries:{}});
 export function restore(value,program){
@@ -6,12 +7,14 @@ export function restore(value,program){
  result.track=program.tracks.some(t=>t.id===value.track)?value.track:'shared';
  result.selected=ids.has(value.selected)?value.selected:'gradient-check';
  for(const [id,e] of Object.entries(value.entries)){if(!ids.has(id)||!e||typeof e!=='object')continue;
- result.entries[id]={hypothesis:String(e.hypothesis||'').slice(0,12000),findings:String(e.findings||'').slice(0,30000),artifact:String(e.artifact||'').slice(0,2000),reviewer:String(e.reviewer||'').slice(0,2000),review:String(e.review||'').slice(0,12000),updated:Number(e.updated)||0,reports:[]};
- for(const r of (Array.isArray(e.reports)?e.reports:[]).slice(-20)){try{result.entries[id].reports.push(validateReport(r,id.split('-')[0]));}catch{/* Keep notes; invalid report cannot count. */}}
+ result.entries[id]={hypothesis:String(e.hypothesis||'').slice(0,12000),findings:String(e.findings||'').slice(0,30000),artifact:String(e.artifact||'').slice(0,2000),reviewer:String(e.reviewer||'').slice(0,2000),review:String(e.review||'').slice(0,12000),updated:Number(e.updated)||0,...(typeof e.source==='string'?{source:e.source}:{}),reports:[]};
+ for(const r of (Array.isArray(e.reports)?e.reports:[]).slice(-20)){try{result.entries[id].reports.push(validateReport(r,program.missions.find(m=>m.id===id).track,program.assessments?.[program.missions.find(m=>m.id===id).runtime?.assessment]));}catch{/* Keep notes; invalid report cannot count. */}}
  }
  return result;
 }
-export function validateReport(r,track){
+export function validateReport(r,track,definition){
+ if(definition&&r?.schemaVersion!==2)throw Error('This project requires an advanced assessment report.');
+ if(r?.schemaVersion===2)return validateAdvanced(r,definition);
  const tracks=['posttrain','rl','infra','robotics'];
  if(!r||r.schemaVersion!==1||!tracks.includes(track)||r.track!==track||!['passed','failed'].includes(r.status)||!Number.isSafeInteger(r.seed)||!/^[a-f0-9]{64}$/.test(r.candidateSha256||'')||!/^[a-f0-9]{64}$/.test(r.evaluatorSha256||''))throw Error('Expected a kit result for this track with source and evaluator hashes.');
  const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
@@ -61,18 +64,20 @@ export function validateReport(r,track){
 export function stateOf(m,state,code){
  if(m.kind==='browser'){const p=code?.exercises?.[m.id];return p?.passed&&(!p.lastResult||p.lastResult==='pass')?'checks passed':'pending';}
  const e=state.entries[m.id];if(!e)return 'pending';
- if(e.review?.trim().length>=80&&e.reviewer?.trim()&&e.artifact?.trim())return 'review recorded';
+ if(!m.runtime&&e.review?.trim().length>=80&&e.reviewer?.trim()&&e.artifact?.trim())return 'review recorded';
+ if(m.runtime&&scopedReports(m,e.reports).some(r=>r.status==='passed'))return `${m.runtime.requiredScope} checks recorded`;
+ if(m.runtime&&e.reports?.some(r=>r.status==='passed'))return `${e.reports.filter(r=>r.status==='passed').at(-1).scope} checks recorded`;
  if(m.kind==='kit'&&e.reports?.some(r=>r.status==='passed'))return 'checks recorded';
  return e.findings?.trim()?'evidence recorded':'in progress';
 }
 export function nextMission(program,state,code){
  const inScope=m=>m.track==='shared'||m.track===state.track;
- const complete=m=>m.kind==='browser'?stateOf(m,state,code)==='checks passed':m.kind==='kit'?reportSummary(state.entries[m.id]?.reports).consistentSeeds>=3&&(state.entries[m.id]?.findings?.trim().length||0)>=80:stateOf(m,state,code)==='review recorded';
+ const complete=m=>m.kind==='browser'?stateOf(m,state,code)==='checks passed':m.kind==='kit'?reportSummary(state.entries[m.id]?.reports).consistentSeeds>=3&&(state.entries[m.id]?.findings?.trim().length||0)>=80:m.runtime?reportSummary(scopedReports(m,state.entries[m.id]?.reports)).consistentSeeds>=3&&(state.entries[m.id]?.findings?.trim().length||0)>=80&&(state.entries[m.id]?.review?.trim().length||0)>=80&&!!state.entries[m.id]?.reviewer?.trim()&&!!state.entries[m.id]?.artifact?.trim():stateOf(m,state,code)==='review recorded';
  return program.missions.find(m=>inScope(m)&&!complete(m))||program.missions.find(m=>m.track===state.track)||program.missions[0];
 }
 export function reportSummary(reports=[]){
  const passed=reports.filter(r=>r.status==='passed');
- const groups=new Map();for(const r of passed){const key=r.candidateSha256+':'+r.evaluatorSha256;if(!groups.has(key))groups.set(key,new Set());groups.get(key).add(r.seed);}
- const seeds=Math.max(0,...[...groups.values()].map(s=>s.size));
+ const groups=new Map();for(const r of reports){const key=(r.sourceHash||r.candidateSha256)+':'+(r.evaluatorHash||r.evaluatorSha256)+':'+(r.scope||'kit');if(!groups.has(key))groups.set(key,new Map());groups.get(key).set(r.seed,r.status==='passed');}
+ const seeds=Math.max(0,...[...groups.values()].map(s=>[...s.values()].filter(Boolean).length));
  return {runs:reports.length,passed:passed.length,consistentSeeds:seeds};
 }

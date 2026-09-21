@@ -122,7 +122,12 @@ test('an external artifact alone does not advance without an attributable review
  assert.equal(nextMission(program,s,code).id,'rl-repro');
  s.entries['rl-repro'].review='Independent reproduction of the baseline and the changed run, with examined uncertainty and acknowledged limits. '.repeat(2);
  assert.equal(nextMission(program,s,code).id,'rl-repro');
- s.entries['rl-repro'].reviewer='Peer reviewer';assert.equal(nextMission(program,s,code).id,'rl-stress');
+ s.entries['rl-repro'].reviewer='Peer reviewer';assert.equal(nextMission(program,s,code).id,'rl-repro','Review alone cannot replace execution');
+ const m=mission('rl-repro'),definition=program.assessments[m.runtime.assessment];
+ const metrics=Object.fromEntries(definition.scopes.full.criteria.map(c=>[c.metric,c.value+(['lt','lte'].includes(c.op)?-Math.max(.01,Math.abs(c.value)*.1):['gt','gte'].includes(c.op)?Math.max(.01,Math.abs(c.value)*.1):0)]));
+ const checks=Object.fromEntries(definition.scopes.full.criteria.map(c=>[c.name||c.metric,true]));
+ s.entries['rl-repro'].reports=[17,29,43].map(seed=>validateReport({schemaVersion:2,assessment:definition.id,seed,sourceHash:'a'.repeat(64),evaluatorHash:'b'.repeat(64),runtime:{python:'3.12',platform:'test',packages:{},device:'cpu'},scope:'full',status:'passed',metrics,checks,unsupported:[]},'rl',definition));
+ assert.equal(nextMission(program,s,code).id,'rl-stress');
 });
 
 
