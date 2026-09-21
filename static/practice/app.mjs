@@ -11,10 +11,11 @@ import {withoutDuplicateTitle} from './brief.mjs?v=notebook-2026-09-07-1';
 import './version.mjs?v=recall-2026-09-06-1';
 import {rateRecall,recallState} from './recall.mjs?v=recall-2026-09-06-1';
 import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
-import {freshPath,validatePath} from './path/model.mjs?v=recall-2026-09-06-1';
+import {freshPath,validatePath,activeSessions} from './path/model.mjs?v=recall-2026-09-06-1';
 import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs?v=recall-2026-09-06-1';
 import {expectedForInput,explorerPresentation,formatExplorerOutput,getInitialInput,makeProbe} from './explorer.mjs?v=explorer-2026-09-08-1';
 import {canStartFreshMock} from './practice-session.mjs';
+import {assessmentDimensions,assessmentQualification,completeAssessmentReview,errorCategories} from './assessment-readiness.mjs';
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 if(!guidedFlow)document.body.classList.remove('focus');
 let interviews=[],pathState=freshPath(),examples={},activeAction;
@@ -72,13 +73,21 @@ function refresh(){
   $('lessons').replaceChildren();let group='';
   exercises.forEach((e,i)=>{if(e.stage!==group){group=e.stage;const h=document.createElement('div');h.className='group-label';h.textContent=group;$('lessons').append(h);}
     const b=document.createElement('button');b.className='lesson';b.setAttribute('aria-current',String(e.id===current?.id));b.textContent=`${String(i+1).padStart(2,'0')}  ${e.title}`;const small=document.createElement('small');small.textContent=`${e.minutes} min · ${label(progress(state,e.id))}`;b.append(small);b.onclick=()=>select(e);$('lessons').append(b);});
-  const mocks=state.attempts.filter(a=>a.passed&&a.mockQualified&&a.freshMock);const distinct=new Set(mocks.map(a=>a.id)).size,days=new Set(mocks.map(a=>day(a.at))).size;
-  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${distinct} different fresh mocks passed within time without recorded assistance, across ${days} day(s). Still review design, explanation and unfamiliar-task transfer yourself.`;
+  const qualification=assessmentQualification(state,exercises);
+  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} coding-assessment qualification gates met. Fresh timed passes require a scored postmortem to count as strong rounds.`;
   if(guidedFlow&&current)updateJourney();
   $('history').replaceChildren();
   if(!state.attempts.length){const li=document.createElement('li');li.textContent='Your first run starts the evidence. Syntax errors are useful feedback.';$('history').append(li);}
   state.attempts.slice(0,6).forEach(a=>{const li=document.createElement('li');const title=exercises.find(e=>e.id===a.id)?.title||'Exercise';li.textContent=`${new Date(a.at).toLocaleDateString()} — ${title}: ${a.passed?'passed':a.kind}${a.cold?' · cold recall':''}${a.output?' · '+firstError(a.output):''}`;$('history').append(li);});
-  if(current){const p=entry(),s=session();$('review-status').textContent=p.due?`Next review: ${p.due}. ${label(p)}`:(p.scaffold?'Foundation complete. Continue to independent retrieval.':'A first pass schedules tomorrow’s review.');$('session-status').textContent=s.cold?'Fresh scaffold; no assistance recorded.':'Practice: support is welcome. Cold recall starts with a fresh attempt.';}
+  if(current){const p=entry(),s=session();$('review-status').textContent=p.due?`Next review: ${p.due}. ${label(p)}`:(p.scaffold?'Foundation complete. Continue to independent retrieval.':'A first pass schedules tomorrow’s review.');$('session-status').textContent=s.cold?'Fresh scaffold; no assistance recorded.':'Practice: support is welcome. Cold recall starts with a fresh attempt.';renderMockReview();}
+}
+function renderMockReview(){
+ const card=$('mock-review'),p=entry();card.hidden=current.stage!=='Mock'||!p.passed;if(card.hidden)return;
+ const review=p.assessmentReview||={errorCategory:'none',scores:{},postmortem:''};
+ $('mock-error').value=errorCategories.includes(review.errorCategory)?review.errorCategory:'none';$('mock-postmortem').value=review.postmortem||'';
+ const scores=$('mock-scores');scores.replaceChildren();
+ for(const [id,title] of assessmentDimensions){const label=document.createElement('label');label.htmlFor=`mock-score-${id}`;label.textContent=title;const select=document.createElement('select');select.id=`mock-score-${id}`;select.dataset.dimension=id;select.append(new Option('Choose evidence',''),...['0 — missing','1 — partial','2 — solid','3 — competition ready'].map((text,i)=>new Option(text,String(i))));select.value=Number.isInteger(review.scores?.[id])?String(review.scores[id]):'';scores.append(label,select);}
+ $('mock-review-status').textContent=completeAssessmentReview(review)?'Strong-round review complete.':'Pending: score every dimension at 2+ and write a 120-character postmortem.';
 }
 function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Interview progress could not be read. Your saved data has been kept; try refreshing this page.');}}
 function updateJourney(){
@@ -89,7 +98,7 @@ function updateJourney(){
  $('journey-feedback').hidden=!passed&&!smaller;
  $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.diagnostic?'Find your starting point · untimed':activeAction?.variation?'A fresh angle · untimed':activeAction?.reinforcement?'Practice · build fluency':activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
  if(passed||smaller){
-  const step=nextStep(exercises,state,interviews,pathState);
+  const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
   $('journey-message').textContent=smaller&&!passed?'Let’s make this smaller. Your draft is saved; the next task gives you more support.':step.diagnostic?'A short independent task will check what you already know.':step.variation?'Use the skill in a different problem. We’ll handle what needs revisiting.':step.reinforcement?'Keep practising this pattern. We’ll bring back recall checks when they’re due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
   $('next-review-date').textContent=p.review?.dueAt?'Recall checks are scheduled automatically.':'';
   $('journey-next').textContent=smaller&&!passed?'Continue with a smaller step →':step.reinforcement?'Continue practising →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
@@ -115,7 +124,7 @@ $('example-run').onclick=()=>{try{const demo=examples[current.id];if(!demo)throw
 
 function launchStep(){
  if(worker||storageStale)return;
- readPath();const step=nextStep(exercises,state,interviews,pathState);
+ readPath();const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
  if(step.type!=='code'){location.assign('./path/');return;}activeAction=step;
  const e=exercises.find(e=>e.id===step.id),p=state.exercises[e.id] ||= {coldDays:[],attempts:0};
  const pristine=!p.viewedAt&&!p.files&&!p.attempts&&!p.session;
@@ -216,6 +225,9 @@ function tick(){if(!current)return;const s=session();document.body.classList.tog
   if(!guidedFlow&&s.mode!=='mock'&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;notice('If you’re stuck, write one input and expected output. A tiny executable step is enough.');persist();}}
 $('file').onchange=()=>{saveEditor();file=$('file').value;loadEditor();};
 $('notes').oninput=()=>{entry().notes=$('notes').value;persist();};
+$('mock-error').onchange=()=>{const r=entry().assessmentReview||={scores:{}};r.errorCategory=$('mock-error').value;persist();renderMockReview();};
+$('mock-postmortem').oninput=()=>{const r=entry().assessmentReview||={scores:{}};r.postmortem=$('mock-postmortem').value.slice(0,12000);persist();$('mock-review-status').textContent=completeAssessmentReview(r)?'Strong-round review complete.':'Pending: score every dimension at 2+ and write a 120-character postmortem.';};
+$('mock-scores').onchange=event=>{const id=event.target?.dataset?.dimension;if(!id)return;const r=entry().assessmentReview||={scores:{}};r.scores||={};r.scores[id]=event.target.value===''?null:Number(event.target.value);persist();renderMockReview();};
 $('motivation').oninput=()=>{state.motivation=$('motivation').value;persist();};
 $('mode').onchange=()=>fresh($('mode').value);$('new-attempt').onclick=()=>fresh($('mode').value);
 $('syntax').onclick=()=>run('syntax');$('run').onclick=()=>run('tests');$('main').onclick=()=>run('main');$('stop').onclick=()=>stop();
