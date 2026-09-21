@@ -7,6 +7,7 @@ p=ROOT/'program.json'; program=json.loads(p.read_text())
 bindings={
  'posttrain-repro':('torch','transformer-posttrain'),
  'rl-repro':('torch','ppo-control'),
+ 'gym-ppo':('gym','gym-ppo'),
  'infra-repro':('torch','attention-kernel'),
  'robotics-repro':('torch','visual-policy'),
  'posttrain-stress':('systems','reward-audit'),
@@ -19,8 +20,9 @@ bindings={
  'pallas-ragged':('jax','pallas-ragged'),
 }
 coverage={
+ 'gym-ppo':'Executable scope: real PyTorch PPO training in pinned Gymnasium CartPole-v1 on your CPU. Includes held-out episodes, a paired random baseline, three-seed reports, hashed configs and exact deterministic checkpoint resume. MPS is explicitly unsupported pending parity validation; larger control benchmarks remain research extensions.',
  'transformer-posttrain':'Executable scope: a small numeric-input, single-answer-token transformer; real SFT, DPO and GRPO updates. Multi-token language modeling and a TRL reproduction remain research extensions.',
- 'ppo-control':'Executable scope: real PPO training in a custom multi-step point-navigation simulator. Gymnasium reproduction and distributed training remain research extensions.',
+ 'ppo-control':'Executable scope: real PPO training in a custom multi-step point-navigation simulator. The next gym-ppo mission reproduces PPO in Gymnasium; distributed training remains a research extension.',
  'visual-policy':'Executable scope: train a CNN from synthetic images and evaluate closed-loop control under shifted rendering and dynamics. LeRobot datasets, ACT/diffusion policies and physical robots remain research extensions.',
  'attention-kernel':'Executable scope: attention values, gradients, masks and timed-shape parity; a CUDA run must demonstrate at least 1.05x speedup over native SDPA. CPU passing results do not satisfy the accelerator gate.',
  'reward-audit':'Executable scope: seeded split contamination, strict verifiable rewards and reward normalization. Audit a trained model and real data pipeline in the research extension.',
@@ -33,7 +35,7 @@ coverage={
  'pallas-ragged':'Executable scope: Pallas ragged expansion correctness including empty groups; accelerator completion requires measured 1.05x speedup. CPU interpretation only satisfies smoke.',
 }
 definitions={}
-for package in ['jax','torch','systems']:
+for package in ['jax','torch','systems','gym']:
  for a in json.loads((ROOT/'advanced'/package/'manifest.json').read_text())['assessments']:
   definitions[a['id']]=a
 program['assessments']=definitions
@@ -45,7 +47,7 @@ for m in program['missions']:
  # Keep scientific protocol and artifact reviews; automated scope is an additional gate.
  marker='Executable gate: '
  m['protocol']=[v for v in m['protocol'] if not v.startswith(marker)]
- m['protocol'].insert(0,marker+('run in this browser or download the native runner. ' if package=='systems' else 'download the native runner; open README.md for setup. ')+f"python evaluate.py --assessment {assessment} --seed 17 --scope smoke --candidate candidate.py --output result.json")
+ m['protocol'].insert(0,marker+('run in this browser, or select Mac CPU and pair the local runner. ' if package=='systems' else 'select Mac CPU and pair the local runner; alternatively download the workspace and use its README. ')+f"python evaluate.py --assessment {assessment} --seed 17 --scope smoke --candidate candidate.py --output result.json")
  m['evaluation']=[v for v in m['evaluation'] if not v.startswith('Progress gate: ')]
  m['evaluation'].append(f"Progress gate: three passing {m['runtime']['requiredScope']} reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof.")
 serialized=json.dumps(program,indent=2,ensure_ascii=False)+'\n'

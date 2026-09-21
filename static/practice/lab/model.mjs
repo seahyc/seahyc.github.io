@@ -1,9 +1,10 @@
 import {validateAdvanced,scopedReports} from './grading.mjs';
 export const KEY='experiment-workspace-v1';
-export const fresh=()=>({version:1,track:'shared',selected:'gradient-check',entries:{}});
+export const fresh=()=>({version:1,track:'shared',selected:'gradient-check',entries:{},nativeImportedJobs:[]});
 export function restore(value,program){
  if(!value||value.version!==1||!value.entries||typeof value.entries!=='object'||Array.isArray(value.entries))throw Error('Unrecognized workspace backup; existing data was kept.');
  const ids=new Set(program.missions.map(m=>m.id));const result=fresh();
+ result.nativeImportedJobs=(Array.isArray(value.nativeImportedJobs)?value.nativeImportedJobs:[]).filter(id=>typeof id==='string'&&/^[a-zA-Z0-9-]{1,80}$/.test(id)).slice(-1000);
  result.track=program.tracks.some(t=>t.id===value.track)?value.track:'shared';
  result.selected=ids.has(value.selected)?value.selected:'gradient-check';
  for(const [id,e] of Object.entries(value.entries)){if(!ids.has(id)||!e||typeof e!=='object')continue;

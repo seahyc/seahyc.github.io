@@ -77,7 +77,8 @@ try{
  await page.locator('#toggle-sidebar').click();
  // Native JAX projects expose their specific runner and accept honest unsupported reports.
  await page.locator('#track').selectOption('infra');await page.getByRole('button',{name:'Pallas ragged expert expansion',exact:false}).click();
- assert.equal(await page.locator('#execution').isVisible(),false);
+ assert.equal(await page.locator('#execution').isVisible(),true);
+ assert.equal(await page.locator('#run-target').inputValue(),'mac');
  assert.match(await page.getByRole('link',{name:'$ download native runner'}).getAttribute('href'),/advanced\/jax\/workspace.zip/);
  const unsupported={schemaVersion:2,assessment:'pallas-ragged',seed:17,sourceHash:'a'.repeat(64),evaluatorHash:'b'.repeat(64),runtime:{python:'3.12',platform:'test',packages:{},device:'cpu'},scope:'accelerator',status:'unsupported',metrics:{},checks:{},unsupported:['accelerator_hardware']};
  await page.locator('#report').setInputFiles({name:'result.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(unsupported))});
