@@ -340,7 +340,7 @@
       "objective": "Fit a small categorical policy from comparisons, compare with the reference and inspect held-out preference accuracy.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
-        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track posttrain --seed 17 --output posttrain-17.json",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest -v test_candidate.CandidateContracts.test_preference_direction\npython3 harness.py --track posttrain --seed 17 --output posttrain-17.json",
         "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
         "Change preference noise and beta separately; report accuracy and divergence, including a setting that fails."
       ],
@@ -372,7 +372,7 @@
       "objective": "Train a stochastic bandit policy with REINFORCE. Separate collection, update and evaluation; compare against uniform behavior.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
-        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track rl --seed 17 --output rl-17.json",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest -v test_candidate.CandidateContracts.test_bandit_learns_from_interactions\npython3 harness.py --track rl --seed 17 --output rl-17.json",
         "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
         "Ablate the baseline and learning rate across paired seeds; explain variance and collapse."
       ],
@@ -404,7 +404,7 @@
       "objective": "Implement quantized matrix operations. Establish numeric error, then measure warm latency against float on the same hardware.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
-        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track infra --seed 17 --output infra-17.json",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest -v test_candidate.CandidateContracts.test_quantization_zero_and_signed_rows test_candidate.CandidateContracts.test_matvec\npython3 harness.py --track infra --seed 17 --output infra-17.json",
         "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
         "Sweep shapes and outlier magnitudes; distinguish reduced storage from actual runtime speed."
       ],
@@ -436,7 +436,7 @@
       "objective": "Fit a controller from demonstrations and execute it in held-out closed-loop episodes with disturbances.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
-        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track robotics --seed 17 --output robotics-17.json",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest -v test_candidate.CandidateContracts.test_controller_fits_observed_gain\npython3 harness.py --track robotics --seed 17 --output robotics-17.json",
         "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
         "Compare against zero control and an analytic controller; show where imitation breaks under shifted initial states."
       ],

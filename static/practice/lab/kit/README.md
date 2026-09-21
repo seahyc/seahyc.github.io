@@ -6,7 +6,7 @@ Keep `candidate.py`, `harness.py` and `test_candidate.py` together in a director
 
 ```sh
 python3 -m py_compile candidate.py harness.py test_candidate.py
-python3 -m unittest -v
+python3 -m unittest -v test_candidate.CandidateContracts.test_preference_direction
 python3 harness.py --track posttrain --seed 17 --output posttrain-17.json
 python3 harness.py --track rl --seed 17 --output rl-17.json
 python3 harness.py --track infra --seed 17 --output infra-17.json
@@ -54,3 +54,18 @@ For each track, save three runs with seeds 17, 91 and 203 **after** freezing you
 Do not tune on every seed you call heldout. Ask a peer to choose new seeds or a shifted test distribution after the implementation is frozen. A passing file demonstrates this particular exercise only. Before research claims, reproduce an external baseline with matched budgets, multiple training seeds, uncertainty, failure analysis and an independently runnable artifact. Before an upstream contribution, read the project's contribution guidelines, run its tests and have maintainers evaluate the actual change.
 
 For shared machines, keep runs bounded: one process, no parallel sweep, no datasets downloaded implicitly. This kit runs on ARM Linux as well as macOS. GPU-based next steps require a separately provisioned environment; a CPU-only Oracle VM can run these exercises but is not a GPU training service.
+
+## Run only the selected track
+
+Other tracks may remain unimplemented. Their TODOs do not invalidate this track.
+
+```sh
+# Post-training
+python3 -m unittest -v test_candidate.CandidateContracts.test_preference_direction
+# RL
+python3 -m unittest -v test_candidate.CandidateContracts.test_bandit_learns_from_interactions
+# Systems
+python3 -m unittest -v test_candidate.CandidateContracts.test_quantization_zero_and_signed_rows test_candidate.CandidateContracts.test_matvec
+# Robot learning
+python3 -m unittest -v test_candidate.CandidateContracts.test_controller_fits_observed_gain
+```

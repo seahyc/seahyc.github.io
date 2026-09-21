@@ -39,7 +39,7 @@ try{
  await page.screenshot({path:'/tmp/experiment-workspace-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),390);await page.screenshot({path:'/tmp/experiment-workspace-mobile.png',fullPage:true});
  // New primitive really loads in the existing execution console, with its editable candidate tests.
- await page.goto(base+'?library=1#gradient-check');await page.getByRole('textbox',{name:'Python code editor'}).waitFor();
+ await page.goto(base+'?library=1#gradient-check');await page.getByRole('textbox',{name:'Python code editor'}).waitFor();await page.locator('#title').filter({hasText:'Differentiate a Logistic Loss'}).waitFor();
  await page.locator('#run').click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('coding-practice-v1')||'{}').exercises?.['gradient-check']?.attempts>0,{},{timeout:120000});
  assert.ok(!await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['gradient-check'].passed));
  const refs=JSON.parse(execFileSync('python3',['-c',`import ast,json,pathlib; t=ast.parse(pathlib.Path('scripts/verify-research.py').read_text()); print(json.dumps(next(ast.literal_eval(n.value) for n in t.body if isinstance(n,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='REFERENCES' for x in n.targets))))`],{encoding:'utf8'}));
