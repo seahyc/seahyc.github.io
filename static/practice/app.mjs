@@ -19,6 +19,7 @@ import {assessmentDimensions,assessmentQualification,completeAssessmentReview,er
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 // Route choice changes task selection, never the editor layout.
 document.body.classList.add('focus');
+document.body.classList.toggle('file-library',!guidedFlow);
 let interviews=[],pathState=freshPath(),examples={},activeAction;
 const $=id=>document.getElementById(id), KEY='coding-practice-v1';
 let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),storageStale=false;

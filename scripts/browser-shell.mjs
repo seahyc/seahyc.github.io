@@ -54,6 +54,11 @@ try {
  await page.goto(base+'?library=1#tiny-count-cold');
  await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);
  await navigation('Files');
+ assert.equal(await page.locator('#mode').isVisible(),false);
+ await page.locator('.workspace-session-menu > summary').click();
+ assert.equal(await page.locator('#mode').isVisible(),true);
+ assert.equal(await page.locator('#new-attempt').isVisible(),true);
+ await page.locator('.workspace-session-menu > summary').click();
  const activeId=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).activeExerciseId);
  assert.ok(activeId,'saved exercise selected');
  for(const id of ['toggle-sidebar','toggle-brief','toggle-output'])await setShown(id,true);

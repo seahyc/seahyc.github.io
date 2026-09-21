@@ -43,3 +43,15 @@ body[data-workspace=experiments] .lab-tools input{display:block;max-width:180px}
  body[data-workspace=files].brief-collapsed .editor-shell{height:65dvh}
 }
 @media(max-width:540px){#workspace-nav{padding:5px 8px;gap:3px}#workspace-nav a,#workspace-nav button{padding:5px 7px}.workspace-layout-controls{gap:3px}body[data-workspace=files] .workspace-layout-controls{width:100%;margin-left:0}body[data-workspace=experiments] main{width:100%;min-width:0}}
+
+.workspace-session-menu{position:relative;margin:0;padding:0;border:0}
+#workspace-nav .workspace-session-menu>summary{list-style:none;padding:5px 10px;border:1px solid #344151;border-radius:3px;min-height:30px;box-sizing:border-box;cursor:pointer;color:#d5dfe9}
+#workspace-nav .workspace-session-menu>summary::-webkit-details-marker{display:none}
+#workspace-nav .session-bar{position:absolute;right:0;top:36px;display:flex;flex-direction:column;align-items:stretch;gap:8px;width:min(360px,calc(100vw - 24px));padding:12px;border:1px solid #344151;border-radius:3px;background:#10161e;box-shadow:0 8px 24px #0008;z-index:40}
+#workspace-nav .session-bar label{margin:0}#workspace-nav .session-bar select{color:#d5dfe9;background:#151d27;border:1px solid #344151;padding:6px;font:inherit}
+#workspace-nav .session-bar button{border:1px solid #344151}#workspace-nav .session-bar .small{font-size:11px;white-space:normal}
+body.file-library .timer{display:block}
+body.file-library #next-exercise{display:inline-flex}
+.workspace-session-menu{margin-left:auto}
+.workspace-session-menu:not([open])>.session-bar{display:none!important}
+body.file-library #main{display:inline-flex}
