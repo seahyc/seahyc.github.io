@@ -14,6 +14,7 @@ import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
 import {freshPath,validatePath} from './path/model.mjs?v=recall-2026-09-06-1';
 import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs?v=recall-2026-09-06-1';
 import {expectedForInput,explorerPresentation,formatExplorerOutput,getInitialInput,makeProbe} from './explorer.mjs?v=explorer-2026-09-08-1';
+import {canStartFreshMock} from './practice-session.mjs';
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
 if(!guidedFlow)document.body.classList.remove('focus');
 let interviews=[],pathState=freshPath(),examples={},activeAction;
@@ -158,8 +159,10 @@ function select(e){
 function fresh(mode){
   if(worker)return;
   if(!confirm('Start from the original scaffold? Your current code will be replaced. Your current draft will be saved in your practice history.')){$('mode').value=session().mode;return;}
-  saveEditor();const p=entry();archiveDraft(p);p.files={};p.notes='';p.lastResult='pending';
-  p.session={mode,cold:mode!=='practice'&&!supported(current.id),started:Date.now(),hint:0,assisted:false};
+  saveEditor();const p=entry();
+  const freshMock=canStartFreshMock(current,p,mode);
+  archiveDraft(p);p.files={};p.notes='';p.lastResult='pending';
+  p.session={mode,cold:mode!=='practice'&&!supported(current.id),started:Date.now(),hint:0,assisted:false,freshMock,freshExercise:freshMock};
   if(mode==='mock')p.session.deadline=Date.now()+current.minutes*60000;
   // Clear the editor before selection so its old contents cannot be saved over the reset.
   file=null;select(current);notice(mode==='mock'?'Timed mock started. Hints and pauses invalidate mock evidence.':'Fresh scaffold loaded. Reconstruct the behavior one small step at a time.');
