@@ -106,6 +106,7 @@ try{
   const results=document.querySelector('#run-results');
   return {header:rect('header'),editor:rect('#code-editor'),run:rect('#run'),exampleInput:rect('#example-input'),exampleRun:rect('#example-run'),panes:rect('.panes'),brief:rect('.brief-pane'),code:rect('.code-pane'),testing:rect('.testing-pane'),results:rect('#run-results'),resultsOverflow:getComputedStyle(results).overflowY,height:innerHeight,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,pageHeight:document.documentElement.scrollHeight};
  });
+ if(await p.locator('#toggle-sidebar').getAttribute('aria-expanded')==='true')await p.locator('#toggle-sidebar').click();
  let bounds=await layout();
  assert.ok(bounds.pageHeight<=pageHeight+2,'Expanded support and results must not lengthen the page');
  for(const height of [900,720]){

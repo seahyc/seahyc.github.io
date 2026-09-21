@@ -1,0 +1,45 @@
+/* A compact command bar, identical on every page; no brand or hero. */
+#workspace-nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:6px;min-height:44px;padding:5px 12px;margin:0;border:0;border-bottom:1px solid #283544;background:#0b0f14;color:#d5dfe9;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;flex-wrap:wrap}
+#workspace-nav a,#workspace-nav button{font:inherit;box-sizing:border-box;padding:5px 10px;min-height:30px;border-radius:3px;text-decoration:none;white-space:nowrap;color:#91a1b3;border:1px solid transparent;background:transparent;cursor:pointer;margin:0;box-shadow:none}
+#workspace-nav a[aria-current=page]{color:#91d5b5;border-color:#344151;background:#10161e}
+#workspace-nav button{border-color:#344151}#workspace-nav button[aria-expanded=true]{color:#d5dfe9;background:#151d27}
+#workspace-nav a:hover,#workspace-nav button:hover{color:#b4e7ce}#workspace-nav :focus-visible{outline:2px solid #8bbfff;outline-offset:2px}
+.workspace-layout-controls{display:flex;gap:6px;margin-left:auto}
+.terminal-footer nav{display:none!important}
+body.sidebar-collapsed .curriculum,body.sidebar-collapsed .shell>aside,body.brief-collapsed .brief-pane,body.output-collapsed .testing-pane{display:none!important}
+body[data-workspace=files] .brief-pane{background-image:none;box-shadow:none}
+body[data-workspace=files] .curriculum{display:block;padding:12px;min-height:0;overflow:auto}
+body[data-workspace=files] .curriculum h2{font-size:15px;margin:0 0 8px}
+body[data-workspace=files] .curriculum nav{max-height:none;margin:10px 0}
+body[data-workspace=files] .curriculum .lesson{font-size:12px;padding:8px}
+body[data-workspace=files] .studio{display:grid;grid-template-columns:220px minmax(0,1fr);gap:8px;min-width:0}
+body[data-workspace=files].sidebar-collapsed .studio{grid-template-columns:minmax(0,1fr)}
+body[data-workspace=experiments].sidebar-collapsed .shell{grid-template-columns:minmax(0,1fr)}
+body[data-workspace=experiments] article{max-width:none}
+body[data-workspace=experiments] .lab-tools{display:flex;align-items:center;gap:12px;padding:8px 20px;border-bottom:1px solid #283544;flex-wrap:wrap}
+body[data-workspace=experiments] .lab-tools label{margin:0;font-size:11px}
+body[data-workspace=experiments] .lab-tools input{display:block;max-width:180px}
+@media(min-width:901px){
+ body.focus.practice-page main{height:calc(100dvh - 44px);width:100%;max-width:none}
+ body[data-workspace=files] .panes{grid-template-columns:minmax(190px,.8fr) minmax(260px,1.5fr) minmax(200px,.8fr)}
+ body[data-workspace=files].brief-collapsed .panes{grid-template-columns:minmax(260px,1fr) minmax(200px,.5fr)}
+ body[data-workspace=files].output-collapsed .panes{grid-template-columns:minmax(190px,.55fr) minmax(260px,1fr)}
+ body[data-workspace=files].brief-collapsed.output-collapsed .panes{grid-template-columns:minmax(0,1fr)}
+ body[data-workspace=files] .workbench{min-height:0;overflow:hidden}
+}
+@media(min-width:901px) and (max-width:1200px){
+ body[data-workspace=files] .studio{grid-template-columns:180px minmax(0,1fr)}
+ body[data-workspace=files] .panes{grid-template-columns:minmax(160px,.55fr) minmax(240px,1fr)}
+ body[data-workspace=files] .testing-pane{grid-column:1/-1;max-height:250px}
+ body[data-workspace=files].brief-collapsed .panes{grid-template-columns:minmax(0,1fr)}
+ body[data-workspace=files].output-collapsed .panes{grid-template-columns:minmax(160px,.55fr) minmax(240px,1fr)}
+ body[data-workspace=files].brief-collapsed.output-collapsed .panes{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:900px){
+ body[data-workspace=files] .studio{grid-template-columns:minmax(0,1fr)}
+ body[data-workspace=files] .curriculum{max-height:220px;border-bottom:1px solid #283544}
+ body[data-workspace=files] .panes{grid-template-columns:minmax(0,1fr)}
+ body[data-workspace=files] .brief-pane{max-height:35dvh}
+ body[data-workspace=files].brief-collapsed .editor-shell{height:65dvh}
+}
+@media(max-width:540px){#workspace-nav{padding:5px 8px;gap:3px}#workspace-nav a,#workspace-nav button{padding:5px 7px}.workspace-layout-controls{gap:3px}body[data-workspace=files] .workspace-layout-controls{width:100%;margin-left:0}body[data-workspace=experiments] main{width:100%;min-width:0}}
