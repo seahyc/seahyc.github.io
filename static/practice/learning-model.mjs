@@ -101,8 +101,12 @@ export function adaptiveNextStep(exercises,code={},sessions=[],path={},now=Date.
  if(pending)return step(pending,{action:'resume',reason:'The checks passed. Finish recording this result before continuing.'});
  const activeCandidates=exercises.filter(e=>{const p=code.exercises?.[e.id];if(!p?.session||terminal(p)||!(p.files||p.attempts||p.lastResult))return false;
   if(taskSkills[e.id]?.kind==='diagnostic'){
-   const adverse=events.filter(x=>x.id===e.id&&x.kind!=='exposure'&&String(x.sessionId)===String(p.session.started)&&(!x.passed||x.assisted));
-   if(adverse.some(x=>x.assisted)||adverse.length>=2)return false;
+   // A new session must not erase earlier diagnostic failures. Once the
+   // starting-point check has served its purpose, leave the draft available
+   // in the library and route the learner to supported practice.
+   const history=events.some(x=>x.id===e.id)?events:(code.attempts||[]);
+   const adverse=history.filter(x=>x.id===e.id&&x.kind!=='exposure'&&x.kind!=='syntax'&&(!x.passed||x.assisted));
+   if(adverse.some(x=>x.assisted)||adverse.filter(x=>x.kind!=='assistance').length>=2)return false;
   }
   return true;
  });

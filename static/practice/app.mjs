@@ -243,4 +243,4 @@ if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){
   notice('Fresh mock started. Work independently; the timer is running. Explain your design afterward in the interview room.');
  }else notice('This task has already been opened. Continue as familiar practice, or choose an unviewed mock from the complete path.');
 }
-if(guidedFlow)launchStep();else select(target);setInterval(tick,1000);}catch(e){notice('Could not load the practice workspace: '+e.message+'. Reload to try again.');}
+if(guidedFlow)launchStep();else {const direct=!!location.hash;select(target);if(direct)requestAnimationFrame(()=>document.querySelector('.studio')?.scrollIntoView({block:'start'}));}setInterval(tick,1000);}catch(e){notice('Could not load the practice workspace: '+e.message+'. Reload to try again.');}

@@ -56,6 +56,20 @@ test('exhausted normalization variants still lead to independent retrieval, not 
  attempt(state,'probe-normalization',NOW+4000,{cold:false});attempt(state,'syntax-faded',NOW+6000,{cold:false,mode:'practice'});attempt(state,'variation-normalization',NOW+8000,{cold:false});attempt(state,'mixed-event-summary',NOW+9000);
  const next=nextStep(catalog,state,sessions,{reviews:[]},NOW+10000);assert.equal(next.id,'probe-normalization');assert.equal(next.mode,'cold');assert.equal(next.action,'fresh');
 });
+test('diagnostic failures across sessions stop resuming the same normalization draft',()=>{
+ const state=freshState();attempt(state,'probe-filtering',NOW);attempt(state,'probe-counting',NOW+2000);
+ const id='probe-normalization',first=NOW+4000,second=NOW+6000;
+ state.activeExerciseId=id;
+ state.exercises[id]={coldDays:[],attempts:0,lastResult:'tests',files:{'src/task.py':'def normalize_channels(values):\n    return []\n'},session:{started:second,mode:'cold',cold:true}};
+ record(state,id,{kind:'tests',passed:false,cold:true,sessionId:first},first);
+ record(state,id,{kind:'tests',passed:false,cold:true,sessionId:second},second);
+ const next=nextStep(catalog,state,sessions,{reviews:[]},second+1000);
+ assert.notEqual(next.id,id);
+ assert.equal(next.id,'syntax-faded');
+ assert.equal(next.mode,'practice');
+ const legacy=structuredClone(state);legacy.learningEvents=[];
+ assert.equal(nextStep(catalog,legacy,sessions,{reviews:[]},second+1000).id,'syntax-faded');
+});
 test('a later task in a shared skill family has exactly one current roadmap marker',()=>{
  const state=freshState();state.activeExerciseId='sse-parser';state.exercises['sse-parser']={coldDays:[],attempts:0,lastResult:'pending',files:{'src/sse_parser.py':'# draft'},session:{started:NOW,mode:'cold',cold:true}};
  const model=roadmapModel(catalog,state,sessions,{reviews:[]},NOW);assert.equal(model.current.id,'sse-parser');assert.deepEqual(model.milestones.filter(m=>m.isCurrent).map(m=>m.id),['sse-parser']);
