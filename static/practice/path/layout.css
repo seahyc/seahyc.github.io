@@ -13,6 +13,13 @@
 .review-summary { padding-top: var(--space-4); border-top: 1px solid var(--color-border-soft); color: var(--color-muted); font-size: 14px; }
 .assessment-option { margin: var(--space-3) 0 0; font-size: 14px; line-height: 1.5; }
 .assessment-option a { font-weight: 700; }
+.qualification { margin-top: var(--space-5); padding: clamp(22px, 4vw, 32px); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--paper-texture), var(--color-surface); }
+.qualification h2 { margin: 0 0 var(--space-2); font-family: var(--font-typewriter); }
+.training-cycle { display: grid; gap: 6px; margin: var(--space-4) 0; padding-left: 24px; }
+.qualification-gates { display: grid; gap: 8px; margin: var(--space-4) 0; padding: 0; list-style: none; }
+.qualification-gates li { padding: 10px 12px; border-left: 3px solid var(--color-border); background: var(--color-surface-subtle); font-size: 14px; }
+.qualification-gates li.met { border-left-color: var(--color-primary); color: var(--color-ink); }
+.qualification-limit { margin-bottom: 0; color: var(--color-muted); font-size: 13px; line-height: 1.55; }
 .backup { margin-top: var(--space-6); padding: var(--space-4) 0; border-top: 1px solid var(--color-border-soft); color: var(--color-muted); font-size: 14px; }
 .backup > p { margin: 0; }
 .backup-actions { margin-top: var(--space-3); }
