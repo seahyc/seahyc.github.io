@@ -1,6 +1,6 @@
 import {recallState,isReviewDue} from './recall.mjs?v=recall-2026-09-06-1';
 import {day} from './state.mjs?v=recall-2026-09-06-1';
-import {reviewPass,assessedSessions} from './path/model.mjs?v=recall-2026-09-06-1';
+import {reviewPass,assessedSessions} from './path/model.mjs?v=frontier-2026-09-21-1';
 import {adaptiveNextStep} from './learning-model.mjs';
 
 // One shared route. A supported success permits retrieval practice, not a mastery claim.
@@ -10,12 +10,14 @@ export const route = [
  'tool-router','interval-windows','dependency-graph',
  'log-spike','@code-review','python-refresher-2','shortest-route',
  'retry-backoff','@reliable-agent-design','ranked-results','eval-harness','@eval-design',
- 'object-graph-codec','loop-detector','rate-limiter','@customer-discovery',
+ 'object-graph-codec','@live-requirement-change','loop-detector','rate-limiter','@customer-discovery',
  'bracket-parser','sse-parser','@delivery-demo',
  'versioned-key-value-store','bounded-lru-cache','duplicate-content','evolving-ledger',
- 'repair-expiring-cache','@project-deep-dive',
+ 'repair-expiring-cache','unfamiliar-repo-repair','@project-deep-dive',
  'bounded-async-map','@concurrency-whiteboard','batch-scheduler',
- '@model-fundamentals','@inference-service','@motivation-and-judgment','@full-loop'
+ '@model-fundamentals','kv-cache-repair','@ml-notebook-debug','experiment-analysis','@research-experiment-defense',
+ '@inference-service','@training-systems-design','@customer-implementation-case','@agent-build-day',
+ '@motivation-and-judgment','@full-loop','@championship-loop'
 ];
 export const supported = id => ['tiny-filter-guided','tiny-count-guided','syntax-guided','syntax-faded'].includes(id);
 export function demonstrated(code,id){

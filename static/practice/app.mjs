@@ -1,8 +1,8 @@
-import {supports} from './learning-support.mjs?v=learning-2026-09-07-1';
+import {supports} from './learning-support.mjs?v=frontier-2026-09-21-1';
 import {skillProfile} from './learning-model.mjs?v=learning-2026-09-07-1';
-import {taskSkills} from './skill-catalog.mjs?v=learning-2026-09-07-1';
+import {taskSkills} from './skill-catalog.mjs?v=frontier-2026-09-21-1';
 import {addLearningEvent} from './learning-state.mjs?v=learning-2026-09-07-1';
-import {exerciseEvidence} from './evidence.mjs?v=recall-2026-09-06-1';
+import {exerciseEvidence} from './evidence.mjs?v=frontier-2026-09-21-1';
 import {createSyntaxChecker} from './syntax-client.mjs?v=delight-2026-09-06-1';
 import {celebrate,clearCelebration} from './celebration.mjs?v=recall-2026-09-06-1';
 import {createCodeEditor} from './editor.bundle.mjs?v=recall-2026-09-06-1';
@@ -10,8 +10,8 @@ import {feedback} from './feedback.mjs?v=recall-2026-09-06-1';
 import {withoutDuplicateTitle} from './brief.mjs?v=notebook-2026-09-07-1';
 import './version.mjs?v=recall-2026-09-06-1';
 import {rateRecall,recallState} from './recall.mjs?v=recall-2026-09-06-1';
-import {nextStep,supported} from './mastery.mjs?v=recall-2026-09-06-1';
-import {freshPath,validatePath,activeSessions} from './path/model.mjs?v=recall-2026-09-06-1';
+import {nextStep,supported} from './mastery.mjs?v=frontier-2026-09-21-1';
+import {freshPath,validatePath,activeSessions} from './path/model.mjs?v=frontier-2026-09-21-1';
 import {freshState,progress,record,recommendation,label,day,validateImport} from './state.mjs?v=recall-2026-09-06-1';
 import {expectedForInput,explorerPresentation,formatExplorerOutput,getInitialInput,makeProbe} from './explorer.mjs?v=explorer-2026-09-08-1';
 import {canStartFreshMock} from './practice-session.mjs';
@@ -250,7 +250,7 @@ window.addEventListener('storage',event=>{
  codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
  notice('Progress changed in another tab. Keep any unsaved code here, then reload to use the latest progress.');
 });
-try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,ramp,interviewPack,examplePack,variationPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...variationPack.exercises];interviews=interviewPack.sessions;examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
+try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./frontier.json?v=frontier-2026-09-21-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./path/frontier-sessions.json?v=frontier-2026-09-21-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,frontierPack,ramp,interviewPack,frontierInterviewPack,examplePack,variationPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...frontierPack.exercises,...variationPack.exercises];interviews=[...interviewPack.sessions,...frontierInterviewPack.sessions];examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
 if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){
  const previous=state.exercises[target.id];
  if(target.stage==='Mock'&&!previous?.viewedAt&&!previous?.session&&!previous?.files&&!previous?.attempts){

@@ -86,6 +86,7 @@ jobs:
         run: |
           node --test scripts/*.test.mjs
           python3 scripts/verify-runner.py
+          python3 scripts/verify-exercises.py --curriculum static/practice/frontier.json
           python3 scripts/verify-variations.py
           python3 scripts/verify-explorer-examples.py
       - name: Build coding practice editor

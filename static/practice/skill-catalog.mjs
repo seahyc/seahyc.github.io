@@ -16,7 +16,10 @@ export const skills = [
  {id:'parsing',title:'Incremental parsing',prerequisites:['collections'],teach:['bracket-parser','sse-parser']},
  {id:'stateful',title:'Stateful data structures',prerequisites:['collections'],teach:['versioned-key-value-store','bounded-lru-cache','evolving-ledger','repair-expiring-cache']},
  {id:'concurrency',title:'Bounded concurrent work',prerequisites:['collections','routing'],teach:['bounded-async-map','batch-scheduler']},
- {id:'identity',title:'Container identity and cycles',prerequisites:['collections'],teach:['python-refresher-2']}
+ {id:'identity',title:'Container identity and cycles',prerequisites:['collections'],teach:['python-refresher-2']},
+ {id:'debugging',title:'Unfamiliar-system debugging',prerequisites:['routing','stateful'],teach:['unfamiliar-repo-repair']},
+ {id:'ml-systems',title:'Transformer and KV-cache mechanics',prerequisites:['identity','stateful'],teach:['kv-cache-repair']},
+ {id:'experimentation',title:'Statistical experiment judgment',prerequisites:['evaluation'],teach:['experiment-analysis']}
 ];
 export const taskSkills = {};
 const assign=(ids,primary,kind='challenge',practiced=[])=>ids.forEach(id=>taskSkills[id]={primary,practiced,kind,family:id});
@@ -36,6 +39,9 @@ assign(['bracket-parser','sse-parser'],['parsing'],'mock');
 assign(['versioned-key-value-store','bounded-lru-cache','evolving-ledger','repair-expiring-cache'],['stateful'],'mock');
 assign(['duplicate-content'],['collections'],'mock');
 assign(['bounded-async-map','batch-scheduler'],['concurrency'],'mock');
+assign(['unfamiliar-repo-repair'],['debugging'],'mock');
+assign(['kv-cache-repair'],['ml-systems'],'mock');
+assign(['experiment-analysis'],['experimentation'],'mock');
 for(const s of skills.slice(0,12)){
  assign([`probe-${s.id}`],[s.id],'diagnostic');
  assign([`variation-${s.id}`],[s.id],'variation');

@@ -269,4 +269,54 @@ print(count_containers(box), box[1] is box)`,
     prompt: 'Predict the container count and identity check, then reveal the answer.',
     answer: '1 True',
   },
+  debugging: {
+    title: 'Localize the first broken invariant',
+    explanation: 'A useful debugging trace records the state before and after each transition. The first row that violates an invariant narrows the causal surface.',
+    code: `balances = [10]
+deltas = [-3, -8, 5]
+
+for index, delta in enumerate(deltas):
+    before = balances[-1]
+    after = before + delta
+    print(index, before, delta, after, after >= 0)
+    balances.append(after)
+
+print("first invalid", next(i for i, value in enumerate(balances) if value < 0))`,
+    prompt: 'Predict every trace row and the first invalid state index, then reveal the answer.',
+    answer: '0 10 -3 7 True\n1 7 -8 -1 False\n2 -1 5 4 True\nfirst invalid 2',
+  },
+  'ml-systems': {
+    title: 'Reuse keys and values while decoding',
+    explanation: 'A KV cache appends one key and value per token so earlier projections are reused. A fixed window bounds memory by evicting the oldest row.',
+    code: `cache = []
+window = 3
+
+for position in range(5):
+    cache.append((position, position * 10))
+    if len(cache) > window:
+        cache.pop(0)
+    visible_positions = [key for key, _ in cache]
+    print(position, visible_positions)
+
+print("start", cache[0][0], "size", len(cache))`,
+    prompt: 'Predict the visible positions after each token and the final start and size, then reveal.',
+    answer: '0 [0]\n1 [0, 1]\n2 [0, 1, 2]\n3 [1, 2, 3]\n4 [2, 3, 4]\nstart 2 size 3',
+  },
+  experimentation: {
+    title: 'Analyze paired differences',
+    explanation: 'Pairing compares treatment and control on the same unit before aggregation. A decision should use uncertainty and a pre-set useful-effect threshold, not the mean alone.',
+    code: `control = [10, 12, 9, 11]
+treatment = [12, 13, 10, 14]
+
+differences = []
+for baseline, candidate in zip(control, treatment):
+    differences.append(candidate - baseline)
+
+estimate = sum(differences) / len(differences)
+minimum_useful = 1.5
+print(differences)
+print(estimate, estimate >= minimum_useful)`,
+    prompt: 'Predict the paired differences, mean effect, and threshold comparison, then reveal.',
+    answer: '[2, 1, 1, 3]\n1.75 True',
+  },
 };

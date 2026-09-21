@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import curriculum from '../static/practice/curriculum.json' with {type: 'json'};
 import sessionData from '../static/practice/path/sessions.json' with {type: 'json'};
+import frontier from '../static/practice/frontier.json' with {type: 'json'};
+import frontierSessionData from '../static/practice/path/frontier-sessions.json' with {type: 'json'};
 import ramp from '../static/practice/ramp.json' with {type: 'json'};
 import {nextStep, route, demonstrated} from '../static/practice/mastery.mjs';
 import {freshState, record, day} from '../static/practice/state.mjs';
@@ -9,7 +11,7 @@ import {freshState, record, day} from '../static/practice/state.mjs';
 const NOW = new Date('2026-01-10T12:00:00+08:00').getTime();
 const LATER = new Date('2026-01-11T12:00:00+08:00').getTime();
 const exercises = curriculum.exercises;
-const sessions = sessionData.sessions;
+const sessions = [...sessionData.sessions,...frontierSessionData.sessions];
 const exercise = (id, stage = 'Build') => ({id, title: id, stage, prerequisites: []});
 const codeWith = (entries = {}) => ({...freshState(), exercises: entries});
 const pass = (id, extra = {}) => ({id, passed: true, lastResult: 'pass', lastAt: NOW, ...extra});
@@ -110,7 +112,7 @@ test('the full loop requires peer evidence', () => {
 test('the route covers the catalog and every interview exactly once', () => {
   assert.equal(new Set(route).size, route.length);
   const routeCode = new Set(route.filter(id => !id.startsWith('@')));
-  for (const e of [...ramp.exercises, ...exercises]) if (e.id !== 'syntax-guided') assert.ok(routeCode.has(e.id), e.id);
+  for (const e of [...ramp.exercises, ...exercises, ...frontier.exercises]) if (e.id !== 'syntax-guided') assert.ok(routeCode.has(e.id), e.id);
   assert.equal(routeCode.has('syntax-guided'), false);
   const routeSessions = route.filter(id => id.startsWith('@')).map(id => id.slice(1));
   assert.deepEqual(new Set(routeSessions), new Set(sessions.map(s => s.id)));
@@ -119,13 +121,13 @@ test('the route covers the catalog and every interview exactly once', () => {
 });
 
 test('the whole route remains traversable with independent work and reviewed interviews',()=>{
- const catalog=[...ramp.exercises,...exercises],state=freshState(),path={reviews:[]},visited=new Set();
+ const catalog=[...ramp.exercises,...exercises,...frontier.exercises],state=freshState(),path={reviews:[]},visited=new Set();
  for(let i=0;i<100;i++){
   const step=nextStep(catalog,state,sessions,path,NOW);
   if(step.reinforcement){assert.equal(visited.size,route.length);assert.equal(step.type,'code');assert.equal(step.action,'fresh');return;}
   const id=(step.type==='session'?'@':'')+step.id;assert.ok(!visited.has(id),`Unexpected repeated step ${id}`);visited.add(id);
   if(step.type==='code')record(state,step.id,{passed:true,cold:!step.id.endsWith('guided')&&step.id!=='syntax-faded',scaffold:step.id.endsWith('guided')||step.id==='syntax-faded'},NOW);
-  else path.reviews.push(review(step.id,NOW,step.id==='full-loop'?'peer':'solo',true));
+  else path.reviews.push(review(step.id,NOW,['full-loop','championship-loop'].includes(step.id)?'peer':'solo',true));
  }
  assert.fail('The route never completed');
 });

@@ -16,7 +16,7 @@ function attempt(state,id,at,{cold=true,fresh=true,mode='cold'}={}){
  record(state,id,{kind:'tests',passed:true,sessionId:at,cold,fresh,scaffold:taskSkills[id]?.kind==='guided'},at+1000);
 }
 test('the skill graph is acyclic and every shipped task has explicit coverage',()=>{
- const ids=new Set(skills.map(s=>s.id));assert.equal(ids.size,17);
+ const ids=new Set(skills.map(s=>s.id));assert.equal(ids.size,20);
  for(const e of catalog){const m=taskSkills[e.id];assert.ok(m,e.id);assert.ok(m.primary.length);for(const id of [...m.primary,...m.practiced])assert.ok(ids.has(id));for(const id of m.coverageTasks||[])assert.ok(catalog.some(e=>e.id===id));}
  function visit(id,path=[]){assert.ok(!path.includes(id),path.join(' -> '));for(const pre of skills.find(s=>s.id===id).prerequisites){assert.ok(ids.has(pre));visit(pre,[...path,id]);}}
  for(const s of skills)visit(s.id);
@@ -38,7 +38,7 @@ test('the actual adaptive catalog traverses every interview and applied build wi
  const state=freshState(),path={reviews:[]},seen=new Set();let at=NOW;
  for(let i=0;i<100;i++){
   const step=nextStep(catalog,state,sessions,path,at);assert.equal(step.type==='code'||step.type==='session',true);
-  if(step.reinforcement){assert.ok(seen.has('@full-loop'));for(const id of route.filter(id=>!id.startsWith('@')&&taskSkills[id]?.coverable!==true))assert.ok(seen.has(id),`Missing applied milestone ${id}`);return;}
+  if(step.reinforcement){assert.ok(seen.has('@full-loop'));for(const id of route.filter(id=>catalog.some(e=>e.id===id)&&taskSkills[id]?.coverable!==true))assert.ok(seen.has(id),`Missing applied milestone ${id}`);return;}
   const key=(step.type==='session'?'@':'')+step.id;assert.ok(!seen.has(key),`Loop at ${key}: ${step.reason}`);seen.add(key);
   if(step.type==='code')attempt(state,step.id,at,{cold:step.mode!=='practice',mode:step.mode});
   else {const s=sessions.find(s=>s.id===step.id);path.reviews.push({id:s.id,at,completed:true,mode:'peer',notes:'x'.repeat(80),feedback:'x'.repeat(30),scores:Object.fromEntries(s.rubric.map(r=>[r.id,3]))});}

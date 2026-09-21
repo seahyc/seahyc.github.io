@@ -1,8 +1,8 @@
 import {skillProfile,coveredBySkills} from '../learning-model.mjs?v=learning-2026-09-07-1';
-import {taskSkills} from '../skill-catalog.mjs?v=learning-2026-09-07-1';
-import {nextStep,route} from '../mastery.mjs?v=recall-2026-09-06-1';
+import {taskSkills} from '../skill-catalog.mjs?v=frontier-2026-09-21-1';
+import {nextStep,route} from '../mastery.mjs?v=frontier-2026-09-21-1';
 import {exerciseEvidence} from '../evidence.mjs?v=recall-2026-09-06-1';
-import {assessedSessions,reviewPass} from './model.mjs?v=recall-2026-09-06-1';
+import {assessedSessions,reviewPass} from './model.mjs?v=frontier-2026-09-21-1';
 
 const phaseRank={Foundation:0,Build:1,Mock:2};
 const phaseTitle=['Foundations','Applied practice','Assessment practice'];

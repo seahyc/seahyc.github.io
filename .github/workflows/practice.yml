@@ -25,6 +25,7 @@ jobs:
       - run: node --check static/practice/app.mjs && node --check static/practice/runner.mjs && node --check static/practice/path/app.mjs && node --check static/practice/mastery.mjs
       - run: python3 scripts/verify-exercises.py
       - run: python3 scripts/verify-exercises.py --curriculum static/practice/ramp.json
+      - run: python3 scripts/verify-exercises.py --curriculum static/practice/frontier.json
       - run: python3 scripts/verify-exercises.py --curriculum static/practice/variations.json
       - run: python3 scripts/verify-variations.py
       - run: python3 scripts/verify-explorer-examples.py

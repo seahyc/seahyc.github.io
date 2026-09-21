@@ -1,4 +1,4 @@
-import {demonstrated,supported} from './mastery.mjs?v=recall-2026-09-06-1';
+import {demonstrated,supported} from './mastery.mjs?v=frontier-2026-09-21-1';
 import {recallState} from './recall.mjs?v=recall-2026-09-06-1';
 
 const DAY=86400000;

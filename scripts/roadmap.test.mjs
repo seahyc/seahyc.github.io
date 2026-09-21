@@ -14,8 +14,9 @@ const reviewed=(s,mode='solo',at=NOW)=>({completed:true,id:s.id,mode,at,notes:'C
 
 test('fresh roadmap follows the canonical route and exposes only its first milestone as current',()=>{
  const model=roadmapModel(exercises,freshState(),sessions,freshPath(),NOW);
- assert.deepEqual(model.milestones.map(m=>(m.type==='interview'?'@':'')+m.id),route);
- assert.equal(model.summary,`0 of ${route.length} milestones completed`);
+ const available=route.filter(id=>id.startsWith('@')?sessions.some(s=>s.id===id.slice(1)):exercises.some(e=>e.id===id));
+ assert.deepEqual(model.milestones.map(m=>(m.type==='interview'?'@':'')+m.id),available);
+ assert.equal(model.summary,`0 of ${available.length} milestones completed`);
  assert.equal(model.currentIndex,0);
  assert.deepEqual(model.milestones.filter(m=>m.isCurrent).map(m=>m.id),['tiny-filter-guided']);
 });

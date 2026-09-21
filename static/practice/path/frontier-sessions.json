@@ -1,0 +1,696 @@
+{
+  "sessions": [
+    {
+      "id": "live-requirement-change",
+      "title": "Live Requirement Change",
+      "category": "Changing constraints",
+      "track": "shared",
+      "minutes": 75,
+      "why": "Frontier interviews test whether a correct baseline survives a newly revealed constraint without losing invariants, tests, or communication.",
+      "prerequisites": [
+        "object-graph-codec"
+      ],
+      "brief": "Build a working serializer for shared and cyclic container identity. After the baseline passes, a peer reveals a new compatibility and resource constraint. Preserve old behavior, clarify the contract, extend tests, and explain one rejected design.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "Restate the baseline contract and choose invariants before coding.",
+          "deliverable": "Contract, invariants, edge cases, and test plan."
+        },
+        {
+          "minutes": 35,
+          "prompt": "Implement and test the baseline without seeing the extension.",
+          "deliverable": "Runnable baseline with focused tests and complexity statement."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Peer reveals: encoded output must remain backward compatible while rejecting more than 10,000 nodes without partial output. Ask clarifying questions only now.",
+          "deliverable": "Revised contract and migration decision."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Implement the extension and rerun regression tests.",
+          "deliverable": "Passing old and new behavior with a bounded traversal."
+        },
+        {
+          "minutes": 5,
+          "prompt": "Defend the patch.",
+          "deliverable": "Rejected alternative, regression risk, and next production check."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "live-requirement-change-1",
+          "label": "Baseline correctness",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "live-requirement-change-2",
+          "label": "Invariant preservation",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "live-requirement-change-3",
+          "label": "Adaptation under change",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "live-requirement-change-4",
+          "label": "Regression testing",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "live-requirement-change-5",
+          "label": "Communication",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "The limit becomes per connected component; what changes?",
+        "Old payloads contain unknown tags; define compatibility behavior.",
+        "Which test would most likely falsify your current design?"
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "ml-notebook-debug",
+      "title": "Debug an Unfamiliar ML Notebook",
+      "category": "ML debugging",
+      "track": "research",
+      "minutes": 75,
+      "why": "Research engineers must separate data, implementation, numerical, and evaluation failures in code they did not write.",
+      "prerequisites": [
+        "kv-cache-repair",
+        "experiment-analysis"
+      ],
+      "brief": "You inherit a compact language-model experiment whose validation loss improves while generation quality collapses. Work from supplied traces or a peer-created notebook. Reproduce the symptom, rank hypotheses, isolate the first causal bug, patch it, and design a regression check.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "Inspect the symptom and write a ranked fault tree spanning data, masking, train/eval mode, optimization, and metric leakage.",
+          "deliverable": "Ranked hypotheses with one discriminating observation each."
+        },
+        {
+          "minutes": 35,
+          "prompt": "Run the smallest experiments needed to localize the first causal fault.",
+          "deliverable": "Evidence log, minimized reproducer, and root-cause claim."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Patch the fault and add a regression test or invariant.",
+          "deliverable": "Minimal diff plus before/after results."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Explain what remains uncertain and the next experiment.",
+          "deliverable": "Residual-risk statement and falsifiable next check."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "ml-notebook-debug-1",
+          "label": "Hypothesis quality",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "ml-notebook-debug-2",
+          "label": "Experimental isolation",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "ml-notebook-debug-3",
+          "label": "Patch correctness",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "ml-notebook-debug-4",
+          "label": "Numerical and ML judgment",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "ml-notebook-debug-5",
+          "label": "Evidence communication",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "Loss is unchanged after the patch; what do you inspect next?",
+        "The bug only appears for batch size one; revise the fault tree.",
+        "How would mixed precision alter your checks?"
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "training-systems-design",
+      "title": "Quantitative Training Systems Design",
+      "category": "ML infrastructure design",
+      "track": "infra",
+      "minutes": 75,
+      "why": "ML infrastructure interviews require arithmetic, bottleneck diagnosis, failure recovery, and explicit tradeoffs rather than component-name recitation.",
+      "prerequisites": [
+        "kv-cache-repair",
+        "bounded-async-map"
+      ],
+      "brief": "Design training for a 70B-parameter dense model on 128 GPUs. State precision and optimizer assumptions, estimate parameter, gradient, optimizer, and activation memory, choose parallelism, estimate communication pressure, and handle checkpoint recovery.",
+      "rounds": [
+        {
+          "minutes": 15,
+          "prompt": "Calculate a memory budget per GPU and state every assumption.",
+          "deliverable": "Checkable arithmetic with units and headroom."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Choose data, tensor, pipeline, and sharding dimensions.",
+          "deliverable": "Topology-aware parallelism plan and rejected alternative."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Estimate the dominant communication and compute bottlenecks.",
+          "deliverable": "Order-of-magnitude throughput model and measurement plan."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Design checkpointing and recovery for preemption and one bad worker.",
+          "deliverable": "Recovery protocol, consistency boundary, and target RTO."
+        },
+        {
+          "minutes": 10,
+          "prompt": "A network link loses half its bandwidth; adapt the design.",
+          "deliverable": "Quantified revision and validation experiment."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "training-systems-design-1",
+          "label": "Memory arithmetic",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "training-systems-design-2",
+          "label": "Parallelism choice",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "training-systems-design-3",
+          "label": "Performance model",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "training-systems-design-4",
+          "label": "Reliability design",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "training-systems-design-5",
+          "label": "Adaptation",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "Sequence length doubles; recalculate the limiting resource.",
+        "Checkpoint storage throughput falls by 4x; preserve recovery goals.",
+        "Which profiler evidence would cause you to change parallelism first?"
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "research-experiment-defense",
+      "title": "Research Experiment Defense",
+      "category": "Research reasoning",
+      "track": "research",
+      "minutes": 60,
+      "why": "Top research roles test whether a candidate can defend a claim, distinguish signal from noise, and revise it under adversarial evidence.",
+      "prerequisites": [
+        "experiment-analysis",
+        "kv-cache-repair"
+      ],
+      "brief": "Defend a claim that a KV-cache policy improves long-context serving quality per dollar. Specify the hypothesis, experimental unit, controls, metrics, statistical decision, confounders, and stopping rule. A peer then introduces contradictory subgroup evidence.",
+      "rounds": [
+        {
+          "minutes": 10,
+          "prompt": "State the causal claim, null hypothesis, experimental unit, and success threshold.",
+          "deliverable": "Pre-registered decision rule."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Design the experiment and analysis, including power or uncertainty.",
+          "deliverable": "Controls, sampling plan, metrics, and confidence calculation."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Peer reveals the gain disappears on code workloads and reverses beyond 64k tokens. Interpret without moving the goalposts.",
+          "deliverable": "Subgroup analysis and revised claim."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Choose ship, iterate, or reject and defend the next experiment.",
+          "deliverable": "Decision with expected information gain and failure criteria."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "research-experiment-defense-1",
+          "label": "Claim precision",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "research-experiment-defense-2",
+          "label": "Statistical validity",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "research-experiment-defense-3",
+          "label": "Confounder control",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "research-experiment-defense-4",
+          "label": "Response to contradiction",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "research-experiment-defense-5",
+          "label": "Research judgment",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "The latency metric is heavy-tailed; revise the analysis.",
+        "Two seeds disagree sharply; what conclusion is justified?",
+        "A competitor reproduces throughput but not quality; update the claim."
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "agent-build-day",
+      "title": "Seven-Hour Coding Agent Build",
+      "category": "Long-form agent build",
+      "track": "cognition",
+      "minutes": 420,
+      "why": "Cognition-style work rewards end-to-end ownership: scoping, reliable execution, evaluation, product judgment, and a runnable handoff under a fixed day.",
+      "prerequisites": [
+        "unfamiliar-repo-repair",
+        "eval-harness",
+        "bounded-async-map"
+      ],
+      "brief": "In one bounded session, build a small coding agent that accepts a repository and issue, proposes a plan, edits files through a constrained tool layer, runs checks, and returns an evidence-backed result. Use a fresh repository and issue. No production deployment is required.",
+      "rounds": [
+        {
+          "minutes": 30,
+          "prompt": "Define the user, success metric, tool policy, threat boundary, and smallest vertical slice.",
+          "deliverable": "One-page scope and acceptance tests."
+        },
+        {
+          "minutes": 60,
+          "prompt": "Build repository inspection, planning, and constrained tool calls.",
+          "deliverable": "Runnable skeleton with traceable state."
+        },
+        {
+          "minutes": 180,
+          "prompt": "Complete edit, test, retry, timeout, and failure-recovery behavior.",
+          "deliverable": "Working vertical slice with unit and end-to-end tests."
+        },
+        {
+          "minutes": 90,
+          "prompt": "Create an evaluation set, run it, classify failures, and repair the highest-value miss.",
+          "deliverable": "Results table, error taxonomy, and measured repair."
+        },
+        {
+          "minutes": 60,
+          "prompt": "Write the runbook and deliver a five-minute walkthrough.",
+          "deliverable": "README, architecture, limitations, product decision, and next metric."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "agent-build-day-1",
+          "label": "Runnable product slice",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "agent-build-day-2",
+          "label": "Agent reliability",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "agent-build-day-3",
+          "label": "Evaluation quality",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "agent-build-day-4",
+          "label": "Product judgment",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "agent-build-day-5",
+          "label": "Handoff clarity",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "The repository contains an untrusted instruction; enforce the boundary.",
+        "Tests take 40 minutes; redesign feedback and timeout handling.",
+        "A customer values reviewability over task success rate; change the product metric."
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "customer-implementation-case",
+      "title": "Customer Implementation Case",
+      "category": "Applied product engineering",
+      "track": "cognition",
+      "minutes": 90,
+      "why": "Applied and special-project roles require translating an ambiguous customer workflow into a safe, measurable implementation plan and working slice.",
+      "prerequisites": [
+        "unfamiliar-repo-repair",
+        "eval-harness"
+      ],
+      "brief": "A regulated customer wants an agent to triage incoming engineering incidents, gather evidence, and draft remediation steps without making production changes. Clarify the workflow, map systems and permissions, build or pseudocode one vertical slice, and define adoption and safety evaluation.",
+      "rounds": [
+        {
+          "minutes": 15,
+          "prompt": "Interview the stakeholder: identify users, workflow, pain, constraints, and a measurable outcome.",
+          "deliverable": "Problem statement, non-goals, and success metric."
+        },
+        {
+          "minutes": 20,
+          "prompt": "Design the data, tool, permission, and human-review boundaries.",
+          "deliverable": "Architecture and failure-containment plan."
+        },
+        {
+          "minutes": 30,
+          "prompt": "Implement or precisely specify one evidence-gathering vertical slice.",
+          "deliverable": "Runnable code or executable contract with tests."
+        },
+        {
+          "minutes": 15,
+          "prompt": "Design offline and pilot evaluation.",
+          "deliverable": "Dataset, metrics, guardrails, and rollout threshold."
+        },
+        {
+          "minutes": 10,
+          "prompt": "Give an executive recommendation.",
+          "deliverable": "Decision, tradeoff, timeline, and next customer proof."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "customer-implementation-case-1",
+          "label": "Customer discovery",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "customer-implementation-case-2",
+          "label": "System boundary",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "customer-implementation-case-3",
+          "label": "Implementation quality",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "customer-implementation-case-4",
+          "label": "Evaluation and safety",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "customer-implementation-case-5",
+          "label": "Executive communication",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "The customer refuses read access to one critical system; adapt.",
+        "Pilot adoption is high but resolution time worsens; decide next step.",
+        "Legal requires every claim to cite source evidence; change the interface."
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    },
+    {
+      "id": "championship-loop",
+      "title": "Five-Hour Frontier Championship Loop",
+      "category": "Full interview simulation",
+      "track": "shared",
+      "minutes": 300,
+      "why": "A complete loop tests repeatable performance across implementation, changing constraints, debugging, role depth, and project judgment in one realistic day.",
+      "prerequisites": [
+        "unfamiliar-repo-repair",
+        "kv-cache-repair",
+        "experiment-analysis"
+      ],
+      "brief": "Use fresh prompts selected by a peer. Complete five contiguous rounds under the stated tool policy. The peer withholds follow-ups and evaluation until each round ends. Record artifacts, scores, first consequential misses, and repairs.",
+      "rounds": [
+        {
+          "minutes": 45,
+          "prompt": "Blind practical Python task with hidden or peer-held tests.",
+          "deliverable": "Working solution, tests, complexity, and concise explanation."
+        },
+        {
+          "minutes": 45,
+          "prompt": "Extend the solution after a newly revealed requirement.",
+          "deliverable": "Clarified contract, regression-safe patch, and rejected tradeoff."
+        },
+        {
+          "minutes": 60,
+          "prompt": "Debug an unfamiliar multi-file repository.",
+          "deliverable": "Reproducer, root cause, minimal patch, and regression test."
+        },
+        {
+          "minutes": 75,
+          "prompt": "Complete the target-lane ML, agent, experiment, or infrastructure case.",
+          "deliverable": "Quantitative or executable evidence and defended decision."
+        },
+        {
+          "minutes": 45,
+          "prompt": "Walk through a deep project and answer behavioral judgment probes.",
+          "deliverable": "Specific decisions, alternatives, evidence, conflict, and learning."
+        },
+        {
+          "minutes": 30,
+          "prompt": "Reviewer scores every round and candidate builds a repair plan.",
+          "deliverable": "Rubric scores, failure taxonomy, two sibling drills, and expiry dates."
+        }
+      ],
+      "rubric": [
+        {
+          "id": "championship-loop-1",
+          "label": "Coding correctness",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "championship-loop-2",
+          "label": "Adaptation",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "championship-loop-3",
+          "label": "Debugging evidence",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "championship-loop-4",
+          "label": "Role depth",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "championship-loop-5",
+          "label": "Project and behavioral judgment",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        },
+        {
+          "id": "championship-loop-6",
+          "label": "Stamina and repair quality",
+          "anchors": [
+            "Misses the core requirement or cannot produce usable evidence.",
+            "Names a plausible approach but leaves a consequential gap untested.",
+            "Meets the requirement with explicit assumptions and concrete verification.",
+            "Stress-tests the decision, quantifies tradeoffs, and adapts cleanly to challenge."
+          ]
+        }
+      ],
+      "followups": [
+        "Repeat the weakest round with a structurally different prompt.",
+        "Which decision had the least evidence and what would falsify it?",
+        "What changed in your approach after the first consequential miss?"
+      ],
+      "coachPrompt": "Act as a demanding frontier-lab interviewer. Reveal follow-ups only at the stated point, ask one question at a time, require runnable or quantitative evidence, and score every rubric dimension after the candidate finishes."
+    }
+  ]
+}
