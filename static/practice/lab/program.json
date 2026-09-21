@@ -82,7 +82,7 @@
       "rung": 0,
       "kind": "browser",
       "prerequisites": [],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Explain a derivative as local sensitivity; derive one logistic gradient before finite differences.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -105,8 +105,8 @@
       "prerequisites": [
         "gradient-check"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
-      "objective": "Trace data \u2192 prediction \u2192 loss \u2192 gradient \u2192 update. Explain learning rate and held-out error.",
+      "effort": "25–80 min; repeat after 2 and 7 days",
+      "objective": "Trace data → prediction → loss → gradient → update. Explain learning rate and held-out error.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
         "A 3-sentence explanation from memory; repeat on an altered example"
@@ -128,7 +128,7 @@
       "prerequisites": [
         "gradient-check"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Normalize logits stably, interpret log-probability, then derive the score-function gradient.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -151,7 +151,7 @@
       "prerequisites": [
         "categorical-policy"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Discount rewards; separate terminal states from time limits and explain bootstrap bias.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -174,7 +174,7 @@
       "prerequisites": [
         "gae-returns"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Predict clipping for positive and negative advantages before implementing it.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -197,7 +197,7 @@
       "prerequisites": [
         "categorical-policy"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Compute policy/reference log ratios and explain the role of beta.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -221,7 +221,7 @@
       "prerequisites": [
         "sgd-regression"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Quantize rows, handle all-zero rows and measure reconstruction error.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -244,7 +244,7 @@
       "prerequisites": [
         "sgd-regression"
       ],
-      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "effort": "25–80 min; repeat after 2 and 7 days",
       "objective": "Integrate simple dynamics; distinguish open-loop prediction from closed-loop success.",
       "deliverables": [
         "Working implementation and your own edge-case tests",
@@ -267,7 +267,7 @@
       "prerequisites": [
         "sgd-regression"
       ],
-      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "effort": "50–90 min; repeat after 2 and 7 days",
       "objective": "Build a two-layer tanh network; derive and numerically check every weight and bias gradient. Learn what hidden representations and the chain rule do.",
       "deliverables": [
         "Working implementation, numerical or invariance tests, and your own edge cases",
@@ -290,7 +290,7 @@
       "prerequisites": [
         "mlp-backprop"
       ],
-      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "effort": "50–90 min; repeat after 2 and 7 days",
       "objective": "Implement scaled dot-product attention with an explicit causal mask. Prove that changing future tokens cannot affect earlier outputs.",
       "deliverables": [
         "Working implementation, numerical or invariance tests, and your own edge cases",
@@ -313,7 +313,7 @@
       "prerequisites": [
         "causal-attention"
       ],
-      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "effort": "50–90 min; repeat after 2 and 7 days",
       "objective": "Align inputs and next-token targets, mask prompt and padding positions, and compute stable crossentropy. Identify the first completion token exactly.",
       "deliverables": [
         "Working implementation, numerical or invariance tests, and your own edge cases",
@@ -336,7 +336,7 @@
       "prerequisites": [
         "preference-loss"
       ],
-      "effort": "4\u20138 focused hours",
+      "effort": "4–8 focused hours",
       "objective": "Fit a small categorical policy from comparisons, compare with the reference and inspect held-out preference accuracy.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
@@ -368,7 +368,7 @@
       "prerequisites": [
         "ppo-objective"
       ],
-      "effort": "4\u20138 focused hours",
+      "effort": "4–8 focused hours",
       "objective": "Train a stochastic bandit policy with REINFORCE. Separate collection, update and evaluation; compare against uniform behavior.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
@@ -400,7 +400,7 @@
       "prerequisites": [
         "quantized-linear"
       ],
-      "effort": "4\u20138 focused hours",
+      "effort": "4–8 focused hours",
       "objective": "Implement quantized matrix operations. Establish numeric error, then measure warm latency against float on the same hardware.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
@@ -432,7 +432,7 @@
       "prerequisites": [
         "robot-rollout"
       ],
-      "effort": "4\u20138 focused hours",
+      "effort": "4–8 focused hours",
       "objective": "Fit a controller from demonstrations and execute it in held-out closed-loop episodes with disturbances.",
       "protocol": [
         "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
@@ -456,8 +456,179 @@
       ]
     },
     {
+      "id": "jax-training",
+      "title": "Arithmetic transformer in JAX / Flax / Optax",
+      "track": "posttrain",
+      "rung": 2,
+      "prerequisites": [
+        "posttrain-bench",
+        "language-model-loss"
+      ],
+      "effort": "12–24 hours",
+      "objective": "Build a causal arithmetic transformer with Flax, train it with Optax, and verify gradient updates, heldout predictions and checkpoint resume.",
+      "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment jax-training --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Read the candidate function contracts. Start with a tiny CPU smoke run, debug one failing gate, then run the larger configuration.",
+        "Explain the tensor shapes, attention mask, parameter tree, optimizer state and random state before collecting repeated seeds."
+      ],
+      "deliverables": [
+        "candidate.py, full result JSON for three frozen-source seeds, environment and configs",
+        "A failure log, heldout behavior and a checkpoint round-trip explanation"
+      ],
+      "evaluation": [
+        "Passing mechanics is a prerequisite for research; include failed experiments and a peer replication.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
+      ],
+      "kind": "external",
+      "sources": [
+        "vlad"
+      ],
+      "runtime": {
+        "package": "jax",
+        "assessment": "jax-training",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: causal Flax transformer, Optax updates, checkpoint resume and heldout answer generation; full is about 10M parameters. The engineering gate accepts limited generalization. Improving model quality requires the research review.",
+        "requiredScope": "full"
+      }
+    },
+    {
+      "id": "scaling-laws",
+      "title": "Derive and test compute-optimal scaling",
+      "track": "infra",
+      "rung": 2,
+      "prerequisites": [
+        "infra-bench",
+        "gradient-check"
+      ],
+      "effort": "4–8 hours",
+      "objective": "Allocate a fixed compute budget between parameters and data, deriving the optimum before testing it numerically.",
+      "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment scaling-laws --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Derive the constrained optimum of E + A/N^alpha + B/D^beta under C = 6ND. Explain the stationary condition and uniqueness.",
+        "Implement compute_optimal and test randomized budgets against finite differences and an independent numerical search."
+      ],
+      "deliverables": [
+        "Written derivation, implementation, measured numerical errors",
+        "Sensitivity analysis when data quality or the compute model changes"
+      ],
+      "evaluation": [
+        "Numerical correctness does not grade the symbolic argument. Have the written derivation reviewed.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
+      ],
+      "kind": "external",
+      "sources": [
+        "vlad"
+      ],
+      "runtime": {
+        "package": "jax",
+        "assessment": "scaling-laws",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: randomized constrained optima checked by finite differences and numerical search. The symbolic derivation still requires review.",
+        "requiredScope": "full"
+      }
+    },
+    {
+      "id": "dense-moe",
+      "title": "Dense versus sparse expert computation",
+      "track": "infra",
+      "rung": 2,
+      "prerequisites": [
+        "scaling-laws",
+        "causal-attention"
+      ],
+      "effort": "8–16 hours",
+      "objective": "Implement top-k mixture-of-experts routing, dispatch and combine, then compare dense and sparse parameter and active-compute costs.",
+      "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment dense-moe --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Build a dense reference, then sparse expert dispatch without dropping tokens. Verify both outputs and gradients.",
+        "Measure routing imbalance and explain router and dispatch overhead in the equal-active-compute comparison."
+      ],
+      "deliverables": [
+        "Implementations, correctness and gradient results, parameter/FLOP accounting",
+        "A profile or source review demonstrating that unselected experts are not evaluated"
+      ],
+      "evaluation": [
+        "Numerical equality alone cannot prove sparse execution. A reviewer must inspect dispatch and the cost assumptions.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
+      ],
+      "kind": "external",
+      "sources": [
+        "vlad"
+      ],
+      "runtime": {
+        "package": "jax",
+        "assessment": "dense-moe",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: routed expert outputs/gradients, multiple shapes, parameter/FLOP accounting and comparative training. A profile or source review must still establish sparse execution.",
+        "requiredScope": "full"
+      }
+    },
+    {
+      "id": "pallas-ragged",
+      "title": "Pallas ragged expert expansion",
+      "track": "infra",
+      "rung": 2,
+      "prerequisites": [
+        "dense-moe"
+      ],
+      "effort": "12–24 hours",
+      "objective": "Write a Pallas ragged matrix product with output width greater than input width, preserving empty and uneven expert groups.",
+      "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment pallas-ragged --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Use interpreted CPU execution to debug indexing and masks; compare against independent and JAX references.",
+        "On compatible accelerator hardware, verify the benchmark shape before synchronized warmup and repeated timings. Record compilation separately and explain memory traffic."
+      ],
+      "deliverables": [
+        "Kernel source, shape coverage, runtime/device metadata and benchmark distributions",
+        "Cost model, measured bottleneck and an independently reproduced improvement"
+      ],
+      "evaluation": [
+        "CPU correctness earns no accelerator performance credit. Hardware results and a human review of the measured improvement are required.",
+        "Progress gate: three passing accelerator reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
+      ],
+      "kind": "external",
+      "sources": [
+        "vlad"
+      ],
+      "runtime": {
+        "package": "jax",
+        "assessment": "pallas-ragged",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: Pallas ragged expansion correctness including empty groups; accelerator completion requires measured 1.05x speedup. CPU interpretation only satisfies smoke.",
+        "requiredScope": "accelerator"
+      }
+    },
+    {
       "id": "posttrain-repro",
-      "title": "Tiny transformer \u2192 SFT \u2192 preferences",
+      "title": "Tiny transformer → SFT → preferences",
       "track": "posttrain",
       "rung": 2,
       "kind": "external",
@@ -465,9 +636,10 @@
         "posttrain-bench",
         "language-model-loss"
       ],
-      "effort": "20\u201340 hours",
-      "objective": "Train a roughly 1\u201310M parameter decoder on generated arithmetic. Establish SFT, then compare DPO and a verifiable-reward policy update.",
+      "effort": "20–40 hours",
+      "objective": "Train a roughly 1–10M parameter decoder on generated arithmetic. Establish SFT, then compare DPO and a verifiable-reward policy update.",
       "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment transformer-posttrain --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "First reproduce your scalar MLP gradients with PyTorch autograd; assert gradient parity and tensor shapes, overfit 32 examples, and test train/eval mode and checkpoint round trips. Then translate the attention and masked-loss drills into tensor operations.",
         "Create a pinned Python/PyTorch environment; record pip freeze, git SHA, accelerator and all config files. Begin with a 100-batch CPU smoke before any GPU run.",
         "Generate disjoint train/validation/test operand tuples. Hold out carry patterns and longer digit lengths; do not split duplicate strings at random.",
@@ -482,12 +654,27 @@
       "evaluation": [
         "Reject leakage, incorrect masking or train-only improvements. Derive one objective and verify its gradient numerically.",
         "A peer reruns the baseline and one improvement from a clean environment; record differences.",
-        "Toy arithmetic is a bridge to post-training research, not evidence of capability on general language tasks."
+        "Toy arithmetic is a bridge to post-training research, not evidence of capability on general language tasks.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "trl",
         "vlad"
-      ]
+      ],
+      "runtime": {
+        "package": "torch",
+        "assessment": "transformer-posttrain",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: a small numeric-input, single-answer-token transformer; real SFT, DPO and GRPO updates. Multi-token language modeling and a TRL reproduction remain research extensions.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "rl-repro",
@@ -499,9 +686,10 @@
         "rl-bench",
         "mlp-backprop"
       ],
-      "effort": "20\u201340 hours",
+      "effort": "20–40 hours",
       "objective": "Implement PPO with batched environments, GAE, clipped policy loss, value loss and entropy; reproduce a known small-control baseline.",
       "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment ppo-control --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Translate the scalar MLP into PyTorch tensors and autograd, verify gradient parity, and fit synthetic observations before introducing a changing policy distribution.",
         "Use a version-pinned Gymnasium CartPole then a continuous-control environment. Record wrappers, truncation semantics and observation normalization.",
         "Implement rollout buffer and update loop without copying trainer internals. Compare each tensor on a fixed rollout against an independent implementation.",
@@ -516,12 +704,27 @@
       "evaluation": [
         "Test terminal vs truncated bootstrap, stale log-probs and minibatch shuffling.",
         "Before declaring reproduction define an acceptance interval from the baseline distribution and compute budget.",
-        "Peer changes horizon or reward scale during a 90-minute debug session."
+        "Peer changes horizon or reward scale during a 90-minute debug session.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "spin",
         "verl"
-      ]
+      ],
+      "runtime": {
+        "package": "torch",
+        "assessment": "ppo-control",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: real PPO training in a custom multi-step point-navigation simulator. Gymnasium reproduction and distributed training remain research extensions.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "infra-repro",
@@ -533,9 +736,10 @@
         "infra-bench",
         "causal-attention"
       ],
-      "effort": "20\u201340 hours",
+      "effort": "20–40 hours",
       "objective": "Derive attention memory and FLOPs; reproduce a dense attention baseline and optimize one measured bottleneck.",
       "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment attention-kernel --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Implement causal attention in PyTorch and test outputs/gradients against torch scaled_dot_product_attention for masks, dtypes and awkward shapes.",
         "Write a predicted bytes/FLOPs table for prefill and decode. Benchmark warm runs, synchronize the accelerator and record peak allocated memory, batch, sequence, dtype and device.",
         "Profile before optimizing. Implement one tiled Triton or Pallas kernel only after a correct reference; retain a CPU correctness path.",
@@ -549,12 +753,27 @@
       "evaluation": [
         "Correctness is a gate before speed. Use independent repeated processes and report spread.",
         "GPU speed claims require actual GPU runs. Oracle CPU is for smoke/reliability work.",
-        "Peer reruns on a clean device and checks an unreported shape."
+        "Peer reruns on a clean device and checks an unreported shape.",
+        "Progress gate: three passing accelerator reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "scale",
         "vlad"
-      ]
+      ],
+      "runtime": {
+        "package": "torch",
+        "assessment": "attention-kernel",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: attention values, gradients, masks and timed-shape parity; a CUDA run must demonstrate at least 1.05x speedup over native SDPA. CPU passing results do not satisfy the accelerator gate.",
+        "requiredScope": "accelerator"
+      }
     },
     {
       "id": "robotics-repro",
@@ -566,9 +785,10 @@
         "robotics-bench",
         "mlp-backprop"
       ],
-      "effort": "25\u201350 hours",
+      "effort": "25–50 hours",
       "objective": "Reproduce a LeRobot policy on a supported simulated task; evaluate trajectories rather than only prediction loss.",
       "protocol": [
+        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment visual-policy --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "First fit the point-controller dataset with a PyTorch MLP, check tensor shapes and held-out episodes, and verify CPU checkpoint reload parity before introducing pixels and simulator dependencies.",
         "Pin LeRobot and simulator versions. Start from a documented environment configuration and a fixed public dataset version; record camera, action units and control frequency.",
         "Split by complete episode and scene, never adjacent frames. Train a small behavior cloning baseline, then a supported ACT or diffusion policy on the same demonstration budget.",
@@ -583,12 +803,27 @@
       "evaluation": [
         "Low validation action loss is insufficient: require closed-loop evaluation on held-out episodes.",
         "Declare simulator version and unsupported transfer claims; real hardware needs safety constraints and supervised rollout.",
-        "Peer changes an unseen scene or disturbance and reviews policy behavior."
+        "Peer changes an unseen scene or disturbance and reviews policy behavior.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "robot",
         "openpi"
-      ]
+      ],
+      "runtime": {
+        "package": "torch",
+        "assessment": "visual-policy",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: train a CNN from synthetic images and evaluate closed-loop control under shifted rendering and dynamics. LeRobot datasets, ACT/diffusion policies and physical robots remain research extensions.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "posttrain-stress",
@@ -599,9 +834,10 @@
       "prerequisites": [
         "posttrain-repro"
       ],
-      "effort": "12\u201325 hours",
+      "effort": "12–25 hours",
       "objective": "Find and fix one real reward, masking or sampling failure in a pinned TRL/verl experiment.",
       "protocol": [
+        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment reward-audit --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Inject a malformed answer, zero-variance reward batch and overlong response; write failing tests.",
         "Trace data lineage and compare the fixed run with an unchanged checkpoint on a reserved evaluation set."
       ],
@@ -611,11 +847,25 @@
       ],
       "evaluation": [
         "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
-        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "verl"
-      ]
+      ],
+      "runtime": {
+        "package": "systems",
+        "assessment": "reward-audit",
+        "browser": true,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json"
+        ],
+        "coverage": "Executable scope: seeded split contamination, strict verifiable rewards and reward normalization. Audit a trained model and real data pipeline in the research extension.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "rl-stress",
@@ -626,9 +876,10 @@
       "prerequisites": [
         "rl-repro"
       ],
-      "effort": "12\u201325 hours",
+      "effort": "12–25 hours",
       "objective": "Diagnose a small training system with stale policies, resume state or dropped terminal transitions.",
       "protocol": [
+        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment rollout-boundary --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Use two CPU workers and deliberately interrupted checkpoints; compare resumed and uninterrupted runs.",
         "Measure policy lag, step throughput and seeded evaluation return. Restore correctness before optimizing."
       ],
@@ -638,11 +889,25 @@
       ],
       "evaluation": [
         "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
-        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "verl"
-      ]
+      ],
+      "runtime": {
+        "package": "systems",
+        "assessment": "rollout-boundary",
+        "browser": true,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json"
+        ],
+        "coverage": "Executable scope: bootstrapping plus simulated stale, duplicate and reordered worker chunks. Actual distributed concurrency and network failures remain research extensions.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "infra-stress",
@@ -653,9 +918,10 @@
       "prerequisites": [
         "infra-repro"
       ],
-      "effort": "12\u201325 hours",
+      "effort": "12–25 hours",
       "objective": "Build a small reliable training or inference path with measurable recovery behavior.",
       "protocol": [
+        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment checkpoint-recovery --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Interrupt writes, exhaust a bounded queue and retry requests; verify atomic checkpoints and no duplicate results.",
         "Measure recovery time, memory bound, throughput and numerical parity. Add a regression test for the worst failure."
       ],
@@ -665,11 +931,25 @@
       ],
       "evaluation": [
         "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
-        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "scale"
-      ]
+      ],
+      "runtime": {
+        "package": "systems",
+        "assessment": "checkpoint-recovery",
+        "browser": true,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json"
+        ],
+        "coverage": "Executable scope: interrupted writes, corrupted files, optimizer/RNG resume and simulated bounded-queue retries. Physical crash durability and concurrent production serving remain research extensions.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "robotics-stress",
@@ -680,9 +960,10 @@
       "prerequisites": [
         "robotics-repro"
       ],
-      "effort": "12\u201325 hours",
+      "effort": "12–25 hours",
       "objective": "Investigate a concrete failure of a learned controller and test a targeted intervention.",
       "protocol": [
+        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment robot-shift --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Choose one shift from held-out videos; formulate a falsifiable causal hypothesis.",
         "Compare extra demonstrations, augmentation or policy history at matched training budget; include a negative control."
       ],
@@ -692,11 +973,25 @@
       ],
       "evaluation": [
         "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
-        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
       ],
       "sources": [
         "robot"
-      ]
+      ],
+      "runtime": {
+        "package": "systems",
+        "assessment": "robot-shift",
+        "browser": true,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json"
+        ],
+        "coverage": "Executable scope: one-dimensional feedback recovery under dynamics changes, noise and impulses. This gate evaluates a controller, not learned visual recovery; the learned-policy investigation below remains a research extension.",
+        "requiredScope": "full"
+      }
     },
     {
       "id": "posttrain-contribution",
@@ -707,7 +1002,7 @@
       "prerequisites": [
         "posttrain-stress"
       ],
-      "effort": "30\u201380+ hours; maintainer timing varies",
+      "effort": "30–80+ hours; maintainer timing varies",
       "objective": "Choose one active issue in TRL or verl; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
       "protocol": [
         "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
@@ -739,7 +1034,7 @@
       "prerequisites": [
         "rl-stress"
       ],
-      "effort": "30\u201380+ hours; maintainer timing varies",
+      "effort": "30–80+ hours; maintainer timing varies",
       "objective": "Choose one active issue in Spinning Up-compatible implementation or verl; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
       "protocol": [
         "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
@@ -771,7 +1066,7 @@
       "prerequisites": [
         "infra-stress"
       ],
-      "effort": "30\u201380+ hours; maintainer timing varies",
+      "effort": "30–80+ hours; maintainer timing varies",
       "objective": "Choose one active issue in vLLM, SGLang, llama.cpp or a JAX/Triton project; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
       "protocol": [
         "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
@@ -803,7 +1098,7 @@
       "prerequisites": [
         "robotics-stress"
       ],
-      "effort": "30\u201380+ hours; maintainer timing varies",
+      "effort": "30–80+ hours; maintainer timing varies",
       "objective": "Choose one active issue in LeRobot or OpenPI; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
       "protocol": [
         "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
@@ -826,5 +1121,1257 @@
         "robot"
       ]
     }
-  ]
+  ],
+  "assessments": {
+    "jax-training": {
+      "id": "jax-training",
+      "title": "Autoregressive arithmetic transformer with Flax and Optax",
+      "prerequisites": [
+        "autodiff",
+        "gradient-descent"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Inspect causal transformer architecture and generation code",
+        "Explain optimizer checkpoint and heldout generalization limits",
+        "Extended model-quality gate: improve heldout arithmetic accuracy substantially beyond this minimum engineering check; explain remaining generalization gap"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "flax_state",
+              "metric": "flax_state",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_count",
+              "metric": "parameter_count",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradient_update",
+              "metric": "update_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "loss_reduction",
+              "metric": "loss_ratio",
+              "op": "lt",
+              "value": 0.1
+            },
+            {
+              "name": "heldout",
+              "metric": "heldout_ratio",
+              "op": "lt",
+              "value": 2
+            },
+            {
+              "name": "resume",
+              "metric": "resume",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "optimizer_advanced",
+              "metric": "optimizer_advanced",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "token_logits",
+              "metric": "token_logits",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-06
+            },
+            {
+              "name": "heldout_generation",
+              "metric": "heldout_accuracy",
+              "op": "gte",
+              "value": 0.2
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    "dense-moe": {
+      "id": "dense-moe",
+      "title": "Dense versus top-k MoE",
+      "prerequisites": [
+        "jax-training"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Inspect sparse dispatch in code or profiler",
+        "Explain router, dispatch and communication overhead"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "full_shapes",
+              "metric": "full_contract_error",
+              "op": "lt",
+              "value": 1
+            },
+            {
+              "name": "comparative_training",
+              "metric": "comparative_loss_ratio",
+              "op": "lt",
+              "value": 0.2
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "forward",
+              "metric": "forward_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "routing",
+              "metric": "routing",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "coverage",
+              "metric": "routing_coverage",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "gradients",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "dense",
+              "metric": "dense",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "parameter_accounting",
+              "metric": "parameter_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "compute_accounting",
+              "metric": "compute_accounting",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "no_token_drop",
+              "metric": "no_token_drop",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "full_shapes",
+              "metric": "full_contract_error",
+              "op": "lt",
+              "value": 1
+            },
+            {
+              "name": "comparative_training",
+              "metric": "comparative_loss_ratio",
+              "op": "lt",
+              "value": 0.2
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    "scaling-laws": {
+      "id": "scaling-laws",
+      "title": "Compute-optimal scaling derivation",
+      "prerequisites": [
+        "derivatives",
+        "logarithms"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Review written symbolic derivation and uniqueness argument"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "constraint",
+              "metric": "constraint_error",
+              "op": "lt",
+              "value": 1e-08
+            },
+            {
+              "name": "stationarity",
+              "metric": "stationarity_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "numerical_search",
+              "metric": "search_regret",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    "pallas-ragged": {
+      "id": "pallas-ragged",
+      "title": "Pallas ragged expert expansion",
+      "prerequisites": [
+        "dense-moe"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "requirements.txt",
+        "README.md"
+      ],
+      "manualGates": [
+        "Accelerator benchmark on real hardware; CPU interpretation earns no performance credit",
+        "Review measured throughput and speedup; justify optimization or lack of speedup against ragged_dot"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "accelerator_benchmark",
+              "metric": "tokens_per_second",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "name": "accelerator_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "correctness",
+              "metric": "max_error",
+              "op": "lt",
+              "value": 2e-05
+            },
+            {
+              "name": "pallas_primitive",
+              "metric": "pallas_primitive",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "expansion_F_gt_D",
+              "metric": "expansion_F_gt_D",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "accelerator_benchmark",
+              "metric": "tokens_per_second",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "name": "accelerator_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            }
+          ]
+        }
+      },
+      "unsupportedIsPass": false,
+      "smokeSatisfiesFull": false
+    },
+    "transformer-posttrain": {
+      "id": "transformer-posttrain",
+      "title": "Train a causal transformer with SFT, DPO and GRPO",
+      "prerequisites": [
+        "posttrain-bench",
+        "language-model-loss"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "objective_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_learning",
+              "metric": "sft_loss_ratio",
+              "op": "lt",
+              "value": 0.9
+            },
+            {
+              "name": "heldout_answers",
+              "metric": "sft_heldout_accuracy",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "dpo_heldout_preserved",
+              "metric": "dpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "grpo_heldout_preserved",
+              "metric": "grpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "dpo_updates",
+              "metric": "dpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "grpo_updates",
+              "metric": "grpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_nll",
+              "metric": "sft_heldout_nll",
+              "op": "lt",
+              "value": 1.3
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "objective_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_learning",
+              "metric": "sft_loss_ratio",
+              "op": "lt",
+              "value": 0.9
+            },
+            {
+              "name": "heldout_answers",
+              "metric": "sft_heldout_accuracy",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "dpo_heldout_preserved",
+              "metric": "dpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "grpo_heldout_preserved",
+              "metric": "grpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "dpo_updates",
+              "metric": "dpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "grpo_updates",
+              "metric": "grpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_nll",
+              "metric": "sft_heldout_nll",
+              "op": "lt",
+              "value": 1.3
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "ppo-control": {
+      "id": "ppo-control",
+      "title": "PPO in a multistep control simulator",
+      "prerequisites": [
+        "rl-bench",
+        "mlp-backprop"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "gae_and_clipping",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 8
+            },
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.8
+            },
+            {
+              "name": "heldout_control",
+              "metric": "final_distance",
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "gae_and_clipping",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 8
+            },
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.8
+            },
+            {
+              "name": "heldout_control",
+              "metric": "final_distance",
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "visual-policy": {
+      "id": "visual-policy",
+      "title": "Learn image-based closed-loop control",
+      "prerequisites": [
+        "robotics-bench",
+        "mlp-backprop"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "shifted_success",
+              "metric": "shifted_success",
+              "op": "gte",
+              "value": 0.55
+            },
+            {
+              "name": "beats_zero",
+              "metric": "distance_ratio",
+              "op": "lt",
+              "value": 0.3
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "shifted_success",
+              "metric": "shifted_success",
+              "op": "gte",
+              "value": 0.55
+            },
+            {
+              "name": "beats_zero",
+              "metric": "distance_ratio",
+              "op": "lt",
+              "value": 0.3
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "attention-kernel": {
+      "id": "attention-kernel",
+      "title": "Attention correctness and measured CUDA performance",
+      "prerequisites": [
+        "infra-bench",
+        "causal-attention"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.0002
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.002
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.0002
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.002
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.035
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.09
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 0.01
+            },
+            {
+              "name": "measured_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            },
+            {
+              "name": "measured_memory",
+              "metric": "peak_allocated_bytes",
+              "op": "gt",
+              "value": 0
+            }
+          ],
+          "unsupported": false,
+          "requires": "CUDA"
+        }
+      }
+    },
+    "reward-audit": {
+      "id": "reward-audit",
+      "title": "Audit reward and split contamination",
+      "prerequisites": [
+        "posttrain-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "split_accuracy",
+              "metric": "split_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "reward_accuracy",
+              "metric": "reward_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "normalization_accuracy",
+              "metric": "normalization_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "split_accuracy",
+              "metric": "split_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "reward_accuracy",
+              "metric": "reward_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "normalization_accuracy",
+              "metric": "normalization_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "rollout-boundary": {
+      "id": "rollout-boundary",
+      "title": "Recover rollout boundary correctness",
+      "prerequisites": [
+        "rl-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "target_accuracy",
+              "metric": "target_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "aggregation_accuracy",
+              "metric": "aggregation_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "target_accuracy",
+              "metric": "target_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "aggregation_accuracy",
+              "metric": "aggregation_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "checkpoint-recovery": {
+      "id": "checkpoint-recovery",
+      "title": "Recover checkpoints and bound serving",
+      "prerequisites": [
+        "infra-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "recovery_accuracy",
+              "metric": "recovery_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "resume_accuracy",
+              "metric": "resume_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "queue_accuracy",
+              "metric": "queue_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "recovery_accuracy",
+              "metric": "recovery_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "resume_accuracy",
+              "metric": "resume_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "queue_accuracy",
+              "metric": "queue_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    "robot-shift": {
+      "id": "robot-shift",
+      "title": "Recover under dynamics and observation shifts",
+      "prerequisites": [
+        "robotics-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "success_rate",
+              "metric": "success_rate",
+              "op": "gte",
+              "value": 0.9
+            },
+            {
+              "name": "action_violations",
+              "metric": "action_violations",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "name": "mean_final_error",
+              "metric": "mean_final_error",
+              "op": "lt",
+              "value": 0.08
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "success_rate",
+              "metric": "success_rate",
+              "op": "gte",
+              "value": 0.9
+            },
+            {
+              "name": "action_violations",
+              "metric": "action_violations",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "name": "mean_final_error",
+              "metric": "mean_final_error",
+              "op": "lt",
+              "value": 0.08
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    }
+  }
 }
