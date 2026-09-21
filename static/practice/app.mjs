@@ -77,7 +77,7 @@ function refresh(){
     const b=document.createElement('button');b.className='lesson';b.setAttribute('aria-current',String(e.id===current?.id));b.textContent=`${String(i+1).padStart(2,'0')}  ${e.title}`;const small=document.createElement('small');small.textContent=`${e.minutes} min · ${label(progress(state,e.id))}`;b.append(small);b.onclick=()=>select(e);$('lessons').append(b);});
   const qualification=assessmentQualification(state,exercises);
   $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} validation gates met. Fresh timed passes require a scored postmortem to count as strong rounds.`;
-  if(guidedFlow&&current)updateJourney();
+  if(current)updateJourney();
   $('history').replaceChildren();
   if(!state.attempts.length){const li=document.createElement('li');li.textContent='Your first run starts the evidence. Syntax errors are useful feedback.';$('history').append(li);}
   state.attempts.slice(0,6).forEach(a=>{const li=document.createElement('li');const title=exercises.find(e=>e.id===a.id)?.title||'Exercise';li.textContent=`${new Date(a.at).toLocaleDateString()} — ${title}: ${a.passed?'passed':a.kind}${a.cold?' · cold recall':''}${a.output?' · '+firstError(a.output):''}`;$('history').append(li);});
@@ -92,6 +92,13 @@ function renderMockReview(){
  $('mock-review-status').textContent=completeAssessmentReview(review)?'Strong-round review complete.':'Pending: score every dimension at 2+ and write a 120-character postmortem.';
 }
 function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Queue state could not be read. Your saved data has been kept; try refreshing this page.');}}
+function continuation(){
+ const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
+ if(!current||entry().lastResult!=='pass'||step.type!=='code'||step.id!==current.id)return step;
+ const alternatives=exercises.filter(e=>e.id!==current.id);
+ const next=alternatives.length?recommendation(alternatives,state):null;
+ return next?{type:'code',id:next.id,title:next.title,mode:'practice',action:'resume'}:{type:'done'};
+}
 function updateJourney(){
  const p=entry();const passed=p.lastResult==='pass';
  const smaller=taskSkills[current.id]?.kind==='diagnostic'&&(session().assisted||state.attempts.filter(a=>a.id===current.id&&String(a.sessionId)===String(session().started)&&!a.passed&&a.kind!=='syntax').length>=2);
@@ -100,10 +107,10 @@ function updateJourney(){
  $('journey-feedback').hidden=!passed&&!smaller;
  $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.diagnostic?'Initial diagnostic · untimed':activeAction?.variation?'A fresh angle · untimed':activeAction?.reinforcement?'Build · verify behavior':activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
  if(passed||smaller){
-  const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
+  const step=continuation();
   $('journey-message').textContent=smaller&&!passed?'Let’s make this smaller. Your draft is saved; the next task gives you more support.':step.diagnostic?'A short independent task will check what you already know.':step.variation?'Use the skill in a different problem. We’ll handle what needs revisiting.':step.reinforcement?'Keep practising this pattern. We’ll bring back recall checks when they’re due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
   $('next-review-date').textContent=p.review?.dueAt?'Recall checks are scheduled automatically.':'';
-  $('journey-next').textContent=smaller&&!passed?'Continue with a smaller step →':step.reinforcement?'Continue practising →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next: ${step.title} →`;
+  $('journey-next').textContent=smaller&&!passed?'Continue with a smaller step →':step.type==='done'?'View your progress →':step.type==='session'?`Start rehearsal: ${step.title} →`:step.id===current.id?'Try it from memory →':`Next exercise: ${step.title} →`;
  }
 }
 function renderExample(){
@@ -126,7 +133,7 @@ $('example-run').onclick=()=>{try{const demo=examples[current.id];if(!demo)throw
 
 function launchStep(){
  if(worker||storageStale)return;
- readPath();const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
+ readPath();const step=continuation();
  if(step.type!=='code'){location.assign('./path/');return;}activeAction=step;
  const e=exercises.find(e=>e.id===step.id),p=state.exercises[e.id] ||= {coldDays:[],attempts:0};
  const pristine=!p.viewedAt&&!p.files&&!p.attempts&&!p.session;
@@ -145,7 +152,6 @@ function launchStep(){
  scrollTo({top:0,behavior:'instant'});
 }
 function showResult(data,mode){
- if(!guidedFlow)return;
  const message=data.passed?(mode==='syntax'?'Python can read this. Check your code next.':mode==='tests'||mode==='probe'?'':'Program finished.'):feedbackMessage(data.output||'');
  $('first-feedback').hidden=!message;$('first-feedback').textContent=message;
  $('full-output').open=false;
@@ -215,7 +221,7 @@ function run(mode,probe){
          }
         }
         persist();refresh();
-        if(data.passed&&guidedFlow&&!document.hidden){$('run-results').scrollTop=0;$('journey-next').focus({preventScroll:true});}
+        if(data.passed&&!document.hidden){$('run-results').scrollTop=0;$('journey-next').focus({preventScroll:true});}
       }
     }
   };
