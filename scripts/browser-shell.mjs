@@ -52,7 +52,7 @@ try {
   assert.ok(dimensions.width<=dimensions.viewport,`${label}: horizontal overflow ${JSON.stringify(dimensions)}`);
  }
  await page.goto(base+'?library=1#tiny-count-cold');
- await editor().waitFor();
+ await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);
  await navigation('Files');
  const activeId=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).activeExerciseId);
  assert.ok(activeId,'saved exercise selected');
@@ -83,7 +83,7 @@ try {
  await page.waitForFunction(()=>JSON.stringify(JSON.parse(localStorage.getItem('coding-practice-v1')).exercises).includes('shell persistence regression'));
  const preferences=await page.evaluate(()=>localStorage.getItem('workspace-layout-v1'));
  assert.ok(preferences,'layout preference stored');
- await page.reload();await editor().waitFor();
+ await page.reload();await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);
  for(const id of ['toggle-sidebar','toggle-brief','toggle-output'])await shown(id,false);
  assert.ok((await editor().innerText()).includes('shell persistence regression'));
  await nav().getByRole('link',{name:'Experiments',exact:true}).click();
@@ -96,7 +96,7 @@ try {
  await nav().getByRole('link',{name:'Queue',exact:true}).click();
  await navigation('Queue');
  await nav().getByRole('link',{name:'Files',exact:true}).click();
- await editor().waitFor();await navigation('Files');
+ await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);await navigation('Files');
  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).activeExerciseId),activeId);
  assert.equal(await page.locator('#file').inputValue(),selectedFile,'selected source file restored');
  assert.equal(await page.locator('#editor').inputValue(),draft,'draft source preserved exactly');
@@ -116,20 +116,20 @@ try {
   await nav().getByRole('link',{name:'Queue',exact:true}).click();
   await navigation('Queue');await noOverflow(`${viewportWidth} Queue`);
   await nav().getByRole('link',{name:'Files',exact:true}).click();
-  await editor().waitFor();await navigation('Files');
+  await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);await navigation('Files');
  }
  await page.screenshot({path:'/tmp/workspace-shell-mobile.png',fullPage:true});
  // A multi-file task must resume its selected document, not merely its exercise.
  await page.goto(base+'path/');
  await page.goto(base+'?library=1#object-graph-codec');
- await editor().waitFor();
+ await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);
  await page.locator('#file').selectOption('DESIGN.md');
  const designDraft='# Working notes\nA navigation regression marker; no solution supplied.\n';
  await editor().fill(designDraft);
  await nav().getByRole('link',{name:'Experiments',exact:true}).click();
  await navigation('Experiments');
  await nav().getByRole('link',{name:'Files',exact:true}).click();
- await editor().waitFor();
+ await editor().waitFor();await page.waitForFunction(()=>document.querySelector('#file')?.options.length>0);
  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).activeExerciseId),'object-graph-codec');
  assert.equal(await page.locator('#file').inputValue(),'DESIGN.md');
  assert.equal(await page.locator('#editor').inputValue(),designDraft);
