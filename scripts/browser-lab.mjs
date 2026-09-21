@@ -109,5 +109,19 @@ try{
  const refs=JSON.parse(execFileSync('python3',['-c',`import ast,json,pathlib; t=ast.parse(pathlib.Path('scripts/verify-research.py').read_text()); print(json.dumps(next(ast.literal_eval(n.value) for n in t.body if isinstance(n,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='REFERENCES' for x in n.targets))))`],{encoding:'utf8'}));
  await page.getByRole('textbox',{name:'Python code editor'}).fill(refs['gradient-check']);await page.locator('#run').click();await page.waitForFunction(()=>JSON.parse(localStorage.getItem('coding-practice-v1')||'{}').exercises?.['gradient-check']?.lastResult==='pass',{},{timeout:120000});
  await page.goto(base+'lab/');await page.locator('#next').click();await page.locator('#title').filter({hasText:'A complete learning loop'}).waitFor();
+ // Files must expose continuation after a real pass, even with the sidebar hidden.
+ await page.goto(base+'?library=1#probe-counting');await page.locator('#title').filter({hasText:'Count Result Codes'}).waitFor();
+ const solution='def count_codes(codes):\n    counts = {}\n    for code in codes:\n        counts[code] = counts.get(code, 0) + 1\n    return counts\n';
+ await page.getByRole('textbox',{name:'Python code editor'}).fill(solution);await page.locator('#run').click();
+ await page.locator('#success-title').filter({hasText:'6 of 6 checks passed'}).waitFor({timeout:120000});
+ await page.getByRole('button',{name:/^Next exercise:/}).waitFor();assert.equal(await page.locator('#first-feedback').isVisible(),false);
+ await page.reload();await page.getByRole('button',{name:/^Next exercise:/}).waitFor();
+ await page.getByRole('button',{name:/^Next exercise:/}).click();
+ assert.notEqual(await page.locator('#title').textContent(),'Count Result Codes');
+ const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['probe-counting']);assert.equal(saved.files['src/task.py'],solution);assert.equal(saved.lastResult,'pass');
+ await page.goto(base+'?library=1#probe-counting');await page.locator('#title').filter({hasText:'Count Result Codes'}).waitFor();
+ await page.getByRole('textbox',{name:'Python code editor'}).fill('def count_codes(codes):\n    return {}\n');assert.equal(await page.locator('#journey-next').isVisible(),false);
+ await page.locator('#run').click();await page.locator('#first-feedback').filter({hasText:/AssertionError/}).waitFor({timeout:120000});assert.equal(await page.locator('#journey-next').isVisible(),false);
+ console.log('PASS Files continuation: pass, reload, next exercise, preserved source and hidden CTA after edits/failure');
  assert.deepEqual(errors,[]);console.log('PASS browser execution: 4 CPU kits + 4 full fault suites, 3-seed run, Stop, drafts, scoped reports, navigation, journal/backup, mobile and primitive regression');
 }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));await rm(root,{recursive:true,force:true});}
