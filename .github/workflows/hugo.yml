@@ -88,6 +88,11 @@ jobs:
           python3 scripts/verify-runner.py
           python3 scripts/verify-exercises.py --curriculum static/practice/frontier.json
           python3 scripts/verify-variations.py
+          python3 scripts/verify-research.py
+          python3 scripts/verify-neural.py
+          python3 scripts/verify-lab-kit.py
+          python3 scripts/verify-lab-coach.py
+          python3 scripts/verify-lab-workspace.py
           python3 scripts/verify-explorer-examples.py
       - name: Build coding practice editor
         run: npm run build:practice-editor

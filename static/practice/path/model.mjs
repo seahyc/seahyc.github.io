@@ -3,10 +3,10 @@ export const PATH_KEY = 'coding-interview-path-v1';
 export const CODE_KEY = 'coding-practice-v1';
 export const today = (now=Date.now()) => {const d=new Date(now);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 export const roleProfiles={
- cognition:{label:'Cognition applied / Special Projects',tracks:['shared','applied','cognition']},
- research:{label:'Frontier Research Engineer',tracks:['shared','depth','research']},
+ cognition:{label:'Applied systems',tracks:['shared','applied','cognition']},
+ research:{label:'Research systems',tracks:['shared','depth','research']},
  infra:{label:'ML Infrastructure',tracks:['shared','depth','infra']},
- all:{label:'All frontier loops',tracks:['shared','applied','depth','cognition','research','infra']}
+ all:{label:'All systems',tracks:['shared','applied','depth','cognition','research','infra']}
 };
 export function normalizeTrack(track){return ({applied:'cognition',depth:'infra',both:'all'})[track]||((track in roleProfiles)?track:'cognition');}
 export function freshPath(){return {version:1,track:'cognition',minutes:35,targetDate:'',reason:'Turn my engineering judgment into reliable code I can explain.',sessions:{},reviews:[],drafts:{}};}
@@ -49,12 +49,12 @@ export function readiness(path,code,sessions,now=Date.now(),catalog=[]){
   all:{code:['unfamiliar-repo-repair','kv-cache-repair','experiment-analysis'],sessions:['reliable-agent-design','customer-implementation-case','ml-notebook-debug','research-experiment-defense','training-systems-design','inference-service'],competition:['agent-build-day','research-experiment-defense','training-systems-design']}
  }[role];
  return [
-  {id:'blind',title:'Blind coding qualification',met:qualification.ready,detail:`${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} contest gates met in the past 21 days`,next:'Complete five fresh mocks with four strong passes, three consecutive finishes, broad transfer, and a review buffer.'},
+  {id:'blind',title:'Fresh implementation checks',met:qualification.ready,detail:`${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} contest gates met in the past 21 days`,next:'Complete five fresh mocks with four strong passes, three consecutive finishes, broad transfer, and a review buffer.'},
   {id:'extension',title:'Adapt to a live requirement change',met:peer('live-requirement-change'),detail:peer('live-requirement-change')?'Current passing peer review':'A passing peer-reviewed live extension is required',next:'Have a peer reveal constraints during the round while you preserve existing behavior.'},
   {id:'debug',title:'Repair an unfamiliar repository',met:recentPass('unfamiliar-repo-repair',21)&&peer('code-review'),detail:`${Number(recentPass('unfamiliar-repo-repair',21))+Number(peer('code-review'))}/2 current implementation and peer-review checks`,next:'Diagnose the multi-file system, add regression tests, and defend the root cause with a peer.'},
-  {id:'role',title:`Meet the ${roleProfiles[role].label} technical bar`,met:codeSet(roleEvidence.code,28)&&sessionSet(roleEvidence.sessions),detail:`${roleEvidence.code.filter(id=>recentPass(id,28)).length+roleEvidence.sessions.filter(peer).length}/${roleEvidence.code.length+roleEvidence.sessions.length} current role-specific coding and reviewed sessions`,next:'Complete the coding, ML, systems, product, or customer events selected for this target loop.'},
-  {id:'competition',title:'Complete the role competition event',met:sessionSet(roleEvidence.competition),detail:`${roleEvidence.competition.filter(peer).length}/${roleEvidence.competition.length} long-form role events have current peer-reviewed passes`,next:'Run the extended build, experiment defense, or systems design without coaching and record concrete peer feedback.'},
-  {id:'loop',title:'Pass a complete frontier interview loop',met:peer('championship-loop')&&sessionSet(['project-deep-dive','motivation-and-judgment']),detail:`${['championship-loop','project-deep-dive','motivation-and-judgment'].filter(peer).length}/3 full-loop, project-depth, and judgment reviews are current`,next:'Run the five-hour fresh loop with a peer, then repair every dimension below 2/3. Evidence expires after 42 days.'}
+  {id:'role',title:`Meet the ${roleProfiles[role].label} review requirements`,met:codeSet(roleEvidence.code,28)&&sessionSet(roleEvidence.sessions),detail:`${roleEvidence.code.filter(id=>recentPass(id,28)).length+roleEvidence.sessions.filter(peer).length}/${roleEvidence.code.length+roleEvidence.sessions.length} current role-specific coding and reviewed sessions`,next:'Complete the coding, ML, systems, product, or customer events selected for this configuration.'},
+  {id:'competition',title:'Complete the extended evaluation',met:sessionSet(roleEvidence.competition),detail:`${roleEvidence.competition.filter(peer).length}/${roleEvidence.competition.length} long-form role events have current peer-reviewed passes`,next:'Run the extended build, experiment defense, or systems design without coaching and record concrete peer feedback.'},
+  {id:'loop',title:'Complete the integrated review',met:peer('championship-loop')&&sessionSet(['project-deep-dive','motivation-and-judgment']),detail:`${['championship-loop','project-deep-dive','motivation-and-judgment'].filter(peer).length}/3 full-loop, project-depth, and judgment reviews are current`,next:'Run the five-hour fresh loop with a peer, then repair every dimension below 2/3. Evidence expires after 42 days.'}
  ];
 }
 export function sessionStatus(s,path,now=Date.now()){

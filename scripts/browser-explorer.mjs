@@ -21,9 +21,9 @@ try{
  browser=await chromium.launch({headless:true});
  const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage();
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
- const packs=await Promise.all(['ramp','curriculum','frontier','variations'].map(async name=>JSON.parse(await readFile(path.join(root,'practice',name+'.json'),'utf8'))));
+ const packs=await Promise.all(['ramp','curriculum','frontier','variations','research','neural'].map(async name=>JSON.parse(await readFile(path.join(root,'practice',name+'.json'),'utf8'))));
  const catalog=packs.flatMap(p=>p.exercises);
- const frontierIds=new Set(packs[2].exercises.map(e=>e.id));
+ const frontierIds=new Set([...packs[2].exercises,...packs[4].exercises,...packs[5].exercises].map(e=>e.id));
  await page.goto(base+'?library=1#probe-filtering');
  await page.getByRole('textbox',{name:'Python code editor'}).waitFor();
  // Exercise real keyboard events: filling a finished solution misses keymap bugs.

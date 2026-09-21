@@ -1,0 +1,830 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "id": "shared",
+      "name": "Core",
+      "description": "Start here. Build the mathematical objects in code, then inspect their failure modes."
+    },
+    {
+      "id": "posttrain",
+      "name": "Post-training",
+      "description": "Learn to change a policy using demonstrations, preferences and verifiable rewards."
+    },
+    {
+      "id": "rl",
+      "name": "RL",
+      "description": "Learn to collect experience, estimate returns and improve a policy under uncertainty."
+    },
+    {
+      "id": "infra",
+      "name": "Systems",
+      "description": "Learn to explain and improve measured memory, throughput and reliability."
+    },
+    {
+      "id": "robotics",
+      "name": "Robot learning",
+      "description": "Learn from trajectories and evaluate closed-loop behavior under distribution shift."
+    }
+  ],
+  "sources": [
+    {
+      "id": "vlad",
+      "title": "Vlad Feinberg: evidence through useful contributions (updated July 2026; original hiring challenge closed)",
+      "url": "https://vladfeinberg.com/2026/05/10/how-to-land-a-job-at-a-frontier-lab.html"
+    },
+    {
+      "id": "spin",
+      "title": "OpenAI Spinning Up: implementing algorithms and rigorous experiments",
+      "url": "https://spinningup.openai.com/en/latest/spinningup/spinningup.html"
+    },
+    {
+      "id": "trl",
+      "title": "TRL: preference optimization and GRPO trainers",
+      "url": "https://huggingface.co/docs/trl/en/index"
+    },
+    {
+      "id": "verl",
+      "title": "verl: production RL training infrastructure",
+      "url": "https://github.com/verl-project/verl"
+    },
+    {
+      "id": "scale",
+      "title": "How to Scale Your Model: systems cost models",
+      "url": "https://jax-ml.github.io/scaling-book/"
+    },
+    {
+      "id": "robot",
+      "title": "LeRobot: datasets, policies, evaluation and real robots",
+      "url": "https://huggingface.co/docs/lerobot/en/index"
+    },
+    {
+      "id": "openpi",
+      "title": "OpenPI: vision-language-action models and deployment",
+      "url": "https://github.com/Physical-Intelligence/openpi"
+    },
+    {
+      "id": "auth",
+      "title": "Codex authentication: ChatGPT subscription access",
+      "url": "https://learn.chatgpt.com/docs/auth"
+    },
+    {
+      "id": "dpo",
+      "title": "Direct Preference Optimization: objective and derivation",
+      "url": "https://arxiv.org/abs/2305.18290"
+    }
+  ],
+  "missions": [
+    {
+      "id": "gradient-check",
+      "title": "Gradients you can test",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Explain a derivative as local sensitivity; derive one logistic gradient before finite differences.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "sgd-regression",
+      "title": "A complete learning loop",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "gradient-check"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Trace data \u2192 prediction \u2192 loss \u2192 gradient \u2192 update. Explain learning rate and held-out error.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "categorical-policy",
+      "title": "Probability to policy",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "gradient-check"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Normalize logits stably, interpret log-probability, then derive the score-function gradient.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "gae-returns",
+      "title": "Credit across time",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "categorical-policy"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Discount rewards; separate terminal states from time limits and explain bootstrap bias.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "ppo-objective",
+      "title": "Constrained policy changes",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "gae-returns"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Predict clipping for positive and negative advantages before implementing it.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "preference-loss",
+      "title": "Learning from comparisons",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "categorical-policy"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Compute policy/reference log ratios and explain the role of beta.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "dpo",
+        "trl"
+      ]
+    },
+    {
+      "id": "quantized-linear",
+      "title": "Memory versus error",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "sgd-regression"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Quantize rows, handle all-zero rows and measure reconstruction error.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "robot-rollout",
+      "title": "Feedback and trajectories",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "sgd-regression"
+      ],
+      "effort": "25\u201380 min; repeat after 2 and 7 days",
+      "objective": "Integrate simple dynamics; distinguish open-loop prediction from closed-loop success.",
+      "deliverables": [
+        "Working implementation and your own edge-case tests",
+        "A 3-sentence explanation from memory; repeat on an altered example"
+      ],
+      "evaluation": [
+        "Public tests establish implementation correctness only.",
+        "Complete a fresh variant without hints on two separate days before claiming fluency."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "mlp-backprop",
+      "title": "Backprop through a small network",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "sgd-regression"
+      ],
+      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "objective": "Build a two-layer tanh network; derive and numerically check every weight and bias gradient. Learn what hidden representations and the chain rule do.",
+      "deliverables": [
+        "Working implementation, numerical or invariance tests, and your own edge cases",
+        "Explain dimensions and one gradient or masked token from memory"
+      ],
+      "evaluation": [
+        "Public correctness tests are formative. Reconstruct an altered example without hints.",
+        "When moving to PyTorch, assert forward and gradient parity against this implementation before training."
+      ],
+      "sources": [
+        "spin"
+      ]
+    },
+    {
+      "id": "causal-attention",
+      "title": "Attention one token at a time",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "mlp-backprop"
+      ],
+      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "objective": "Implement scaled dot-product attention with an explicit causal mask. Prove that changing future tokens cannot affect earlier outputs.",
+      "deliverables": [
+        "Working implementation, numerical or invariance tests, and your own edge cases",
+        "Explain dimensions and one gradient or masked token from memory"
+      ],
+      "evaluation": [
+        "Public correctness tests are formative. Reconstruct an altered example without hints.",
+        "When moving to PyTorch, assert forward and gradient parity against this implementation before training."
+      ],
+      "sources": [
+        "scale"
+      ]
+    },
+    {
+      "id": "language-model-loss",
+      "title": "Next-token loss without leakage",
+      "track": "shared",
+      "rung": 0,
+      "kind": "browser",
+      "prerequisites": [
+        "causal-attention"
+      ],
+      "effort": "50\u201390 min; repeat after 2 and 7 days",
+      "objective": "Align inputs and next-token targets, mask prompt and padding positions, and compute stable crossentropy. Identify the first completion token exactly.",
+      "deliverables": [
+        "Working implementation, numerical or invariance tests, and your own edge cases",
+        "Explain dimensions and one gradient or masked token from memory"
+      ],
+      "evaluation": [
+        "Public correctness tests are formative. Reconstruct an altered example without hints.",
+        "When moving to PyTorch, assert forward and gradient parity against this implementation before training."
+      ],
+      "sources": [
+        "trl"
+      ]
+    },
+    {
+      "id": "posttrain-bench",
+      "title": "Preference policy",
+      "track": "posttrain",
+      "rung": 1,
+      "kind": "kit",
+      "prerequisites": [
+        "preference-loss"
+      ],
+      "effort": "4\u20138 focused hours",
+      "objective": "Fit a small categorical policy from comparisons, compare with the reference and inspect held-out preference accuracy.",
+      "protocol": [
+        "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track posttrain --seed 17 --output posttrain-17.json",
+        "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
+        "Change preference noise and beta separately; report accuracy and divergence, including a setting that fails."
+      ],
+      "deliverables": [
+        "Candidate source, harness and exact invocation",
+        "JSON reports with source hash, runtime and metrics",
+        "One plot with per-seed points, baseline and ablation; 1-page failure analysis"
+      ],
+      "evaluation": [
+        "The harness checks a small controlled problem. Inspect each failed check; keep failed runs.",
+        "Report mean and spread, never only the best seed. Import the JSON to record evidence; independent review is still required.",
+        "A fixed seed set is reproducible, not a secret test set. Ask a peer to choose fresh seeds and altered conditions."
+      ],
+      "sources": [
+        "spin",
+        "trl"
+      ]
+    },
+    {
+      "id": "rl-bench",
+      "title": "Experience to improvement",
+      "track": "rl",
+      "rung": 1,
+      "kind": "kit",
+      "prerequisites": [
+        "ppo-objective"
+      ],
+      "effort": "4\u20138 focused hours",
+      "objective": "Train a stochastic bandit policy with REINFORCE. Separate collection, update and evaluation; compare against uniform behavior.",
+      "protocol": [
+        "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track rl --seed 17 --output rl-17.json",
+        "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
+        "Ablate the baseline and learning rate across paired seeds; explain variance and collapse."
+      ],
+      "deliverables": [
+        "Candidate source, harness and exact invocation",
+        "JSON reports with source hash, runtime and metrics",
+        "One plot with per-seed points, baseline and ablation; 1-page failure analysis"
+      ],
+      "evaluation": [
+        "The harness checks a small controlled problem. Inspect each failed check; keep failed runs.",
+        "Report mean and spread, never only the best seed. Import the JSON to record evidence; independent review is still required.",
+        "A fixed seed set is reproducible, not a secret test set. Ask a peer to choose fresh seeds and altered conditions."
+      ],
+      "sources": [
+        "spin",
+        "verl"
+      ]
+    },
+    {
+      "id": "infra-bench",
+      "title": "Quantization under measurement",
+      "track": "infra",
+      "rung": 1,
+      "kind": "kit",
+      "prerequisites": [
+        "quantized-linear"
+      ],
+      "effort": "4\u20138 focused hours",
+      "objective": "Implement quantized matrix operations. Establish numeric error, then measure warm latency against float on the same hardware.",
+      "protocol": [
+        "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track infra --seed 17 --output infra-17.json",
+        "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
+        "Sweep shapes and outlier magnitudes; distinguish reduced storage from actual runtime speed."
+      ],
+      "deliverables": [
+        "Candidate source, harness and exact invocation",
+        "JSON reports with source hash, runtime and metrics",
+        "One plot with per-seed points, baseline and ablation; 1-page failure analysis"
+      ],
+      "evaluation": [
+        "The harness checks a small controlled problem. Inspect each failed check; keep failed runs.",
+        "Report mean and spread, never only the best seed. Import the JSON to record evidence; independent review is still required.",
+        "A fixed seed set is reproducible, not a secret test set. Ask a peer to choose fresh seeds and altered conditions."
+      ],
+      "sources": [
+        "spin",
+        "scale"
+      ]
+    },
+    {
+      "id": "robotics-bench",
+      "title": "Learn a feedback controller",
+      "track": "robotics",
+      "rung": 1,
+      "kind": "kit",
+      "prerequisites": [
+        "robot-rollout"
+      ],
+      "effort": "4\u20138 focused hours",
+      "objective": "Fit a controller from demonstrations and execute it in held-out closed-loop episodes with disturbances.",
+      "protocol": [
+        "Download and extract the workspace. Read README.md and candidate.py; predict the baseline before editing.",
+        "python3 -m py_compile candidate.py harness.py\npython3 -m unittest discover -s . -p 'test*.py'\npython3 harness.py --track robotics --seed 17 --output robotics-17.json",
+        "Use development runs for tuning. Freeze the candidate hash, then repeat with seeds 113, 271 and 811. Do not keep tuning against those results.",
+        "Compare against zero control and an analytic controller; show where imitation breaks under shifted initial states."
+      ],
+      "deliverables": [
+        "Candidate source, harness and exact invocation",
+        "JSON reports with source hash, runtime and metrics",
+        "One plot with per-seed points, baseline and ablation; 1-page failure analysis"
+      ],
+      "evaluation": [
+        "The harness checks a small controlled problem. Inspect each failed check; keep failed runs.",
+        "Report mean and spread, never only the best seed. Import the JSON to record evidence; independent review is still required.",
+        "A fixed seed set is reproducible, not a secret test set. Ask a peer to choose fresh seeds and altered conditions."
+      ],
+      "sources": [
+        "spin",
+        "robot"
+      ]
+    },
+    {
+      "id": "posttrain-repro",
+      "title": "Tiny transformer \u2192 SFT \u2192 preferences",
+      "track": "posttrain",
+      "rung": 2,
+      "kind": "external",
+      "prerequisites": [
+        "posttrain-bench",
+        "language-model-loss"
+      ],
+      "effort": "20\u201340 hours",
+      "objective": "Train a roughly 1\u201310M parameter decoder on generated arithmetic. Establish SFT, then compare DPO and a verifiable-reward policy update.",
+      "protocol": [
+        "First reproduce your scalar MLP gradients with PyTorch autograd; assert gradient parity and tensor shapes, overfit 32 examples, and test train/eval mode and checkpoint round trips. Then translate the attention and masked-loss drills into tensor operations.",
+        "Create a pinned Python/PyTorch environment; record pip freeze, git SHA, accelerator and all config files. Begin with a 100-batch CPU smoke before any GPU run.",
+        "Generate disjoint train/validation/test operand tuples. Hold out carry patterns and longer digit lengths; do not split duplicate strings at random.",
+        "Implement causal masking, token shift and loss masking. Overfit 32 examples first; compare sampled outputs against exact arithmetic.",
+        "Freeze SFT checkpoint. Generate preference pairs only from training prompts. Run DPO and a TRL GRPO baseline with equal sampled-token budgets; report effective KL, reward and response length."
+      ],
+      "deliverables": [
+        "Training entrypoint and evaluator, checkpoint, dataset generator and locked split hashes",
+        "Loss and held-out exact-match curves; SFT/DPO/GRPO comparison at equal compute",
+        "At least three seed runs, reward parsing tests and a reward-hacking example"
+      ],
+      "evaluation": [
+        "Reject leakage, incorrect masking or train-only improvements. Derive one objective and verify its gradient numerically.",
+        "A peer reruns the baseline and one improvement from a clean environment; record differences.",
+        "Toy arithmetic is a bridge to post-training research, not evidence of capability on general language tasks."
+      ],
+      "sources": [
+        "trl",
+        "vlad"
+      ]
+    },
+    {
+      "id": "rl-repro",
+      "title": "PPO from scratch in a real simulator",
+      "track": "rl",
+      "rung": 2,
+      "kind": "external",
+      "prerequisites": [
+        "rl-bench",
+        "mlp-backprop"
+      ],
+      "effort": "20\u201340 hours",
+      "objective": "Implement PPO with batched environments, GAE, clipped policy loss, value loss and entropy; reproduce a known small-control baseline.",
+      "protocol": [
+        "Translate the scalar MLP into PyTorch tensors and autograd, verify gradient parity, and fit synthetic observations before introducing a changing policy distribution.",
+        "Use a version-pinned Gymnasium CartPole then a continuous-control environment. Record wrappers, truncation semantics and observation normalization.",
+        "Implement rollout buffer and update loop without copying trainer internals. Compare each tensor on a fixed rollout against an independent implementation.",
+        "Run 5 training seeds and at least 20 evaluation episodes per seed. Compare random, reference PPO and your PPO at equal environment-step budgets.",
+        "Ablate advantage normalization and clipping independently. Plot learning curves with seed-level uncertainty, not episode samples treated as independent training runs."
+      ],
+      "deliverables": [
+        "Runnable trainer, resume checkpoint and fixed-rollout tests",
+        "Raw trajectories, configs, 5-seed comparison and two ablations",
+        "Diagnosis of one unstable run with hypothesis and counter-experiment"
+      ],
+      "evaluation": [
+        "Test terminal vs truncated bootstrap, stale log-probs and minibatch shuffling.",
+        "Before declaring reproduction define an acceptance interval from the baseline distribution and compute budget.",
+        "Peer changes horizon or reward scale during a 90-minute debug session."
+      ],
+      "sources": [
+        "spin",
+        "verl"
+      ]
+    },
+    {
+      "id": "infra-repro",
+      "title": "Attention performance with a cost model",
+      "track": "infra",
+      "rung": 2,
+      "kind": "external",
+      "prerequisites": [
+        "infra-bench",
+        "causal-attention"
+      ],
+      "effort": "20\u201340 hours",
+      "objective": "Derive attention memory and FLOPs; reproduce a dense attention baseline and optimize one measured bottleneck.",
+      "protocol": [
+        "Implement causal attention in PyTorch and test outputs/gradients against torch scaled_dot_product_attention for masks, dtypes and awkward shapes.",
+        "Write a predicted bytes/FLOPs table for prefill and decode. Benchmark warm runs, synchronize the accelerator and record peak allocated memory, batch, sequence, dtype and device.",
+        "Profile before optimizing. Implement one tiled Triton or Pallas kernel only after a correct reference; retain a CPU correctness path.",
+        "Sweep shapes and compare median/p95 latency, peak memory and error. Explain where your implementation loses; do not compare different hardware or math modes."
+      ],
+      "deliverables": [
+        "Reproducible benchmark CLI and shape matrix with raw measurements",
+        "Profiler trace and predicted-vs-observed bottleneck analysis",
+        "Correctness/gradient tests and one scoped optimization"
+      ],
+      "evaluation": [
+        "Correctness is a gate before speed. Use independent repeated processes and report spread.",
+        "GPU speed claims require actual GPU runs. Oracle CPU is for smoke/reliability work.",
+        "Peer reruns on a clean device and checks an unreported shape."
+      ],
+      "sources": [
+        "scale",
+        "vlad"
+      ]
+    },
+    {
+      "id": "robotics-repro",
+      "title": "Imitation in a visual simulator",
+      "track": "robotics",
+      "rung": 2,
+      "kind": "external",
+      "prerequisites": [
+        "robotics-bench",
+        "mlp-backprop"
+      ],
+      "effort": "25\u201350 hours",
+      "objective": "Reproduce a LeRobot policy on a supported simulated task; evaluate trajectories rather than only prediction loss.",
+      "protocol": [
+        "First fit the point-controller dataset with a PyTorch MLP, check tensor shapes and held-out episodes, and verify CPU checkpoint reload parity before introducing pixels and simulator dependencies.",
+        "Pin LeRobot and simulator versions. Start from a documented environment configuration and a fixed public dataset version; record camera, action units and control frequency.",
+        "Split by complete episode and scene, never adjacent frames. Train a small behavior cloning baseline, then a supported ACT or diffusion policy on the same demonstration budget.",
+        "Evaluate at least 50 episodes across seeds and unseen start/goal conditions. Track success, return, collisions, latency and action saturation.",
+        "Ablate action chunk length or observation history; add camera noise, latency and dynamics shifts separately. Save videos for successes and failures."
+      ],
+      "deliverables": [
+        "Data card and episode split manifest; training/evaluation configs",
+        "Checkpoints, evaluation videos, per-episode metrics and latency histogram",
+        "Failure taxonomy and paired baseline comparison"
+      ],
+      "evaluation": [
+        "Low validation action loss is insufficient: require closed-loop evaluation on held-out episodes.",
+        "Declare simulator version and unsupported transfer claims; real hardware needs safety constraints and supervised rollout.",
+        "Peer changes an unseen scene or disturbance and reviews policy behavior."
+      ],
+      "sources": [
+        "robot",
+        "openpi"
+      ]
+    },
+    {
+      "id": "posttrain-stress",
+      "title": "Audit the reward and data pipeline",
+      "track": "posttrain",
+      "rung": 3,
+      "kind": "external",
+      "prerequisites": [
+        "posttrain-repro"
+      ],
+      "effort": "12\u201325 hours",
+      "objective": "Find and fix one real reward, masking or sampling failure in a pinned TRL/verl experiment.",
+      "protocol": [
+        "Inject a malformed answer, zero-variance reward batch and overlong response; write failing tests.",
+        "Trace data lineage and compare the fixed run with an unchanged checkpoint on a reserved evaluation set."
+      ],
+      "deliverables": [
+        "Minimal reproducer and regression tests",
+        "Baseline/fix raw measurements and 2-page incident or experiment report"
+      ],
+      "evaluation": [
+        "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+      ],
+      "sources": [
+        "verl"
+      ]
+    },
+    {
+      "id": "rl-stress",
+      "title": "Debug a distributed rollout boundary",
+      "track": "rl",
+      "rung": 3,
+      "kind": "external",
+      "prerequisites": [
+        "rl-repro"
+      ],
+      "effort": "12\u201325 hours",
+      "objective": "Diagnose a small training system with stale policies, resume state or dropped terminal transitions.",
+      "protocol": [
+        "Use two CPU workers and deliberately interrupted checkpoints; compare resumed and uninterrupted runs.",
+        "Measure policy lag, step throughput and seeded evaluation return. Restore correctness before optimizing."
+      ],
+      "deliverables": [
+        "Minimal reproducer and regression tests",
+        "Baseline/fix raw measurements and 2-page incident or experiment report"
+      ],
+      "evaluation": [
+        "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+      ],
+      "sources": [
+        "verl"
+      ]
+    },
+    {
+      "id": "infra-stress",
+      "title": "Checkpoint, resume and serving under faults",
+      "track": "infra",
+      "rung": 3,
+      "kind": "external",
+      "prerequisites": [
+        "infra-repro"
+      ],
+      "effort": "12\u201325 hours",
+      "objective": "Build a small reliable training or inference path with measurable recovery behavior.",
+      "protocol": [
+        "Interrupt writes, exhaust a bounded queue and retry requests; verify atomic checkpoints and no duplicate results.",
+        "Measure recovery time, memory bound, throughput and numerical parity. Add a regression test for the worst failure."
+      ],
+      "deliverables": [
+        "Minimal reproducer and regression tests",
+        "Baseline/fix raw measurements and 2-page incident or experiment report"
+      ],
+      "evaluation": [
+        "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+      ],
+      "sources": [
+        "scale"
+      ]
+    },
+    {
+      "id": "robotics-stress",
+      "title": "Recover from distribution shift",
+      "track": "robotics",
+      "rung": 3,
+      "kind": "external",
+      "prerequisites": [
+        "robotics-repro"
+      ],
+      "effort": "12\u201325 hours",
+      "objective": "Investigate a concrete failure of a learned controller and test a targeted intervention.",
+      "protocol": [
+        "Choose one shift from held-out videos; formulate a falsifiable causal hypothesis.",
+        "Compare extra demonstrations, augmentation or policy history at matched training budget; include a negative control."
+      ],
+      "deliverables": [
+        "Minimal reproducer and regression tests",
+        "Baseline/fix raw measurements and 2-page incident or experiment report"
+      ],
+      "evaluation": [
+        "Freeze acceptance criteria before the fix. Preserve unsuccessful interventions.",
+        "Peer introduces one unrehearsed variant and asks you to diagnose it in 90 minutes."
+      ],
+      "sources": [
+        "robot"
+      ]
+    },
+    {
+      "id": "posttrain-contribution",
+      "title": "A useful upstream contribution",
+      "track": "posttrain",
+      "rung": 4,
+      "kind": "external",
+      "prerequisites": [
+        "posttrain-stress"
+      ],
+      "effort": "30\u201380+ hours; maintainer timing varies",
+      "objective": "Choose one active issue in TRL or verl; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
+      "protocol": [
+        "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
+        "Write a design note: baseline, hypothesis, compute cap, failure cases, acceptance test and cheapest falsifying experiment.",
+        "Build the smallest patch with tests and exact reproduction commands. Run a clean-environment replication before opening the PR.",
+        "Respond to technical review; publish the raw evidence and what did not work. A private-work equivalent needs an independent internal reviewer and reproducible artifact."
+      ],
+      "deliverables": [
+        "Public PR or reviewed private artifact with code and evidence",
+        "Independent reproduction log; response to review",
+        "10-minute explanation plus 45-minute probing Q&A without AI"
+      ],
+      "evaluation": [
+        "A merged PR is useful adoption evidence, not a universal qualification. Judge scope, correctness and ownership.",
+        "Research readiness additionally requires an original, well-controlled finding and an independent reviewer who can challenge it.",
+        "If results are null, document the informative negative result honestly."
+      ],
+      "sources": [
+        "vlad",
+        "trl"
+      ]
+    },
+    {
+      "id": "rl-contribution",
+      "title": "A useful upstream contribution",
+      "track": "rl",
+      "rung": 4,
+      "kind": "external",
+      "prerequisites": [
+        "rl-stress"
+      ],
+      "effort": "30\u201380+ hours; maintainer timing varies",
+      "objective": "Choose one active issue in Spinning Up-compatible implementation or verl; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
+      "protocol": [
+        "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
+        "Write a design note: baseline, hypothesis, compute cap, failure cases, acceptance test and cheapest falsifying experiment.",
+        "Build the smallest patch with tests and exact reproduction commands. Run a clean-environment replication before opening the PR.",
+        "Respond to technical review; publish the raw evidence and what did not work. A private-work equivalent needs an independent internal reviewer and reproducible artifact."
+      ],
+      "deliverables": [
+        "Public PR or reviewed private artifact with code and evidence",
+        "Independent reproduction log; response to review",
+        "10-minute explanation plus 45-minute probing Q&A without AI"
+      ],
+      "evaluation": [
+        "A merged PR is useful adoption evidence, not a universal qualification. Judge scope, correctness and ownership.",
+        "Research readiness additionally requires an original, well-controlled finding and an independent reviewer who can challenge it.",
+        "If results are null, document the informative negative result honestly."
+      ],
+      "sources": [
+        "vlad",
+        "verl"
+      ]
+    },
+    {
+      "id": "infra-contribution",
+      "title": "A useful upstream contribution",
+      "track": "infra",
+      "rung": 4,
+      "kind": "external",
+      "prerequisites": [
+        "infra-stress"
+      ],
+      "effort": "30\u201380+ hours; maintainer timing varies",
+      "objective": "Choose one active issue in vLLM, SGLang, llama.cpp or a JAX/Triton project; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
+      "protocol": [
+        "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
+        "Write a design note: baseline, hypothesis, compute cap, failure cases, acceptance test and cheapest falsifying experiment.",
+        "Build the smallest patch with tests and exact reproduction commands. Run a clean-environment replication before opening the PR.",
+        "Respond to technical review; publish the raw evidence and what did not work. A private-work equivalent needs an independent internal reviewer and reproducible artifact."
+      ],
+      "deliverables": [
+        "Public PR or reviewed private artifact with code and evidence",
+        "Independent reproduction log; response to review",
+        "10-minute explanation plus 45-minute probing Q&A without AI"
+      ],
+      "evaluation": [
+        "A merged PR is useful adoption evidence, not a universal qualification. Judge scope, correctness and ownership.",
+        "Research readiness additionally requires an original, well-controlled finding and an independent reviewer who can challenge it.",
+        "If results are null, document the informative negative result honestly."
+      ],
+      "sources": [
+        "vlad",
+        "scale"
+      ]
+    },
+    {
+      "id": "robotics-contribution",
+      "title": "A useful upstream contribution",
+      "track": "robotics",
+      "rung": 4,
+      "kind": "external",
+      "prerequisites": [
+        "robotics-stress"
+      ],
+      "effort": "30\u201380+ hours; maintainer timing varies",
+      "objective": "Choose one active issue in LeRobot or OpenPI; produce a narrow correction, reproduction or measured improvement another practitioner can use.",
+      "protocol": [
+        "Read current contribution guidance and select a scoped issue that maintainers consider useful. Record the upstream commit and issue URL.",
+        "Write a design note: baseline, hypothesis, compute cap, failure cases, acceptance test and cheapest falsifying experiment.",
+        "Build the smallest patch with tests and exact reproduction commands. Run a clean-environment replication before opening the PR.",
+        "Respond to technical review; publish the raw evidence and what did not work. A private-work equivalent needs an independent internal reviewer and reproducible artifact."
+      ],
+      "deliverables": [
+        "Public PR or reviewed private artifact with code and evidence",
+        "Independent reproduction log; response to review",
+        "10-minute explanation plus 45-minute probing Q&A without AI"
+      ],
+      "evaluation": [
+        "A merged PR is useful adoption evidence, not a universal qualification. Judge scope, correctness and ownership.",
+        "Research readiness additionally requires an original, well-controlled finding and an independent reviewer who can challenge it.",
+        "If results are null, document the informative negative result honestly."
+      ],
+      "sources": [
+        "vlad",
+        "robot"
+      ]
+    }
+  ]
+}

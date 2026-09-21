@@ -46,7 +46,7 @@ const codeEditor=createCodeEditor({parent:$('code-editor'),onChange:value=>{
   if(!$('case-feedback').hidden||!$('journey-feedback').hidden){clearRunOutcome('Changes need checking');notice('');}
  }
  saveEditor();queueSyntax();
-},onPaste:()=>assisted('Paste recorded as supported practice. We’ll check recall from a fresh scaffold.'),onRun:()=>{if(current&&!storageStale)run('tests');}});
+},onPaste:()=>assisted('Paste recorded as assisted work. We’ll check recall from a fresh scaffold.'),onRun:()=>{if(current&&!storageStale)run('tests');}});
 const syntaxChecker=createSyntaxChecker({
  onStatus:status=>{if(storageStale||!current||!editable(file))return;$('syntax-status').dataset.state=status;$('syntax-status').textContent=status==='loading'?'Starting live syntax…':status==='unavailable'?'Live syntax unavailable. You can still run checks.':'Checking syntax…';document.body.classList.toggle('syntax-unavailable',status==='unavailable');},
  onResult:result=>{if(storageStale||!current||!editable(file)||result.status!=='checked')return;codeEditor.setDiagnostics(result.diagnostics);document.body.classList.remove('syntax-unavailable');const first=result.diagnostics[0];$('syntax-status').dataset.state=first?'error':'clear';$('syntax-status').textContent=first?`Line ${first.line}: ${first.message}`:'Syntax clear';}
@@ -68,18 +68,18 @@ function renderMarkdown(source){
 function refresh(){
   const rec=recommendation(exercises,state), passed=exercises.filter(e=>progress(state,e.id).passed).length,recalled=exercises.filter(e=>progress(state,e.id).coldDays?.length>=2).length;
   $('next-title').textContent=rec.title;$('next-reason').textContent=progress(state,rec.id).due<=day()?'Due for reconstruction. Start from the scaffold and retrieve it again.':rec.focus;
-  $('progress-summary').textContent=`${passed} of ${exercises.length} practiced successfully · ${recalled} recalled on separate days`;
-  $('recommended').textContent=passed?'Continue today’s practice':'Start with the guided example';
+  $('progress-summary').textContent=`${passed} of ${exercises.length} checks passed · ${recalled} recalled on separate days`;
+  $('recommended').textContent=passed?'Continue current task':'Start with the guided example';
   $('lessons').replaceChildren();let group='';
   exercises.forEach((e,i)=>{if(e.stage!==group){group=e.stage;const h=document.createElement('div');h.className='group-label';h.textContent=group;$('lessons').append(h);}
     const b=document.createElement('button');b.className='lesson';b.setAttribute('aria-current',String(e.id===current?.id));b.textContent=`${String(i+1).padStart(2,'0')}  ${e.title}`;const small=document.createElement('small');small.textContent=`${e.minutes} min · ${label(progress(state,e.id))}`;b.append(small);b.onclick=()=>select(e);$('lessons').append(b);});
   const qualification=assessmentQualification(state,exercises);
-  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} coding-assessment qualification gates met. Fresh timed passes require a scored postmortem to count as strong rounds.`;
+  $('evidence-summary').textContent=`${recalled} exercises recalled on 2+ days. ${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} validation gates met. Fresh timed passes require a scored postmortem to count as strong rounds.`;
   if(guidedFlow&&current)updateJourney();
   $('history').replaceChildren();
   if(!state.attempts.length){const li=document.createElement('li');li.textContent='Your first run starts the evidence. Syntax errors are useful feedback.';$('history').append(li);}
   state.attempts.slice(0,6).forEach(a=>{const li=document.createElement('li');const title=exercises.find(e=>e.id===a.id)?.title||'Exercise';li.textContent=`${new Date(a.at).toLocaleDateString()} — ${title}: ${a.passed?'passed':a.kind}${a.cold?' · cold recall':''}${a.output?' · '+firstError(a.output):''}`;$('history').append(li);});
-  if(current){const p=entry(),s=session();$('review-status').textContent=p.due?`Next review: ${p.due}. ${label(p)}`:(p.scaffold?'Foundation complete. Continue to independent retrieval.':'A first pass schedules tomorrow’s review.');$('session-status').textContent=s.cold?'Fresh scaffold; no assistance recorded.':'Practice: support is welcome. Cold recall starts with a fresh attempt.';renderMockReview();}
+  if(current){const p=entry(),s=session();$('review-status').textContent=p.due?`Next review: ${p.due}. ${label(p)}`:(p.scaffold?'Foundation complete. Continue to independent retrieval.':'A first pass schedules tomorrow’s review.');$('session-status').textContent=s.cold?'Fresh scaffold; no assistance recorded.':'Support available. Start a fresh attempt to check independent retrieval.';renderMockReview();}
 }
 function renderMockReview(){
  const card=$('mock-review'),p=entry();card.hidden=current.stage!=='Mock'||!p.passed;if(card.hidden)return;
@@ -89,14 +89,14 @@ function renderMockReview(){
  for(const [id,title] of assessmentDimensions){const label=document.createElement('label');label.htmlFor=`mock-score-${id}`;label.textContent=title;const select=document.createElement('select');select.id=`mock-score-${id}`;select.dataset.dimension=id;select.append(new Option('Choose evidence',''),...['0 — missing','1 — partial','2 — solid','3 — competition ready'].map((text,i)=>new Option(text,String(i))));select.value=Number.isInteger(review.scores?.[id])?String(review.scores[id]):'';scores.append(label,select);}
  $('mock-review-status').textContent=completeAssessmentReview(review)?'Strong-round review complete.':'Pending: score every dimension at 2+ and write a 120-character postmortem.';
 }
-function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Interview progress could not be read. Your saved data has been kept; try refreshing this page.');}}
+function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Queue state could not be read. Your saved data has been kept; try refreshing this page.');}}
 function updateJourney(){
  const p=entry();const passed=p.lastResult==='pass';
  const smaller=taskSkills[current.id]?.kind==='diagnostic'&&(session().assisted||state.attempts.filter(a=>a.id===current.id&&String(a.sessionId)===String(session().started)&&!a.passed&&a.kind!=='syntax').length>=2);
  const effort=recallState(p);
  if(passed&&effort.pending&&!storageStale){rateRecall(state,current.id,'good');persist();}
  $('journey-feedback').hidden=!passed&&!smaller;
- $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.diagnostic?'Find your starting point · untimed':activeAction?.variation?'A fresh angle · untimed':activeAction?.reinforcement?'Practice · build fluency':activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
+ $('run').classList.toggle('primary',!passed);$('practice-context').textContent=activeAction?.diagnostic?'Initial diagnostic · untimed':activeAction?.variation?'A fresh angle · untimed':activeAction?.reinforcement?'Build · verify behavior':activeAction?.review?'Recall · from memory':supported(current.id)?'Learn · with an example':'Build · then check';
  if(passed||smaller){
   const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
   $('journey-message').textContent=smaller&&!passed?'Let’s make this smaller. Your draft is saved; the next task gives you more support.':step.diagnostic?'A short independent task will check what you already know.':step.variation?'Use the skill in a different problem. We’ll handle what needs revisiting.':step.reinforcement?'Keep practising this pattern. We’ll bring back recall checks when they’re due.':step.type==='done'?'You’ve completed this sequence. Your next step is a rehearsal with a peer.':step.type==='session'?'Next, explain your reasoning in a short interview rehearsal.':step.review?'A recall check is due. Rebuild the solution from a fresh scaffold.':supported(current.id)&&!supported(step.id)?'Now use this pattern without the worked example.':'Your next task is ready, chosen from your progress.';
@@ -136,7 +136,7 @@ function launchStep(){
  if(!p.session){p.session={mode:step.mode,cold:step.mode!=='practice',started:Date.now(),hint:0,assisted:false,freshMock:step.mode==='mock'&&pristine,freshExercise:pristine};if(step.mode==='mock')p.session.deadline=Date.now()+e.minutes*60000;}
  select(e);
  if(step.reinforcement)notice(step.reason);
- else if(step.diagnostic)notice('A short starting-point check. Take your time; hints are available if you need them.');
+ else if(step.diagnostic)notice('Ready. Interactive execution; help is available.');
  else if(step.review||step.variation)notice(step.reason);
  else if(p.lastResult&&p.lastResult!=='pass'&&p.lastResult!=='pending')notice('Repair the first failing behavior, then check again.');
  else notice('');
@@ -167,7 +167,7 @@ function select(e){
 }
 function fresh(mode){
   if(worker)return;
-  if(!confirm('Start from the original scaffold? Your current code will be replaced. Your current draft will be saved in your practice history.')){$('mode').value=session().mode;return;}
+  if(!confirm('Start from the original scaffold? Your current code will be replaced. Your current draft will be saved in your session history.')){$('mode').value=session().mode;return;}
   saveEditor();const p=entry();
   const freshMock=canStartFreshMock(current,p,mode);
   archiveDraft(p);p.files={};p.notes='';p.lastResult='pending';
@@ -231,15 +231,15 @@ $('mock-scores').onchange=event=>{const id=event.target?.dataset?.dimension;if(!
 $('motivation').oninput=()=>{state.motivation=$('motivation').value;persist();};
 $('mode').onchange=()=>fresh($('mode').value);$('new-attempt').onclick=()=>fresh($('mode').value);
 $('syntax').onclick=()=>run('syntax');$('run').onclick=()=>run('tests');$('main').onclick=()=>run('main');$('stop').onclick=()=>stop();
-$('timer-button').onclick=()=>{const s=session();if(s.deadline){s.remaining=Math.max(0,s.deadline-Date.now());delete s.deadline;if(s.mode==='mock')assisted('Timed mock ended. Further work is practice.');}else{s.deadline=Date.now()+(s.remaining||current.minutes*60000);delete s.remaining;}persist();tick();};
-$('hint-details').ontoggle=()=>{if($('hint-details').open){assisted('Hint opened: this attempt now counts as supported practice.');$('hint').textContent=current.hints[session().hint||0];}};
+$('timer-button').onclick=()=>{const s=session();if(s.deadline){s.remaining=Math.max(0,s.deadline-Date.now());delete s.deadline;if(s.mode==='mock')assisted('Timer ended. Further work is interactive.');}else{s.deadline=Date.now()+(s.remaining||current.minutes*60000);delete s.remaining;}persist();tick();};
+$('hint-details').ontoggle=()=>{if($('hint-details').open){assisted('Help opened: assistance recorded for this run.');$('hint').textContent=current.hints[session().hint||0];}};
 $('next-hint').onclick=()=>{const s=session();s.hint=Math.min((s.hint||0)+1,current.hints.length-1);$('hint').textContent=current.hints[s.hint];persist();};
 $('recommended').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.studio').scrollIntoView({behavior:'instant'});};
 $('next-exercise').onclick=()=>{select(recommendation(exercises,state));document.querySelector('.brief-pane').scrollIntoView({behavior:'instant'});};
 $('method-button').onclick=()=>$('method').showModal();$('close-method').onclick=()=>$('method').close();
 $('export').onclick=()=>{saveEditor();const payload=storageStale?{kind:'coding-recovery',raw:localStorage.getItem(KEY),inMemory:state}:state;const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`coding-practice-${day()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('import-button').onclick=()=>$('import').click();
-$('import').onchange=async()=>{const f=$('import').files[0];if(!f)return;try{if(worker)throw Error('Stop the run before importing.');if(f.size>5000000)throw Error('Backup is too large.');const next=validateImport(JSON.parse(await f.text()),exercises);if(!confirm('Replace this browser’s practice progress with the backup?'))return;state=next;file=null;persist();$('motivation').value=state.motivation;select(current);notice('Backup restored. Imported code counts as practice until a fresh attempt.');}catch(e){notice(e.message);}finally{$('import').value='';}};
+$('import').onchange=async()=>{const f=$('import').files[0];if(!f)return;try{if(worker)throw Error('Stop the run before importing.');if(f.size>5000000)throw Error('Backup is too large.');const next=validateImport(JSON.parse(await f.text()),exercises);if(!confirm('Replace this browser’s workspace state with the backup?'))return;state=next;file=null;persist();$('motivation').value=state.motivation;select(current);notice('Backup restored. Imported code remains assisted until a clean run.');}catch(e){notice(e.message);}finally{$('import').value='';}};
 window.addEventListener('beforeunload',saveEditor);
 window.addEventListener('pagehide',()=>{syntaxChecker.clear();clearCelebration();});
 window.addEventListener('pageshow',event=>{if(event.persisted)queueSyntax();});
@@ -250,12 +250,12 @@ window.addEventListener('storage',event=>{
  codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
  notice('Progress changed in another tab. Keep any unsaved code here, then reload to use the latest progress.');
 });
-try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./frontier.json?v=frontier-2026-09-21-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./path/frontier-sessions.json?v=frontier-2026-09-21-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,frontierPack,ramp,interviewPack,frontierInterviewPack,examplePack,variationPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...frontierPack.exercises,...variationPack.exercises];interviews=[...interviewPack.sessions,...frontierInterviewPack.sessions];examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
+try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./frontier.json?v=frontier-2026-09-21-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./path/frontier-sessions.json?v=frontier-2026-09-21-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1'),fetch('./research.json'),fetch('./neural.json')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,frontierPack,ramp,interviewPack,frontierInterviewPack,examplePack,variationPack,researchPack,neuralPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...frontierPack.exercises,...variationPack.exercises,...researchPack.exercises,...neuralPack.exercises];interviews=[...interviewPack.sessions,...frontierInterviewPack.sessions];examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
 if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){
  const previous=state.exercises[target.id];
  if(target.stage==='Mock'&&!previous?.viewedAt&&!previous?.session&&!previous?.files&&!previous?.attempts){
   state.exercises[target.id]={coldDays:[],attempts:0,session:{mode:'mock',cold:true,freshMock:true,started:Date.now(),deadline:Date.now()+target.minutes*60000,hint:0}};
-  notice('Fresh mock started. Work independently; the timer is running. Explain your design afterward in the interview room.');
- }else notice('This task has already been opened. Continue as familiar practice, or choose an unviewed mock from the complete path.');
+  notice('Clean run started. Timer active. Record the design review afterward.');
+ }else notice('Task already opened. Resume it or select a new task from the queue.');
 }
-if(guidedFlow)launchStep();else {const direct=!!location.hash;select(target);if(direct)requestAnimationFrame(()=>document.querySelector('.studio')?.scrollIntoView({block:'start'}));}setInterval(tick,1000);}catch(e){notice('Could not load the practice workspace: '+e.message+'. Reload to try again.');}
+if(guidedFlow)launchStep();else {const direct=!!location.hash;select(target);if(direct)requestAnimationFrame(()=>document.querySelector('.studio')?.scrollIntoView({block:'start'}));}setInterval(tick,1000);}catch(e){notice('Could not load the workspace: '+e.message+'. Reload to try again.');}
