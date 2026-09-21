@@ -1,6 +1,6 @@
 import {skills,taskSkills} from './skill-catalog.mjs';
 
-const DAY=86400000, REPAIR=600000, intervals=[1,3,7,14,30];
+const DAY=86400000, REPAIR=600000, intervals=[1,3,7,14,30,60];
 const finite=n=>Number.isFinite(Number(n))?Number(n):0;
 const clean=e=>e.passed===true&&e.cold===true&&e.assisted!==true;
 

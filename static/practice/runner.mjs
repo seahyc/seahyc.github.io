@@ -97,7 +97,13 @@ with contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):
         else:
             spec=importlib.util.spec_from_file_location('exercise_tests','/practice/src/tests.py')
             module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
-            suite=unittest.defaultTestLoader.loadTestsFromModule(module)
+            suites=[unittest.defaultTestLoader.loadTestsFromModule(module)]
+            candidate_path='/practice/src/candidate_tests.py'
+            if os.path.exists(candidate_path):
+                candidate_spec=importlib.util.spec_from_file_location('candidate_tests',candidate_path)
+                candidate_module=importlib.util.module_from_spec(candidate_spec); candidate_spec.loader.exec_module(candidate_module)
+                suites.append(unittest.defaultTestLoader.loadTestsFromModule(candidate_module))
+            suite=unittest.TestSuite(suites)
             result=unittest.TextTestRunner(stream=output,verbosity=2,resultclass=CaseResult).run(suite)
             async_total=0; async_failed=0
             for async_test in getattr(module, 'ASYNC_TESTS', []):

@@ -1,4 +1,5 @@
 import {skillProfile} from '../learning-model.mjs?v=learning-2026-09-07-1';
+import {assessmentQualification} from '../assessment-readiness.mjs';
 export const PATH_KEY = 'coding-interview-path-v1';
 export const CODE_KEY = 'coding-practice-v1';
 export const today = (now=Date.now()) => {const d=new Date(now);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
@@ -23,7 +24,7 @@ export function assessedSessions(path,sessions,peer=false,now=Date.now()) {
   return !!evidence&&now-evidence.at<=30*86400000&&!records.some(r=>r.at>evidence.at&&!reviewPass(r,s));
  });
 }
-export function readiness(path,code,sessions,now=Date.now()){
+export function readiness(path,code,sessions,now=Date.now(),catalog=[]){
  const current=activeSessions(sessions,path.track);
  const pass=id=>{const p=code.exercises?.[id];return !!p?.passed&&(!p.lastResult||p.lastResult==='pass');};
  const cold=id=>pass(id)&&(code.exercises?.[id]?.coldDays?.length||0)>=2;
@@ -31,14 +32,13 @@ export function readiness(path,code,sessions,now=Date.now()){
  const adaptive=code.learningEvents?.length>0,profile=adaptive?skillProfile(code,now):null;
  const foundationSkills=['filtering','counting','normalization','collections','routing','intervals'];
  const practical=path.track==='depth'?['dependency-graph','bounded-async-map','batch-scheduler','repair-expiring-cache']:path.track==='both'?['object-graph-codec','evolving-ledger','bounded-async-map','batch-scheduler','repair-expiring-cache']:['object-graph-codec','evolving-ledger','eval-harness','repair-expiring-cache'];
- const mockAttempts=(code.attempts||[]).filter(a=>a.passed&&a.mockQualified&&a.freshMock&&a.at<=now&&now-a.at<=30*86400000);
- const distinct=new Set(mockAttempts.map(a=>a.id)), days=new Set(mockAttempts.map(a=>today(a.at)));
+ const qualification=assessmentQualification(code,catalog,now);
  const reviewed=assessedSessions(path,current,true,now);
  const must=current.filter(s=>s.id!=='full-loop');
  return [
   {id:'fluency',title:'Retrieve the fundamentals',met:adaptive?foundationSkills.every(id=>profile[id]?.retained):foundation.every(cold),detail:adaptive?`${foundationSkills.filter(id=>profile[id]?.retained).length}/${foundationSkills.length} core skills recalled after a gap across different tasks`:`${foundation.filter(cold).length}/${foundation.length} core exercises recalled on two different days`,next:'Continue the managed path. It will choose the next useful skill check.'},
   {id:'build',title:'Finish practical systems',met:practical.every(pass),detail:`${practical.filter(pass).length}/${practical.length} selected systems exercises pass`,next:'Complete the practical builds for your selected emphasis and explain their edge cases.'},
-  {id:'mock',title:'Transfer under time pressure',met:distinct.size>=2&&days.size>=2,detail:`${distinct.size}/2 different fresh mocks passed on ${days.size}/2 days in the past 30 days`,next:'Use “Start a fresh mock” for an unviewed task. A familiar retry measures retention, not fresh transfer.'},
+  {id:'mock',title:'Qualify under time pressure',met:qualification.ready,detail:`${qualification.gates.filter(g=>g.met).length}/${qualification.gates.length} championship gates met in the past 21 days`,next:'Complete five fresh mocks: four strong passes, the last three consecutive, across three families and days. Score every dimension and write a postmortem.'},
   {id:'interview',title:'Explain it to another person',met:must.every(s=>reviewed.some(r=>r.id===s.id)),detail:`${must.filter(s=>reviewed.some(r=>r.id===s.id)).length}/${must.length} interview sessions meet every rubric dimension with reported peer review`,next:'Rehearse with a peer, capture their specific feedback, and score each dimension against its anchor. Evidence expires after 30 days.'},
   {id:'loop',title:'Complete the full rehearsal',met:reviewed.some(s=>s.id==='full-loop'),detail:reviewed.some(s=>s.id==='full-loop')?'Full loop reviewed in the past 30 days':'Full-loop rehearsal still needs review',next:'Run the 150-minute loop with another person and repair any dimension below 2/3.'}
  ];

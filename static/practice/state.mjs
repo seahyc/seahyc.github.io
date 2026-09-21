@@ -1,4 +1,5 @@
 import {addLearningEvent,validateLearningEvents} from './learning-state.mjs?v=learning-2026-09-07-1';
+import {assessmentDimensions,errorCategories} from './assessment-readiness.mjs';
 import {recallState,isReviewDue,rateRecall} from './recall.mjs?v=recall-2026-09-06-1';
 
 export const VERSION = 1;
@@ -74,6 +75,7 @@ export function validateImport(value,exercises, imported=true) {
     if(p.recallFailureSessionId!==undefined)clean.exercises[e.id].recallFailureSessionId=String(p.recallFailureSessionId).slice(0,200);
     if(p.files){ clean.exercises[e.id].files={}; for(const name of Object.keys(e.files)) if(typeof p.files[name]==='string' && name!=='src/tests.py') clean.exercises[e.id].files[name]=p.files[name].slice(0,200000); }
     if(Array.isArray(p.savedAttempts))clean.exercises[e.id].savedAttempts=p.savedAttempts.slice(0,3).map(a=>({at:Number(a.at)||0,notes:String(a.notes||'').slice(0,20000),files:Object.fromEntries(Object.entries(a.files||{}).filter(([n,v])=>n in e.files&&n!=='src/tests.py'&&typeof v==='string').map(([n,v])=>[n,v.slice(0,200000)]))}));
+    if(p.assessmentReview&&typeof p.assessmentReview==='object')clean.exercises[e.id].assessmentReview={errorCategory:errorCategories.includes(p.assessmentReview.errorCategory)?p.assessmentReview.errorCategory:'none',postmortem:String(p.assessmentReview.postmortem||'').slice(0,12000),scores:Object.fromEntries(assessmentDimensions.map(([id])=>[id,Number.isInteger(p.assessmentReview.scores?.[id])&&p.assessmentReview.scores[id]>=0&&p.assessmentReview.scores[id]<=3?p.assessmentReview.scores[id]:null]))};
     if(p.session && typeof p.session==='object') clean.exercises[e.id].session={mode:imported?'practice':(['practice','cold','mock'].includes(p.session.mode)?p.session.mode:'practice'),cold:imported?false:!!p.session.cold,started:Number(p.session.started)||Date.now(),deadline:Number(p.session.deadline)||undefined,remaining:Number(p.session.remaining)||undefined,hint:Math.max(0,Math.min(2,Number(p.session.hint)||0)),assisted:!!p.session.assisted,freshMock:imported?false:!!p.session.freshMock,freshExercise:imported?false:!!p.session.freshExercise,lastExposureDay:typeof p.session.lastExposureDay==='string'?p.session.lastExposureDay:''};
     clean.exercises[e.id].notes=String(p.notes||'').slice(0,20000);
   }
