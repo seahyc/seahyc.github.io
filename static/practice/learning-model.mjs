@@ -83,6 +83,13 @@ export function coveredBySkills(code,id,now=Date.now()){
 
 function step(e,extra={}){return {type:'code',id:e.id,title:e.title,mode:extra.mode||'cold',action:extra.action||'fresh',review:!!extra.review,reinforcement:extra.reinforcement||undefined,reason:extra.reason||'Build this independently. Ask for a hint whenever you need one.',diagnostic:extra.diagnostic||undefined,variation:extra.variation||undefined,skillIds:extra.skillIds,milestoneId:taskSkills[e.id]?.family};}
 const terminal=p=>p?.passed&&p.lastResult==='pass'&&!p.review?.pending;
+// A working solution advances practice without claiming independent mastery.
+// The skill profile still records whether the pass was cold and unassisted.
+const workingSkill=(code,skillId)=>{
+ const history=(code.learningEvents||[]).filter(e=>e&&e.kind!=='exposure'&&e.kind!=='syntax'&&taskSkills[e.id]?.primary?.includes(skillId)).sort((a,b)=>finite(a.at)-finite(b.at));
+ if(history.length)return history.at(-1).passed===true;
+ return Object.entries(code.exercises||{}).some(([id,p])=>taskSkills[id]?.primary?.includes(skillId)&&p?.passed===true);
+};
 const untouched=(e,code)=>{const p=code.exercises?.[e.id];return !p?.viewedAt&&!p?.files&&!p?.attempts&&!p?.session&&!(code.learningEvents||[]).some(x=>x.id===e.id);};
 function ownIndependent(code,id,now){
  if(taskSkills[id]?.kind==='guided')return false;
@@ -101,8 +108,13 @@ export function adaptiveNextStep(exercises,code={},sessions=[],path={},now=Date.
  if(pending)return step(pending,{action:'resume',reason:'The checks passed. Finish recording this result before continuing.'});
  const activeCandidates=exercises.filter(e=>{const p=code.exercises?.[e.id];if(!p?.session||terminal(p)||!(p.files||p.attempts||p.lastResult))return false;
   if(taskSkills[e.id]?.kind==='diagnostic'){
-   const adverse=events.filter(x=>x.id===e.id&&x.kind!=='exposure'&&String(x.sessionId)===String(p.session.started)&&(!x.passed||x.assisted));
-   if(adverse.some(x=>x.assisted)||adverse.length>=2)return false;
+   if(p.passed)return false;
+   // A new session must not erase earlier diagnostic failures. Once the
+   // starting-point check has served its purpose, leave the draft available
+   // in the library and route the learner to supported practice.
+   const history=events.some(x=>x.id===e.id)?events:(code.attempts||[]);
+   const adverse=history.filter(x=>x.id===e.id&&x.kind!=='exposure'&&x.kind!=='syntax'&&(!x.passed||x.assisted));
+   if(adverse.some(x=>x.assisted)||adverse.filter(x=>x.kind!=='assistance').length>=2)return false;
   }
   return true;
  });
@@ -112,7 +124,8 @@ export function adaptiveNextStep(exercises,code={},sessions=[],path={},now=Date.
 
  const eligible=e=>{
   const m=taskSkills[e.id];if(!m)return true;
-  return (m.primary||[]).every(id=>(skills.find(s=>s.id===id)?.prerequisites||[]).every(pre=>profile[pre]?.independent&&!profile[pre]?.needsRepair));
+  if(m.kind==='variation'&&m.primary.length>1&&!m.primary.every(id=>profile[id]?.independent||workingSkill(code,id)))return false;
+  return (m.primary||[]).every(id=>(skills.find(s=>s.id===id)?.prerequisites||[]).every(pre=>(profile[pre]?.independent&&!profile[pre]?.needsRepair)||workingSkill(code,pre)));
  };
  const dueSkills=Object.values(profile).filter(p=>p.independent&&p.dueAt>0&&p.dueAt<=now&&(p.needsRepair||now-p.lastAt>=DAY)).sort((a,b)=>a.dueAt-b.dueAt);
  for(const due of dueSkills){
@@ -143,6 +156,8 @@ export function adaptiveNextStep(exercises,code={},sessions=[],path={},now=Date.
    continue;
   }
   const e=byId.get(id), map=taskSkills[id];if(!e)continue;
+  if(terminal(code.exercises?.[id]))continue;
+  if(map?.coverable&&map.primary.every(skill=>workingSkill(code,skill))&&(map.coverageTasks||[]).every(task=>code.exercises?.[task]?.passed))continue;
   const independent=ownIndependent(code,id,now);
   if((map?.kind==='mock'?independent:map?.kind==='guided'?terminal(code.exercises?.[id])&&independent:independent)||coveredBySkills(code,id,now))continue;
   if(!eligible(e)){
