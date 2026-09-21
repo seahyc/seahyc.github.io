@@ -1,10 +1,10 @@
 name: Verify coding practice
 on:
   pull_request:
-    paths: ['content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
   push:
     branches: [main]
-    paths: ['content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
 permissions:
   contents: read
 jobs:
@@ -21,6 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run build:practice-editor
       - run: node --test scripts/*.test.mjs
+      - run: python3 scripts/verify-native-service.py
       - run: python3 scripts/verify-runner.py
       - run: node --check static/practice/app.mjs && node --check static/practice/runner.mjs && node --check static/practice/path/app.mjs && node --check static/practice/mastery.mjs
       - run: python3 scripts/verify-exercises.py
@@ -49,7 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [jax, torch]
+        package: [jax, torch, gym]
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       OMP_NUM_THREADS: '2'
@@ -63,4 +64,33 @@ jobs:
       - name: Install pinned CPU framework
         run: python -m pip install -r static/practice/lab/advanced/${{ matrix.package }}/requirements.txt
       - name: Run real framework references and negative controls
-        run: python scripts/verify-advanced-${{ matrix.package }}.py
+        run: |
+          if [ "${{ matrix.package }}" = "gym" ]; then
+            python scripts/verify-gym-reproduction.py --python "$(command -v python)" --scope full
+          else
+            python scripts/verify-advanced-${{ matrix.package }}.py
+          fi
+
+  native-macos:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv
+      - name: Install permanent CPU runtimes without a login service
+        run: python runner/install.py
+      - run: npm ci && npx playwright install chromium
+      - name: Verify isolation and parent-death cleanup
+        run: |
+          TORCH_PYTHON="$HOME/Library/Application Support/Frontier Workspace/runtimes/torch/bin/python" \
+          JAX_PYTHON="$HOME/Library/Application Support/Frontier Workspace/runtimes/jax/bin/python" \
+          python scripts/verify-native-sandbox.py
+      - run: python scripts/verify-native-service.py
+      - name: Verify released browser assets against real CPU jobs
+        run: node scripts/browser-native.mjs

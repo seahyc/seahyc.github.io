@@ -2,14 +2,16 @@ import {createCodeEditor} from '../editor.bundle.mjs';
 const $=id=>document.getElementById(id);
 const hash=async text=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 
-export function createExecution({getEntry,save,onReport,onNotice}){
+export function createExecution({getEntry,save,onReport,onNotice,native}){
  let current,files,worker,timer,sequence=0,running=false,finish,cancelled=false,generation=0;
  const editor=createCodeEditor({parent:$('lab-editor'),onChange:source=>{if(!current)return;getEntry(current.id).source=source;save();},onRun:()=>run(false)});
  const stop=()=>{if(running){cancelled=true;finish?.('Execution stopped. No completion credit.');}};
  async function select(m,blocked=false){
   stop();const seq=++sequence;current=m;files=null;
   $('run-scope').hidden=$('scope-label').hidden=m.kind==='kit';
-  $('execution').hidden=!m.runtime?.browser&&m.kind!=='kit';
+  $('execution').hidden=!m.runtime&&m.kind!=='kit';
+  $('run-target').replaceChildren();if(m.kind==='kit'||m.runtime?.browser)$('run-target').append(new Option('browser','browser'));if(m.runtime)$('run-target').append(new Option('Mac CPU','mac'));
+  $('execution-help').textContent='Implement the TODO functions. Cmd/Ctrl + Enter runs the selected target. Browser runs use a fresh worker; Mac jobs are queued and continue across navigation. CPU timings do not establish accelerator performance.';
   if($('execution').hidden)return;
   $('execute').disabled=true;$('execute-seeds').disabled=true;
   $('run-status').textContent='Loading workspace…';editor.setReadOnly(true);
@@ -20,7 +22,7 @@ export function createExecution({getEntry,save,onReport,onNotice}){
    if(seq!==sequence)return;
    files=Object.fromEntries(results);editor.setValue(getEntry(m.id).source??files['candidate.py']);editor.setReadOnly(blocked);
    $('execute').disabled=blocked;$('execute-seeds').disabled=blocked;
-   $('run-status').textContent='Ready · fresh worker per run · 120 second limit · source saved locally';
+   $('run-status').textContent='Ready · source saved locally · select a target before running';
   }catch(e){if(seq===sequence)$('run-status').textContent=e.message;}
  }
  async function once(m,seed,source,loaded,scope,token){
@@ -51,6 +53,11 @@ export function createExecution({getEntry,save,onReport,onNotice}){
   const seed=Number($('run-seed').value);
   if(!Number.isSafeInteger(seed)||seed<0||seed>2147483647){onNotice('Seed must be an integer from 0 to 2147483647.');return;}
   const m=current,seq=sequence,source=editor.getValue(),loaded=files,scope=$('run-scope').value,token=generation;
+  if($('run-target').value==='mac'){
+   $('execute').disabled=true;$('execute-seeds').disabled=true;
+   try{await native.submit(m,source,suite?[17,29,43]:[seed],scope);if(seq===sequence&&token===generation)$('run-status').textContent='Submitted to Mac queue. Inspect logs and cancel individual jobs below.';}catch(e){if(token===generation)onNotice(e.message);}finally{if(seq===sequence&&token===generation){$('execute').disabled=false;$('execute-seeds').disabled=false;}}
+   return;
+  }
   cancelled=false;running=true;$('execute').disabled=true;$('execute-seeds').disabled=true;$('stop-execution').disabled=false;
   let latest;
   try{

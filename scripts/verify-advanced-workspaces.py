@@ -2,7 +2,7 @@
 import sys,zipfile,json
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]/'static/practice/lab/advanced'
-for package in ['jax','torch','systems']:
+for package in ['jax','torch','systems','gym']:
  directory=root/package
  manifest=json.loads((directory/'manifest.json').read_text())
  names={'manifest.json'}

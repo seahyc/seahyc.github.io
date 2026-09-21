@@ -72,6 +72,16 @@
       "id": "dpo",
       "title": "Direct Preference Optimization: objective and derivation",
       "url": "https://arxiv.org/abs/2305.18290"
+    },
+    {
+      "id": "ppo-paper",
+      "title": "Schulman et al.: Proximal Policy Optimization Algorithms",
+      "url": "https://arxiv.org/abs/1707.06347"
+    },
+    {
+      "id": "gymnasium-cartpole",
+      "title": "Gymnasium: CartPole-v1 environment, termination and truncation",
+      "url": "https://gymnasium.farama.org/environments/classic_control/cart_pole/"
     }
   ],
   "missions": [
@@ -467,7 +477,7 @@
       "effort": "12–24 hours",
       "objective": "Build a causal arithmetic transformer with Flax, train it with Optax, and verify gradient updates, heldout predictions and checkpoint resume.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment jax-training --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment jax-training --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Read the candidate function contracts. Start with a tiny CPU smoke run, debug one failing gate, then run the larger configuration.",
         "Explain the tensor shapes, attention mask, parameter tree, optimizer state and random state before collecting repeated seeds."
       ],
@@ -510,7 +520,7 @@
       "effort": "4–8 hours",
       "objective": "Allocate a fixed compute budget between parameters and data, deriving the optimum before testing it numerically.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment scaling-laws --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment scaling-laws --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Derive the constrained optimum of E + A/N^alpha + B/D^beta under C = 6ND. Explain the stationary condition and uniqueness.",
         "Implement compute_optimal and test randomized budgets against finite differences and an independent numerical search."
       ],
@@ -553,7 +563,7 @@
       "effort": "8–16 hours",
       "objective": "Implement top-k mixture-of-experts routing, dispatch and combine, then compare dense and sparse parameter and active-compute costs.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment dense-moe --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment dense-moe --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Build a dense reference, then sparse expert dispatch without dropping tokens. Verify both outputs and gradients.",
         "Measure routing imbalance and explain router and dispatch overhead in the equal-active-compute comparison."
       ],
@@ -595,7 +605,7 @@
       "effort": "12–24 hours",
       "objective": "Write a Pallas ragged matrix product with output width greater than input width, preserving empty and uneven expert groups.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment pallas-ragged --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment pallas-ragged --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Use interpreted CPU execution to debug indexing and masks; compare against independent and JAX references.",
         "On compatible accelerator hardware, verify the benchmark shape before synchronized warmup and repeated timings. Record compilation separately and explain memory traffic."
       ],
@@ -639,7 +649,7 @@
       "effort": "20–40 hours",
       "objective": "Train a roughly 1–10M parameter decoder on generated arithmetic. Establish SFT, then compare DPO and a verifiable-reward policy update.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment transformer-posttrain --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment transformer-posttrain --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "First reproduce your scalar MLP gradients with PyTorch autograd; assert gradient parity and tensor shapes, overfit 32 examples, and test train/eval mode and checkpoint round trips. Then translate the attention and masked-loss drills into tensor operations.",
         "Create a pinned Python/PyTorch environment; record pip freeze, git SHA, accelerator and all config files. Begin with a 100-batch CPU smoke before any GPU run.",
         "Generate disjoint train/validation/test operand tuples. Hold out carry patterns and longer digit lengths; do not split duplicate strings at random.",
@@ -689,7 +699,7 @@
       "effort": "20–40 hours",
       "objective": "Implement PPO with batched environments, GAE, clipped policy loss, value loss and entropy; reproduce a known small-control baseline.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment ppo-control --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment ppo-control --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Translate the scalar MLP into PyTorch tensors and autograd, verify gradient parity, and fit synthetic observations before introducing a changing policy distribution.",
         "Use a version-pinned Gymnasium CartPole then a continuous-control environment. Record wrappers, truncation semantics and observation normalization.",
         "Implement rollout buffer and update loop without copying trainer internals. Compare each tensor on a fixed rollout against an independent implementation.",
@@ -722,7 +732,59 @@
           "manifest.json",
           "requirements.txt"
         ],
-        "coverage": "Executable scope: real PPO training in a custom multi-step point-navigation simulator. Gymnasium reproduction and distributed training remain research extensions.",
+        "coverage": "Executable scope: real PPO training in a custom multi-step point-navigation simulator. The next gym-ppo mission reproduces PPO in Gymnasium; distributed training remains a research extension.",
+        "requiredScope": "full"
+      }
+    },
+    {
+      "id": "gym-ppo",
+      "title": "Reproduce PPO in Gymnasium CartPole",
+      "track": "rl",
+      "rung": 2,
+      "kind": "external",
+      "prerequisites": [
+        "rl-repro"
+      ],
+      "effort": "8–16 focused hours",
+      "objective": "Implement and train a PyTorch actor–critic with PPO in the established CartPole-v1 environment. Reproduce learning across fixed seeds, inspect failed runs, and prove deterministic checkpoint resume on your own CPU.",
+      "protocol": [
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment gym-ppo --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Read the CartPole environment and PPO paper. Predict which episode endings should bootstrap and write down the random-policy baseline expectation before running.",
+        "Complete the policy, GAE and clipped-objective TODOs in candidate.py. Start with the CPU smoke scope; inspect value and gradient checks before interpreting returns.",
+        "Freeze source and training config, then run full scope on seeds 17, 29 and 43. Keep all per-seed reports, immutable configs, candidate snapshots, learning curves and checkpoints. Evaluation episodes never enter optimization or checkpoint selection.",
+        "Interrupt after seven updates and resume the checkpoint. Compare the full learning curve, model, optimizer and RNG states with an uninterrupted run. Preserve the evidence from both.",
+        "Plot per-seed learning curves and compare final policies against their paired random baselines. Propose one ablation before running it; keep compute fixed and declare fresh evaluation seeds before a final review."
+      ],
+      "deliverables": [
+        "Candidate source, pinned runtime, immutable configuration and source/evaluator/runtime hashes",
+        "Three full per-seed reports, raw training curves, held-out episode returns and random baseline; aggregate mean and seed-level spread",
+        "Resumable model/optimizer/environment/RNG checkpoint plus deterministic-resume comparison",
+        "One-page analysis of clipping, truncation, seed variability and the limits of CartPole evidence"
+      ],
+      "evaluation": [
+        "Objective and gradient parity, trained policy-output changes, held-out score and random-baseline improvement must pass the versioned manifest criteria.",
+        "Use seed-level variation for replication analysis; repeated episodes are not independent training runs. A three-seed normal interval is descriptive, not a robust confidence claim.",
+        "A reviewer reruns one fixed candidate and checkpoint from a clean pinned environment and examines one failure or predeclared ablation.",
+        "This bounded small-control reproduction does not establish PPO performance on the paper’s full benchmark suite. MPS cannot pass until backend parity is implemented and checked.",
+        "Progress gate: three passing full reports from the same source and evaluator on distinct seeds, findings, artifact, and a recorded independent review. Smoke reports alone never finish this project. Imported JSON is user-supplied evidence, not authenticated proof."
+      ],
+      "sources": [
+        "ppo-paper",
+        "gymnasium-cartpole",
+        "spin"
+      ],
+      "runtime": {
+        "package": "gym",
+        "assessment": "gym-ppo",
+        "browser": false,
+        "files": [
+          "README.md",
+          "candidate.py",
+          "evaluate.py",
+          "manifest.json",
+          "requirements.txt"
+        ],
+        "coverage": "Executable scope: real PyTorch PPO training in pinned Gymnasium CartPole-v1 on your CPU. Includes held-out episodes, a paired random baseline, three-seed reports, hashed configs and exact deterministic checkpoint resume. MPS is explicitly unsupported pending parity validation; larger control benchmarks remain research extensions.",
         "requiredScope": "full"
       }
     },
@@ -739,7 +801,7 @@
       "effort": "20–40 hours",
       "objective": "Derive attention memory and FLOPs; reproduce a dense attention baseline and optimize one measured bottleneck.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment attention-kernel --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment attention-kernel --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Implement causal attention in PyTorch and test outputs/gradients against torch scaled_dot_product_attention for masks, dtypes and awkward shapes.",
         "Write a predicted bytes/FLOPs table for prefill and decode. Benchmark warm runs, synchronize the accelerator and record peak allocated memory, batch, sequence, dtype and device.",
         "Profile before optimizing. Implement one tiled Triton or Pallas kernel only after a correct reference; retain a CPU correctness path.",
@@ -788,7 +850,7 @@
       "effort": "25–50 hours",
       "objective": "Reproduce a LeRobot policy on a supported simulated task; evaluate trajectories rather than only prediction loss.",
       "protocol": [
-        "Executable gate: download the native runner; open README.md for setup. python evaluate.py --assessment visual-policy --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: select Mac CPU and pair the local runner; alternatively download the workspace and use its README. python evaluate.py --assessment visual-policy --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "First fit the point-controller dataset with a PyTorch MLP, check tensor shapes and held-out episodes, and verify CPU checkpoint reload parity before introducing pixels and simulator dependencies.",
         "Pin LeRobot and simulator versions. Start from a documented environment configuration and a fixed public dataset version; record camera, action units and control frequency.",
         "Split by complete episode and scene, never adjacent frames. Train a small behavior cloning baseline, then a supported ACT or diffusion policy on the same demonstration budget.",
@@ -837,7 +899,7 @@
       "effort": "12–25 hours",
       "objective": "Find and fix one real reward, masking or sampling failure in a pinned TRL/verl experiment.",
       "protocol": [
-        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment reward-audit --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: run in this browser, or select Mac CPU and pair the local runner. python evaluate.py --assessment reward-audit --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Inject a malformed answer, zero-variance reward batch and overlong response; write failing tests.",
         "Trace data lineage and compare the fixed run with an unchanged checkpoint on a reserved evaluation set."
       ],
@@ -874,12 +936,12 @@
       "rung": 3,
       "kind": "external",
       "prerequisites": [
-        "rl-repro"
+        "gym-ppo"
       ],
       "effort": "12–25 hours",
       "objective": "Diagnose a small training system with stale policies, resume state or dropped terminal transitions.",
       "protocol": [
-        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment rollout-boundary --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: run in this browser, or select Mac CPU and pair the local runner. python evaluate.py --assessment rollout-boundary --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Use two CPU workers and deliberately interrupted checkpoints; compare resumed and uninterrupted runs.",
         "Measure policy lag, step throughput and seeded evaluation return. Restore correctness before optimizing."
       ],
@@ -921,7 +983,7 @@
       "effort": "12–25 hours",
       "objective": "Build a small reliable training or inference path with measurable recovery behavior.",
       "protocol": [
-        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment checkpoint-recovery --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: run in this browser, or select Mac CPU and pair the local runner. python evaluate.py --assessment checkpoint-recovery --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Interrupt writes, exhaust a bounded queue and retry requests; verify atomic checkpoints and no duplicate results.",
         "Measure recovery time, memory bound, throughput and numerical parity. Add a regression test for the worst failure."
       ],
@@ -963,7 +1025,7 @@
       "effort": "12–25 hours",
       "objective": "Investigate a concrete failure of a learned controller and test a targeted intervention.",
       "protocol": [
-        "Executable gate: run in this browser or download the native runner. python evaluate.py --assessment robot-shift --seed 17 --scope smoke --candidate candidate.py --output result.json",
+        "Executable gate: run in this browser, or select Mac CPU and pair the local runner. python evaluate.py --assessment robot-shift --seed 17 --scope smoke --candidate candidate.py --output result.json",
         "Choose one shift from held-out videos; formulate a falsifiable causal hypothesis.",
         "Compare extra demonstrations, augmentation or policy history at matched training budget; include a negative control."
       ],
@@ -2370,6 +2432,93 @@
         "accelerator": {
           "criteria": [],
           "unsupported": true
+        }
+      }
+    },
+    "gym-ppo": {
+      "id": "gym-ppo",
+      "title": "Reproduce PPO in Gymnasium CartPole",
+      "prerequisites": [
+        "rl-bench",
+        "ppo-control"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "gae_and_policy_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            },
+            {
+              "name": "heldout_control",
+              "metric": "heldout_return",
+              "op": "gte",
+              "value": 70
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 30
+            },
+            {
+              "name": "policy_learned",
+              "metric": "policy_output_delta",
+              "op": "gt",
+              "value": 0.001
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "gae_and_policy_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            },
+            {
+              "name": "heldout_control",
+              "metric": "heldout_return",
+              "op": "gte",
+              "value": 150
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 30
+            },
+            {
+              "name": "policy_learned",
+              "metric": "policy_output_delta",
+              "op": "gt",
+              "value": 0.001
+            }
+          ],
+          "unsupported": false
         }
       }
     }
