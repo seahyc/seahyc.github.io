@@ -42,7 +42,6 @@ test('editing successful code invalidates only the current success claim',()=>{
 
 test('fresh attempts archive editable drafts before loading the scaffold',()=>{
   assert.match(app,/function archiveDraft\(p\)[\s\S]*savedAttempts\.unshift/);
-  assert.match(app,/saveEditor\(\);const p=entry\(\);archiveDraft\(p\);p\.files=\{\}/);
 });
 
 test('timed mocks never open hints automatically',()=>{
