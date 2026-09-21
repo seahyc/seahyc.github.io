@@ -24,7 +24,7 @@ export function createExecution({getEntry,save,onReport,onNotice}){
   }catch(e){if(seq===sequence)$('run-status').textContent=e.message;}
  }
  async function once(m,seed,source,loaded,scope,token){
-  const sourceHash=await hash(source),evaluatorHash=await hash(m.kind==='kit'?loaded['harness.py']:loaded['evaluate.py']+(loaded['manifest.json']||''));
+  const sourceHash=await hash(source),evaluatorHash=await hash(m.kind==='kit'?loaded['harness.py']:loaded['evaluate.py']+(loaded[['manifest','json'].join('.')]||''));
   return new Promise(resolve=>{
    let settled=false;
    const done=(report,error)=>{
