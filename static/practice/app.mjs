@@ -94,7 +94,7 @@ function renderMockReview(){
 function readPath(){try{const saved=localStorage.getItem('coding-interview-path-v1');pathState=saved?validatePath(JSON.parse(saved),interviews):freshPath();}catch{pathState=freshPath();notice('Queue state could not be read. Your saved data has been kept; try refreshing this page.');}}
 function continuation(){
  const step=nextStep(exercises,state,activeSessions(interviews,pathState.track),pathState);
- if(entry().lastResult!=='pass'||step.type!=='code'||step.id!==current.id)return step;
+ if(!current||entry().lastResult!=='pass'||step.type!=='code'||step.id!==current.id)return step;
  const alternatives=exercises.filter(e=>e.id!==current.id);
  const next=alternatives.length?recommendation(alternatives,state):null;
  return next?{type:'code',id:next.id,title:next.title,mode:'practice',action:'resume'}:{type:'done'};

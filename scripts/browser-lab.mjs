@@ -121,7 +121,7 @@ try{
  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['probe-counting']);assert.equal(saved.files['src/task.py'],solution);assert.equal(saved.lastResult,'pass');
  await page.goto(base+'?library=1#probe-counting');await page.reload();await page.locator('#title').filter({hasText:'Count Result Codes'}).waitFor();
  await page.getByRole('textbox',{name:'Python code editor'}).fill('def count_codes(codes):\n    return {}\n');assert.equal(await page.locator('#journey-next').isVisible(),false);
- await page.locator('#run').click();await page.locator('#first-feedback').filter({hasText:/AssertionError/}).waitFor({timeout:120000});assert.equal(await page.locator('#journey-next').isVisible(),false);
+ await page.locator('#run').click();await page.locator('#case-feedback .checks-fail').waitFor({timeout:120000});assert.equal(await page.locator('#journey-next').isVisible(),false);
  console.log('PASS Files continuation: pass, reload, next exercise, preserved source and hidden CTA after edits/failure');
  assert.deepEqual(errors,[]);console.log('PASS browser execution: 4 CPU kits + 4 full fault suites, 3-seed run, Stop, drafts, scoped reports, navigation, journal/backup, mobile and primitive regression');
 }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));await rm(root,{recursive:true,force:true});}
