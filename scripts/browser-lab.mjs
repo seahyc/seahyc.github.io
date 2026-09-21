@@ -119,7 +119,7 @@ try{
  await page.getByRole('button',{name:/^Next exercise:/}).click();
  assert.notEqual(await page.locator('#title').textContent(),'Count Result Codes');
  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('coding-practice-v1')).exercises['probe-counting']);assert.equal(saved.files['src/task.py'],solution);assert.equal(saved.lastResult,'pass');
- await page.goto(base+'?library=1#probe-counting');await page.locator('#title').filter({hasText:'Count Result Codes'}).waitFor();
+ await page.goto(base+'?library=1#probe-counting');await page.reload();await page.locator('#title').filter({hasText:'Count Result Codes'}).waitFor();
  await page.getByRole('textbox',{name:'Python code editor'}).fill('def count_codes(codes):\n    return {}\n');assert.equal(await page.locator('#journey-next').isVisible(),false);
  await page.locator('#run').click();await page.locator('#first-feedback').filter({hasText:/AssertionError/}).waitFor({timeout:120000});assert.equal(await page.locator('#journey-next').isVisible(),false);
  console.log('PASS Files continuation: pass, reload, next exercise, preserved source and hidden CTA after edits/failure');
