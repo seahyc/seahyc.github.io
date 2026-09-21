@@ -88,7 +88,11 @@ try{
  await p.locator('#example-run').click();
  assert.match(await p.locator('#example-actual').textContent(),/JSON|invalid|unexpected|expected/i);
  console.log('PASS managed explorer: unfinished code error, real edited-code output, custom expectations, invalid JSON, no evidence changes');
+ await p.locator('#toggle-output').click();
+ assert.equal(await p.locator('.testing-pane').isVisible(),false);
  await p.locator('#run').click();
+ assert.equal(await p.locator('.testing-pane').isVisible(),true,'Running checks reveals hidden results');
+ assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('workspace-layout-v1')).output),false,'Temporary result reveal preserves saved layout');
  await p.waitForFunction(()=>document.querySelector('#runtime-state').textContent==='6 checks passed',null,{timeout:120000});
  assert.match(await p.locator('#case-feedback').textContent(),/6 of 6 checks passed/);
  assert.equal(await p.locator('#journey-next').isVisible(),true);
@@ -106,6 +110,7 @@ try{
   const results=document.querySelector('#run-results');
   return {header:rect('header'),editor:rect('#code-editor'),run:rect('#run'),exampleInput:rect('#example-input'),exampleRun:rect('#example-run'),panes:rect('.panes'),brief:rect('.brief-pane'),code:rect('.code-pane'),testing:rect('.testing-pane'),results:rect('#run-results'),resultsOverflow:getComputedStyle(results).overflowY,height:innerHeight,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,pageHeight:document.documentElement.scrollHeight};
  });
+ if(await p.locator('#toggle-sidebar').getAttribute('aria-expanded')==='true')await p.locator('#toggle-sidebar').click();
  let bounds=await layout();
  assert.ok(bounds.pageHeight<=pageHeight+2,'Expanded support and results must not lengthen the page');
  for(const height of [900,720]){

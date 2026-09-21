@@ -17,7 +17,9 @@ import {expectedForInput,explorerPresentation,formatExplorerOutput,getInitialInp
 import {canStartFreshMock} from './practice-session.mjs';
 import {assessmentDimensions,assessmentQualification,completeAssessmentReview,errorCategories} from './assessment-readiness.mjs';
 const guidedFlow=new URLSearchParams(location.search).get('library')!=='1';
-if(!guidedFlow)document.body.classList.remove('focus');
+// Route choice changes task selection, never the editor layout.
+document.body.classList.add('focus');
+document.body.classList.toggle('file-library',!guidedFlow);
 let interviews=[],pathState=freshPath(),examples={},activeAction;
 const $=id=>document.getElementById(id), KEY='coding-practice-v1';
 let state=freshState(),exercises=[],current,file,worker,runTimeout,runContext,lastInput=Date.now(),storageStale=false;
@@ -157,7 +159,7 @@ function select(e){
   $('title').textContent=e.title;$('stage').textContent=`${e.stage} · ${e.minutes}-minute target · ${e.focus}`;$('why').textContent=e.why;
   $('brief').innerHTML=renderMarkdown(withoutDuplicateTitle(e.brief,e.title));$('file').replaceChildren();
   Object.keys(e.files).forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name+(editable(name)?'':' (read only)');$('file').append(o);});
-  file=e.entry;$('file').value=file;loadEditor();
+  file=Object.hasOwn(e.files,entry().activeFile)?entry().activeFile:e.entry;$('file').value=file;loadEditor();
   const s=session();recordExposure();if(day(s.started)!==day())s.cold=false;
   renderSupport();
   document.body.classList.toggle('mock-active',s.mode==='mock');
@@ -188,7 +190,7 @@ function assisted(reason){const wasAssisted=session().assisted;session().cold=fa
 function busy(on){['syntax','run','new-attempt','mode','file','timer-button'].forEach(id=>$(id).disabled=on);const explorerUnavailable=!examples[current?.id];$('example-input').disabled=on||explorerUnavailable;$('example-run').disabled=on||explorerUnavailable;$('main').disabled=on||!current?.files['src/main.py'];$('stop').disabled=!on;codeEditor.setReadOnly(on||!editable(file)||storageStale);}
 function stop(message='Execution stopped. Your code is saved.'){if(worker)worker.terminate();worker=null;clearTimeout(runTimeout);busy(false);$('runtime-state').textContent='Ready for another run';if(message){if(runContext?.executionMode==='probe')$('example-actual').textContent='Error: '+message;$('output').textContent=message;$('first-feedback').hidden=false;$('first-feedback').textContent=message;}}
 function run(mode,probe){
-  if(worker||storageStale)return;feedback('run');saveEditor();const s=session();
+  if(!current||worker||storageStale)return;window.dispatchEvent(new Event('workspace:run'));feedback('run');saveEditor();const s=session();
   runContext={previouslyPassed:entry().lastResult==='pass',id:current.id,cold:s.cold&&day(s.started)===day(),sessionId:s.started,mode:s.mode,executionMode:mode,deadline:s.deadline,started:s.started,freshMock:!!s.freshMock,fresh:!!s.freshExercise};
   if(mode==='tests'){clearRunOutcome();$('run-results').scrollTop=0;notice('');}else $('first-feedback').hidden=true;
   busy(true);$('first-feedback').hidden=false;$('first-feedback').textContent=mode==='tests'?'Loading checks…':'Preparing Python…';if(mode==='probe')$('example-actual').textContent='Running…';$('output').textContent='Loading Python. The first download can take a little while…';$('runtime-state').textContent=mode==='tests'?'Loading checks':'Loading Python';
@@ -223,7 +225,7 @@ function run(mode,probe){
 function tick(){if(!current)return;const s=session();document.body.classList.toggle('mock-active',s.mode==='mock');if(s.deadline){const seconds=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));$('clock').textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;$('timer-button').textContent=s.mode==='mock'?'End timed mock':'Pause timer';if(!seconds){$('clock').textContent='Time is up';$('timer-button').textContent='Reset timer';}}
   else{$('clock').textContent=s.remaining?`${Math.ceil(s.remaining/60000)} min paused`:'Untimed';$('timer-button').textContent=s.remaining?'Resume timer':'Start timer';}
   if(!guidedFlow&&s.mode!=='mock'&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;notice('If you’re stuck, write one input and expected output. A tiny executable step is enough.');persist();}}
-$('file').onchange=()=>{saveEditor();file=$('file').value;loadEditor();};
+$('file').onchange=()=>{saveEditor();file=$('file').value;entry().activeFile=file;persist();loadEditor();};
 $('notes').oninput=()=>{entry().notes=$('notes').value;persist();};
 $('mock-error').onchange=()=>{const r=entry().assessmentReview||={scores:{}};r.errorCategory=$('mock-error').value;persist();renderMockReview();};
 $('mock-postmortem').oninput=()=>{const r=entry().assessmentReview||={scores:{}};r.postmortem=$('mock-postmortem').value.slice(0,12000);persist();$('mock-review-status').textContent=completeAssessmentReview(r)?'Strong-round review complete.':'Pending: score every dimension at 2+ and write a 120-character postmortem.';};
@@ -250,7 +252,7 @@ window.addEventListener('storage',event=>{
  codeEditor.setReadOnly(true);$('notes').readOnly=true;$('example-input').readOnly=true;
  notice('Progress changed in another tab. Keep any unsaved code here, then reload to use the latest progress.');
 });
-try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./frontier.json?v=frontier-2026-09-21-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./path/frontier-sessions.json?v=frontier-2026-09-21-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1'),fetch('./research.json'),fetch('./neural.json')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,frontierPack,ramp,interviewPack,frontierInterviewPack,examplePack,variationPack,researchPack,neuralPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...frontierPack.exercises,...variationPack.exercises,...researchPack.exercises,...neuralPack.exercises];interviews=[...interviewPack.sessions,...frontierInterviewPack.sessions];examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||recommendation(exercises,state);
+try {const responses=await Promise.all([fetch('./curriculum.json?v=recall-2026-09-06-1'),fetch('./frontier.json?v=frontier-2026-09-21-1'),fetch('./ramp.json?v=recall-2026-09-06-1'),fetch('./path/sessions.json?v=recall-2026-09-06-1'),fetch('./path/frontier-sessions.json?v=frontier-2026-09-21-1'),fetch('./examples.json?v=recall-2026-09-06-1'),fetch('./variations.json?v=learning-2026-09-07-1'),fetch('./research.json'),fetch('./neural.json')]);if(responses.some(r=>!r.ok))throw Error('Exercise download failed');const [pack,frontierPack,ramp,interviewPack,frontierInterviewPack,examplePack,variationPack,researchPack,neuralPack]=await Promise.all(responses.map(r=>r.json()));exercises=[...ramp.exercises,...pack.exercises,...frontierPack.exercises,...variationPack.exercises,...researchPack.exercises,...neuralPack.exercises];interviews=[...interviewPack.sessions,...frontierInterviewPack.sessions];examples=examplePack.examples;readPath();state=validateImport(state,exercises,false);$('motivation').value=state.motivation;const target=exercises.find(e=>e.id===location.hash.slice(1))||(!guidedFlow&&exercises.find(e=>e.id===state.activeExerciseId))||recommendation(exercises,state);
 if(!guidedFlow&&new URLSearchParams(location.search).get('assessment')==='1'){
  const previous=state.exercises[target.id];
  if(target.stage==='Mock'&&!previous?.viewedAt&&!previous?.session&&!previous?.files&&!previous?.attempts){
