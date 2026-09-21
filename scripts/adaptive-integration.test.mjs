@@ -51,10 +51,16 @@ test('roadmap anchors the current diagnostic and distinguishes skipped teaching 
  attempt(state,'probe-filtering',NOW);model=roadmapModel(catalog,state,sessions,{},NOW+2000);
  const covered=model.milestones.find(m=>m.id==='tiny-filter-guided');assert.equal(covered.covered,true);assert.equal(covered.completed,false);assert.equal(model.completed,0);assert.equal(model.current.id,'probe-counting');assert.equal(model.skills.find(s=>s.id==='filtering').retained,false);
 });
-test('exhausted normalization variants still lead to independent retrieval, not the worked scaffold',()=>{
+test('repeated supported normalization passes advance practice without claiming mastery',()=>{
  const state=freshState();attempt(state,'probe-filtering',NOW);attempt(state,'probe-counting',NOW+2000);
- attempt(state,'probe-normalization',NOW+4000,{cold:false});attempt(state,'syntax-faded',NOW+6000,{cold:false,mode:'practice'});attempt(state,'variation-normalization',NOW+8000,{cold:false});attempt(state,'mixed-event-summary',NOW+9000);
- const next=nextStep(catalog,state,sessions,{reviews:[]},NOW+10000);assert.equal(next.id,'probe-normalization');assert.equal(next.mode,'cold');assert.equal(next.action,'fresh');
+ attempt(state,'probe-normalization',NOW+4000,{cold:false});attempt(state,'syntax-faded',NOW+6000,{cold:false,mode:'practice'});attempt(state,'variation-normalization',NOW+8000,{cold:false});attempt(state,'mixed-event-summary',NOW+9000,{cold:false});
+ // A later, unfinished fresh attempt used to bring the learner back to a
+ // diagnostic that had already passed in several supported sessions.
+ state.activeExerciseId='probe-normalization';state.exercises['probe-normalization'].lastResult='pending';
+ state.exercises['probe-normalization'].session={mode:'cold',cold:false,started:NOW+9500};
+ const next=nextStep(catalog,state,sessions,{reviews:[]},NOW+10000);
+ assert.equal(next.id,'probe-collections');
+ assert.equal(skillProfile(state,NOW+10000).normalization.independent,false);
 });
 test('diagnostic failures across sessions stop resuming the same normalization draft',()=>{
  const state=freshState();attempt(state,'probe-filtering',NOW);attempt(state,'probe-counting',NOW+2000);
