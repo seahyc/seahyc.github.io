@@ -91,7 +91,9 @@ try{
  page.once('dialog',dialog=>dialog.accept());
  await page.locator('#import').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
  await page.locator('#notice').filter({hasText:'Workspace restored.'}).waitFor();await page.waitForFunction(()=>!document.querySelector('#execute').disabled);
- await page.waitForLoadState('networkidle');
+ // A terminated worker's cancelled CDN fetch need not reach network-idle.
+ // Ready means replacement source loaded; the cancelled callback already settled.
+ await page.locator('#run-status').filter({hasText:/^Ready/}).waitFor();
  const restored=await page.evaluate(()=>JSON.parse(localStorage.getItem('experiment-workspace-v1')).entries['posttrain-bench']);
  assert.equal(restored.source,'# replacement draft');assert.equal(restored.reports.length,0);
  // New primitive really loads in the existing execution console, with its editable candidate tests.
