@@ -22,7 +22,7 @@ export function createNative({onReport,wasImported,isBlocked,onNotice}){
   details.set(id,job);
   const group=jobs.filter(j=>j.group_id===job.group_id),measured=group.map(j=>details.get(j.id)?.report).filter(r=>typeof r?.metrics?.heldout_return==='number'&&Number.isFinite(r.metrics.heldout_return)),values=measured.map(r=>r.metrics.heldout_return);
   const expected=Number.isInteger(job.group_size)?job.group_size:group.length,missing=Math.max(0,expected-group.length);
-  const passed=group.filter(j=>details.get(j.id)?.report?.status==='passed').length,pending=group.filter(j=>!terminal(j)).length,failed=group.length-passed-pending;
+  const passed=group.filter(j=>j.status==='completed'&&wasImported(j.id)&&details.get(j.id)?.report?.status==='passed').length,pending=group.filter(j=>!terminal(j)).length,failed=group.length-passed-pending;
   const mean=values.length?values.reduce((a,b)=>a+b,0)/values.length:0,sd=values.length>1?Math.sqrt(values.reduce((sum,x)=>sum+(x-mean)**2,0)/(values.length-1)):null;
   $('native-group').textContent=`Seed group: ${expected} expected jobs · ${passed} passed · ${failed} failed/interrupted/cancelled · ${pending} pending · ${missing} unavailable in this page. ${!pending&&!missing&&passed===expected?'All jobs passed.':'Group has not passed.'}`+(values.length?`\nHeld-out return: mean ${mean.toFixed(3)} · sample SD ${sd===null?'needs 2 measurements':sd.toFixed(3)} · ${values.length}/${expected} measured reports, including failed reports with this metric.`:'');
   $('native-log').textContent=`${job.assessment} · ${job.status} · ${job.reason||''}\n${job.resumeFrom?'Resumed from '+job.resumeFrom+'\n':''}${job.log||'No output yet.'}${job.report?'\nReport: '+job.report.status+'\n'+JSON.stringify(job.report.metrics,null,2):''}`;
