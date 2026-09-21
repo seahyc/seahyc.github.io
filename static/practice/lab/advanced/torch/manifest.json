@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 2,
+  "assessments": [
+    {
+      "id": "transformer-posttrain",
+      "title": "Train a causal transformer with SFT, DPO and GRPO",
+      "prerequisites": [
+        "posttrain-bench",
+        "language-model-loss"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "objective_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_learning",
+              "metric": "sft_loss_ratio",
+              "op": "lt",
+              "value": 0.9
+            },
+            {
+              "name": "heldout_answers",
+              "metric": "sft_heldout_accuracy",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "dpo_heldout_preserved",
+              "metric": "dpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "grpo_heldout_preserved",
+              "metric": "grpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "dpo_updates",
+              "metric": "dpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "grpo_updates",
+              "metric": "grpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_nll",
+              "metric": "sft_heldout_nll",
+              "op": "lt",
+              "value": 1.3
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "objective_gradients",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_learning",
+              "metric": "sft_loss_ratio",
+              "op": "lt",
+              "value": 0.9
+            },
+            {
+              "name": "heldout_answers",
+              "metric": "sft_heldout_accuracy",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "dpo_heldout_preserved",
+              "metric": "dpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "grpo_heldout_preserved",
+              "metric": "grpo_heldout_nll_ratio",
+              "op": "lt",
+              "value": 1.5
+            },
+            {
+              "name": "dpo_updates",
+              "metric": "dpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "grpo_updates",
+              "metric": "grpo_parameter_delta",
+              "op": "gt",
+              "value": 1e-05
+            },
+            {
+              "name": "heldout_nll",
+              "metric": "sft_heldout_nll",
+              "op": "lt",
+              "value": 1.3
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "ppo-control",
+      "title": "PPO in a multistep control simulator",
+      "prerequisites": [
+        "rl-bench",
+        "mlp-backprop"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "gae_and_clipping",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 8
+            },
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.8
+            },
+            {
+              "name": "heldout_control",
+              "metric": "final_distance",
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "gae_and_clipping",
+              "metric": "objective_error",
+              "op": "lt",
+              "value": 1e-05
+            },
+            {
+              "name": "beats_random",
+              "metric": "return_improvement",
+              "op": "gt",
+              "value": 8
+            },
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.8
+            },
+            {
+              "name": "heldout_control",
+              "metric": "final_distance",
+              "op": "lt",
+              "value": 0.2
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "visual-policy",
+      "title": "Learn image-based closed-loop control",
+      "prerequisites": [
+        "robotics-bench",
+        "mlp-backprop"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "shifted_success",
+              "metric": "shifted_success",
+              "op": "gte",
+              "value": 0.55
+            },
+            {
+              "name": "beats_zero",
+              "metric": "distance_ratio",
+              "op": "lt",
+              "value": 0.3
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "heldout_success",
+              "metric": "heldout_success",
+              "op": "gte",
+              "value": 0.7
+            },
+            {
+              "name": "shifted_success",
+              "metric": "shifted_success",
+              "op": "gte",
+              "value": 0.55
+            },
+            {
+              "name": "beats_zero",
+              "metric": "distance_ratio",
+              "op": "lt",
+              "value": 0.3
+            },
+            {
+              "name": "learned_parameters",
+              "metric": "parameter_delta",
+              "op": "gt",
+              "value": 0.01
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "attention-kernel",
+      "title": "Attention correctness and measured CUDA performance",
+      "prerequisites": [
+        "infra-bench",
+        "causal-attention"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "requirements.txt",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.0002
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.002
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ],
+          "unsupported": false
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.0002
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.002
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 1e-05
+            }
+          ],
+          "unsupported": false
+        },
+        "accelerator": {
+          "criteria": [
+            {
+              "name": "forward_correct",
+              "metric": "output_error",
+              "op": "lt",
+              "value": 0.035
+            },
+            {
+              "name": "backward_correct",
+              "metric": "gradient_error",
+              "op": "lt",
+              "value": 0.09
+            },
+            {
+              "name": "causal_mask",
+              "metric": "causal_error",
+              "op": "lt",
+              "value": 0.01
+            },
+            {
+              "name": "measured_speedup",
+              "metric": "speedup",
+              "op": "gte",
+              "value": 1.05
+            },
+            {
+              "name": "measured_memory",
+              "metric": "peak_allocated_bytes",
+              "op": "gt",
+              "value": 0
+            }
+          ],
+          "unsupported": false,
+          "requires": "CUDA"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 2,
+  "assessments": [
+    {
+      "id": "reward-audit",
+      "title": "Audit reward and split contamination",
+      "prerequisites": [
+        "posttrain-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "split_accuracy",
+              "metric": "split_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "reward_accuracy",
+              "metric": "reward_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "normalization_accuracy",
+              "metric": "normalization_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "split_accuracy",
+              "metric": "split_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "reward_accuracy",
+              "metric": "reward_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "normalization_accuracy",
+              "metric": "normalization_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "rollout-boundary",
+      "title": "Recover rollout boundary correctness",
+      "prerequisites": [
+        "rl-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "target_accuracy",
+              "metric": "target_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "aggregation_accuracy",
+              "metric": "aggregation_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "target_accuracy",
+              "metric": "target_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "aggregation_accuracy",
+              "metric": "aggregation_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "checkpoint-recovery",
+      "title": "Recover checkpoints and bound serving",
+      "prerequisites": [
+        "infra-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "recovery_accuracy",
+              "metric": "recovery_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "resume_accuracy",
+              "metric": "resume_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "queue_accuracy",
+              "metric": "queue_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "recovery_accuracy",
+              "metric": "recovery_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "resume_accuracy",
+              "metric": "resume_accuracy",
+              "op": "eq",
+              "value": 1
+            },
+            {
+              "name": "queue_accuracy",
+              "metric": "queue_accuracy",
+              "op": "eq",
+              "value": 1
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    },
+    {
+      "id": "robot-shift",
+      "title": "Recover under dynamics and observation shifts",
+      "prerequisites": [
+        "robotics-bench"
+      ],
+      "files": [
+        "candidate.py",
+        "evaluate.py",
+        "manifest.json",
+        "README.md"
+      ],
+      "scopes": {
+        "smoke": {
+          "criteria": [
+            {
+              "name": "success_rate",
+              "metric": "success_rate",
+              "op": "gte",
+              "value": 0.9
+            },
+            {
+              "name": "action_violations",
+              "metric": "action_violations",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "name": "mean_final_error",
+              "metric": "mean_final_error",
+              "op": "lt",
+              "value": 0.08
+            }
+          ]
+        },
+        "full": {
+          "criteria": [
+            {
+              "name": "success_rate",
+              "metric": "success_rate",
+              "op": "gte",
+              "value": 0.9
+            },
+            {
+              "name": "action_violations",
+              "metric": "action_violations",
+              "op": "eq",
+              "value": 0
+            },
+            {
+              "name": "mean_final_error",
+              "metric": "mean_final_error",
+              "op": "lt",
+              "value": 0.08
+            }
+          ]
+        },
+        "accelerator": {
+          "criteria": [],
+          "unsupported": true
+        }
+      }
+    }
+  ]
+}
