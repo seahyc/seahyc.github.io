@@ -50,7 +50,7 @@ body[data-workspace=experiments] .lab-tools input{display:block;max-width:180px}
 #workspace-nav .session-bar{position:absolute;right:0;top:36px;display:flex;flex-direction:column;align-items:stretch;gap:8px;width:min(360px,calc(100vw - 24px));padding:12px;border:1px solid #344151;border-radius:3px;background:#10161e;box-shadow:0 8px 24px #0008;z-index:40}
 #workspace-nav .session-bar label{margin:0}#workspace-nav .session-bar select{color:#d5dfe9;background:#151d27;border:1px solid #344151;padding:6px;font:inherit}
 #workspace-nav .session-bar button{border:1px solid #344151}#workspace-nav .session-bar .small{font-size:11px;white-space:normal}
-body.file-library .timer{display:block}
+body.file-library .timer{display:inline-flex}
 body.file-library #next-exercise{display:inline-flex}
 .workspace-session-menu{margin-left:auto}
 .workspace-session-menu:not([open])>.session-bar{display:none!important}
