@@ -63,7 +63,9 @@ function renderMarkdown(source){
   const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const parts=source.split(/```[^\n]*\n/);let html='';
   parts.forEach((part,i)=>{if(i%2){html+='<pre><code>'+escape(part.replace(/```\s*$/,''))+'</code></pre>';return;}
-    html+=part.split(/\n\s*\n/).map(block=>{const s=escape(block.trim());if(!s)return '';if(/^#{1,3} /.test(s)){const n=s.match(/^#+/)[0].length;return `<h${n}>${s.replace(/^#+ /,'')}</h${n}>`;}
+    html+=part.split(/\n\s*\n/).map(block=>{const raw=block.trim(),s=escape(raw);if(!s)return '';if(/^#{1,3} /.test(s)){const n=s.match(/^#+/)[0].length;return `<h${n}>${s.replace(/^#+ /,'')}</h${n}>`;}
+      const bullets=raw.split(/\r?\n/).filter(line=>/^\s*[-*+]\s+/.test(line));
+      if(bullets.length&&bullets.length===raw.split(/\r?\n/).length)return '<ul>'+bullets.map(line=>'<li>'+escape(line.replace(/^\s*[-*+]\s+/,''))+'</li>').join('')+'</ul>';
       return '<p>'+s.replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')+'</p>';}).join('');});
   return html;
 }
@@ -230,7 +232,7 @@ function run(mode,probe){
 }
 function tick(){if(!current)return;const s=session();document.body.classList.toggle('mock-active',s.mode==='mock');if(s.deadline){const seconds=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));$('clock').textContent=`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;$('timer-button').textContent=s.mode==='mock'?'End timed mock':'Pause timer';if(!seconds){$('clock').textContent='Time is up';$('timer-button').textContent='Reset timer';}}
   else{$('clock').textContent=s.remaining?`${Math.ceil(s.remaining/60000)} min paused`:'Untimed';$('timer-button').textContent=s.remaining?'Resume timer':'Start timer';}
-  if(!guidedFlow&&s.mode!=='mock'&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;notice('If you’re stuck, write one input and expected output. A tiny executable step is enough.');persist();}}
+  if(!guidedFlow&&s.mode!=='mock'&&Date.now()-lastInput>=90000&&!s.rescueShown){s.rescueShown=true;$('rescue').open=true;persist();}}
 $('file').onchange=()=>{saveEditor();file=$('file').value;entry().activeFile=file;persist();loadEditor();};
 $('notes').oninput=()=>{entry().notes=$('notes').value;persist();};
 $('mock-error').onchange=()=>{const r=entry().assessmentReview||={scores:{}};r.errorCategory=$('mock-error').value;persist();renderMockReview();};

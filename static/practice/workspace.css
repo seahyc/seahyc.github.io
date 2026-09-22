@@ -17,8 +17,9 @@
 .notebook-heading #title { margin: 0; font-size: clamp(26px, 3vw, 30px); line-height: 1.18; overflow-wrap: anywhere; }
 .notebook-heading #stage { margin-top: 0; }
 .notebook-heading #why { margin-bottom: 0; }
-.timer { flex-shrink: 0; text-align: right; }
-.timer output { display: block; margin-bottom: var(--space-1); font-size: 22px; font-variant-numeric: tabular-nums; }
+.timer { display: inline-flex; flex-shrink: 0; align-items: center; gap: var(--space-2); text-align: right; }
+.timer output { display: block; font-size: 16px; font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
+.timer button { min-height: 36px; padding: 6px 10px; font-size: 12px; }
 .session-bar, .file-bar, .actions, .reflection-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .session-bar { padding: var(--space-3) var(--space-5); border-block: 1px solid var(--color-border-soft); background: var(--color-surface-subtle); }
 .panes { display: grid; grid-template-columns: minmax(260px, .85fr) minmax(0, 1.25fr); }
@@ -107,7 +108,7 @@ body.focus .brief-pane>h3,body.focus .output-heading,body.focus #stop:disabled {
 
 body.focus #rescue { display: none; }
 
-body.focus.mock-active .timer { display: block; }
+body.focus.mock-active .timer { display: inline-flex; }
 #example-lab > summary { min-height: 44px; display: flex; align-items: center; gap: var(--space-2); }
 #example-lab > summary::before { content: '+'; color: var(--color-primary); }
 #example-lab[open] > summary::before { content: '−'; }
@@ -206,4 +207,6 @@ body.focus #journey-next { padding: 8px; font-size: 13px; }
 /* Inline Python examples wrap instead of widening the notebook column. */
 .brief-pane #brief { overflow-wrap: anywhere; }
 .brief-pane #brief code { white-space: pre-wrap; }
+.brief-pane #brief ul { margin: var(--space-3) 0; padding-left: 1.35em; }
+.brief-pane #brief li + li { margin-top: var(--space-1); }
 #example-lab:not([data-mode="python"]) .example-values code { white-space: normal; }
