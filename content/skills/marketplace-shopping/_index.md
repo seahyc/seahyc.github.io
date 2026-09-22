@@ -53,9 +53,9 @@ Multi-platform asks: harvest **apps for PDD/Taobao/Shopee** + **browser (or app)
 That reference is the executable playbook (session prep, command primitives, generic deep-harvest loop, per-app key steps for PDD/Shopee/Taobao, crash/WDA recovery, artifacts). In short:
 
 1. Unlock phone; set **Auto-Lock → Never**; confirm MobileCLI talks to the device
-2. Launch app or deep-link search; **sort by sales**; multi-query; scroll deep
-3. Open **12–20** PDPs; select the real variant; capture all-in + shipping; no cart yet
-4. Persist jsonl + markdown; merge platforms; recommend; cart only after user yes
+2. **Precursor SERP scan** per marketplace (sales-sorted, multi-query) until unique suitable listings **saturate** — size the inventory before PDPs (see **Inventory depth** below)
+3. **PDP pass:** open **all** unique suitable keepers when ≤20; if more, open all high-sold keepers plus a sample of the long tail — always record depth metrics
+4. Persist jsonl + markdown with per-platform depth stats; merge; recommend; cart only after user yes
 5. On app crash or RPC timeout: terminate/relaunch marketplace app; for WDA/RPC timeouts follow the **Device Kit SOP** in [the mobile marketplace guide](references/mobile/) (CLI launch of xctrunner — never hand-open as warm-up)
 
 Avoid Dynamic Island / status-bar taps (y ≲ 80–90). Never enter passcodes or payment secrets.
@@ -114,8 +114,54 @@ Keep it light — a survey to inform good questions, not a full report. The deep
 ### 3. Search and sort by sales volume
 Search the model name and **sort by orders / units sold** (Taobao 销量, Shopee "Top Sales", AliExpress "Orders"). Volume is the strongest cheap signal: a listing with thousands of orders and a high rating is far lower-risk than a cheaper one with none. Best Match / relevance sorting is ad- and seller-promotion-polluted — don't trust its order.
 
+### 3b. Inventory depth — precursor SERP scan before PDPs
+
+Different marketplaces have different inventory sizes. Do **not** use a fixed “open 12–20 PDPs” as proof you covered a platform. First **estimate the unique suitable set**, then open PDPs against that set.
+
+**Suitable** = matches the user’s hard constraints from the title/badges alone enough to keep (protocol, kit-vs-accessory, length class, mount type, etc.). Junk = accessories, wrong protocol, fabric-only, motor-only teasers when a full kit is required, obvious duplicates of an already-kept listing.
+
+#### Precursor pass (SERP-only, cheap)
+
+Per marketplace, for each query synonym:
+
+1. Sort by **sales / orders** (not Best Match).
+2. Scroll screen by screen. For every card, record a lightweight row: title, sold/orders, headline price, protocol/kit hints, seller-tier hint, screenshot/ref. Mark `keep` / `junk` / `dupe`.
+3. **Dedupe early** by normalised title + sold band + price band (and later by photos on PDP). Same factory under many sellers still counts as multiple *listings* but one *product* at merge time — track both.
+4. Run **2–5 queries** (brand / protocol / length / form-factor synonyms). Union the keep sets.
+
+#### When to stop scrolling (saturation)
+
+Stop a query’s SERP scroll when **any** of these hit:
+
+| Signal | Rule of thumb |
+|---|---|
+| **New-keep drought** | **3 consecutive screens** with **0 new `keep`s** (only junk/dupes) |
+| **Long-tail floor** | Sales/orders fall below a category floor (e.g. ≪1% of the top listing’s sold, or single-digit sold when the head has hundreds+) *and* the last screen added no keeps |
+| **Hard cap** | ~**40–60 screens** on one query without saturation — note `depth=capped` and move to the next query |
+
+After all queries: report per marketplace:
+
+- `queries_run`
+- `serp_screens`
+- `unique_listings_seen`
+- `unique_suitable_keeps` ← **the inventory estimate**
+- `saturation=yes/no` (did stop rules fire, or did you hit the hard cap?)
+- blockers
+
+That `unique_suitable_keeps` is how you know “we plumbed this marketplace”: not “we opened 15 PDPs,” but “SERP keep-set saturated at N.”
+
+#### PDP budget from the estimate
+
+| `unique_suitable_keeps` (N) | PDP pass |
+|---|---|
+| N ≤ 20 | Open **all** N |
+| 20 < N ≤ 40 | Open all **high-sold** keeps (e.g. top half by sold) + enough mid/long-tail to cover diversity; state how many left unverified |
+| N > 40 | Open top ~20–25 by sold + 3–5 diversity picks from the tail; explicitly say the platform has a fat long tail and what fraction is unverified |
+
+Never claim “best across PDD/Shopee/Taobao/Amazon” unless each platform has `saturation=yes` (or capped with a stated remainder). Unequal depth → frame the shortlist as **best among adequately verified options**.
+
 ### 4. Harvest a comparison set in one read
-From the results, pull the genuine candidates into a table. For each, capture:
+From the results (after precursor + PDP), pull the genuine candidates into a table. For each, capture:
 - **Price → compute the all-in out-of-pocket total**, not the sticker. That means item price *after* coupons/vouchers/coins, **plus shipping, plus any customs/forwarder/consolidation cost** to the user's address. This is the number listings get compared on — a cheaper sticker with pricey overseas shipping or a forwarder leg often loses to a dearer local listing. State the total, and note when a threshold coupon ("$X off on $Y") isn't actually met.
 - **Currency normalization:** always show the user's local currency first (SGD for Singapore). Convert CNY/HKD/USD using a current rate or the marketplace's displayed SGD conversion, state the rate/source and date, and keep the original price in parentheses. Do not compare ¥ amounts directly with S$ amounts.
 - **Rating** and **review count** (a 4.9 on 12 reviews ≠ a 4.6 on 555)
