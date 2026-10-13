@@ -1,0 +1,12 @@
+{
+ "id": "token-bucket-limiter",
+ "title": "Per-Key Token Bucket Limiter",
+ "family": "time",
+ "phase": "transfer",
+ "order": 80,
+ "minutes": 60,
+ "entry": "src/token_bucket_limiter.py",
+ "summary": "Per-key token buckets with burst capacity, fractional lazy refill, an injected clock, and a defined policy for a clock that moves backwards.",
+ "weights": {"test_new_key_starts_full_and_bursts": 2, "test_fractional_refill_accumulates": 3, "test_refill_capped_at_capacity": 3, "test_denied_request_consumes_nothing": 2, "test_variable_cost": 1, "test_keys_are_independent": 2, "test_clock_backwards_gives_no_credit_and_no_double_credit": 3, "test_clock_backwards_never_goes_negative": 1, "test_cost_above_capacity_never_allowed": 2, "test_zero_refill_rate_never_refills": 1, "test_tokens_reports_without_consuming": 2, "test_retry_after": 2, "test_invalid_arguments": 2, "test_same_sequence_same_decisions": 1, "test_many_keys_scale": 2},
+ "critical": ["test_fractional_refill_accumulates", "test_refill_capped_at_capacity", "test_clock_backwards_gives_no_credit_and_no_double_credit"]
+}

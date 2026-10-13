@@ -1,0 +1,12 @@
+{
+ "id": "ref-resolver",
+ "title": "Reference Resolver",
+ "family": "identity",
+ "phase": "family",
+ "order": 50,
+ "minutes": 60,
+ "entry": "src/refs.py",
+ "summary": "Family drill. Decode JSON documents with $id anchors and $ref pointers into an object graph that keeps shared references and cycles, then write the inverse dump.",
+ "weights": {"test_primitives_and_plain_tree": 1, "test_id_key_removed_from_output": 2, "test_shared_reference_is_same_object": 3, "test_forward_reference": 3, "test_cycle_to_ancestor": 3, "test_self_reference_and_root_cycle": 2, "test_refs_inside_lists": 2, "test_dangling_ref_rejected": 2, "test_duplicate_id_rejected": 2, "test_ref_with_extra_keys_rejected": 2, "test_non_string_id_and_ref_rejected": 2, "test_resolve_does_not_mutate_input": 2, "test_resolve_deep_nesting": 2, "test_dump_ids_only_for_shared_dicts": 3, "test_dump_ids_in_dfs_order_deterministic": 2, "test_dump_cycle": 2, "test_round_trip_preserves_identity": 3, "test_dump_rejects_unsupported": 2, "test_dump_does_not_mutate_and_is_json": 1, "test_dump_deep_nesting": 1},
+ "critical": ["test_shared_reference_is_same_object", "test_cycle_to_ancestor", "test_round_trip_preserves_identity"]
+}

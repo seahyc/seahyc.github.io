@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 // Run against the final artifact, after every publishing/pruning step.
 export async function verifyPracticePublication(publicDir){
  const root=path.resolve(publicDir);
- const required=['index.html','app.mjs','runner.mjs','editor.bundle.mjs','explorer.mjs','examples.json','curriculum.json','ramp.json','variations.json','learning-model.mjs','learning-state.mjs','skill-catalog.mjs','mastery.mjs','state.mjs','release.json','design-system.css','workspace.css','path/index.html','path/app.mjs','path/model.mjs','path/roadmap.mjs','path/sessions.json','path/layout.css'];
+ const required=['index.html','app.mjs','runner.mjs','editor.bundle.mjs','explorer.mjs','examples.json','curriculum.json','ramp.json','variations.json','learning-model.mjs','learning-state.mjs','skill-catalog.mjs','mastery.mjs','state.mjs','release.json','design-system.css','workspace.css','path/index.html','path/app.mjs','path/model.mjs','path/roadmap.mjs','path/sessions.json','path/layout.css','screen/index.html','screen/app.mjs','screen/grader.mjs','screen/harness.py','screen/score.mjs','screen/plan.mjs','screen/report.mjs','screen/exercises.json','screen/validators.json','screen/screen.css'];
  for(const relative of required){
   const file=path.join(root,'practice',relative);
   if(!(await stat(file).catch(()=>null))?.isFile())throw Error(`Missing published practice asset: practice/${relative}`);

@@ -1,0 +1,12 @@
+{
+ "id": "graph-clone",
+ "title": "Identity-Preserving Deep Copy",
+ "family": "identity",
+ "phase": "fluency",
+ "order": 10,
+ "minutes": 25,
+ "entry": "src/graph_clone.py",
+ "summary": "Placement screen. Deep-copy nested lists and dicts so shared references stay shared and cycles survive.",
+ "weights": {"test_primitives_returned_unchanged": 1, "test_nested_copy_is_independent": 2, "test_shared_list_stays_shared": 3, "test_self_cycle": 3, "test_mutual_cycle_through_dicts": 3, "test_alias_inside_list_and_dict": 2, "test_tuple_rejected_with_path": 2, "test_non_string_key_rejected": 1, "test_input_not_mutated": 2, "test_deep_nesting_without_recursion_error": 2, "test_dict_order_preserved": 1},
+ "critical": ["test_shared_list_stays_shared", "test_self_cycle"]
+}

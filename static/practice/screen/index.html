@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>workspace — screen</title><link rel="icon" type="image/svg+xml" sizes="any" href="../favicon.svg?v=notebook-1"><meta name="description" content="Timed project screens with hidden validators."><link rel="stylesheet" href="../design-system.css?v=recall-2026-09-06-1"><link rel="stylesheet" href="../terminal.css?v=terminal-2026-09-21-1"><link rel="stylesheet" href="../shell.css"><link rel="stylesheet" href="screen.css?v=screen-1"></head><body data-workspace="screen" class="screen-page">
+<main>
+<section id="dashboard" aria-labelledby="page-title">
+ <p class="eyebrow">Cognition Screen sprint</p>
+ <h1 id="page-title">~/screen</h1>
+ <p class="reassurance">One timed project at a time, graded by a hidden suite. Prove a phase and move on the same day.</p>
+ <label class="target">Target date <input id="target-date" type="date"></label>
+ <article class="next-card"><p id="next-kind" class="eyebrow">Next</p><h2 id="next-title">Loading…</h2><p id="next-reason"></p><p id="next-rest" class="rest" hidden></p>
+  <div class="actions"><button id="next" class="primary">Start</button><button id="challenge" hidden>Skip ahead</button></div><p id="challenge-reason" class="small" hidden></p></article>
+ <section class="phases"><h2>Phases</h2><ol id="phases"></ol></section>
+ <section class="gates"><h2>Ready to book the real screen</h2><ul id="gates"></ul></section>
+ <section><h2>Attempts</h2><table class="history"><thead><tr><th>Day</th><th>Exercise</th><th>Score</th><th>First green</th><th>Unseen</th></tr></thead><tbody id="history"></tbody></table></section>
+ <section><details><summary>All exercises (retakes are practice only)</summary><ul id="catalog"></ul></details></section>
+ <section class="coach"><h2>Coach report</h2><p class="small">Everything above as JSON. Agents read it with <code>./practice-cognition report</code>; you can also copy it.</p><button id="copy-report">Copy report</button><output id="copy-status"></output></section>
+</section>
+
+<section id="workspace" hidden aria-label="Screen in progress">
+ <header class="screen-bar"><strong id="ws-title"></strong><output id="clock" aria-live="off"></output><span id="ws-status" class="small"></span>
+  <button id="run" title="Run visible tests and your tests (Cmd/Ctrl+Enter)">Run tests</button><button id="submit" class="primary">Submit</button></header>
+ <div class="ide">
+  <nav class="explorer" aria-label="Files"><p class="eyebrow">Explorer</p><ul id="files"></ul></nav>
+  <section class="pane"><div id="instructions" class="instructions" tabindex="0"></div><div id="code-editor" class="editor-shell" hidden></div></section>
+ </div>
+ <section class="terminal" aria-label="Test output"><p class="eyebrow">Terminal</p><pre id="output">Run tests to see results. Grading uses a separate, larger hidden suite.</pre></section>
+</section>
+
+<section id="result" hidden aria-labelledby="result-title">
+ <p class="eyebrow">Submitted</p><h1 id="result-title"></h1><p id="result-summary"></p>
+ <table class="parts"><tbody id="parts"></tbody></table>
+ <fieldset class="self"><legend>Self-rate quality honestly (9 of 100 points)</legend>
+  <label><input type="checkbox" id="self-api"> Small API surface and meaningful names (5)</label>
+  <label><input type="checkbox" id="self-helpers"> Helpers express the data model; no tangled special cases (4)</label>
+  <label><input type="checkbox" id="self-clean"> Clean submission: no debug noise or abandoned branches (1)</label></fieldset>
+ <div id="findings"></div>
+ <fieldset class="postmortem"><legend>Postmortem: the first consequential mistake</legend>
+  <label>Category <select id="pm-category"><option value="">Choose one</option><option value="none">None (strong pass, nothing consequential)</option><option value="MODEL">MODEL: misread the data model or contract</option><option value="INVARIANT">INVARIANT: representation could not keep a requirement</option><option value="IMPLEMENTATION">IMPLEMENTATION: sound model, wrong code</option><option value="VALIDATION">VALIDATION: missing tests, malformed-input handling or audit</option><option value="TIME">TIME: sequencing or scope cost the result</option></select></label>
+  <label>Earliest bad decision (specific; "careless" is not a diagnosis) <textarea id="pm-decision" rows="3" maxlength="2000"></textarea></label>
+  <label>One corrective drill <input id="pm-drill" maxlength="300"></label>
+  <p id="pm-status" class="small"></p></fieldset>
+ <button id="back" class="primary">Back to the sprint</button>
+</section>
+<p id="notice" role="status" aria-live="polite"></p>
+<footer class="terminal-footer"><span class="terminal-state">● screen</span><nav aria-label="Workspace navigation"><a href="../path/">Queue</a><a href="../">Console</a><a href="../lab/">Experiments</a></nav><span>Browser storage · Python runtime</span></footer>
+</main>
+<script type="module" src="app.mjs?v=screen-1"></script><script type="module" src="../shell.mjs"></script></body></html>

@@ -1,0 +1,12 @@
+{
+ "id": "event-sessionizer",
+ "title": "Event Sessionizer",
+ "family": "time",
+ "phase": "fluency",
+ "order": 30,
+ "minutes": 25,
+ "entry": "src/sessions.py",
+ "summary": "Fluency drill. Group unsorted per-user events into sessions split by an idle gap, with strict boundary semantics.",
+ "weights": {"test_single_user_sessions": 2, "test_gap_boundary_is_strict": 3, "test_equal_timestamps_same_session": 2, "test_unsorted_input_sorted_per_user": 3, "test_users_interleaved_and_sorted": 2, "test_zero_gap": 2, "test_empty_and_singleton": 1, "test_negative_or_bad_gap_rejected": 2, "test_malformed_events_rejected_with_index": 2, "test_input_not_mutated": 2, "test_deterministic_across_input_order": 2, "test_large_timestamps_and_big_gap": 1, "test_scale_many_events": 1},
+ "critical": ["test_gap_boundary_is_strict", "test_unsorted_input_sorted_per_user"]
+}
