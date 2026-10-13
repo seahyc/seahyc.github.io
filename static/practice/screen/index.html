@@ -32,6 +32,7 @@
   <label><input type="checkbox" id="self-api"> Small API surface and meaningful names (5)</label>
   <label><input type="checkbox" id="self-helpers"> Helpers express the data model; no tangled special cases (4)</label>
   <label><input type="checkbox" id="self-clean"> Clean submission: no debug noise or abandoned branches (1)</label></fieldset>
+ <fieldset class="self"><legend>Integrity</legend><label><input type="checkbox" id="assisted"> I used AI or outside help during this screen. It stays as practice and never counts as evidence.</label></fieldset>
  <div id="findings"></div>
  <fieldset class="postmortem"><legend>Postmortem: the first consequential mistake</legend>
   <label>Category <select id="pm-category"><option value="">Choose one</option><option value="none">None (strong pass, nothing consequential)</option><option value="MODEL">MODEL: misread the data model or contract</option><option value="INVARIANT">INVARIANT: representation could not keep a requirement</option><option value="IMPLEMENTATION">IMPLEMENTATION: sound model, wrong code</option><option value="VALIDATION">VALIDATION: missing tests, malformed-input handling or audit</option><option value="TIME">TIME: sequencing or scope cost the result</option></select></label>

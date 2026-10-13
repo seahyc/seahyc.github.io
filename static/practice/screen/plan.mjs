@@ -22,7 +22,8 @@ export function unseen(state){
  return out;
 }
 
-const strongOn=a=>a.score.total>=STRONG&&a.score.parts.execution.firstGreenMin!==null&&a.score.parts.execution.onTime;
+// Assisted work (AI or outside help, self-reported) is practice, never evidence.
+const strongOn=a=>!a.assisted&&a.score.total>=STRONG&&a.score.parts.execution.firstGreenMin!==null&&a.score.parts.execution.onTime;
 
 export function phaseStatus(exercises,state,now=Date.now()){
  const byId=new Map(exercises.map(e=>[e.id,e]));
@@ -80,6 +81,11 @@ export function nextStep(exercises,state,now=Date.now()){
  if(post)return {type:'postmortem',exerciseId:post.exerciseId,attemptId:post.id,reason:'Name the first consequential mistake before the next screen. It decides the next drill.'};
  const ready=readiness(exercises,state,now);
  const phases=phaseStatus(exercises,state,now);
+ // A very weak first attempt means the next cold screen would fail the same way. Rebuild
+ // this one with a coach first (worked example, then faded support); it is practice only.
+ const last=submitted(state).sort((a,b)=>b.submittedAt-a.submittedAt)[0];
+ if(last&&(last.score.total<50||last.assisted)&&unseen(state).some(a=>a.id===last.id))
+  return {type:'rebuild',exerciseId:last.exerciseId,reason:`${last.assisted?'That screen was assisted':`That screen scored ${last.score.total}`}. Rebuild it untimed with your coach, with no AI: make one visible test pass first, run tests every few minutes, then add your own tests and the design note. It is practice, so it will not count as evidence; the next unseen screen follows.`};
  const attempted=new Set(submitted(state).map(a=>a.exerciseId));
  const ordered=[...exercises].sort((a,b)=>a.order-b.order);
  const firstUnseen=phase=>ordered.find(e=>e.phase===phase&&!attempted.has(e.id));
