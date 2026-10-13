@@ -68,7 +68,7 @@ When using the **browser** path (AliExpress, Amazon, or mobile unavailable), thi
 - **Either** may have a CDP / chrome bridge skill available instead.
 
 Discover what you have and use it. The *workflow and judgment below are identical regardless of tool* — only the click/type/read primitives differ. Generic pattern every agent follows:
-1. Establish a dedicated browser workspace before searching. Create a native tab group named for the shopping task when the browser/extension supports grouping (for Chrome-CDP: `browser_group` or `cdp group`; otherwise use a URL/title marker and keep an explicit tab ledger). Put every tab opened for this task into that group; never group or close the user's pre-existing unrelated tabs.
+1. Establish a dedicated browser workspace before searching. Create a native tab group named for the shopping task when the browser/extension supports grouping (for browserctrl: `browser_group` or `browserctrl group`; otherwise use a URL/title marker and keep an explicit tab ledger). Put every tab opened for this task into that group; never group or close the user's pre-existing unrelated tabs.
 2. Navigate to the marketplace search in a fresh tab within that group.
 3. Read the page — prefer a structured read (accessibility tree / page text / DOM) to harvest listing URLs, prices, ratings, and sold-counts in one pass rather than screenshotting everything.
 4. Click into candidates by navigating to their URLs directly (marketplace grid clicks are often intercepted; pulling the href and navigating is more reliable).
