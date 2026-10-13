@@ -2,12 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {EditorState, EditorSelection} from '@codemirror/state';
 import {python} from '@codemirror/lang-python';
-import {indentUnit} from '@codemirror/language';
+import {indentUnit,ensureSyntaxTree} from '@codemirror/language';
 import {insertNewlineAndIndent, indentLess, deleteCharBackward, history, undo} from '@codemirror/commands';
 import {insertSoftTab} from '../projects-src/practice-editor/indentation.mjs';
 
 function editor(doc, selection={anchor:doc.length}, extensions=[]) {
  let state=EditorState.create({doc,selection,extensions:[python(),indentUnit.of('    '),EditorState.tabSize.of(4),history(),...extensions]});
+ // State creation parses only within a short time budget, so on a busy machine the tree can be
+ // partial and indentation wrong. Finish the parse, then apply it with an empty transaction,
+ // which is what the editor view's background parser does.
+ ensureSyntaxTree(state,state.doc.length,10000);state=state.update({}).state;
  return {get state(){return state;},dispatch(tr){state=tr.state;}};
 }
 for(const [doc,spaces] of [
