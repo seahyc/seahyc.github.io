@@ -75,6 +75,10 @@ try{
   await page.focus('.cm-content');
   await page.evaluate(t=>{document.execCommand('selectAll');document.execCommand('insertText',false,t);},text);
  };
+ // The live syntax check must flag the f-string typo that sank a real first attempt.
+ await put('src/graph_clone.py','def clone(value):\n    path = "root"\n    return f"{path}[k!r}]"\n');
+ await page.waitForFunction(()=>/line 3/.test(document.getElementById('ws-status').textContent),null,{timeout:90000});
+ console.log('live syntax:',await page.textContent('#ws-status'));
  await put('src/graph_clone.py',await readFile(path.join(refs,'graph-clone.py'),'utf8'));
  await put('tests/test_candidate.py',CANDIDATE);
  await put('DESIGN.md',DESIGN);

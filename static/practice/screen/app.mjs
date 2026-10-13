@@ -1,4 +1,5 @@
 import {createCodeEditor} from '../editor.bundle.mjs?v=recall-2026-09-06-1';
+import {createSyntaxChecker} from '../syntax-client.mjs?v=delight-2026-09-06-1';
 import {scoreScreen,STRONG} from './score.mjs?v=screen-1';
 import {phaseStatus,readiness,nextStep,unseen,dayOf} from './plan.mjs?v=screen-1';
 import {KEY,loadState,report} from './report.mjs?v=screen-1';
@@ -71,7 +72,16 @@ function start(id){
  state.attempts.push(a);persist();open(a);
 }
 
-const codeEditor=createCodeEditor({parent:$('code-editor'),onChange:value=>{if(attempt&&editable(file)){attempt.files[file]=value;persist();}},
+// Live syntax errors as you type, like the IDE's red squiggles. Syntax only, not types or names.
+const syntax=createSyntaxChecker({onResult:result=>{
+ if(!attempt||result.status!=='checked')return;
+ codeEditor.setDiagnostics(result.diagnostics);
+ const first=result.diagnostics[0];
+ $('ws-status').textContent=first?`${file} line ${first.line}: ${first.message}`:'';
+ $('ws-status').classList.toggle('error',!!first);
+}});
+const lint=()=>{codeEditor.setDiagnostics([]);if(attempt&&file.endsWith('.py'))syntax.check(codeEditor.getValue(),file);else syntax.clear();};
+const codeEditor=createCodeEditor({parent:$('code-editor'),onChange:value=>{if(attempt&&editable(file)){attempt.files[file]=value;persist();}lint();},
  onPaste:event=>{if(!attempt)return;const chars=(event.clipboardData?.getData('text')||'').length;attempt.events.pastes.push({at:Date.now(),chars});persist();if(chars>80)notice('Large paste recorded. The real screen records pastes in playback.');},
  onRun:()=>run()});
 
@@ -93,7 +103,7 @@ function show(name){
  const doc=name==='instructions.md';
  $('instructions').hidden=!doc;$('code-editor').hidden=doc;
  if(doc){$('instructions').innerHTML=markdown(exercise.instructions);return;}
- codeEditor.setValue(attempt.files[name]);codeEditor.setReadOnly(!editable(name));codeEditor.focus();
+ codeEditor.setValue(attempt.files[name]);codeEditor.setReadOnly(!editable(name));codeEditor.focus();lint();
 }
 
 function clock(){
