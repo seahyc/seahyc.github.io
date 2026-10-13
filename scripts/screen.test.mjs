@@ -148,3 +148,17 @@ test('the report gives an agent per-attempt evidence, family trends and the next
  assert.equal(r.targetDate,'2026-11-03');
  assert.ok(r.readiness.gates.length>=4);
 });
+
+test('a very weak first attempt leads to a coached rebuild of the same exercise',()=>{
+ const state={attempts:[attempt('clone',29,5)]};
+ const step=nextStep(catalog,state,NOW);
+ assert.equal(step.type,'rebuild');assert.equal(step.exerciseId,'clone');
+ const first=attempt('clone',29,5),after={attempts:[first,{...attempt('clone',29,70),id:'retake',submittedAt:first.submittedAt+3600000}]};
+ assert.equal(nextStep(catalog,after,NOW).type,'screen');
+});
+
+test('a self-reported assisted screen never counts as evidence',()=>{
+ const state={attempts:[{...attempt('codec',28,95),assisted:true},attempt('build',29,90)]};
+ assert.equal(readiness(catalog,state,NOW).gates.find(g=>g.id==='family').met,false);
+ assert.equal(nextStep(catalog,{attempts:[{...attempt('codec',29,95),assisted:true}]},NOW).type,'rebuild');
+});

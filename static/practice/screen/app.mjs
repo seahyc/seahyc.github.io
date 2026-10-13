@@ -31,14 +31,14 @@ function render(){
  $('dashboard').hidden=false;$('workspace').hidden=true;$('result').hidden=true;
  $('target-date').value=state.targetDate||'';
  const step=nextStep(exercises,state);
- const kinds={screen:'Next screen',resume:'In progress',postmortem:'Postmortem due',ready:'Ready',retake:'Practice'};
+ const kinds={screen:'Next screen',resume:'In progress',postmortem:'Postmortem due',ready:'Ready',retake:'Practice',rebuild:'Coached rebuild'};
  $('next-kind').textContent=kinds[step.type]||'Next';
  const e=step.exerciseId&&byId(step.exerciseId);
  $('next-title').textContent=step.type==='ready'?'Book the real screen':e?`${e.title} · ${e.minutes} min`:'Nothing scheduled';
  $('next-reason').textContent=step.reason+(e&&step.type==='screen'?` ${e.summary}`:'');
  $('next-rest').hidden=!step.rest;$('next-rest').textContent=step.rest||'';
  $('next').hidden=!e;
- $('next').textContent={resume:'Resume',postmortem:'Write postmortem',retake:'Retake (practice)'}[step.type]||'Start timer';
+ $('next').textContent={resume:'Resume',postmortem:'Write postmortem',retake:'Retake (practice)',rebuild:'Start rebuild (practice)'}[step.type]||'Start timer';
  $('next').onclick=()=>step.type==='postmortem'?showResult(state.attempts.find(a=>a.id===step.attemptId)):step.type==='resume'?open(state.attempts.find(a=>!a.submittedAt)):start(step.exerciseId);
  const ch=step.challenge;
  $('challenge').hidden=$('challenge-reason').hidden=!ch;
@@ -184,6 +184,7 @@ function showResult(a){
  if(!p.design.complexityStated)findings.push('The design note gives no big-O complexity.');
  $('findings').replaceChildren(...findings.map(t=>{const x=document.createElement('p');x.textContent=t;return x;}));
  a.self ||= {};
+ $('assisted').checked=!!a.assisted;$('assisted').onchange=()=>{a.assisted=$('assisted').checked;persist();};
  for(const [id,key] of [['self-api','api'],['self-helpers','helpers'],['self-clean','clean']]){$(id).checked=!!a.self[key];$(id).onchange=()=>{a.self[key]=$(id).checked;rescore(a);persist();showResult(a);};}
  a.postmortem ||= {category:'',decision:'',drill:''};
  $('pm-category').value=a.postmortem.category;$('pm-decision').value=a.postmortem.decision;$('pm-drill').value=a.postmortem.drill||'';

@@ -38,7 +38,7 @@ export function summarize(exercises,state,now=Date.now()){
  const attempts=submitted(state).sort((a,b)=>a.submittedAt-b.submittedAt).map(a=>{
   const e=byId.get(a.exerciseId)||{},p=a.score.parts;
   return {exercise:a.exerciseId,phase:e.phase,family:e.family,day:dayOf(a.submittedAt),unseen:firsts.has(a.id),
-   minutesAllowed:e.minutes,minutesUsed:Math.round((a.submittedAt-a.startedAt)/60000),
+   assisted:!!a.assisted,minutesAllowed:e.minutes,minutesUsed:Math.round((a.submittedAt-a.startedAt)/60000),
    score:a.score.total,capped:a.score.capped,
    parts:{correctness:p.correctness.points,edges:p.edges.points,quality:p.quality.points,design:p.design.points,execution:p.execution.points},
    failedValidators:p.correctness.failed,criticalFailed:p.correctness.criticalFailed,
