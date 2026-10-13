@@ -1,0 +1,12 @@
+{
+ "id": "typed-graph-codec",
+ "title": "Typed Graph Codec",
+ "family": "identity",
+ "phase": "family",
+ "order": 60,
+ "minutes": 75,
+ "entry": "src/codec.py",
+ "summary": "Family drill. A versioned JSON codec for object graphs with tuples, sets, bytes and registered classes, keeping identity and cycles, and still reading the old v1 format.",
+ "weights": {"test_round_trip_all_supported_types": 2, "test_wire_format_shape": 2, "test_shared_list_identity_preserved": 3, "test_self_cycles_in_list_and_dict": 3, "test_registered_objects_identity_and_cycle": 3, "test_cycle_through_tuple": 2, "test_tuple_holding_shared_mutables": 1, "test_set_order_is_deterministic": 2, "test_bytes_base64": 2, "test_unregistered_and_unsupported_rejected": 3, "test_registry_errors": 2, "test_decode_v1_upgrades": 3, "test_bad_documents_rejected": 2, "test_json_text_round_trip": 2, "test_encode_deterministic_and_input_not_mutated": 2, "test_decode_handwritten_v2_with_arbitrary_ids": 2, "test_decode_does_not_mutate_document": 1, "test_dict_and_field_order_preserved": 1, "test_deep_chain_without_recursion_error": 2},
+ "critical": ["test_shared_list_identity_preserved", "test_registered_objects_identity_and_cycle", "test_decode_v1_upgrades"]
+}

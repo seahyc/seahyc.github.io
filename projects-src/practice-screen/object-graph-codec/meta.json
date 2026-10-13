@@ -1,0 +1,12 @@
+{
+ "id": "object-graph-codec",
+ "title": "Object Graph Codec",
+ "family": "identity",
+ "phase": "family",
+ "order": 40,
+ "minutes": 75,
+ "entry": "src/object_graph_codec.py",
+ "summary": "Checkpoint a shared and cyclic list/dict graph to a JSON-compatible payload with explicit node IDs, then restore it with identity intact.",
+ "weights": {"test_primitive_roots": 1, "test_wire_format_exact": 2, "test_ids_follow_depth_first_encounter_order": 2, "test_shared_identity_roundtrip": 3, "test_self_and_mutual_cycles": 3, "test_cycle_wire_format": 2, "test_equal_but_distinct_containers_not_merged": 2, "test_encode_rejects_unsupported_values": 2, "test_decode_rejects_malformed_payloads": 3, "test_decode_rejects_dangling_and_bad_refs": 2, "test_inputs_not_mutated": 2, "test_decoded_graph_independent_of_payload": 1, "test_payload_survives_json": 1, "test_scale_deep_and_wide": 2},
+ "critical": ["test_shared_identity_roundtrip", "test_self_and_mutual_cycles"]
+}

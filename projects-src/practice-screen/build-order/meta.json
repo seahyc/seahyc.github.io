@@ -1,0 +1,12 @@
+{
+ "id": "build-order",
+ "title": "Build Order and Cycle Path",
+ "family": "graph",
+ "phase": "transfer",
+ "order": 70,
+ "minutes": 60,
+ "entry": "src/build_order.py",
+ "summary": "Deterministic topological order of a dependency graph with an alphabetical ready-set tie-break, and cycle errors that report the offending path.",
+ "weights": {"test_linear_chain_order": 1, "test_diamond_and_ready_set_tiebreak": 3, "test_tiebreak_is_by_readiness_not_global_sort": 3, "test_dependency_only_nodes_included": 2, "test_duplicate_dependencies": 2, "test_empty_and_singleton": 1, "test_disconnected_components_interleave": 2, "test_random_dags_are_valid_and_match_oracle": 3, "test_self_dependency_reports_path": 2, "test_cycle_path_is_canonical_for_single_cycle": 3, "test_cycle_path_edges_valid_with_several_cycles": 2, "test_cycle_hidden_behind_acyclic_part": 2, "test_cycle_error_message_names_path": 1, "test_input_not_mutated": 2, "test_order_independent_of_input_ordering": 2, "test_malformed_input_rejected": 2, "test_scale_chain_and_wide": 2},
+ "critical": ["test_diamond_and_ready_set_tiebreak", "test_random_dags_are_valid_and_match_oracle", "test_cycle_path_is_canonical_for_single_cycle"]
+}

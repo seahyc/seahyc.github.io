@@ -1,0 +1,12 @@
+{
+ "id": "bracket-checker",
+ "title": "Bracket and Comment Checker",
+ "family": "parsing",
+ "phase": "transfer",
+ "order": 90,
+ "minutes": 60,
+ "entry": "src/bracket_checker.py",
+ "summary": "Stateful scanner that balances brackets while skipping strings with escapes, line comments, and block comments, reporting the first error as line:col.",
+ "weights": {"test_balanced_inputs": 1, "test_unexpected_closer": 2, "test_mismatched_pair": 2, "test_unclosed_reports_opener_position": 2, "test_innermost_unclosed_reported_first": 1, "test_brackets_in_strings_ignored": 2, "test_escapes_in_strings": 3, "test_line_comments": 2, "test_block_comments_span_lines": 3, "test_comment_markers_inside_strings_and_each_other": 3, "test_unterminated_string_ends_at_newline": 2, "test_unterminated_block_comment": 2, "test_positions_across_lines_and_blank_lines": 2, "test_first_error_wins": 2, "test_non_string_rejected": 1, "test_scale_long_source": 2},
+ "critical": ["test_escapes_in_strings", "test_block_comments_span_lines", "test_first_error_wins"]
+}

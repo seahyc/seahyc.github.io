@@ -1,10 +1,10 @@
 name: Verify coding practice
 on:
   pull_request:
-    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'projects-src/practice-screen/**', 'scripts/*screen*', 'package*.json', '.github/workflows/practice.yml']
   push:
     branches: [main]
-    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'package*.json', '.github/workflows/practice.yml']
+    paths: ['runner/**', 'scripts/browser-native.mjs', 'content/projects/**', 'scripts/prune-private-projects.mjs', '.github/workflows/hugo.yml', 'static/practice/**', 'scripts/*practice*', 'scripts/*mastery*', 'scripts/*explorer*', 'scripts/state.test.mjs', 'scripts/*.test.mjs', 'scripts/verify-*.py', 'scripts/fixtures/variation-solutions/**', 'projects-src/practice-editor/**', 'projects-src/practice-screen/**', 'scripts/*screen*', 'package*.json', '.github/workflows/practice.yml']
 permissions:
   contents: read
 jobs:
@@ -25,6 +25,7 @@ jobs:
       - run: python3 scripts/verify-runner.py
       - run: node --check static/practice/app.mjs && node --check static/practice/runner.mjs && node --check static/practice/path/app.mjs && node --check static/practice/mastery.mjs
       - run: python3 scripts/verify-exercises.py
+      - run: python3 scripts/verify-screen.py && node scripts/build-screen.mjs --check && node --check static/practice/screen/app.mjs
       - run: python3 scripts/verify-exercises.py --curriculum static/practice/ramp.json
       - run: python3 scripts/verify-exercises.py --curriculum static/practice/frontier.json
       - run: python3 scripts/verify-exercises.py --curriculum static/practice/variations.json

@@ -1,0 +1,12 @@
+{
+ "id": "versioned-kv-store",
+ "title": "Versioned Key/Value Store",
+ "family": "state",
+ "phase": "transfer",
+ "order": 100,
+ "minutes": 60,
+ "entry": "src/versioned_kv_store.py",
+ "summary": "In-memory store with a global version counter, per-key history, tombstone deletes, reads at a past version, and point-in-time snapshots.",
+ "weights": {"test_versions_increase_across_keys": 2, "test_get_current_and_missing": 1, "test_delete_is_a_tombstone_in_history": 3, "test_delete_of_absent_or_deleted_key_creates_no_version": 2, "test_reads_do_not_advance_version": 1, "test_get_at_version_returns_value_as_of_then": 3, "test_get_at_version_sees_tombstones_and_absence": 2, "test_get_at_version_boundaries_and_validation": 2, "test_reput_after_delete": 2, "test_history_returns_fresh_copies": 2, "test_history_of_unknown_key_is_empty": 1, "test_key_type_validation": 2, "test_values_stored_by_reference": 1, "test_snapshot_current_is_fresh_and_excludes_deleted": 2, "test_snapshot_at_version_is_point_in_time": 3, "test_snapshot_is_sorted_by_key": 1, "test_scale_history_lookups": 2},
+ "critical": ["test_delete_is_a_tombstone_in_history", "test_get_at_version_returns_value_as_of_then", "test_snapshot_at_version_is_point_in_time"]
+}

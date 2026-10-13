@@ -97,6 +97,8 @@ jobs:
           python3 scripts/verify-advanced-workspaces.py
           python3 scripts/sync-assessment-catalog.py
           python3 scripts/verify-explorer-examples.py
+          python3 scripts/verify-screen.py
+          node scripts/build-screen.mjs --check
       - name: Build coding practice editor
         run: npm run build:practice-editor
       - name: Stamp coding practice release

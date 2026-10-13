@@ -1,0 +1,12 @@
+{
+ "id": "inventory-rollup",
+ "title": "Inventory Rollup",
+ "family": "data",
+ "phase": "fluency",
+ "order": 20,
+ "minutes": 20,
+ "entry": "src/inventory.py",
+ "summary": "Fluency drill. Clean dirty stock records into a deterministic report and a rejected-rows list with reasons.",
+ "weights": {"test_clean_rows_aggregate": 2, "test_sku_case_and_whitespace_merge": 3, "test_warehouse_case_and_whitespace_merge": 2, "test_string_quantities_parsed": 2, "test_missing_or_blank_fields_rejected": 3, "test_invalid_quantity_types": 2, "test_negative_quantity_rejected_zero_kept": 2, "test_non_dict_rows_and_bad_input": 2, "test_rejected_keeps_input_order_and_index": 2, "test_output_key_order_sorted": 2, "test_empty_and_all_rejected": 1, "test_input_not_mutated": 2, "test_result_independent_of_row_order": 2, "test_reason_precedence": 1, "test_scale_many_rows": 1},
+ "critical": ["test_sku_case_and_whitespace_merge", "test_missing_or_blank_fields_rejected"]
+}
