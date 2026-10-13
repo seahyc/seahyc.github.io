@@ -27,8 +27,8 @@ function legacySummary(storage){
   attempted:Object.keys(ex).filter(id=>ex[id].attempts||ex[id].lastAt),
   attempts:attempts.length,
   lastActivity:last?new Date(last).toISOString():null,
-  // Time per attempt is the fluency signal on the old path.
-  slowest:attempts.filter(a=>a.passed&&a.elapsed<24*3600).sort((a,b)=>b.elapsed-a.elapsed).slice(0,5).map(a=>({id:a.id,minutes:Math.round(a.elapsed/60),cold:!!a.cold}))
+  // Time per attempt is the fluency signal on the old path; over 3 h means the tab was left open.
+  slowest:attempts.filter(a=>a.passed&&a.elapsed<3*3600).sort((a,b)=>b.elapsed-a.elapsed).slice(0,5).map(a=>({id:a.id,minutes:Math.round(a.elapsed/60),cold:!!a.cold}))
  };
 }
 
