@@ -4,7 +4,6 @@ import {spawnSync} from 'node:child_process';
 import {readFileSync} from 'node:fs';
 import {createSyntaxChecker} from '../static/practice/syntax-client.mjs';
 
-const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const workerSource=readFileSync(new URL('../static/practice/syntax-worker.mjs',import.meta.url),'utf8');
 const editorSource=readFileSync(new URL('../projects-src/practice-editor/editor.mjs',import.meta.url),'utf8');
 
@@ -51,56 +50,64 @@ test('browser compiler is compile-only and editor exposes native lint diagnostic
   assert.match(editorSource,/setDiagnostics\(diagnostics=\[\]\)/);
 });
 
-test('client debounces edits and ignores an older worker result',async()=>{
+test('client debounces edits and ignores an older worker result',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const worker=new FakeWorker(),results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:()=>{},workerFactory:()=>worker,debounceMs:5});
-  checker.check('first','a.py');await sleep(10);const first=worker.messages[0];
-  checker.check('second','a.py');await sleep(10);const second=worker.messages[1];
+  checker.check('first','a.py');sleep(10);const first=worker.messages[0];
+  checker.check('second','a.py');sleep(10);const second=worker.messages[1];
   worker.emit({id:first.id,status:'checked',diagnostics:[{line:1,column:1,endLine:1,endColumn:2,message:'old'}]});
   worker.emit({id:second.id,status:'checked',diagnostics:[]});
   assert.deepEqual(results,[{id:second.id,status:'checked',diagnostics:[]}]);checker.destroy();
 });
 
-test('clear cancels debounce and invalidates in-flight results',async()=>{
+test('clear cancels debounce and invalidates in-flight results',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const worker=new FakeWorker(),results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:()=>{},workerFactory:()=>worker,debounceMs:5});
-  checker.check('waiting','a.py');checker.clear();await sleep(10);assert.equal(worker.messages.length,0);
-  checker.check('sent','a.py');await sleep(10);const sent=worker.messages[0];checker.clear();worker.emit({id:sent.id,status:'checked',diagnostics:[]});
+  checker.check('waiting','a.py');checker.clear();sleep(10);assert.equal(worker.messages.length,0);
+  checker.check('sent','a.py');sleep(10);const sent=worker.messages[0];checker.clear();worker.emit({id:sent.id,status:'checked',diagnostics:[]});
   assert.deepEqual(results,[]);checker.destroy();
 });
 
-test('a load timeout reports unavailable and a later edit creates a fresh worker',async()=>{
+test('a load timeout reports unavailable and a later edit creates a fresh worker',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const workers=[],statuses=[],results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:value=>statuses.push(value),workerFactory:()=>{const worker=new FakeWorker();workers.push(worker);return worker;},debounceMs:1,timeoutMs:12});
-  checker.check('one','a.py');await sleep(20);
+  // The timeout is armed when the debounce fires, so advance through each stage in turn.
+  checker.check('one','a.py');sleep(1);sleep(12);
   assert.equal(workers[0].terminated,true);assert.equal(results[0].status,'unavailable');assert.ok(statuses.includes('unavailable'));
-  checker.check('two','a.py');await sleep(5);assert.equal(workers.length,2);checker.destroy();
+  checker.check('two','a.py');sleep(5);assert.equal(workers.length,2);checker.destroy();
 });
 
-test('worker construction failure is reported without throwing from typing',async()=>{
+test('worker construction failure is reported without throwing from typing',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const statuses=[],results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:value=>statuses.push(value),workerFactory:()=>{throw Error('CSP blocked');},debounceMs:1});
-  assert.doesNotThrow(()=>checker.check('x = 1','a.py'));await sleep(5);
+  assert.doesNotThrow(()=>checker.check('x = 1','a.py'));sleep(5);
   assert.equal(results[0].status,'unavailable');assert.ok(statuses.includes('unavailable'));checker.destroy();
 });
 
-test('postMessage failure is contained and reported unavailable',async()=>{
+test('postMessage failure is contained and reported unavailable',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const results=[];class BrokenWorker extends FakeWorker{postMessage(){throw Error('blocked');}}
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:()=>{},workerFactory:()=>new BrokenWorker(),debounceMs:1});
-  checker.check('x = 1','a.py');await sleep(5);assert.equal(results[0].status,'unavailable');checker.destroy();
+  checker.check('x = 1','a.py');sleep(5);assert.equal(results[0].status,'unavailable');checker.destroy();
 });
 
-test('clear suppresses a stale worker error and the next check can recover',async()=>{
+test('clear suppresses a stale worker error and the next check can recover',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const workers=[],results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:()=>{},workerFactory:()=>{const worker=new FakeWorker();workers.push(worker);return worker;},debounceMs:1});
-  checker.check('one','a.py');await sleep(5);checker.clear();workers[0].fail();assert.deepEqual(results,[]);
-  checker.check('two','a.py');await sleep(5);assert.equal(workers.length,2);checker.destroy();
+  checker.check('one','a.py');sleep(5);checker.clear();workers[0].fail();assert.deepEqual(results,[]);
+  checker.check('two','a.py');sleep(5);assert.equal(workers.length,2);checker.destroy();
 });
 
-test('destroy prevents further work and terminates the compiler',async()=>{
+test('destroy prevents further work and terminates the compiler',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});const sleep=ms=>t.mock.timers.tick(ms);
   const worker=new FakeWorker(),results=[];
   const checker=createSyntaxChecker({onResult:value=>results.push(value),onStatus:()=>{},workerFactory:()=>worker,debounceMs:1});
-  checker.check('one','a.py');await sleep(5);checker.destroy();checker.check('two','a.py');worker.emit({id:1,status:'checked',diagnostics:[]});
+  checker.check('one','a.py');sleep(5);checker.destroy();checker.check('two','a.py');worker.emit({id:1,status:'checked',diagnostics:[]});
   assert.equal(worker.terminated,true);assert.deepEqual(results,[]);
 });
 
