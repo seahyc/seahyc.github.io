@@ -81,19 +81,19 @@ $MC url --device "$DEV" '<deeplink>'
 
 ## Generic deep-harvest loop (all apps)
 
-Use this loop for every platform. Depth bar matches the parent skill: **exhaustive by default** (≈10–20 genuine candidates, not the first 3).
+Use this loop for every platform. Depth is **inventory-driven**, not a fixed PDP count: precursor SERP until suitable listings **saturate**, then open PDPs against that set (see parent skill **Inventory depth**).
 
 1. **Launch** the marketplace app (or deep-link into search if available)
 2. Run **several queries** using the product name, brand, category terms, and relevant variant attributes
 3. **Sort by sales** (销量 / Top Sales / orders) — never trust default 综合 / Best Match alone
-4. **SERP pass:** scroll multiple screens; capture title, headline price, sold/rating, and variant hints into a jsonl. Filter out accessories, incomplete bundles, and bait variants that do not match the request
-5. **PDP pass:** open **12–20** unique high-signal listings (volume + protocol fit). On each:
+4. **Precursor SERP pass (no PDPs yet):** scroll until saturation — **3 consecutive screens with 0 new `keep`s**, or long-tail sold floor, or ~40–60 screen hard cap. Record title / sold / headline price / keep|junk|dupe into jsonl. Union keeps across queries → `unique_suitable_keeps`
+5. **PDP pass:** if N≤20 open **all** keeps; if larger, open high-sold first + diversity sample and state unverified remainder. On each:
    - Open the SKU / options sheet
    - Select the **exact variant** the user needs (such as size, colour, capacity, region, plug, or protocol)
    - Re-read **after-selection** price + shipping / GST / 集运 / ETA
    - Note any title-to-SKU mismatch where the selected option changes a material requirement or capability
    - Close the sheet / back out — **do not add to cart** until the user confirms the shortlist pick
-6. **Persist** `*-harvest.jsonl` + `*-final.md` (+ screenshots). Merge platforms in the parent skill's comparison table
+6. **Persist** `*-harvest.jsonl` + `*-final.md` (+ screenshots) including depth stats (`queries_run`, `serp_screens`, `unique_suitable_keeps`, `saturation`, `pdps_opened`). Merge platforms in the parent skill's comparison table
 7. **Hard stops:** lock screen, login/CAPTCHA, payment — hand to user. Never enter passcodes/secrets. Never place order
 
 Headline SERP prices often belong to the cheapest accessory, smallest size, or incomplete bundle — **compare on opened variant prices**.
