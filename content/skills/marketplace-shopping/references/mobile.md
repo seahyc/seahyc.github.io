@@ -71,6 +71,19 @@ $MC url --device "$DEV" '<deeplink>'
 - After each navigation: dump or screenshot before the next decision
 - One phone owner at a time — don't run two harvests against the same device in parallel
 
+## Human-like variability (anti risk-control)
+
+CN apps (especially **淘宝**) flag bursty, perfectly regular automation. Make MobileCLI motion look like a person browsing:
+
+1. **Randomize timing** — never fixed `sleep 1` between every action. Use bands: micro 0.15–0.45s before a tap, short 0.7–1.8s after navigation, read 1.8–3.5s on a new SERP/PDP, and occasional think pauses 3–6s (~10–15% of scrolls).
+2. **Jitter taps** — ±4–8px around the target; keep final **y ≥ ~95** (Dynamic Island). Prefer ref taps when the tree is good; jitter still applies to the resolved point.
+3. **Variable swipes** — change start/end x (±30px), swipe distance, and pace each scroll. Rarely (~5–10%) do a tiny reverse scroll then continue (as if correcting overshoot).
+4. **Don't thrash search** — after a captcha or risk wall, **do not** auto-resubmit search / spam deep links. Prefer: user clears captcha + lands on sales-sorted SERP, then agent only scrolls + opens PDPs.
+5. **Pace PDPs** — pause to "read" after open; back out calmly; never open dozens of PDPs in a tight loop without read pauses.
+6. **Captcha / slider** — hard stop for the user. Web reCAPTCHA MCPs do **not** cover in-app Taobao/Aliyun sliders; hand-clear, then resume with humanized scroll only.
+
+Apply this to PDD/Shopee too when sessions run long — Taobao is the strictest.
+
 ## Example bundle IDs
 
 | App | Bundle ID |
@@ -81,22 +94,37 @@ $MC url --device "$DEV" '<deeplink>'
 
 ## Generic deep-harvest loop (all apps)
 
-Use this loop for every platform. Depth bar matches the parent skill: **exhaustive by default** (≈10–20 genuine candidates, not the first 3).
+Use this loop for every platform. Depth is **inventory-driven**, not a fixed PDP count: precursor SERP until suitable listings **saturate**, then open PDPs against that set (see parent skill **Inventory depth**).
 
 1. **Launch** the marketplace app (or deep-link into search if available)
 2. Run **several queries** using the product name, brand, category terms, and relevant variant attributes
 3. **Sort by sales** (销量 / Top Sales / orders) — never trust default 综合 / Best Match alone
-4. **SERP pass:** scroll multiple screens; capture title, headline price, sold/rating, and variant hints into a jsonl. Filter out accessories, incomplete bundles, and bait variants that do not match the request
-5. **PDP pass:** open **12–20** unique high-signal listings (volume + protocol fit). On each:
+4. **Precursor SERP pass (no PDPs yet):** scroll until saturation — **3 consecutive screens with 0 new `keep`s**, or long-tail sold floor, or ~40–60 screen hard cap. Record title / sold / headline price / keep|junk|dupe into jsonl. Union keeps across queries → `unique_suitable_keeps`
+5. **PDP pass:** if N≤20 open **all** keeps; if larger, open high-sold first + diversity sample and state unverified remainder. On each:
    - Open the SKU / options sheet
    - Select the **exact variant** the user needs (such as size, colour, capacity, region, plug, or protocol)
    - Re-read **after-selection** price + shipping / GST / 集运 / ETA
    - Note any title-to-SKU mismatch where the selected option changes a material requirement or capability
    - Close the sheet / back out — **do not add to cart** until the user confirms the shortlist pick
-6. **Persist** `*-harvest.jsonl` + `*-final.md` (+ screenshots). Merge platforms in the parent skill's comparison table
+6. **Persist** `*-harvest.jsonl` + `*-final.md` (+ screenshots) including depth stats (`queries_run`, `serp_screens`, `unique_suitable_keeps`, `saturation`, `pdps_opened`). Merge platforms in the parent skill's comparison table
 7. **Hard stops:** lock screen, login/CAPTCHA, payment — hand to user. Never enter passcodes/secrets. Never place order
 
 Headline SERP prices often belong to the cheapest accessory, smallest size, or incomplete bundle — **compare on opened variant prices**.
+
+
+
+## Taobao antibot: do not MobileCLI-drive
+
+淘宝 (and often 天猫) fingerprint **WebDriverAgent / XCTest synthetic touches**. Random pauses and swipe jitter are **not enough** — the user can browse for hours with a real finger while the first `io tap` / `io swipe` (sometimes even `dump ui` / `screenshot` via the bridge) triggers a slider captcha.
+
+**Default for Taobao when WDA triggers risk-control**
+1. Stop all MobileCLI actions on 淘宝 for that session
+2. Give the user a short **search recipe** (queries + sort 销量 + what to capture)
+3. User browses normally on the phone
+4. User drops **share links** and/or screenshots into the task scratch folder (or pastes links in chat)
+5. Agent parses those into the precursor jsonl / shortlist and merges with PDD/Shopee
+
+Do **not** keep retrying captcha → automate → captcha loops. Prefer human browse + agent parse for Taobao; keep MobileCLI for PDD/Shopee when those stay stable.
 
 ## Platform key steps
 
@@ -121,11 +149,15 @@ Headline SERP prices often belong to the cheapest accessory, smallest size, or i
 
 ### Taobao (淘宝)
 
-1. Launch 淘宝; search Chinese keywords; sort **销量**
+**Prefer human-browse + agent-parse** when MobileCLI trips captcha (see **Taobao antibot** above). If the session is somehow stable without WDA flags:
+
+1. Launch 淘宝; search Chinese keywords; sort **销量** — avoid rapid deep-link thrash
 2. Deep scroll across multiple queries using the product and its important variant attributes
 3. Open item pages; select the exact requested SKU, prefer the after-coupon price, and note any required accessories or compatibility constraints
 4. Record shipping reality: China domestic vs 直邮新加坡 vs 集运 — all-in must include forwarder/GST when relevant
 5. For visual/custom goods, still apply parent skill 图集 / 图文详情 evidence rules when those surfaces exist in-app
+
+Otherwise: hand the user the query list, receive share links/screenshots, parse offline.
 
 ## Crash & bridge recovery
 
