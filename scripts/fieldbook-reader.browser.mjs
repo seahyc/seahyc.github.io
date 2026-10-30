@@ -22,6 +22,33 @@ if (!baseUrl) {
 const browser = await chromium.launch({ headless: true });
 
 try {
+  const momentumPage = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await momentumPage.goto(`${baseUrl}/learning/pipeline-in-a-person/#card-18-a-12-24-month-path-of-attack`, { waitUntil: 'networkidle' });
+  await momentumPage.evaluate(() => {
+    const viewport = document.querySelector('.swiper');
+    viewport.swiper.slideNext();
+    const sheet = document.querySelector('.swiper-slide-active .story-scroll');
+    sheet.renderCardOffset(sheet.cardMaxOffset());
+    viewport.dispatchEvent(new WheelEvent('wheel', { deltaY: 80, bubbles: true, cancelable: true }));
+  });
+  await momentumPage.waitForFunction(() => !document.querySelector('.swiper').swiper.animating, null, { timeout: 2000 });
+  const momentumState = await momentumPage.evaluate(() => {
+    const swiper = document.querySelector('.swiper').swiper;
+    return {
+      expected: swiper.translate,
+      actual: new DOMMatrixReadOnly(getComputedStyle(swiper.wrapperEl).transform).m41,
+      slug: document.querySelector('.swiper-slide-active').dataset.cardSlug,
+      hash: location.hash,
+    };
+  });
+  assert.ok(Math.abs(momentumState.actual - momentumState.expected) < 1, 'momentum must not strand the wrapper between cards');
+  assert.equal(momentumState.hash, '#card-' + momentumState.slug, 'completed transition must update the shareable URL');
+  await momentumPage.locator('[data-swipe="next"]').click();
+  await momentumPage.waitForFunction(() => !document.querySelector('.swiper').swiper.animating);
+  assert.equal(await momentumPage.evaluate(() => document.querySelector('.swiper').swiper.activeIndex), 20);
+  await momentumPage.close();
+  console.log('PASS wheel momentum during a card turn settles and subsequent navigation works');
+
   const hashPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await hashPage.goto(`${baseUrl}/learning/the-joint-that-has-to-survive/#card-02-the-mechanism`, { waitUntil: 'networkidle' });
   assert.equal(
