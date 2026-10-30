@@ -1,0 +1,14 @@
+{
+  "currency": "USD", "status": "illustrative allocations, not vendor quotes or cost forecasts",
+  "rows": [
+    {"item":"Scientific leadership and program management", "low":40000,"base":100000,"high":220000},
+    {"item":"Design, synthesis, expression and QC", "low":30000,"base":70000,"high":180000},
+    {"item":"Functional assays and independent repeats", "low":40000,"base":110000,"high":260000},
+    {"item":"Exposure and fit-for-purpose disease evidence", "low":50000,"base":150000,"high":400000},
+    {"item":"IP, contracts and diligence preparation", "low":20000,"base":50000,"high":100000},
+    {"item":"Failure, rework and contingency reserve", "low":45000,"base":120000,"high":340000}
+  ],
+  "excludes":"Founder salary, taxes, financing costs, full IND-enabling CMC/GLP package, clinical trials; paths stopping earlier spend less; more complex programs can exceed high",
+  "staged_example":{"initial":60000,"p_function":0.30,"functional_follow_on":120000,"p_translation_given_function":0.25,"translational_follow_on":300000,"p_deal_given_translation":0.20,"net_upfront_if_sold":5000000},
+  "warning":"Gate probabilities, stage costs and net-upfront values are invented stress-test inputs, not estimates from selected deals. Staged example is separate from full-package budget scenarios."
+}
