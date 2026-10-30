@@ -36,7 +36,7 @@ alt = "Watercolor comparison of binding a target and producing a functional chan
 
 <figure style="grid-column:1 / -1;margin:0"><img src="/images/pipeline-in-a-person/distributed-lab.svg" alt="A founder and scientific lead coordinate design, contract laboratories and independent evidence review; the output is a transferable asset." style="max-width:680px;background:transparent"><figcaption>One decision centre, several specialist partners. Outsourcing changes who owns the equipment; it does not remove scientific responsibility. Conceptual diagram.</figcaption></figure>
 
-<blockquote style="grid-column:1 / -1"><p>The ambition is concrete: build a differentiated therapeutic programme, produce convincing physical evidence, and earn the resources to carry it towards patients. Mithril Medicine makes this an organisational precedent we can study—not merely a possibility we can imagine.</p></blockquote>
+<blockquote style="grid-column:1 / -1"><p>Definite optimism is the founding premise: a better future can be deliberately built. Choose a disease worth changing, develop a specific insight into how to change it, and organise the company around making that treatment possible. Mithril Medicine gives this ambition a concrete organisational precedent.</p></blockquote>
 
 ---
 
@@ -58,19 +58,21 @@ I would start with the question that makes the company worth existing: **what us
 
 ## 02 · The seductive version breaks
 
-### Definite optimism means choosing the future you intend to build
+### A better future, designed and built
 
-Peter Thiel’s useful distinction is between expecting progress to happen and forming a specific plan to make it happen. In his 2013 SXSW talk, he contrasts a future shaped through conviction and focused work with a future treated as a random walk. [Thiel’s talk, transcript with original audio](https://www.bishoprockcap.com/assets/library/peter-thiel/August%202020%20Peter%20Thiel%20You%20Are%20Not%20a%20Lottery%20Ticket%20%20Interactive%202013%20%20SXSW%20%28transcript%29)
+Peter Thiel’s **definite optimism**, developed in *Zero to One* and his earlier talks, combines belief in a better future with a specific view of how to create it. In his 2013 SXSW talk, he contrasts focused conviction and engineering with treating the future as a random walk. [Thiel’s talk, transcript with original audio](https://www.bishoprockcap.com/assets/library/peter-thiel/August%202020%20Peter%20Thiel%20You%20Are%20Not%20a%20Lottery%20Ticket%20%20Interactive%202013%20%20SXSW%20%28transcript%29)
 
-For this company, I would write down the intended future: **a small team creates a treatment candidate that restores a named function in a defined disease, then builds the evidence required to develop it further.**
+Here is how I would apply that mindset to this company.
 
-Working backwards turns that ambition into engineering questions. Which function is missing? What molecule could restore it? Which experiment demonstrates restoration? Which partner can run it? What must we learn next, and who owns the decision?
+**Describe the future in concrete terms.** A defined group of patients gains a treatment that restores a named biological function. Specify what changes in their lives and the evidence that would establish the change.
 
-This is definite optimism applied to a biological problem. It does not make biological outcomes deterministic. It makes our actions specific enough to improve the outcome.
+**Have an insight that makes the company necessary.** Identify an overlooked mechanism, molecular architecture or way of organising the work. Explain why this particular team can turn it into a meaningful advance. “AI makes biotech cheaper” is too broad to guide a company.
 
-Human genetics can help choose that first question: a retrospective study found greater clinical-development success for mechanisms supported by genetic evidence. That supports purposeful selection; it does not supply a founder’s probability of success. [Minikel and colleagues](https://pmc.ncbi.nlm.nih.gov/articles/PMC11096124/)
+**Concentrate on one important problem.** Select a narrow disease–function pair where an exceptional result matters. Build the design, experimental and scientific capabilities required to solve it; work backwards from that result to today’s decisions.
 
-The task is to turn each important unknown into work that somebody can perform.
+**Let experiments improve the plan.** Conviction belongs in the mission and the reasoned thesis. Each proposed molecule must earn confidence through evidence. When a result contradicts the mechanism, revise the intervention or choose a stronger thesis.
+
+My founder question is: **what useful future can we now build that would otherwise remain unrealised?** The company is the plan, people and capabilities assembled to make the answer real.
 
 ---
 
@@ -270,7 +272,9 @@ A founder competes with more than other virtual biotechs.
 | CRO-led discovery service | Execution capacity and established workflows | Ownership of the product decision and resulting asset |
 | Better-funded biotech | Specialists, runway and parallel programmes | A narrower question it can answer unusually well |
 
-For me, the promising advantage is a combination: unusually good disease access, a clear product hypothesis, an assay that predicts something useful, and disciplined iteration. None is established merely by using frontier models.
+I would write the founding insight in one sentence: **“Others overlook this opportunity because ___; we believe ___; our decisive evidence will be ___.”** This is a proposed tool for sharpening the thesis, not a claim that an overlooked opportunity has already been found.
+
+The goal is to build a capability that becomes difficult to reproduce: deep disease knowledge, an informative assay, a record of productive design–test decisions, and rights to a differentiated candidate. Each experiment should strengthen that capability as well as advance the molecule. A narrow starting point can support an ambitious company when it produces something uniquely valuable.
 
 If the founder has no disease advantage but discovers a repeatable bottleneck in experiment traceability or procurement, that may suggest a different software business. It would need its own customer validation. Building an asset company is not automatically the best way to monetise engineering skill.
 
@@ -374,7 +378,9 @@ The intended destination is a differentiated programme with reproducible functio
 
 ### Leave the month with a programme you can start
 
-The first thirty days should produce a specific company thesis and an executable first tranche.
+The first thirty days should produce a founding plan clear enough for an exceptional scientist, investor or partner to commit to it.
+
+Write a one-page **definite-future memo**: the patient outcome we intend to create; the insight others have missed; why the opportunity is actionable now; the capability we will build; the first decisive proof; and the resources and owner for achieving it. Every statement should connect to the work below.
 
 **Week 1: choose the problem.** Compare three disease–mechanism opportunities. For each, name the missing or harmful function, the proposed modality, the best comparator and the patient benefit sought. Recruit a disease specialist to challenge the argument.
 
@@ -386,7 +392,7 @@ The first thirty days should produce a specific company thesis and an executable
 
 These are proposed actions; this research has not ordered work or validated a target. If a key premise fails, choose a better intervention rather than manufacturing confidence around it.
 
-My decision is to pursue this model: one carefully chosen disease problem, a specific restorative mechanism, an AI-assisted operating loop and an exceptional specialist network. The first thirty days should make that ambition executable.
+My decision is to pursue a specific future: make a useful treatment possible for a carefully chosen disease through a distinctive restorative mechanism, an AI-assisted operating loop and an exceptional specialist network. The first thirty days turn that conviction into a company plan. Each subsequent tranche builds the evidence and capability needed to fulfil it.
 
 ---
 
