@@ -208,6 +208,7 @@
   var edgePreview = null;
   var edgePreviewTimer = null;
   function renderEdgeFlipPreview(direction, amount) {
+    if (swiper.animating) return;
     var active = swiper.activeIndex;
     var incoming = active + direction;
     if (!slides[incoming] || amount <= 0) return;
@@ -224,6 +225,7 @@
     setCardMotion(slides[incoming], -direction * (1 - eased));
   }
   function clearEdgeFlipPreview(animate) {
+    if (swiper.animating) return;
     if (!edgePreview) return;
     var previous = edgePreview;
     edgePreview = null;
@@ -401,6 +403,8 @@
   });
   viewport.addEventListener('wheel', function (event) {
     if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    // A momentum event must not replace the transform while Swiper owns it.
+    if (swiper.animating) { event.preventDefault(); return; }
     var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
     if (!activeScroll) return;
     if (nativeCardScroll) return;

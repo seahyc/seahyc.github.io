@@ -10,59 +10,77 @@ main_class = "main-research-swipe"
 
 [fieldbook]
 theme = "biotech"
+
+[fieldbook.illustrations.cover]
+src = "/images/pipeline-in-a-person/founder-labs.webp"
+alt = "Watercolor of one founder coordinating a network of specialist laboratories"
+
+[fieldbook.illustrations."02-the-seductive-version-breaks"]
+src = "/images/pipeline-in-a-person/build-the-bridge.webp"
+alt = "An engineer and scientist building a bridge from molecular design towards patient benefit"
+
+[fieldbook.illustrations."04-what-ai-has-actually-proved"]
+src = "/images/pipeline-in-a-person/binding-function.webp"
+alt = "Watercolor comparison of binding a target and producing a functional change"
 +++
 
 # PIPELINE<br>IN A PERSON
 
-### A small company can rent a laboratory. Can it earn the right to build a medicine?
+### One founder. A network of laboratories. A definite plan to build a medicine.
 
 **A Fieldbook for founders and investors · 30 October 2026**
 
-<p style="grid-column:1 / -1">I find the possibility difficult to ignore: a technical founder, working with a few exceptional scientists and laboratories around the world, might create something that changes the course of a rare disease.</p>
+<p style="grid-column:1 / -1">A child born with a devastating genetic disease should not have to wait for a large company to make that disease a priority. I think a new kind of founder can help change that: one who combines AI, specialist scientists and rented laboratory capacity into a focused drug-development company.</p>
 
 <p style="grid-column:1 / -1">The founder would own the question, the experiments, the evidence and the rights. Most of the physical infrastructure would belong to somebody else.</p>
 
 <figure style="grid-column:1 / -1;margin:0"><img src="/images/pipeline-in-a-person/distributed-lab.svg" alt="A founder and scientific lead coordinate design, contract laboratories and independent evidence review; the output is a transferable asset." style="max-width:680px;background:transparent"><figcaption>One decision centre, several specialist partners. Outsourcing changes who owns the equipment; it does not remove scientific responsibility. Conceptual diagram.</figcaption></figure>
 
-<blockquote style="grid-column:1 / -1"><p>My thesis: a lean, expert-led therapeutic company is plausible. A dependable shortcut from twenty AI designs to a lucrative mouse-data exit is not established.</p></blockquote>
+<blockquote style="grid-column:1 / -1"><p>The ambition is concrete: build a differentiated therapeutic programme, produce convincing physical evidence, and earn the resources to carry it towards patients. Mithril Medicine makes this an organisational precedent we can study—not merely a possibility we can imagine.</p></blockquote>
 
 ---
 
 ## 01 · What is becoming possible
 
-### The company can be smaller than its laboratory
+### Mithril has already crossed the organisational frontier
 
-A therapeutic asset is more than a molecule. It is a specific candidate, a proposed medical use, the evidence supporting it, and rights another company can acquire or license.
+On 27 October 2026, Anthropic announced its acquisition of **Mithril Medicine**, a one-person company led by Cody Tranbarger. It described a founder using Claude to coordinate **11 external laboratories**, taking a muscular-dystrophy programme from idea to encouraging mouse results in **under 18 months**. The research continues inside Anthropic. [Anthropic announcement](https://www.anthropic.com/research/early-progress-drug-development)
 
-The attractive change is that a founder can buy pieces of the discovery process. Commercial laboratories offer protein production and measurements of how molecules interact. GenScript, for example, sells surface plasmon resonance and biolayer interferometry services: instruments that help measure binding. Availability is real; project cost and scientific adequacy still require a scoped proposal. [GenScript service menu](https://www.genscript.com/bli-spr-real-time-affinity-measurement-services.html)
+That is the precedent I want to replicate: one founder assembling capabilities that used to require a much larger organisation. The acquisition is a demonstrated organisational outcome; it is not yet a demonstrated human treatment. The checked announcement does not disclose the price or the programme’s budget. Tranbarger brought biology education and biotech experience; the model to replicate combines founder agency with acquired scientific judgment. [Founder biography](https://www.cureraredisease.org/team-members/cody-tranbarger)
 
-AI adds another piece: a way to generate and rank molecular candidates. That combination could make it cheaper to ask a narrow biological question before building a large organisation.
+The opportunity is to build a company around a **specific therapeutic insight**, with AI carrying much of the reading, analysis and coordination and specialist partners doing the physical work. The founder owns the product hypothesis, the decisions, the evidence and the rights.
 
-I would pursue that opening as a **small scientific company**, with a technical founder and an accountable translational scientist—the person connecting laboratory findings to a plausible medicine. “Pipeline in a person” describes concentrated coordination. It does not describe the total expertise required.
+A therapeutic asset is that whole package: a candidate, an intended medical use, supporting data and transferable ownership. Creating one is a substantial achievement even before human trials.
+
+I would start with the question that makes the company worth existing: **what useful biological function can we restore, and why can this small team now do it unusually well?**
 
 ---
 
 ## 02 · The seductive version breaks
 
-### Three shortcuts that do not survive scrutiny
+### Definite optimism means choosing the future you intend to build
 
-The original proposition makes a powerful promise: choose a single-gene disease, generate binders, buy physical validation, then sell the asset. Three substitutions make it sound easier than it is.
+Peter Thiel’s useful distinction is between expecting progress to happen and forming a specific plan to make it happen. In his 2013 SXSW talk, he contrasts a future shaped through conviction and focused work with a future treated as a random walk. [Thiel’s talk, transcript with original audio](https://www.bishoprockcap.com/assets/library/peter-thiel/August%202020%20Peter%20Thiel%20You%20Are%20Not%20a%20Lottery%20Ticket%20%20Interactive%202013%20%20SXSW%20%28transcript%29)
 
-**A known cause becomes a solved intervention.** Knowing which gene causes disease does not establish whether a particular treatment can reverse damage, reach the relevant tissue, or avoid harmful effects.
+For this company, I would write down the intended future: **a small team creates a treatment candidate that restores a named function in a defined disease, then builds the evidence required to develop it further.**
 
-**Binding becomes therapeutic function.** A molecule can attach beautifully to a protein without changing the process that makes a patient ill. Sometimes blocking that protein is exactly the wrong action.
+Working backwards turns that ambition into engineering questions. Which function is missing? What molecule could restore it? Which experiment demonstrates restoration? Which partner can run it? What must we learn next, and who owns the decision?
 
-**A positive experiment becomes a buyer.** Buyers also need differentiation, reproducibility, rights, and a credible development path. A report carrying a respected laboratory’s name cannot supply those automatically.
+This is definite optimism applied to a biological problem. It does not make biological outcomes deterministic. It makes our actions specific enough to improve the outcome.
 
-Human genetics remains useful. A 2024 retrospective study estimated **2.6 times greater clinical-development success** for mechanisms with genetic support. That is a relative association across studied programmes, varying by phase and therapeutic area. It is neither certainty nor a success probability for a new founder. [Minikel and colleagues](https://pmc.ncbi.nlm.nih.gov/articles/PMC11096124/)
+Human genetics can help choose that first question: a retrospective study found greater clinical-development success for mechanisms supported by genetic evidence. That supports purposeful selection; it does not supply a founder’s probability of success. [Minikel and colleagues](https://pmc.ncbi.nlm.nih.gov/articles/PMC11096124/)
 
-The opening survives. The claim of zero biological risk does not.
+The task is to turn each important unknown into work that somebody can perform.
 
 ---
 
 ## 03 · Match the molecule to the job
 
-### A missing brake is not the same as a missing engine
+### Restore the function that matters
+
+Mithril’s reported approach is a **bispecific bridge**: an antibody joining laminin-α4 to β-dystroglycan to restore muscle anchorage in LAMA2-related disease. Its tetravalent construct was associated with roughly doubled force and grip strength in a mouse pilot. The report is not peer reviewed; nonrandomised, unblinded study limitations make controlled replication an important next step. [Technical report, abstract and discussion](https://www-cdn.anthropic.com/52e1f5d50c47ca3818f56704c27cf19e59b62e77.pdf)
+
+The lesson I take is to search for a tractable restoration of function, then choose the molecular architecture that can perform it.
 
 Proteins perform different jobs: they cut other molecules, carry signals, build structures, or hold other proteins together. A binder is a molecule that attaches to a target. Attachment matters only if it changes the right job in the right direction.
 
@@ -132,17 +150,17 @@ I would select the next experiment by its ability to change the decision. Repeat
 
 ## 07 · Biology as a service, with state
 
-### The purchase order needs a scientific acceptance test
+### Build a scientific operating system
 
-The API metaphor is useful for finding capacity. It becomes misleading when it suggests interchangeable, predictable calls.
+Mithril’s technical report includes a revealing operational example: Claude helped turn a **341-page package on 113 constructs** into a coordinated plan across **five CROs**. A human decision changed the set progressing to 89 constructs. People reviewed and sent the emails; the report also records AI errors. [Technical report, pp. 19–20](https://www-cdn.anthropic.com/52e1f5d50c47ca3818f56704c27cf19e59b62e77.pdf)
 
-For each outsourced task I would want three agreements: what material and method are being supplied; what result constitutes a technically valid experiment; and what conclusion that result can support. A failed biological hypothesis can emerge from a perfectly executed service.
+My replication plan is to make that loop explicit. Every result should connect to a versioned material, a question, an acceptance criterion and a next decision. Every decision should update the affected experiments, orders and partner instructions.
 
-The founder and scientific lead should agree on comparator choice, quality checks, repeat policy and raw-data delivery before work begins. Contracts should address samples, methods, intellectual property, publication, subcontracting and the ability to transfer work to another laboratory.
+The founder’s technical advantage is building this operating system: document retrieval, structured experiment records, result ingestion, analysis notebooks, dependency tracking and reviewable drafts. Start with a dependable workflow that one scientist can inspect. Automate more as its reliability earns trust.
 
-The minimum team is a **coverage map**, not a headcount target: disease biology, protein engineering, translational pharmacology, experimental statistics, and IP/contracts all need named owners. Some can be part-time specialists; some roles may overlap.
+Expertise remains a capability to acquire deliberately. Assign owners for disease biology, molecular engineering, translational pharmacology, statistics and IP. They can be collaborators, advisers, consultants and CRO specialists rather than a large permanent payroll.
 
-The founder’s engineering advantage is real here: versioning materials, tracing results to decisions, tracking exceptions and preventing silent scope changes. It compounds scientific judgment. It cannot replace it.
+“One person” describes the company’s organisational core. It is not a requirement to learn every specialty alone. The winning founder recruits judgment as deliberately as laboratory capacity.
 
 ---
 
@@ -154,17 +172,17 @@ A disease model is useful only for the question it represents. A result can depe
 
 I would ask an independent reviewer whether the model, comparator and analysis could distinguish a meaningful biological effect from a misleading one. Randomisation, blinding, justified sample size and uncertainty reporting are basic design issues, not optional decoration around a positive graph. [NC3Rs design guidance](https://nc3rs.org.uk/3rs-resources/key-elements-well-designed-experiment)
 
-The regulatory direction also complicates the original mouse-first story. FDA is advancing human-relevant alternatives; its checked monoclonal-antibody safety guidance remains **draft, not for implementation**, and concerns particular nonclinical safety questions. That is not a blanket waiver or a claim that any cell assay replaces disease evidence. [FDA draft status and scope](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/monoclonal-antibodies-streamlined-nonclinical-safety-studies), [April 2026 progress report](https://www.fda.gov/news-events/press-announcements/fda-achieves-year-1-goals-reducing-animal-testing-drug-development)
+The regulatory direction creates room to choose better evidence. FDA is advancing human-relevant alternatives; its checked monoclonal-antibody safety guidance remains **draft, not for implementation**, and concerns particular nonclinical safety questions. That is not a blanket waiver or a claim that any cell assay replaces disease evidence. [FDA draft status and scope](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/monoclonal-antibodies-streamlined-nonclinical-safety-studies), [April 2026 progress report](https://www.fda.gov/news-events/press-announcements/fda-achieves-year-1-goals-reducing-animal-testing-drug-development)
 
-Exploratory efficacy, a development candidate, and an investigational-new-drug application package are different milestones. This Fieldbook proposes an early evidence programme; it does not price or promise the complete package needed to begin human trials.
+Choose the evidence package that advances the programme towards a development candidate. Early efficacy and a clinical-entry application are different milestones, so plan the handover explicitly rather than treating one experiment as the whole journey.
 
 ---
 
 ## 09 · Budget for learning, including failure
 
-### These are cash envelopes to interrogate, not laboratory quotations
+### Make the first programme financeable
 
-I could not validate the original **$15,000–$35,000 in-vitro** and **$40,000–$80,000 mouse-study** packages as complete, transferable market prices. They might purchase scoped work in some circumstances. They are not a supported end-to-end budget.
+The first financing advantage is structural: buy specialist capacity for a defined programme instead of owning every capability at the outset. To turn that advantage into a plan, price the work from the bottom up. The pasted assay and mouse-study estimates remain unverified; the checked Mithril materials do not establish a transferable programme budget.
 
 Here is an original allocation model for a capped early research programme. The columns are **illustrative low/base/high planning envelopes**, not cost estimates for a selected target. All amounts are USD thousands.
 
@@ -202,19 +220,23 @@ I would seek two comparable written bids for the next decision, plus a funded re
 
 ## 11 · The strongest bear case
 
-### You can buy every task and still buy the wrong programme
+### Turn the bear case into a work programme
 
-Imagine the founder executes flawlessly. Sequences arrive. Proteins are made. Binding is excellent. A disease-model graph moves in the desired direction.
+The strongest objection is that a founder can coordinate every task efficiently and still pursue an ineffective treatment. A beautiful binder may not restore function. A functional lead may not reach the tissue. A positive model result may not predict a patient benefit. A technically good molecule may offer too little improvement over an incumbent.
 
-Then diligence reveals the problem: the relevant human tissue is inaccessible, the effect requires impractical exposure, the comparator was weak, the molecule aggregates, the patent position is narrow, or an incumbent already delivers the desired benefit more conveniently.
+These are concrete failure modes. I would give each one a corresponding design requirement.
 
-None of those failures requires an incompetent CRO. They can follow from a bad initial product hypothesis.
+| Challenge | Work that can resolve it |
+|---|---|
+| The intervention changes the wrong biology | Write a mechanism-to-function argument reviewed by a disease specialist |
+| Binding does not produce the intended effect | Make the functional readout an early milestone |
+| The molecule cannot work at relevant exposure | Bring translational pharmacology into candidate selection |
+| A positive result is fragile | Plan independent reproduction and appropriate controls |
+| The product is undifferentiated | Define the patient benefit and comparator before optimisation |
 
-The company also has a concentration problem. One founder can become the bottleneck for contracts, scientific interpretation, fundraising and vendor coordination. A single-asset strategy concentrates technical and financing risk; generating many similar designs does not diversify a mistaken mechanism.
+This is where founder conviction becomes useful. It keeps the programme focused long enough to solve hard problems, while demanding evidence about the chosen approach.
 
-My answer is to pay for contradiction early. A retained scientific lead must have authority to stop the work. An independent reviewer should see negative findings and raw data. The programme should have an explicit capital cap and a predefined reason to abandon it.
-
-That discipline may produce fewer companies. It should produce better reasons to build the ones that remain.
+A result that disproves one design can still improve the programme. The question is whether it changes a tractable design variable or overturns the therapeutic premise. I would redesign the former and revisit the latter.
 
 ---
 
@@ -222,7 +244,7 @@ That discipline may produce fewer companies. It should produce better reasons to
 
 ### The first product is a testable improvement
 
-I would screen for an extracellular **inhibitory mechanism** with strong human support, a quantitative functional readout, accessible exposure, and a specific advantage over the best available alternative. This is a hypothesis about tractability, not a validated commercial opening.
+I would screen for an **extracellular function that a protein therapeutic could restore or control**: bridge a broken connection, replace a missing activity, or restrain a harmful one. Prioritise strong human support, a quantitative functional readout, accessible exposure and a specific patient benefit. This is a proposed selection framework; it has not yet validated a new target.
 
 <figure><img src="/images/pipeline-in-a-person/wedge.svg" alt="Proposed target gates: right mechanism, measurable function, meaningful differentiation and transferable rights. Failure of any gate stops synthesis." style="max-width:680px;background:transparent"><figcaption>Proposed screening gates. Passing these earns a feasibility experiment, not a therapeutic claim.</figcaption></figure>
 
@@ -256,59 +278,61 @@ If the founder has no disease advantage but discovers a repeatable bottleneck in
 
 ## 14 · What buyers actually buy
 
-### Real transactions prove possibility, not a founder’s expected return
+### Mithril establishes a second kind of strategic value
 
-There are buyers for early assets. The important question is what came with the asset.
+Mithril belongs in the buyer map. Anthropic explicitly says it acquired the company and is continuing its research. My previous edition missed this direct AI-lab precedent. [Acquirer’s announcement](https://www.anthropic.com/research/early-progress-drug-development)
 
-| Transaction | Evidence stage and package at announcement | Disclosed economics |
+For a biopharma partner, the asset thesis is a differentiated route to a useful medicine. For an AI research organisation, an active programme can also be an environment for improving scientific capabilities. That second rationale is my inference from the acquirer’s stated research strategy, not a disclosed valuation formula.
+
+| Potential partner | Package to build | Question to answer early |
 |---|---|---|
-| AbbVie / Mitokinin, 2023 | Discovery-stage PINK1 programme; prior collaboration; company founded in 2013 | $110m at closing; up to $545m further milestones, plus royalties |
-| Novartis / DTx Pharma, 2023 | Preclinical programmes plus proprietary RNA-delivery platform | Price omitted here: gross cash consideration and net acquired-cash accounting differ |
-| Sanofi / Dren DR-0201, 2025 | Antibody in ongoing phase 1 studies, with preclinical and early clinical evidence | $600m upfront; up to $1.3bn future milestones |
+| Biopharma developer | Therapeutic differentiation, reproducible data and transferable rights | Does this address a priority in its development portfolio? |
+| Specialist biotech investor | Credible scientific insight and a financeable next milestone | Can the next tranche create a material advance? |
+| AI research organisation | A serious therapeutic programme and a working AI–laboratory loop | Does it reveal important capabilities the organisation wants to build? |
+| Disease-focused collaborator | A clear connection between the programme and patient benefit | Can its knowledge or infrastructure improve the programme? |
 
-Sources: [AbbVie buyer release](https://news.abbvie.com/2023-10-05-AbbVie-Exercises-Exclusive-Right-to-Acquire-Mitokinin,-Further-Strengthening-Neuroscience-Pipeline), [Novartis SEC filing, note 3](https://www.sec.gov/Archives/edgar/data/1114448/000137036823000068/a231024-99_2.htm), [Sanofi buyer release](https://www.sanofi.com/en/media-room/press-releases/2025/2025-03-20-06-00-00-3045945).
+Earlier transactions also show substantial buyer interest in early science: AbbVie’s discovery-stage Mitokinin acquisition included $110m at closing, and Novartis acquired preclinical DTx Pharma with its delivery platform. [AbbVie](https://news.abbvie.com/2023-10-05-AbbVie-Exercises-Exclusive-Right-to-Acquire-Mitokinin,-Further-Strengthening-Neuroscience-Pipeline), [Novartis filing](https://www.sec.gov/Archives/edgar/data/1114448/000137036823000068/a231024-99_2.htm)
 
-These are selected winners with different modalities, teams and stages. They supply no denominator of unsold programmes, no reliable time-to-sale estimate and no valuation for one new binder. Milestones are conditional, not cash in the bank.
-
-I would begin with relevant biopharma partners. The checked evidence does not justify underwriting frontier AI labs as the default acquirer of a solo founder’s mouse-validated asset.
+I would build a programme worth continuing independently, then use partner feedback to improve it. An acquisition can accelerate the mission; it need not be the premise that makes the company sensible.
 
 ---
 
 ## 15 · The economics of an option
 
-### Stop/go decisions matter more than the biggest exit headline
+### Capital should buy a named advance
 
-To make the risk visible, consider a deliberately invented staged model. These inputs are **stress-test assumptions, not measured success rates or vendor prices**. It is separate from the full-package budget envelopes.
+<figure><img src="/images/pipeline-in-a-person/evidence-enterprise.webp" alt="A scientist builds a transferable enterprise from samples, measured evidence, notebooks and rights, with an expert checking the foundation" style="max-width:560px;background:transparent"><figcaption>Build the company layer by layer: physical material, reproducible evidence, documented knowledge and transferable rights. Generated editorial illustration; not experimental data.</figcaption></figure>
 
-Spend $60,000 initially. Assume a 30% chance of earning a $120,000 follow-on experiment. Of those successes, assume 25% earn $300,000 of further translational work. Of that group, assume 20% eventually secure a transaction returning $5m net upfront cash to the project.
+I would not begin by multiplying an invented chance of success by an imagined acquisition price. That can make almost any thesis look attractive or hopeless. The useful starting point is a designed sequence of scientific advances.
 
-<figure><img src="/images/pipeline-in-a-person/option-tree.svg" alt="Invented sequential gate probabilities: 30 percent function, then 25 percent translation, then 20 percent sale. Joint sale probability is 1.5 percent; expected spend is 118,500 dollars." style="max-width:680px;background:transparent"><figcaption>Illustrative decision tree. Conditional probabilities multiply along this assumed path; they are not calibrated biotech base rates.</figcaption></figure>
+| Tranche | What the company buys | Asset created |
+|---|---|---|
+| Thesis | Disease expertise, product definition, assay feasibility and initial rights review | A defensible intervention hypothesis and executable plan |
+| Function | Candidate production, quality checks and comparative functional testing | A lead with measured biological action |
+| Translation | Exposure work and fit-for-purpose disease evidence | A candidate with a stronger connection to a future treatment |
+| Transfer | Independent reproduction, documentation and ownership work | A package another team can assess and develop |
 
-Expected research spend is $60k + 0.30 × $120k + 0.30 × 0.25 × $300k = **$118.5k**. Joint transaction probability is 0.30 × 0.25 × 0.20 = **1.5%**. Expected upfront proceeds are **$75k**, leaving **−$43.5k** before omitted costs and the time value of money.
+For each tranche, ask for an itemised bid, expected delivery date, scientific owner and a repeat reserve. Define the next financing conversation before the cash is committed.
 
-This is not a forecast of failure. It shows how an impressive conditional payout can coexist with unattractive expected economics. The real decision requires target-specific evidence to replace these invented inputs.
+The cost of this programme is the sum of those scoped commitments, the founder’s runway and a reserve for iteration. The budget envelopes on card 09 are planning scenarios until real bids replace them; they are not Mithril’s reported expenditure.
+
+The commercial objective is to create more therapeutic value with each unit of capital by reducing fixed organisational overhead and improving the quality and speed of decisions. Whether our particular programme achieves that is measurable.
 
 ---
 
 ## 16 · The sensitivity that should change your mind
 
-### Price, probability and capital are different uncertainties
+### Build the financing around the strongest version of the plan
 
-Holding the illustrative expected spend of $118.5k fixed, what joint probability of receiving net upfront cash would break even?
+The right funding route follows the programme’s next milestone. Capped founder capital may establish the thesis; a disease foundation, specialist investor or development partner may support the next advance. These are proposed routes, with eligibility and terms still to verify.
 
-| Net upfront if sold, assumed | Break-even joint probability |
-|---|---:|
-| $1m | 11.85% |
-| $5m | 2.37% |
-| $10m | 1.185% |
+I would present a funder with a specific object to finance: a functional lead, a decisive translational result, or independent reproduction. The pitch should explain what becomes possible after that result and what resources are needed to reach it.
 
-Equation: **break-even probability = expected spend ÷ net upfront proceeds**. These payout values are sensitivity inputs, not valuation estimates. The calculation excludes royalties, discounting, founder pay and tax. Changing gate probabilities would also change expected spend, so this table holds it fixed only to isolate payout sensitivity.
+Run three sensitivities before accepting a budget: **one more iteration, twice the assay-development effort, and a three-month delay**. Use actual bids to calculate the cash consequences. These tests tell the founder where to negotiate scope, recruit expertise or change the sequence.
 
-Expected spend is not cash runway. A programme that passes both research gates in the preceding example spends **$480k** before a transaction, and may still never sell. A founder needs financing for the successful path and a repeat reserve, not just the probability-weighted average.
+Measure operating performance as well: time from incoming data to a reviewed decision; time waiting on a partner; the number of results requiring rework; and the cost of obtaining a reproducible functional lead. These are proposed management metrics, not published Mithril benchmarks.
 
-I would finance the next resolved uncertainty: capped personal capital for feasibility, then a suitable foundation, specialist investor or partner if the evidence earns it. Those are proposed funding routes; eligibility, terms and availability have not been checked. I would not depend on an unawarded grant to finish committed work.
-
-Nor are twenty designs twenty independent lottery tickets. They may share the same incorrect mechanism, inaccessible binding site or assay artifact. The binding yield from a published study cannot be substituted for the probability of licensing a therapeutic.
+The ambition is to build an increasingly capable company, not to remain permanently tiny. Add a person when they remove a binding constraint. Add a programme when the first operating loop can support it. Let the mission determine the organisation’s size.
 
 ---
 
@@ -330,9 +354,9 @@ I would resolve these issues with qualified counsel before assuming the package 
 
 ## 18 · A 12–24 month path of attack
 
-### Earn each increment of capital
+### Work backwards from a convincing therapeutic programme
 
-This is a proposed sequence for reaching a decision-quality early evidence package. It is not a timeline guarantee, and a negative result should end it early.
+The intended destination is a differentiated programme with reproducible functional and translational evidence, ready for serious development discussions. Here is the proposed sequence to build it. Calendar ranges are planning targets rather than promises.
 
 <figure><img src="/images/pipeline-in-a-person/roadmap.svg" alt="Proposed roadmap: months 0–2 choose and price the question; 2–6 test function; 6–12 test exposure and relevance; 12–24 reproduce and prepare partner diligence. Stop gates separate phases." style="max-width:680px;background:transparent"><figcaption>A proposed development sequence. Methods, access, contracting and failed iterations can extend the calendar.</figcaption></figure>
 
@@ -342,25 +366,27 @@ This is a proposed sequence for reaching a decision-quality early evidence packa
 
 **Months 6–12: establish relevance.** A translational specialist selects fit-for-purpose exposure and disease-evidence work. Continue only if the intended product remains plausible at relevant exposure and against the chosen comparator.
 
-**Months 12–24: test transferability.** Independent reproduction, rights review and diligence challenge the package. A partner discussion, financing decision or termination is an acceptable outcome. Sale is not a scheduled milestone.
+**Months 12–24: test transferability.** Independent reproduction, rights review and diligence challenge the package. Use the resulting package to secure the right next resources: financing, a development partnership or acquisition. The destination is continued progress towards a treatment; the transaction structure should serve it.
 
 ---
 
 ## 19 · The first thirty days
 
-### Buy an informed no before an expensive maybe
+### Leave the month with a programme you can start
 
-I would make the first month a feasibility project. No synthesis or animal work needs to begin to answer its most important questions.
+The first thirty days should produce a specific company thesis and an executable first tranche.
 
-The founder drafts three one-page target-product profiles: patient subgroup, mechanism, modality, best comparator, intended advantage, measurable readout and plausible buyer. A retained disease/translational scientist challenges each one.
+**Week 1: choose the problem.** Compare three disease–mechanism opportunities. For each, name the missing or harmful function, the proposed modality, the best comparator and the patient benefit sought. Recruit a disease specialist to challenge the argument.
 
-For the strongest candidate, obtain two scoped assay-feasibility proposals, an initial IP/contracts assessment, and feedback from relevant development or partnering specialists. These are future actions; no such conversations or quotations were obtained for this Fieldbook.
+**Week 2: design the proof.** Choose one opportunity. With the relevant scientists, specify the functional question, required controls, data deliverables and the result that would justify the next stage. Document how this programme differs from existing work.
 
-The deliverable is one decision memo with a named scientific owner, a capped next-stage budget, a repeat reserve, and a test that could kill the programme. A useful metric is comparator-relative functional improvement under a prespecified acceptance criterion; the actual threshold must come from the selected mechanism and expert review.
+**Week 3: assemble the network.** Obtain comparable scoped proposals from two suitable partners for the first major work package. Establish rights, material handling and data-access expectations. Assign an accountable scientific owner.
 
-**Stop** if the mechanism requires the wrong modality, the readout cannot distinguish success from artifact, rights cannot transfer, no credible advantage exists, or the next gate cannot be funded with reserve.
+**Week 4: commit to the first milestone.** Finalise the budget, reserve, calendar, analysis plan and financing path. Build the shared programme workspace so new evidence can become a reviewed decision promptly.
 
-My current decision: fund this feasibility work before funding a therapeutic company. The ambition is a medicine. The immediate product is a trustworthy reason to take the next step.
+These are proposed actions; this research has not ordered work or validated a target. If a key premise fails, choose a better intervention rather than manufacturing confidence around it.
+
+My decision is to pursue this model: one carefully chosen disease problem, a specific restorative mechanism, an AI-assisted operating loop and an exceptional specialist network. The first thirty days should make that ambition executable.
 
 ---
 
@@ -378,12 +404,13 @@ My current decision: fund this feasibility work before funding a therapeutic com
 | Rare disease remains a development programme | Regulatory guidance, not a universal study list | [FDA rare-disease guidance](https://www.fda.gov/media/119757/download) |
 | Early-stage acquisition is possible | Selected transactions; missing failure denominator | [AbbVie](https://news.abbvie.com/2023-10-05-AbbVie-Exercises-Exclusive-Right-to-Acquire-Mitokinin,-Further-Strengthening-Neuroscience-Pipeline), [Novartis filing](https://www.sec.gov/Archives/edgar/data/1114448/000137036823000068/a231024-99_2.htm) |
 | Small expert-led wedge can work | Founder hypothesis | Mechanism, function, differentiation and rights gates on card 12 |
-| Cash envelopes and option returns | Original scenarios; no inferred market prices | Allocations on card 09; equations on cards 15–16 |
+| Cash envelopes and staged financing | Original planning scenarios; bids still needed | Allocations on card 09; tranche plan on cards 15–16 |
+| Mithril acquired by Anthropic | Confirmed acquirer announcement; terms not stated | [Anthropic](https://www.anthropic.com/research/early-progress-drug-development) |
 
-**Disagreement log.** The supplied playbook’s zero-risk biology, universal sub-nanomolar milestone, all-in budgets and routine exit expectation were rejected or left unverified. Vendor starting prices differ by scope; the ProteoGenix title/body mismatch is disclosed. Model licences are artifact- and access-specific. Historical drug labels support mechanism only; current dosing and indications are not asserted.
+**Disagreement log.** This edition corrects the prior omission of Mithril and replaces invented acquisition-return arithmetic with a concrete financing plan. The supplied zero-risk claim and unsourced all-in prices remain unsupported. Vendor starting prices differ by scope; the ProteoGenix title/body mismatch is disclosed. Model licences are artifact- and access-specific. Historical drug labels support mechanism only; current dosing and indications are not asserted.
 
 **Public/private boundary.** This investigation uses public original research, regulators, owning licences, service menus, buyer announcements and a filing. It does not infer private CRO quotes, paid database contents or unpublished buyer requirements. Open research copies were checked through EuropePMC when publisher/PMC browser access was restricted. No access controls were bypassed.
 
 **Falsification and next collection.** The scientific lead must reject an incoherent intervention; assay review must reject an uninformative endpoint; competing-product review must reject an undifferentiated candidate; counsel must challenge rights; comparable bids must replace cost allocations. The thirty-day feasibility memo owns these checks.
 
-I remain interested because the company can be unusually small. I would proceed only when its evidence becomes unusually strong.
+The opportunity is to make the creation of a serious therapeutic programme possible for a new class of founder. Mithril supplies a precedent. The work now is to design the next one.
