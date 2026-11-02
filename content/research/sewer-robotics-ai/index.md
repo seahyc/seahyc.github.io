@@ -1,7 +1,7 @@
 +++
 title = "Robots Below the Street"
-slug = "sewer-robotics-ai"
-aliases = ["/research/sewer-robotics-ai/"]
+slug = "robots-below-the-street"
+aliases = ["/research/sewer-robotics-ai/", "/learning/sewer-robotics-ai/"]
 description = "Where sewage-pipe robotics and AI could build a valuable company: the physical constraints, crowded inspection market, mission economics, and a concrete path to proof."
 date = 2026-11-02
 layout = "research-swipe"
