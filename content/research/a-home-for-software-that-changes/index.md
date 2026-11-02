@@ -1,6 +1,7 @@
 +++
 title = "A Home for Software That Changes"
 slug = "a-home-for-software-that-changes"
+aliases = ["/research/a-home-for-software-that-changes/"]
 description = "The malleable software opportunity: a company-approved home where employees can reshape their tools—and a founder must earn the right to maintain them."
 date = 2026-11-02
 layout = "research-swipe"
