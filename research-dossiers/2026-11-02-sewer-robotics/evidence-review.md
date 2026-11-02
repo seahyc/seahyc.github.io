@@ -1,0 +1,3 @@
+# Gate 1 — independent evidence review
+2 November 2026. Separate reviewer: evidence_gate. Verdict: PASS.
+Reviewed research-map.md, evidence-ledger.md, scenario-model.json and primary sources without edits. Confirmed PUB historical sampling volume and closed status; QAI direct overlap; PUB published obligations; SOLO envelope and crew-level vendor claims; Sewer-ML metric distinctions; PIPEON targets versus results. Independently reproduced -S$98k/S$58k/S$302k annual after-depreciation cell contributions, costs per accepted metre 4.542/2.097/1.356 and base break-even 671.11 m/day. Bear case, claim calibration, credible conditional wedge and falsification gate passed. 30 matched crew-days screen economics; they do not establish safety certification.

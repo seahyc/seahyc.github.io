@@ -1,0 +1,50 @@
+{
+  "currency": "SGD",
+  "status": "invented planning inputs, not quotations or forecasts",
+  "price_per_accepted_m": 2.5,
+  "variable_cost_per_paid_day": {
+    "crew": 900,
+    "vehicle_access_cleaning_allocation": 250,
+    "processing_supervision": 100,
+    "maintenance_recovery_reserve": 150
+  },
+  "capex": 120000,
+  "life_years": 4,
+  "annual_fixed_cell_cost": 20000,
+  "exclusions": [
+    "company R&D",
+    "sales",
+    "financing",
+    "tax",
+    "central overhead"
+  ],
+  "cases": [
+    {
+      "name": "low",
+      "paid_days": 120,
+      "accepted_m_per_day": 400,
+      "annual_revenue": 120000.0,
+      "annual_cash_contribution": -68000.0,
+      "annual_cell_contribution_after_depreciation": -98000.0,
+      "all_in_cell_cost_per_accepted_m": 4.541666666666667
+    },
+    {
+      "name": "base",
+      "paid_days": 180,
+      "accepted_m_per_day": 800,
+      "annual_revenue": 360000.0,
+      "annual_cash_contribution": 88000.0,
+      "annual_cell_contribution_after_depreciation": 58000.0,
+      "all_in_cell_cost_per_accepted_m": 2.0972222222222223
+    },
+    {
+      "name": "high",
+      "paid_days": 220,
+      "accepted_m_per_day": 1200,
+      "annual_revenue": 660000.0,
+      "annual_cash_contribution": 332000.0,
+      "annual_cell_contribution_after_depreciation": 302000.0,
+      "all_in_cell_cost_per_accepted_m": 1.356060606060606
+    }
+  ]
+}
