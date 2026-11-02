@@ -18,10 +18,10 @@ b=t(20,40,'ONE SEWER. SEVERAL DIFFERENT JOBS.',30,RED)
 for i,(a,z) in enumerate([('Above the water','Camera: visible surface condition'),('Below murky water','Sonar: shape, not optical crack detail'),('Across soft deposits','Traction and tether drag bind progress'),('Back to the surface','Recovery must work after power loss')]):
  y=78+i*122;b+=box(y,a,z)
 save('physics.svg','A sewer robot capability envelope','Engineering schematic, not measured sensor performance. Different sensing and recovery functions address different constraints.',b,595)
-b=t(20,40,'WHERE COULD A NEW ENTRANT WIN?',30,RED)
-for i,(a,z) in enumerate([('Generic AI coding','Incumbents already sell it'),('Inspection quality checks','QAI already overlaps this wedge'),('Local field-to-report integration','Hypothesis: fewer revisits, same crew'),('Custom sampling or manipulation','Only after repeat paid mission demand')]):
+b=t(20,40,'CHOOSE WHAT THE COMPANY OWNS',30,RED)
+for i,(a,z) in enumerate([('Sell the software','Customer owns field execution'),('Sell processed inspection data','Own review; depend on supplied footage'),('Operate the inspection service','Own crews, delivery and operational downside'),('Build proprietary robotics','Only after repeat paid physical bottlenecks')]):
  y=78+i*122;b+=box(y,a,z)
-save('wedge.svg','Competitive wedge screening','Original strategic comparison from primary product pages and PUB requirements; proposed local advantage is unvalidated.',b,595)
+save('wedge.svg','Three company boundaries and a hardware gate','Original strategic comparison. Software vendor, data service and full-stack operator own different work and obligations. Proprietary robotics require validated repeat demand.',b,595)
 model=json.loads((Path(__file__).parent/'scenario-model.json').read_text());b=t(20,40,'COST PER ACCEPTED METRE',32,RED)+t(20,80,'SGD • invented service-cell scenarios',28,MUTED)
 for i,r in enumerate(model['cases']):
  y=135+i*112;v=r['all_in_cell_cost_per_accepted_m'];w=v/5*415
@@ -33,7 +33,7 @@ for v in range(6):
 x=135+2.5/5*415;b+=f'<path d="M{x},115 L{x},467" stroke="{INK}" stroke-width="2" stroke-dasharray="7 7"/>'+t(20,565,'Dashed line: assumed price $2.50/m',28)+t(20,609,'Inputs are not quotes or market rates.',28,RED)
 save('economics.svg','Service-cell cost sensitivity','Low 4.54, base 2.10, high 1.36 Singapore dollars per accepted metre, versus assumed 2.50 price. Zero-based cost axis. Not market evidence.',b,640)
 b=t(20,40,'PROPOSED PROOF BEFORE AUTONOMY',30,RED)
-for i,(a,z) in enumerate([('0–3 months: baseline + compare','Paid jobs; manual versus incumbent versus prototype'),('3–6 months: sell the workflow','Independent acceptance; repeat orders'),('6–12 months: isolate physical bottleneck','Test one payload on existing crawler'),('12–24 months: replicate or stop','Second buyer cohort; local approvals; repeatability')]):
+for i,(a,z) in enumerate([('0–3 months: baseline + buyer access','Observe full jobs; price alternatives'),('3–6 months: sell a narrow service','Competent operators; repeat orders; collections'),('6–12 months: improve physical execution','Fund one payload or sensor from evidence'),('12–24 months: replicate or stop','Repeat contribution; approvals; working capital')]):
  y=78+i*127;b+=box(y,a,z)
  if i<3:b+=line(360,y+96,360,y+125)
 save('roadmap.svg','A conditional 12 to 24 month plan','Proposed stage gates, not a forecast of procurement or technical success.',b,615)

@@ -46,5 +46,12 @@
       "annual_cell_contribution_after_depreciation": 302000.0,
       "all_in_cell_cost_per_accepted_m": 1.356060606060606
     }
-  ]
+  ],
+  "company_sensitivity": {
+    "status": "invented incremental central-management and R&D illustration; not staffing plan or salary forecast",
+    "annual_charge": 100000,
+    "one_base_cell_contribution": -42000,
+    "two_base_cells_contribution": 16000,
+    "limits": "Assumes two identical cells with enough independent demand; excludes additional scaling costs, tax, financing and cash timing."
+  }
 }

@@ -1,0 +1,33 @@
+{
+  "accessed": "2026-11-02",
+  "publisher": "Singapore Ministry of Finance via data.gov.sg",
+  "source": "https://data.gov.sg/api/action/datastore_search?resource_id=d_acde1106003906a75c3fa052592f2fcb&q=PUB000ETT25000102&limit=100",
+  "licence": "Singapore Open Data Licence",
+  "records": [
+    {
+      "_id": 15771,
+      "tender_no": "PUB000ETT25000102",
+      "tender_description": "Rehabilitation of Sewerage Network Phase 6 - Colour Closed-Circuit Television (CCTV) Survey of Big and Small Diameter Sewers",
+      "agency": "Public Utilities Board",
+      "award_date": "24/2/2026",
+      "tender_detail_status": "Awarded by Items",
+      "supplier_name": "O LINER TECHNOLOGY PTE LTD",
+      "awarded_amt": "2731900",
+      "rank": 0.06079271,
+      "_full_count": "2"
+    },
+    {
+      "_id": 15772,
+      "tender_no": "PUB000ETT25000102",
+      "tender_description": "Rehabilitation of Sewerage Network Phase 6 - Colour Closed-Circuit Television (CCTV) Survey of Big and Small Diameter Sewers",
+      "agency": "Public Utilities Board",
+      "award_date": "24/2/2026",
+      "tender_detail_status": "Awarded by Items",
+      "supplier_name": "SAM LAIN EQUIPMENT SERVICES PTE LTD",
+      "awarded_amt": "3988888",
+      "rank": 0.06079271,
+      "_full_count": "2"
+    }
+  ],
+  "limits": "Award entries are not annual revenues, payments, contract profit or per-metre prices; no duration or quantities in these rows."
+}
