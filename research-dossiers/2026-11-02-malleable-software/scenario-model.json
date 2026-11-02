@@ -1,0 +1,33 @@
+{
+  "status": "illustrative assumptions, not customer evidence",
+  "cases": [
+    {
+      "support_hours": 2,
+      "revenue": 1500,
+      "infra": 150,
+      "hourly_support_cost": 75,
+      "contribution": 1200,
+      "margin": 0.8
+    },
+    {
+      "support_hours": 6,
+      "revenue": 1500,
+      "infra": 150,
+      "hourly_support_cost": 75,
+      "contribution": 900,
+      "margin": 0.6
+    },
+    {
+      "support_hours": 16,
+      "revenue": 1500,
+      "infra": 150,
+      "hourly_support_cost": 75,
+      "contribution": 150,
+      "margin": 0.1
+    }
+  ],
+  "onboarding_hours": 20,
+  "onboarding_cost": 1500,
+  "illustrative_CAC": 6000,
+  "base_cash_payback_months": 8.333333333333334
+}

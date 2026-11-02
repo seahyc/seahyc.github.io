@@ -1,0 +1,23 @@
+# Evidence ledger · 2 November 2026
+All public pages accessed 2 Nov 2026. Vendor evidence establishes advertised capability, not tested performance or commercial demand. Companion market-evidence.md contains 12 detailed sources and limitations.
+
+| Claim | Type / quality | Direct source | Proves / does not prove | Counterevidence / decision impact |
+|---|---|---|---|---|
+| Malleability means routine user adaptation, broader than generating new apps | fact / primary research essay | https://www.inkandswitch.com/essay/malleable-software/ (June 2025) | establishes design vision; no buyer demand | avoid equating all app generation with malleability |
+| Stable core + limited generated extensions is feasible design | author thesis / primary technical essay | https://jeremymorrell.dev/blog/extensible-software-in-the-age-of-llms/ | explains patterns, no benchmark or guaranteed security | runtime alone not company |
+| Network disabled + explicit custom capabilities supported | fact / official docs | https://developers.cloudflare.com/dynamic-workers/usage/egress-control/ and https://developers.cloudflare.com/dynamic-workers/usage/bindings/ | documented controls; not end-to-end authorization correctness | proposed architecture must still enforce actor/resource/egress policy |
+| Full-stack personal apps and Gatekeepers already offered | fact / official launch and repo | https://blog.cloudflare.com/cloudflare-os/ and https://github.com/cloudflare/cloudflare-os | explicit close substitute; not maturity, adoption or service SLA | strongest direct competition, do not ignore |
+| Builder-independent governed runtime exists | fact / official dated release | https://retool.com/newsroom/retool-extends-enterprise-governance-to-vibe-coded-apps (17 June 2026) | advertised inherited policies/audit; compatibility untested | directly contradicts empty hosting gap |
+| Retool AI builder GA 28 Oct 2026 | fact / official changelog | https://docs.retool.com/changelog/app-builder-ga | current product release, source control/lifecycle; no outcomes | competition still moving |
+| Major builders have enterprise controls | fact / vendor product docs | https://replit.com/enterprise and https://lovable.dev/security and https://www.airtable.com/platform/app-building | claimed controls and editing; not safety guarantees | table stakes, no absent-controls claims |
+| Scans don't replace app review | fact / official docs | https://docs.lovable.dev/features/security | owner responsibility; not incident prevalence | maintenance opportunity remains hypothesis |
+| Existing enterprise lifecycle and license bundles | fact / official docs | https://learn.microsoft.com/en-us/power-platform/admin/managed-environment-overview and https://learn.microsoft.com/en-us/power-platform/alm/pipelines and https://support.google.com/appsheet/answer/16563370?hl=en | entitlement/lifecycle machinery; not all governance included in ordinary suite seats | incumbent distribution advantage inference |
+| Customers pay for maintained outcomes | hypothesis / no demand evidence | proposed paid pilot | no interviews or renewals yet | must earn right to build platform |
+| 100–1,000 staff target, $1,500/month, support $75/hour | assumptions / illustrative | scenario-model.json | arithmetic only, no quotes/market estimates | switch input values and test pilots |
+| 30% savings, 2/3 renewals, <=4 support h | proposed decision rules | research-map.md | explicit founder tests, not industry benchmarks | stop/go does not certify security |
+
+## Disagreement and boundary log
+Gemini suggested enterprise IT highest ACV and numeric $150k–$750k ranges, hard runtime latency/memory bands, automatic exfiltration guarantees and funding figures. None independently established here; excluded. No benchmark or market-size claim uses Gemini. No paywalled evidence needed. No supplier or customer interviews, product trial, penetration test, or representative adoption data obtained. No honest TAM follows from source pages.
+
+## Economics / sensitivity
+Monthly revenue assumed $1,500; runtime+model+observability $150; recurring support $75/h; onboarding 20h = $1,500 one-time. Support 2/6/16h => contribution $1,200/$900/$150 =80%/60%/10% before acquisition, R&D, central overhead, taxes and incident reserve. Annual contribution less uncharged onboarding at 6h support = $9,300; $6,000 illustrative CAC => $3,300 year-one residual before other fixed costs. Cash payback including onboarding = ($6,000+$1,500)/$900 =8.33 months, assuming immediate steady revenue and no churn. Runtime allowance is unmeasured; doubling it reduces base contribution to $750/50%. Budget sensitivity: $1,000 price at 6h => $400/40%; $2,000 => $1,400/70%. No economic case yet without workload data.
