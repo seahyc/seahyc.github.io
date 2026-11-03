@@ -1,0 +1,13 @@
+hugo build: exit_code=0
+stdout=''
+stderr=''
+390x844: PASS; 18 cards; 8 images loaded; endings reachable; no overflow/errors; 18 direct hashes passed
+737x862: PASS; 18 cards; 8 images loaded; endings reachable; no overflow/errors; 18 direct hashes passed
+1440x1000: PASS; 18 cards; 8 images loaded; endings reachable; no overflow/errors; 18 direct hashes passed
+SVG checks: 6/6 passed text bounds and >=21px source-canvas text
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/power-chain-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/reactor-watercolor.png
+  hasAlpha: yes
+power-chain-watercolor.png: mode=RGBA, corner alpha=[0, 0, 0, 0]
+reactor-watercolor.png: mode=RGBA, corner alpha=[0, 0, 0, 0]

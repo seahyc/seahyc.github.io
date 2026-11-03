@@ -1,0 +1,157 @@
+A Singapore Government Agency Website
+
+How to identify
+
+Skip to main content
+
+Select a profile
+
+About IMDA
+
+Next level
+
+Programmes & Grants
+
+Regulations & Licences
+
+Next level
+
+Proposal Submission
+
+Activities
+
+Resources
+
+Next level
+
+Toggle search bar
+
+Close
+
+Be aware of scammers impersonating as IMDA officers or misrepresenting our policies. Government officials will NEVER call you to transfer money, verify refunds, disclose bank log-in details or request for your personal information. For scam-related advice, please call the ScamShield Helpline at 1799 or go to www.ScamShield.gov.sg.
+
+Architects of SG's Digital FutureResourcesPress Releases, Factsheets and SpeechesCharting green growth for data centres in SG
+
+Charting green growth pathways at scale for data centres in Singapore
+
+SINGAPORE – 30 MAY 2024
+
+1. The Infocomm Media Development Authority (IMDA) has launched a Green Data Centre (DC) Roadmap that charts a sustainable pathway for the continued growth of DCs in Singapore. To support our ambitions for the digital economy, where macro- trends such as growing use of AI, autonomous and robotic systems, and immersive virtual interactions are expected to propel demand for compute resources, the Roadmap aims to provide at least 300 megawatts (MW) of additional capacity in the near term, with much more through green energy deployments. Through the additional capacity, we aim to seed innovation to accelerate energy efficiency, and ways to unlock further capacity through green energy.
+
+2. This will be achieved through partnerships with industry to drive best-in-class energy efficiency and the use of green energy. Developed with inputs from the industry, the Roadmap continues the work of the Digital Connectivity Blueprint launched in June 2023, which sets out our ambition to ensure that our digital infrastructure remains world-class and future-ready.
+
+3. DCs provide a foundation for the growth of our digital economy, underpinning our digital services, operations, and transactions as a digital-first Smart Nation. Today, Singapore is a regional DC hub. With over 1.4 gigawatts of DC capacity, Singapore is home to more than 70 cloud, enterprise, and co-location DCs, which host cloud platforms, digital services, and higher-intensity workloads for AI. DCs here also tap on Singapore’s broader international position as a business and digital hub.
+
+Accelerate innovation for energy efficiency and grow capacity through green energy
+
+4. The Roadmap outlines IMDA’s plans to partner the industry to continue enhancing sustainability for DCs on two fronts:
+
+Improving Energy Efficiency at Hardware and Software Levels
+Uplift energy efficiency of all DCs in Singapore at the facility level, as well as by deploying energy-efficient IT equipment and optimising operation of servers. These can be done through industry collaborations to put in place best-in-class technologies to maximise efficiency and compute capacity. Some of these measures include:
+
+Tailor cooling solutions for DCs’ needs, e.g. liquid cooling solutions can be deployed for high-density racks or DCs can be configured to support diverse cooling solutions for different workloads.
+
+Reduce energy use for air-cooling by safely raising operating temperatures via IMDA’s Tropical DC methodology. DCs can potentially benefit from 2% to 5% energy savings for every 1°C increase in DC operating temperature.
+
+Improve energy efficiency of servers by using software-based tools such as server virtualisation, applying green software techniques, and identifying and addressing software carbon hotspots.
+
+Work with end-users to switch to energy-efficient IT equipment.
+
+Accelerating DCs’ Use of Green Energy
+Facilitate the industry to deliver low-carbon energy sources. For a start, these energy sources comprise bioenergy, vertical building integrated photovoltaics/building applied photovoltaics, fuel cells with carbon capture, and low-carbon hydrogen and ammonia.
+
+End-to-end ecosystem and partnership approach to push boundaries in sustainability
+
+5. The DC ecosystem is multi-faceted and there is greater room for growth when everyone in the ecosystem plays a role. DC operators play an important catalyst role to bring together key partnerships and solutioning to realise the goal of sustainable development. This includes forging partnerships to bring about green energy, partnering solution providers to design and operate DCs more efficiently, and encouraging enterprise end-users to adopt energy-efficient technologies and best practices. DC players can also work with academia to innovate in areas such as cooling technologies, low-carbon energy, and green computing.
+
+Government will facilitate transition and sustainability development
+
+6. To support the development and operation of energy-efficient DCs of Power Usage Effectiveness (PUE) of 1.3 or lower, IMDA will co-develop enhanced standards and certifications with the industry. We will refresh the BCA-IMDA Green Mark for DCs by end- 2024 to raise the standards for energy efficiency in DCs. We will also introduce standards for IT equipment energy efficiency and liquid cooling by 2025 to facilitate adoption of these technologies in Singapore.
+
+7. The Government will also assist the industry in their sustainability journey through incentives such as EDB’s enhanced Resource Efficiency Grant for Emissions. We will also facilitate enterprise end-users to upgrade to energy-efficient IT equipment through the new Energy Efficiency Grant for the DC sector.
+
+8. Visit our website(5.81MB) to download a copy of the Green DC Roadmap.
+
+LAST UPDATED: 10 Oct 2024
+
+Share:
+
+Issued by the Infocomm Media Development Authority
+
+For media clarifications, please contact:
+
+Explore more
+
+Related Programmes
+
+5G Open Testbed
+
+Programme
+
+5G Open Testbed
+
+More than just connectivity, 5G is a game changer in this digital journey. It is the foundation which will enable transformative...
+
+Tropical Data Centre (DC) Standard
+
+Programme
+
+Tropical Data Centre (DC) Standard
+
+Data centres in tropical climates face unique cooling challenges. Learn how Singapore's Tropical Data Centre standard (SS...
+
+IMDA Accreditation
+
+Certification
+
++1
+
+IMDA Accreditation
+
+We accredit promising technology firms to qualify them for government and large enterprise buyers. Both supplier and customer win...
+
+View all programmes
+
+Stay tuned for our newsletter
+
+Subscribe now
+
+Infocomm Media Development Authority
+
+About IMDA
+
+Careers at IMDA
+
+Contact us
+
+Feedback
+
+FAQs
+
+Sitemap
+
+Subscribe to Newsletter
+
+IMDA LinkedIn
+
+IMDA Facebook
+
+IMDA Instagram
+
+IMDA YouTube
+
+Report Vulnerability
+
+Privacy Statement
+
+Terms of Use
+
+Reach
+
+Built with
+
+Powered by
+
+Last updated 03 Nov 2026
+
+© 2026Government of Singapore

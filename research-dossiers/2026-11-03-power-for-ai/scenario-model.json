@@ -1,0 +1,184 @@
+{
+  "date": "2026-11-03",
+  "currency": "USD",
+  "status": "SCENARIOS ONLY: all commercial inputs invented for decision testing; no quotes, interviews or cost forecasts",
+  "wedge": "Engineer-reviewed equipment and energisation readiness package, no equipment inventory or generation ownership",
+  "annual_central_fixed_cost_usd": 300000,
+  "fixed_cost_boundary": "Incremental non-delivery sales/product/management/insurance overhead. Delivery labor charged per project at loaded opportunity-cost rates; do not also include it in central fixed costs.",
+  "annual_delivery_hours_available": {
+    "engineering": 3200,
+    "operations": 1600
+  },
+  "exclusions": [
+    "tax",
+    "financing",
+    "equipment purchase deposits",
+    "unlimited liability",
+    "cost of providing power",
+    "customer capex",
+    "unmodelled warranty claims beyond reserve"
+  ],
+  "equations": [
+    "direct = engineer_hours*150 + operations_hours*100 + other + 0.05*fee",
+    "per_project = fee - direct - CAC",
+    "annual_residual = projects * per_project - 300000",
+    "break_even_projects = ceil(300000/per_project), undefined if contribution <= 0"
+  ],
+  "cases": [
+    {
+      "name": "low",
+      "fee_usd": 40000,
+      "engineer_hours": 200,
+      "operations_hours": 100,
+      "engineering_rate_usd": 150,
+      "operations_rate_usd": 100,
+      "other_direct_cost_usd": 4000,
+      "risk_rework_reserve_fraction": 0.05,
+      "cac_usd": 8000,
+      "projects_per_year": 6,
+      "direct_cost_usd": 46000.0,
+      "contribution_before_cac_usd": -6000.0,
+      "contribution_after_cac_usd": -14000.0,
+      "annual_residual_usd": -384000.0,
+      "annual_break_even_projects": null,
+      "delivery_capacity_projects": 16.0
+    },
+    {
+      "name": "base",
+      "fee_usd": 75000,
+      "engineer_hours": 140,
+      "operations_hours": 60,
+      "engineering_rate_usd": 150,
+      "operations_rate_usd": 100,
+      "other_direct_cost_usd": 3000,
+      "risk_rework_reserve_fraction": 0.05,
+      "cac_usd": 6000,
+      "projects_per_year": 12,
+      "direct_cost_usd": 33750.0,
+      "contribution_before_cac_usd": 41250.0,
+      "contribution_after_cac_usd": 35250.0,
+      "annual_residual_usd": 123000.0,
+      "annual_break_even_projects": 9,
+      "delivery_capacity_projects": 22.857142857142858
+    },
+    {
+      "name": "high",
+      "fee_usd": 100000,
+      "engineer_hours": 100,
+      "operations_hours": 40,
+      "engineering_rate_usd": 150,
+      "operations_rate_usd": 100,
+      "other_direct_cost_usd": 2000,
+      "risk_rework_reserve_fraction": 0.05,
+      "cac_usd": 4000,
+      "projects_per_year": 20,
+      "direct_cost_usd": 26000.0,
+      "contribution_before_cac_usd": 74000.0,
+      "contribution_after_cac_usd": 70000.0,
+      "annual_residual_usd": 1100000.0,
+      "annual_break_even_projects": 5,
+      "delivery_capacity_projects": 32.0
+    }
+  ],
+  "sensitivities": [
+    {
+      "case": "base",
+      "contribution_after_cac_usd": 35250.0,
+      "annual_residual_usd": 123000.0
+    },
+    {
+      "case": "fee -20%",
+      "contribution_after_cac_usd": 21000.0,
+      "annual_residual_usd": -48000.0
+    },
+    {
+      "case": "engineer hours +50%",
+      "contribution_after_cac_usd": 24750.0,
+      "annual_residual_usd": -3000.0
+    },
+    {
+      "case": "CAC doubled",
+      "contribution_after_cac_usd": 29250.0,
+      "annual_residual_usd": 51000.0
+    },
+    {
+      "case": "projects halved",
+      "contribution_after_cac_usd": 35250.0,
+      "annual_residual_usd": -88500.0
+    }
+  ],
+  "buyer_value_test": {
+    "fee_usd": 75000,
+    "avoidable_days_assumed": 30,
+    "required_customer_value_usd_per_avoidable_day": 2500,
+    "status": "A willingness-to-pay hurdle; not evidence that 30 days can be saved or that all delay loss is captured."
+  },
+  "onsite_gas_comparator": {
+    "status": "Illustrative net 20MW system; low/base/high COST not forecast or specific OEM product. No nuclear LCOE estimated because public test milestones cannot establish it.",
+    "discount_rate": 0.1,
+    "life_years": 15,
+    "equation": "CRF=r*(1+r)^n/((1+r)^n-1); $/MWh=(kW*capex_per_kW*CRF + kW*fixed_OM)/(MW*8760*CF) + heat_rate*fuel + variable_OM",
+    "exclusions": [
+      "redundancy/N+1",
+      "battery buffering",
+      "gas lateral and firm pipeline reservation",
+      "land",
+      "interconnection and substation",
+      "emissions controls/allowances if outside plant quote",
+      "major overhaul beyond assumed O&M",
+      "construction delay/interest",
+      "tax and incentives",
+      "standby grid tariff",
+      "backup fuel",
+      "decommissioning"
+    ],
+    "cases": [
+      {
+        "name": "low_cost",
+        "net_output_mw": 20,
+        "capex_usd_per_kw": 2000,
+        "capacity_factor": 0.9,
+        "heat_rate_mmbtu_per_mwh": 8,
+        "delivered_fuel_usd_per_mmbtu": 3,
+        "variable_om_usd_per_mwh": 10,
+        "fixed_om_usd_per_kw_year": 120,
+        "annual_mwh": 157680.0,
+        "crf": 0.13147377688737216,
+        "annual_capital_charge_usd": 5258951.075494886,
+        "cost_before_excluded_firming_usd_per_mwh": 82.57274908355458,
+        "fuel_plus_1_usd_mmbtu_effect_usd_mwh": 8
+      },
+      {
+        "name": "base",
+        "net_output_mw": 20,
+        "capex_usd_per_kw": 3000,
+        "capacity_factor": 0.8,
+        "heat_rate_mmbtu_per_mwh": 10,
+        "delivered_fuel_usd_per_mmbtu": 5,
+        "variable_om_usd_per_mwh": 15,
+        "fixed_om_usd_per_kw_year": 160,
+        "annual_mwh": 140160.0,
+        "crf": 0.13147377688737216,
+        "annual_capital_charge_usd": 7888426.61324233,
+        "cost_before_excluded_firming_usd_per_mwh": 144.11263279995956,
+        "fuel_plus_1_usd_mmbtu_effect_usd_mwh": 10
+      },
+      {
+        "name": "high_cost",
+        "net_output_mw": 20,
+        "capex_usd_per_kw": 4000,
+        "capacity_factor": 0.6,
+        "heat_rate_mmbtu_per_mwh": 12,
+        "delivered_fuel_usd_per_mmbtu": 7,
+        "variable_om_usd_per_mwh": 25,
+        "fixed_om_usd_per_kw_year": 200,
+        "annual_mwh": 105120.0,
+        "crf": 0.13147377688737216,
+        "annual_capital_charge_usd": 10517902.150989773,
+        "cost_before_excluded_firming_usd_per_mwh": 247.10789717456024,
+        "fuel_plus_1_usd_mmbtu_effect_usd_mwh": 12
+      }
+    ]
+  },
+  "scenario_input_qualification": "12 packages/year in base case and $300,000 annual central overhead are invented planning assumptions, not benchmarks or observed throughput."
+}

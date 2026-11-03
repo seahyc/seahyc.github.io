@@ -1,0 +1,6 @@
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/power-chain-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/reactor-watercolor.png
+  hasAlpha: yes
+power-chain-watercolor.png: mode=RGBA, corner alpha=[0, 0, 0, 0]
+reactor-watercolor.png: mode=RGBA, corner alpha=[0, 0, 0, 0]
