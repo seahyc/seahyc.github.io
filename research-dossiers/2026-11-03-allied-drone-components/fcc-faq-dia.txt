@@ -1,0 +1,172 @@
+Skip to main content
+Skip to search
+
+An official website of the United States government
+
+Here’s how you know
+Browse by
+CATEGORY
+Browse by
+BUREAUS & OFFICES
+About the FCC
+Proceedings & Actions
+Licensing & Databases
+Reports & Research
+News & Events
+For Consumers
+Search
+Home
+Covered List FAQs: UAS and UAS Critical Components
+
+Collapse All
+
+What is the FCC's Covered List? What restrictions does it impose on "covered" equipment on the List?
+The FCC’s Covered List is a list of communications equipment and services that are deemed to pose an unacceptable risk to the national security of the U.S. or the safety and security of U.S. persons.
+Under the Secure Networks Act, the FCC can update the Covered List only after the direction of a qualifying national security authority. In other words, the Commission cannot update this list on its own and is required to implement determinations that are made by our national security agency experts.
+Equipment on the Covered List (“covered equipment”) is prohibited from getting FCC equipment authorization.  Most electronic devices require FCC equipment authorization prior to importation, marketing, or sale in the U.S. Covered equipment is banned from receiving new equipment authorizations, preventing new devices from entering the U.S. market.
+Additionally, the Cybersecurity and Infrastructure Security Agency encourages organizations to use the Covered List for risk management analysis in their regulatory compliance efforts.
+New models of devices on the Covered List are prohibited from receiving FCC authorization and are therefore prohibited from being imported or sold in the U.S.  Additions to the Covered List today do not prohibit the import, sale, or use of any existing device models the FCC previously authorized.
+The Covered List does not restrict the continued use of previously-purchased devices. Consumers can continue to use the devices they lawfully purchased. 
+Why did the FCC add certain Uncrewed Aircraft Systems (UAS or drones), UAS critical components, and other equipment and services to the Covered List on December 22, 2025?
+The FCC updated the Covered List following a thorough review by a White House-convened Executive Branch interagency body with appropriate national security expertise, which made a specific determination that UAS and UAS critical component parts that are produced in foreign countries pose “unacceptable risks to the national security of the United States and to the safety and security of U.S. persons” and should be included on the FCC’s Covered List.
+The determination includes the equipment and services listed in Section 1709 of the FY25 National Defense Authorization Act.
+Therefore, the FCC updated its Covered List to include “Uncrewed aircraft systems (UAS) and UAS critical components produced in a foreign country and all communications and video surveillance equipment and services listed in Section 1709(a)(1) of the FY25 National Defense Authorization Act (Pub. L. 118-159).”
+In their determination, national security agencies referenced, among other things, concerns that that foreign-made UAS could be used for attacks and disruptions, unauthorized surveillance, sensitive data exfiltration, and other UAS threats to the homeland.  Additionally, the determination noted that reliance on such devices unacceptably undermines the U.S. drone industrial base.
+This determination also allowed for exemptions if the Department of War (DoW) or the Department of Homeland Security (DHS) makes a specific determination to the FCC that a given UAS, class of UAS, or UAS critical component does not pose such risks.
+How are UAS and UAS critical components defined?
+The FCC followed the definitions in the National Security Determination.
+“Uncrewed aircraft (UA)” has the meaning found in 47 CFR § 88.5: An aircraft operated without the possibility of direct human intervention from within or on the aircraft.
+Uncrewed Aircraft System (UAS): For the purpose of this determination, the term “uncrewed aircraft system (UAS)” has the meaning found in 47 CFR § 88.5: An Uncrewed Aircraft and its associated elements (including an uncrewed aircraft station, communication links, and the components not on board the UA that control the UA) that are required for the safe and efficient operation of the UA in the airspace of the United States.
+UAS Critical Components: For the purpose of this determination, the term “UAS critical components” includes but is not limited to the following UAS components and any associated software:
+Data transmission devices
+Communications systems
+Flight controllers
+Ground control stations and UAS controllers
+Navigation systems
+Sensors and Cameras
+Batteries and Battery Management Systems
+Motors
+What types of UAS or UAS critical components are exempt from these restrictions?
+“Toy Drones” as defined in a specific determination from the Department of War; and
+Until Jan. 1, 2028,
+UAS and UAS critical components included on Defense Contract Management Agency’s (DCMA’s) Blue UAS Cleared List; and
+UAS and UAS critical components that qualify as “domestic end products” under the Buy American Standard, 48 CFR 25.101(a).
+Is there a process to get individual exemptions?
+DoW or DHS will evaluate individual requests for specific determinations that certain UAS and/or UAS critical components do not pose “unacceptable risks.”
+Entities, including UAS producers or UAS critical component producers, can apply for such specific determinations, which DoW and DHS refer to as “Conditional Approvals” by submitting an email with the information in the attached guidance to drones@fcc.gov.  The information will be forwarded to DoW and DHS for their evaluation.
+Have any UAS or UAS critical components received Conditional Approval?
+Yes, on March 17, 2026, the FCC received its first Conditional Approvals. The full list can be found at: https://www.fcc.gov/supplychain/coveredlist#Conditional-Approvals
+Are drone docks included within the National Security Determination?
+Yes, they are included within the definition of UAS and UAS critical components.
+What constitutes “produced in a foreign country”? Is there a content threshold?
+In the equipment authorization process, applicants have to certify that any RF device is not “covered equipment.”  Going forward, this includes certification that the RF device is not a UAS or UAS critical component “produced in a foreign country.”
+Applicants for equipment authorization will bear responsibility for certifying, in good faith, that any UAS and UAS critical component seeking equipment authorization was not “produced in a foreign country.”  The FCC has authority to take action in any case involving false certifications.
+Furthermore, the FCC received a specific determination from the DoW that devices that are “domestic end products” under the Buy American Standard, 48 CFR § 25.101(a), do not pose “unacceptable risks” and so have been removed from the Covered List.
+The specific nationality of the entity or entities producing UAS or UAS critical components is not relevant to whether such UAS or UAS critical components is “produced in a foreign country.” 
+Are testing and evaluation of covered equipment, such as foreign-produced UAS, prohibited?
+Consistent with FCC regulations, the testing and evaluation of devices to ensure compliance with FCC rules, including testing and evaluation to ensure compliance with the DoW Blue UAS Cleared List, is permitted.  Please see the relevant FCC regulations for more information.  47 CFR § 2.1204(a)(3).
+Is a drone produced in the United States containing foreign produced components now “covered equipment” and prohibited from FCC equipment authorization?
+A UAS produced in the United States containing foreign produced components but that complies with the DOW Blue UAS Cleared List or the Buy American Standard shall not be considered “covered.”
+Does this action affect the Supplier’s Declaration of Conformity (SDoC) equipment authorization process for UAS and UAS critical components produced abroad?
+All newly-covered devices are prohibited from receiving any FCC equipment authorization, including via the streamlined SDoC equipment authorization process.
+Entities “identified on the Covered List” are generally prohibited from obtaining equipment authorizations through the SDoC process for even their non-covered devices.  47 CFR §§ 2.906(d); 2.907(c).
+However, as noted in the Public Notice announcing the UAS Covered List update, with the exception of entities identified in Section 1709(a)(1) of the FY2025 NDAA, entities that produce foreign made UAS and UAS critical components are not considered “identified on the Covered List” for those purposes.  Such entities are still able to take advantage of the SDoC process for their non-covered devices because, as noted in the Public Notice, their equipment is identified by place of production, not by entity. 
+Are there any restrictions on consumers’ ability to use covered UAS or UAS critical components that have been lawfully imported or sold in the U.S.?
+No.  Consumers can continue to use any device that has received an equipment authorization.  The Covered List only prevents new devices from getting equipment authorizations.
+How would the ban impact devices that could serve as UAS components but also have other uses?  Are all cameras produced abroad now “covered equipment” given that cameras are listed as UAS critical components?
+The FCC understands “UAS critical components” to mean components designed and intended primarily for use in UAS.
+For example, a camera with many potential functions and uses that could theoretically be attached to a drone is not a UAS critical component and so can receive FCC equipment authorization. But a camera designed and intended primarily to be a drone camera is a UAS critical component.
+Some of the UAS critical components (for instance, batteries) traditionally do not even require FCC equipment authorization.  Do they now?
+No device now requires FCC equipment authorization that did not already require FCC equipment authorization.
+Generic batteries and similar components are unlikely to have required FCC equipment authorization before, and therefore would not newly require FCC authorization.
+According to the recent guidance, all entities seeking a waiver for a UAS will be required to establish an onshoring plan for the manufacturing of all UAS critical components, including components that do not require FCC authorization.
+If you have questions about whether your device requires FCC equipment authorization, please see: https://www.fcc.gov/engineering-technology/laboratory-division/general/equipment-authorization.
+If someone buys a covered UAS or UAS critical component outside the U.S., can they operate it in the U.S.? 
+As noted above, there is no direct restriction on the operation of “covered” UAS or UAS critical components that have already received FCC equipment authorization.
+For “covered” UAS or UAS critical components that have not received FCC equipment authorization, the general answer is “no.” 
+How will this impact the ability to obtain FCC authorizations for experimental licensing or R&D?  Will the FCC still issue STAs for R&D using covered equipment? 
+The FCC does not categorically prohibit experimental licenses or STAs for “covered equipment,” including foreign-produced UAS or UAS critical components.
+The FCC must find, however, that the public interest will be served in granting an experimental license application.  47 U.S.C. § 309; see also 47 CFR § 5.3 (scope of experimental licenses).  The FCC’s experimental licensing rules also include prohibitions on eligibility by foreign governments or their representatives, 47 CFR § 5.51, and require supplemental disclosures for certain uses under the jurisdiction of a foreign government. 47 CFR § 5.63.
+Do applicants need to have documentation or evidence to demonstrate that a component was not produced in a foreign country?
+To get equipment certification for UAS and UAS critical components, applicants will need to certify that the device is not covered equipment, i.e. is not produced in a foreign country.
+Applicants will need to demonstrate that UAS or UAS critical components were not produced in a foreign country to make this certification, but there is no specific documentation or evidence required.
+Does this apply to non-aerial drones?
+No, the determination applies the definition of UAS found in 47 CFR § 88.5: “An [Uncrewed Aircraft (UA)] and its associated elements (including an uncrewed aircraft station, communication links, and the components not on board the UA that control the UA) that are required for the safe and efficient operation of the UA in the airspace of the United States.”
+Does this affect drones made exclusively for federal government use?
+No, such drones generally do not need FCC equipment authorization, so the Covered List does not affect sales to DoW, DHS, or any other federal agencies.  Federal agencies have their own regulations regarding acquisition, and we refer you to those regulations.
+How does the Covered List relate to FAA or DHS rules?  How about the Commerce Department’s Bureau of Industry and Security ICTS rulemaking or its Section 232 investigation?
+The Covered List is independent of these other agencies’ regulatory regimes.
+Is the prohibition forward-looking with respect to both UAS and UAS critical components?
+Yes, in general, if a UAS or UAS critical component has already been authorized by the FCC, it can continue to be imported, sold, and used.
+If a device is approved on DoW’s Blue UAS Cleared List, does that make it exempt from the FCC’s Covered List restriction?
+Yes, because the FCC received a new specific determination from DoW that such devices do not “pose unacceptable risks to the national security of the United States.”
+UAS and UAS critical components listed on the DoW Blue UAS Cleared List are no longer on the Covered List.
+This exemption terminates on January 1, 2027.
+Can I import a “covered” UAS for the sole purpose of a demonstration at a trade show?
+Yes, you can import “covered” UAS in limited quantities solely for demonstration at industry trade shows, as long as the UAS will not be offered for sale or marketing.
+Can drones on the Covered List get basic software and firmware edits?
+Yes, pursuant to a waiver of its rules, these devices can continue to receive basic software and firmware updates to maintain usability.
+Are repairs of previously authorized UAS or UAS critical components, or replacement of UAS components affected by the Determination?
+The Covered List rules do not prohibit the repairs of already-authorized devices that consumers currently possess.
+The Covered List rules also do not prohibit the replacement of component parts with identical parts that are installed in already-authorized devices.
+
+For more information: 
+
+If you have further questions regarding the FCC’s Covered List, please contact Chris Smeenk (chris.smeenk@fcc.gov).
+If you have further questions regarding the FCC’s equipment authorization program, please submit an inquiry through the OET Inquiry Form (https://apps.fcc.gov/oetcf/kdb/forms/InquiryForm.cfm).
+All news media inquiries should be directed to MediaRelations@fcc.gov.
+Updated:
+Tuesday, July 21, 2026
+Facebook
+Twitter
+LinkedIn
+Pinterest
+Message
+Messenger
+Email
+Copy Link
+Share
+Text
+Federal Communications Commission
+45 L Street NE
+Washington, DC 20554
+Link
+Phone: 1-888-225-5322
+ASL Video Call: 1-844-432-2275
+Fax: 1-866-418-0232
+Contact Us
+Visiting FCC Facilities
+Link
+Website Policies & Notices
+Privacy Policy
+FOIA
+No Fear Act Data
+Open Government Directive
+Plain Writing Act
+RSS Feeds & Email Updates
+Accessibility
+Vulnerability Disclosure Policy
+USA.gov
+Text
+CATEGORIES
+Link
+About the FCC
+Proceedings & Actions
+Licensing & Databases
+Reports & Research
+News & Events
+For Consumers
+Text
+BUREAUS & OFFICES
+Link
+Consumer
+Enforcement
+Inspector General
+Media
+Public Safety
+Space
+Wireless
+Wireline
+Offices
+Twitter LinkedIn Facebook Youtube Instagram
+Federal Communications Commission

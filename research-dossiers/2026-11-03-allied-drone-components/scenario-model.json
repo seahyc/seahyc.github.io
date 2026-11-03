@@ -1,0 +1,347 @@
+{
+  "as_of": "2026-11-03",
+  "currency": "USD",
+  "unit": "one accepted ESC; not one drone or motor set",
+  "status": "All inputs are invented planning assumptions, not estimates, supplier quotes, market prices or forecasts.",
+  "timing": "steady-year scenarios, not a first-year ramp; low/high are outcomes, not statistical bounds",
+  "attempt_cost_scope": "Purchased parts, CM assembly, incoming freight and routine attempt-level process cost; excludes acceptance inspection and warranty reserve. No proven China-free BOM.",
+  "yield_scope": "Accepted units / attempted units; rejected attempts have zero salvage and incur full attempt cost. Rework not separately charged; must replace with actual scrap/rework records.",
+  "fixed_cost_scope": "Scenario allowance for small team, sales/admin, compliance maintenance, facility/test rental, insurance and general engineering; not a staffing quote. Customer-specific qualification cost is separate.",
+  "nre_cost_scope": "Customer-specific engineering, agreed lab/witnessing, assessor and documentation work; excludes shared tooling. NRE is recognized once per project and never multiplied by hardware units.",
+  "tooling_scope": "Owned fixtures/test equipment and CM setup; 3-year straight-line zero residual. Factory/real estate capex excluded because manufacturing is contracted.",
+  "exclusions": [
+    "tax",
+    "financing",
+    "unbounded product-liability losses",
+    "major redesign or recall beyond reserves",
+    "US manufacturing localization capex",
+    "duties except explicit sensitivity",
+    "demand ramp and customer concentration effects"
+  ],
+  "working_capital_scope": "Simplified screen: inventory-days of landed+acceptance cost, plus receivables-days of hardware sales, minus production deposits; no supplier credit. Separate NRE preacceptance gap assumes 50% NRE paid up front. Not a dated cash forecast; no double-counting as an annual expense.",
+  "cases": [
+    {
+      "name": "low",
+      "accepted_units": 1000,
+      "unit_price": 400,
+      "attempt_cost": 240,
+      "acceptance_cost": 25,
+      "warranty_fraction": 0.04,
+      "nre_projects": 1,
+      "nre_fee": 50000,
+      "nre_cost": 90000,
+      "annual_fixed_cost": 400000,
+      "tooling": 150000,
+      "inventory_days": 120,
+      "receivable_days": 90,
+      "production_deposit_fraction": 0,
+      "yield": 0.8,
+      "results": {
+        "attempts_expected": 1250.0,
+        "landed_and_acceptance_cost_per_accepted_unit": 325.0,
+        "warranty_reserve_per_unit": 16.0,
+        "unit_contribution": 59.0,
+        "unit_contribution_margin": 0.1475,
+        "hardware_revenue": 400000,
+        "nre_revenue": 50000,
+        "nre_net_contribution": -40000,
+        "annual_operating_contribution_before_depreciation": -381000.0,
+        "annual_contribution_after_depreciation": -431000.0,
+        "repeat_hardware_only_contribution_after_depreciation": -391000.0,
+        "first_year_cash_after_tooling_before_working_capital": -531000.0,
+        "break_even_units_with_nre": 8306,
+        "break_even_units_without_nre": 7628,
+        "break_even_price_at_volume_with_nre": 848.9583333333334,
+        "working_capital_screen": 205479.45205479453,
+        "nre_preacceptance_gap_screen": 65000.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 420479.4520547945
+      }
+    },
+    {
+      "name": "base",
+      "accepted_units": 5000,
+      "unit_price": 350,
+      "attempt_cost": 190,
+      "acceptance_cost": 20,
+      "warranty_fraction": 0.025,
+      "nre_projects": 3,
+      "nre_fee": 75000,
+      "nre_cost": 65000,
+      "annual_fixed_cost": 500000,
+      "tooling": 180000,
+      "inventory_days": 90,
+      "receivable_days": 60,
+      "production_deposit_fraction": 0.2,
+      "yield": 0.92,
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 114.72826086956522,
+        "unit_contribution_margin": 0.32779503105590063,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": 103641.30434782605,
+        "annual_contribution_after_depreciation": 43641.30434782605,
+        "repeat_hardware_only_contribution_after_depreciation": 13641.304347826052,
+        "first_year_cash_after_tooling_before_working_capital": -76358.69565217395,
+        "break_even_units_with_nre": 4620,
+        "break_even_units_without_nre": 4882,
+        "break_even_price_at_volume_with_nre": 341.04793756967666,
+        "working_capital_screen": 216944.60988683742,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 479444.6098868374
+      }
+    },
+    {
+      "name": "high",
+      "accepted_units": 15000,
+      "unit_price": 300,
+      "attempt_cost": 160,
+      "acceptance_cost": 15,
+      "warranty_fraction": 0.02,
+      "nre_projects": 5,
+      "nre_fee": 100000,
+      "nre_cost": 70000,
+      "annual_fixed_cost": 700000,
+      "tooling": 250000,
+      "inventory_days": 60,
+      "receivable_days": 30,
+      "production_deposit_fraction": 0.3,
+      "yield": 0.97,
+      "results": {
+        "attempts_expected": 15463.917525773197,
+        "landed_and_acceptance_cost_per_accepted_unit": 179.94845360824743,
+        "warranty_reserve_per_unit": 6.0,
+        "unit_contribution": 114.05154639175257,
+        "unit_contribution_margin": 0.3801718213058419,
+        "hardware_revenue": 4500000,
+        "nre_revenue": 500000,
+        "nre_net_contribution": 150000,
+        "annual_operating_contribution_before_depreciation": 1160773.1958762885,
+        "annual_contribution_after_depreciation": 1077439.8625429552,
+        "repeat_hardware_only_contribution_after_depreciation": 927439.8625429551,
+        "first_year_cash_after_tooling_before_working_capital": 910773.1958762885,
+        "break_even_units_with_nre": 5554,
+        "break_even_units_without_nre": 6869,
+        "break_even_price_at_volume_with_nre": 226.70477125558128,
+        "working_capital_screen": 0,
+        "nre_preacceptance_gap_screen": 100000.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 350000.0
+      }
+    }
+  ],
+  "sensitivities": [
+    {
+      "label": "Price falls 20%",
+      "changed_inputs": {
+        "unit_price": 280
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 7.0,
+        "unit_contribution": 46.47826086956522,
+        "unit_contribution_margin": 0.16599378881987578,
+        "hardware_revenue": 1400000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": -237608.69565217395,
+        "annual_contribution_after_depreciation": -297608.69565217395,
+        "repeat_hardware_only_contribution_after_depreciation": -327608.69565217395,
+        "first_year_cash_after_tooling_before_working_capital": -417608.69565217395,
+        "break_even_units_with_nre": 11404,
+        "break_even_units_without_nre": 12049,
+        "break_even_price_at_volume_with_nre": 341.04793756967666,
+        "working_capital_screen": 229410.36331149488,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 491910.3633114949
+      }
+    },
+    {
+      "label": "Accepted volume falls 50%",
+      "changed_inputs": {
+        "accepted_units": 2500
+      },
+      "results": {
+        "attempts_expected": 2717.391304347826,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 114.72826086956522,
+        "unit_contribution_margin": 0.32779503105590063,
+        "hardware_revenue": 875000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": -183179.34782608697,
+        "annual_contribution_after_depreciation": -243179.34782608697,
+        "repeat_hardware_only_contribution_after_depreciation": -273179.347826087,
+        "first_year_cash_after_tooling_before_working_capital": -363179.347826087,
+        "break_even_units_with_nre": 4620,
+        "break_even_units_without_nre": 4882,
+        "break_even_price_at_volume_with_nre": 449.7658862876254,
+        "working_capital_screen": 108472.30494341871,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 370972.3049434187
+      }
+    },
+    {
+      "label": "Yield falls to 80%",
+      "changed_inputs": {
+        "yield": 0.8
+      },
+      "results": {
+        "attempts_expected": 6250.0,
+        "landed_and_acceptance_cost_per_accepted_unit": 257.5,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 83.75,
+        "unit_contribution_margin": 0.2392857142857143,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": -51250.0,
+        "annual_contribution_after_depreciation": -111250.0,
+        "repeat_hardware_only_contribution_after_depreciation": -141250.0,
+        "first_year_cash_after_tooling_before_working_capital": -231250.0,
+        "break_even_units_with_nre": 6329,
+        "break_even_units_without_nre": 6687,
+        "break_even_price_at_volume_with_nre": 372.8205128205128,
+        "working_capital_screen": 255136.98630136985,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 517636.98630136985
+      }
+    },
+    {
+      "label": "Attempt cost rises 20%",
+      "changed_inputs": {
+        "attempt_cost": 228
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 267.82608695652175,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 73.42391304347825,
+        "unit_contribution_margin": 0.20978260869565216,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": -102880.43478260876,
+        "annual_contribution_after_depreciation": -162880.43478260876,
+        "repeat_hardware_only_contribution_after_depreciation": -192880.43478260876,
+        "first_year_cash_after_tooling_before_working_capital": -282880.43478260876,
+        "break_even_units_with_nre": 7219,
+        "break_even_units_without_nre": 7627,
+        "break_even_price_at_volume_with_nre": 383.41137123745824,
+        "working_capital_screen": 267867.7784395474,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 530367.7784395474
+      }
+    },
+    {
+      "label": "Qualification cost doubles",
+      "changed_inputs": {
+        "nre_cost": 130000
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 114.72826086956522,
+        "unit_contribution_margin": 0.32779503105590063,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": -165000,
+        "annual_operating_contribution_before_depreciation": -91358.69565217395,
+        "annual_contribution_after_depreciation": -151358.69565217395,
+        "repeat_hardware_only_contribution_after_depreciation": 13641.304347826052,
+        "first_year_cash_after_tooling_before_working_capital": -271358.69565217395,
+        "break_even_units_with_nre": 6320,
+        "break_even_units_without_nre": 4882,
+        "break_even_price_at_volume_with_nre": 381.04793756967666,
+        "working_capital_screen": 216944.60988683742,
+        "nre_preacceptance_gap_screen": 277500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 674444.6098868374
+      }
+    },
+    {
+      "label": "No NRE projects",
+      "changed_inputs": {
+        "nre_projects": 0
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 114.72826086956522,
+        "unit_contribution_margin": 0.32779503105590063,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 0,
+        "nre_net_contribution": 0,
+        "annual_operating_contribution_before_depreciation": 73641.30434782605,
+        "annual_contribution_after_depreciation": 13641.304347826052,
+        "repeat_hardware_only_contribution_after_depreciation": 13641.304347826052,
+        "first_year_cash_after_tooling_before_working_capital": -106358.69565217395,
+        "break_even_units_with_nre": 4882,
+        "break_even_units_without_nre": 4882,
+        "break_even_price_at_volume_with_nre": 347.20178372352285,
+        "working_capital_screen": 216944.60988683742,
+        "nre_preacceptance_gap_screen": 0.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 396944.6098868374
+      }
+    },
+    {
+      "label": "No production deposits; 120-day receivables",
+      "changed_inputs": {
+        "production_deposit_fraction": 0,
+        "receivable_days": 120
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 226.52173913043478,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 114.72826086956522,
+        "unit_contribution_margin": 0.32779503105590063,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": 103641.30434782605,
+        "annual_contribution_after_depreciation": 43641.30434782605,
+        "repeat_hardware_only_contribution_after_depreciation": 13641.304347826052,
+        "first_year_cash_after_tooling_before_working_capital": -76358.69565217395,
+        "break_even_units_with_nre": 4620,
+        "break_even_units_without_nre": 4882,
+        "break_even_price_at_volume_with_nre": 341.04793756967666,
+        "working_capital_screen": 854615.8427635496,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 1117115.8427635496
+      }
+    },
+    {
+      "label": "Illustrative 25% duty on attempt cost; no pass-through",
+      "changed_inputs": {
+        "attempt_cost": 237.5
+      },
+      "results": {
+        "attempts_expected": 5434.782608695652,
+        "landed_and_acceptance_cost_per_accepted_unit": 278.15217391304344,
+        "warranty_reserve_per_unit": 8.75,
+        "unit_contribution": 63.09782608695656,
+        "unit_contribution_margin": 0.18027950310559016,
+        "hardware_revenue": 1750000,
+        "nre_revenue": 225000,
+        "nre_net_contribution": 30000,
+        "annual_operating_contribution_before_depreciation": -154510.86956521723,
+        "annual_contribution_after_depreciation": -214510.86956521723,
+        "repeat_hardware_only_contribution_after_depreciation": -244510.86956521723,
+        "first_year_cash_after_tooling_before_working_capital": -334510.86956521723,
+        "break_even_units_with_nre": 8400,
+        "break_even_units_without_nre": 8876,
+        "break_even_price_at_volume_with_nre": 394.00222965440355,
+        "working_capital_screen": 280598.57057772484,
+        "nre_preacceptance_gap_screen": 82500.0,
+        "tooling_plus_working_capital_plus_nre_gap_screen": 543098.5705777248
+      }
+    }
+  ],
+  "price_anchor_caveat": "Base USD350/unit is unanchored and below Scorpion displayed $499.99; currency/spec equivalence unverified. No demonstrated affordability or cost advantage."
+}

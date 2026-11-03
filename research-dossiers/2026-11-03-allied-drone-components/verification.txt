@@ -1,0 +1,9 @@
+Phase 1 verification — 3 November 2026
+No Hugo build: Phase 2 not authorized. No narrative or visuals created.
+Lead independently checked supplier-note file (118 lines) and reopened key Scorpion/APD/Plettenberg/PDW sources.
+All 3 scenario revenue-cost reconciliations and integer break-even ceilings passed independent read-only recalculation.
+8 sensitivities present. All financial inputs remain assumptions.
+Browser snapshots: owned Dia tabs closed after capture.
+fcc-faq-dia.txt: SHA256 11b7c2986ce1add4637e0f457ca4389959aceabbfff57bd44965eeae8abc6931
+diu-assessors-dia.txt: SHA256 48bb904d7462cce9bec07304bffb3c16dcd62caf988221e4c52a6cbd4191bb86
+gauntlet-i-dia.txt: SHA256 5983400686e34e8f67a0e3a6712caddc4769bed8969a70cdb53af6d368d06d7f

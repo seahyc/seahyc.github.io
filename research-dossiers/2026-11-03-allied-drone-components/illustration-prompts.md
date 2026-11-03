@@ -1,0 +1,13 @@
+# Original illustration generation — built-in image_gen
+3 November 2026. No CLI fallback. Original outputs copied without alteration from built-in tool default paths. No third-party input images.
+
+## proof-bench.png
+Create one editorial hand-watercolor cutout for a founder Fieldbook. A small drone on a workbench has its electronic speed controller removed; two similar little circuit boards sit beside it, one connected to a paper trail of blank test sheets and a magnifying glass, showing that an interchangeable part needs traceable evidence. Rough childlike wobbly ink lines, uneven translucent watercolor washes bleeding past contours, muted cheerful sage, terracotta and ochre. Simple readable metaphor, no text, no lettering, no logos. actual transparent alpha; no white, cream, paper texture, gradient, checkerboard, or baked background.
+
+## origin-tree.png
+Use case: illustration-story. One explanatory hand-watercolor cutout for a public founder Fieldbook: a technician holds a little electronic speed controller circuit board, and follows its three branching strings down to a semiconductor chip, a blank circuit board, and a reel of copper wire. Each has a small blank tied tag. A magnifying glass over one branch shows a question mark ONLY as a simple visual curl if needed, but preferably no marks or text. This illustrates that final assembly location is different from upstream component origin; no flags or maps. Rough childlike wobbly ink contours, translucent pigment bleeding outside lines, muted cheerful sage ochre terracotta. Actual objects simple and legible; not polished vector. No text or lettering. actual transparent alpha; no white, cream, paper texture, gradient, checkerboard, or baked background.
+
+Both calls set transparent_background=true. Both saved images RGBA; sips hasAlpha yes; PIL corner and edge-midpoint alpha checks all zero. No painted checkerboard. Images are conceptual explanations, not product photographs or engineering validation.
+
+## Revision and rendered-background finding
+Both images were edited with the built-in image tool to request removal of all background washes/glow between and behind objects, retaining subjects and generous transparent margins. The same mandatory actual-transparent-alpha/no-background constraint was repeated. Saved final outputs replaced original rasters. Final alpha checks still pass. Independent release review identified shared image background styling as the rendered rectangle source; report-local img style background:transparent removes it without shared changes. Stored RGB in alpha-zero pixels is not an opaque image background.
