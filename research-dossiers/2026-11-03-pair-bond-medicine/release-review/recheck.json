@@ -1,0 +1,149 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "cards": [
+      {
+        "slug": "13-a-pilot-is-a-learning-service",
+        "overflow": [],
+        "images": [],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "18-finance-the-next-question",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "20-a-company-worth-earning",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": "ped bids replace allocations; an independent statistician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+        }
+      }
+    ],
+    "errors": [],
+    "inlineLink": {
+      "before": {
+        "href": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "target": "",
+        "html": "<a href=\"#card-12-the-cost-of-helping-a-couple\">Original unit model</a>"
+      },
+      "after": {
+        "url": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "active": "12-the-cost-of-helping-a-couple"
+      }
+    }
+  },
+  {
+    "width": 737,
+    "height": 862,
+    "cards": [
+      {
+        "slug": "13-a-pilot-is-a-learning-service",
+        "overflow": [],
+        "images": [],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "18-finance-the-next-question",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "20-a-company-worth-earning",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": "ped bids replace allocations; an independent statistician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+        }
+      }
+    ],
+    "errors": [],
+    "inlineLink": {
+      "before": {
+        "href": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "target": "",
+        "html": "<a href=\"#card-12-the-cost-of-helping-a-couple\">Original unit model</a>"
+      },
+      "after": {
+        "url": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "active": "12-the-cost-of-helping-a-couple"
+      }
+    }
+  },
+  {
+    "width": 1440,
+    "height": 1000,
+    "cards": [
+      {
+        "slug": "13-a-pilot-is-a-learning-service",
+        "overflow": [],
+        "images": [],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "18-finance-the-next-question",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": ""
+        }
+      },
+      {
+        "slug": "20-a-company-worth-earning",
+        "overflow": [],
+        "images": [
+          true
+        ],
+        "bottom": {
+          "reachable": true,
+          "lastText": "ped bids replace allocations; an independent statistician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+        }
+      }
+    ],
+    "errors": [],
+    "inlineLink": {
+      "before": {
+        "href": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "target": "",
+        "html": "<a href=\"#card-12-the-cost-of-helping-a-couple\">Original unit model</a>"
+      },
+      "after": {
+        "url": "http://127.0.0.1:1417/learning/can-we-build-better-bonds/#card-12-the-cost-of-helping-a-couple",
+        "active": "12-the-cost-of-helping-a-couple"
+      }
+    }
+  }
+]

@@ -1,0 +1,131 @@
+{
+  "date": "2026-11-03",
+  "currency": "USD",
+  "unit": "one enrolled couple, one eight-week non-drug programme",
+  "status": "All inputs are explicit founder planning assumptions, not quotes, forecasts, willingness-to-pay observations or clinical results.",
+  "price_context": {
+    "source": "https://www.ourrelationship.com/",
+    "observed": "USD249 coached, USD99 self-guided collected by research agent on 3 November 2026, not re-verified by parent review; not checkout guarantees or our achievable price"
+  },
+  "annual_fixed_company_cost_usd": 300000,
+  "cases": [
+    {
+      "name": "low",
+      "price_usd": 249,
+      "support_hours": 3,
+      "loaded_support_usd_hour": 80,
+      "platform_payment_usd": 20,
+      "refund_fraction": 0.1,
+      "acquisition_usd": 120,
+      "support_cost_usd": 240,
+      "refund_reserve_usd": 24.9,
+      "delivery_contribution_usd": -35.9,
+      "after_acquisition_contribution_usd": -155.9,
+      "after_acquisition_margin_fraction": -0.6261044176706827,
+      "annual_break_even_paid_couples": null
+    },
+    {
+      "name": "base",
+      "price_usd": 299,
+      "support_hours": 1,
+      "loaded_support_usd_hour": 65,
+      "platform_payment_usd": 15,
+      "refund_fraction": 0.05,
+      "acquisition_usd": 75,
+      "support_cost_usd": 65,
+      "refund_reserve_usd": 14.95,
+      "delivery_contribution_usd": 204.05,
+      "after_acquisition_contribution_usd": 129.05,
+      "after_acquisition_margin_fraction": 0.4316053511705686,
+      "annual_break_even_paid_couples": 2325
+    },
+    {
+      "name": "high",
+      "price_usd": 349,
+      "support_hours": 0.5,
+      "loaded_support_usd_hour": 65,
+      "platform_payment_usd": 12,
+      "refund_fraction": 0.03,
+      "acquisition_usd": 45,
+      "support_cost_usd": 32.5,
+      "refund_reserve_usd": 10.47,
+      "delivery_contribution_usd": 294.03,
+      "after_acquisition_contribution_usd": 249.03,
+      "after_acquisition_margin_fraction": 0.7135530085959886,
+      "annual_break_even_paid_couples": 1205
+    }
+  ],
+  "sensitivities": [
+    {
+      "test": "price minus 20 percent",
+      "contribution_usd": 72.24,
+      "annual_break_even_paid_couples": 4153
+    },
+    {
+      "test": "support doubles",
+      "contribution_usd": 64.05,
+      "annual_break_even_paid_couples": 4684
+    },
+    {
+      "test": "acquisition doubles",
+      "contribution_usd": 54.05,
+      "annual_break_even_paid_couples": 5551
+    },
+    {
+      "test": "refunds 15 percent",
+      "contribution_usd": 99.15,
+      "annual_break_even_paid_couples": 3026
+    },
+    {
+      "test": "support 3h and acquisition 150",
+      "contribution_usd": -75.95,
+      "annual_break_even_paid_couples": null
+    }
+  ],
+  "first_90_days_budget_usd": {
+    "founder_draw": 9000,
+    "clinical_lead_and_safeguarding": 12000,
+    "engineering": 12000,
+    "legal_privacy_insurance_scoping": 8000,
+    "research_statistics": 5000,
+    "discovery_tools_travel": 3000,
+    "contingency": 11000
+  },
+  "first_90_days_budget_total_usd": 60000,
+  "volume_scenarios": [
+    {
+      "paid_couples_per_year": 300,
+      "gross_revenue_usd": 89700,
+      "contribution_before_fixed_usd": 38715.0,
+      "operating_result_before_tax_usd": -261285.0
+    },
+    {
+      "paid_couples_per_year": 3000,
+      "gross_revenue_usd": 897000,
+      "contribution_before_fixed_usd": 387150.0,
+      "operating_result_before_tax_usd": 87150.0
+    },
+    {
+      "paid_couples_per_year": 30000,
+      "gross_revenue_usd": 8970000,
+      "contribution_before_fixed_usd": 3871500.0,
+      "operating_result_before_tax_usd": 3571500.0
+    }
+  ],
+  "formulas": [
+    "delivery contribution = price - support hours * loaded wage - platform/payment - price * refund fraction",
+    "after-acquisition contribution = delivery contribution - fully loaded acquisition allocation",
+    "annual break-even = ceil(annual fixed company cost / positive after-acquisition contribution)",
+    "operating result = paid enrolled couples * after-acquisition contribution - annual fixed company cost"
+  ],
+  "boundaries": [
+    "No TAM or distress denominator established. Month-12 100-enrollment gate is learning, not self-financing: base contribution 12905 before fixed costs versus 2325 annual break-even enrollments.",
+    "Every paid enrollment incurs acquisition and expected delivery cost, including dropouts; refunds reserved separately.",
+    "Support allowance includes screening, onboarding, reminders, outcome collection and routine escalation; severe cases can exceed it.",
+    "Fixed cost is incremental central product, clinical governance, legal/security, sales management and administration; variable staff acquisition and support are outside it. Do not double-count the same hours.",
+    "No recurring subscription or retention-derived LTV is assumed; referral conversion and sponsorship remain unvalidated.",
+    "Excluded: tax, financing, founder equity value, extraordinary liability, major trial budget, pharmaceutical R&D and clinic capex.",
+    "First-90-day budget is a separate cash spending envelope, not added to annual fixed cost mechanically. Replace all allocations with scoped quotes; pilot income is not precommitted funding.",
+    "At 30000 couples fixed costs will change; constant-fixed scenario is arithmetic only, not a scale forecast."
+  ]
+}

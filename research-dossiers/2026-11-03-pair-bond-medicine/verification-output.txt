@@ -1,0 +1,19 @@
+$ hugo --destination /tmp/fb-pair-bond-medicine/site --cacheDir /tmp/fb-pair-bond-medicine/cache --noBuildLock --quiet
+
+hugo build exit=0
+$ sips -g hasAlpha static/images/pair-bond-medicine/session-bridge.png
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/session-bridge.png
+  hasAlpha: yes
+session-bridge.png: mode=RGBA; corners=[0, 0, 0, 0]; alpha range=(0, 255)
+$ sips -g hasAlpha static/images/pair-bond-medicine/two-gates.png
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/two-gates.png
+  hasAlpha: yes
+two-gates.png: mode=RGBA; corners=[1, 0, 0, 0]; alpha range=(0, 255)
+cards=21; unique substantive visuals=10; execution cards=7/21
+visual coverage: all 19 rolling windows of three cards contain an explanatory visual
+
+$ node research-dossiers/2026-11-03-pair-bond-medicine/check.mjs
+390x844: PASS; cards=21; images=10; overflow=0; unloaded=0; page_errors=0; unreachable=0
+737x862: PASS; cards=21; images=10; overflow=0; unloaded=0; page_errors=0; unreachable=0
+1440x1000: PASS; cards=21; images=10; overflow=0; unloaded=0; page_errors=0; unreachable=0
+direct hash checks=25/25; canonical index entries=1; both aliases=PASS

@@ -1,0 +1,1229 @@
+{
+  "summary": {
+    "indexCount": 1,
+    "aliases": [
+      {
+        "path": "/research/pair-bond-medicine/",
+        "url": "http://localhost:1417/learning/can-we-build-better-bonds/#card-cover",
+        "canonical": true
+      },
+      {
+        "path": "/learning/pair-bond-medicine/",
+        "url": "http://localhost:1417/learning/can-we-build-better-bonds/#card-cover",
+        "canonical": true
+      }
+    ],
+    "hashChecks": 25,
+    "hashFailures": [],
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "cards": 21,
+        "uniqueImages": 10,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": []
+      },
+      {
+        "width": 737,
+        "height": 862,
+        "cards": 21,
+        "uniqueImages": 10,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": []
+      },
+      {
+        "width": 1440,
+        "height": 1000,
+        "cards": 21,
+        "uniqueImages": 10,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": []
+      }
+    ]
+  },
+  "reports": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 21,
+      "errors": [],
+      "docOverflow": false,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 621.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/thesis.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "01-what-the-acquisition-actually-buys",
+          "hash": "#card-01-what-the-acquisition-actually-buys",
+          "max": 300.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "02-a-signalling-molecule-is-not-a-relationship",
+          "hash": "#card-02-a-signalling-molecule-is-not-a-relationship",
+          "max": 247.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "03-a-laboratory-conversation-is-a-beginning",
+          "hash": "#card-03-a-laboratory-conversation-is-a-beginning",
+          "max": 404.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/translation.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-bridge-is-durable-change",
+          "hash": "#card-04-the-missing-bridge-is-durable-change",
+          "max": 294.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/session-bridge.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "05-the-unregulated-premise-fails",
+          "hash": "#card-05-the-unregulated-premise-fails",
+          "max": 271.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "06-give-mdma-its-strongest-case",
+          "hash": "#card-06-give-mdma-its-strongest-case",
+          "max": 412.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/evidence.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "07-treating-ptsd-together-is-a-narrower-question",
+          "hash": "#card-07-treating-ptsd-together-is-a-narrower-question",
+          "max": 247.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "08-a-positive-paper-is-not-an-approval",
+          "hash": "#card-08-a-positive-paper-is-not-an-approval",
+          "max": 191.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "09-pick-the-company-before-the-molecule",
+          "hash": "#card-09-pick-the-company-before-the-molecule",
+          "max": 490.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/routes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "10-legal-access-is-local-and-specific",
+          "hash": "#card-10-legal-access-is-local-and-specific",
+          "max": 256.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "11-what-the-headline-omits",
+          "hash": "#card-11-what-the-headline-omits",
+          "max": 352.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "12-the-cost-of-helping-a-couple",
+          "hash": "#card-12-the-cost-of-helping-a-couple",
+          "max": 1675.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "13-a-pilot-is-a-learning-service",
+          "hash": "#card-13-a-pilot-is-a-learning-service",
+          "max": 521.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "14-build-the-service-that-can-disprove-itself",
+          "hash": "#card-14-build-the-service-that-can-disprove-itself",
+          "max": 325.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "15-spend-the-first-quarter-on-decisive-evidence",
+          "hash": "#card-15-spend-the-first-quarter-on-decisive-evidence",
+          "max": 614.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/calendar.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "16-each-partner-keeps-a-way-out",
+          "hash": "#card-16-each-partner-keeps-a-way-out",
+          "max": 530.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/two-gates.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "17-earn-buyers-and-clinical-credibility",
+          "hash": "#card-17-earn-buyers-and-clinical-credibility",
+          "max": 406.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "18-finance-the-next-question",
+          "hash": "#card-18-finance-the-next-question",
+          "max": 786.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/capital.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "19-what-the-founder-can-actually-earn",
+          "hash": "#card-19-what-the-founder-can-actually-earn",
+          "max": 379.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 844,
+            "text": ""
+          }
+        },
+        {
+          "slug": "20-a-company-worth-earning",
+          "hash": "#card-20-a-company-worth-earning",
+          "max": 2246.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 764.4828491210938,
+            "limit": 844,
+            "text": "stician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+          }
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 21,
+      "errors": [],
+      "docOverflow": false,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 793.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/thesis.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "01-what-the-acquisition-actually-buys",
+          "hash": "#card-01-what-the-acquisition-actually-buys",
+          "max": 26.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "02-a-signalling-molecule-is-not-a-relationship",
+          "hash": "#card-02-a-signalling-molecule-is-not-a-relationship",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "03-a-laboratory-conversation-is-a-beginning",
+          "hash": "#card-03-a-laboratory-conversation-is-a-beginning",
+          "max": 405.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/translation.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-bridge-is-durable-change",
+          "hash": "#card-04-the-missing-bridge-is-durable-change",
+          "max": 254.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/session-bridge.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "05-the-unregulated-premise-fails",
+          "hash": "#card-05-the-unregulated-premise-fails",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "06-give-mdma-its-strongest-case",
+          "hash": "#card-06-give-mdma-its-strongest-case",
+          "max": 400.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/evidence.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "07-treating-ptsd-together-is-a-narrower-question",
+          "hash": "#card-07-treating-ptsd-together-is-a-narrower-question",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "08-a-positive-paper-is-not-an-approval",
+          "hash": "#card-08-a-positive-paper-is-not-an-approval",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "09-pick-the-company-before-the-molecule",
+          "hash": "#card-09-pick-the-company-before-the-molecule",
+          "max": 541.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/routes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "10-legal-access-is-local-and-specific",
+          "hash": "#card-10-legal-access-is-local-and-specific",
+          "max": 42.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "11-what-the-headline-omits",
+          "hash": "#card-11-what-the-headline-omits",
+          "max": 40.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "12-the-cost-of-helping-a-couple",
+          "hash": "#card-12-the-cost-of-helping-a-couple",
+          "max": 851.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "13-a-pilot-is-a-learning-service",
+          "hash": "#card-13-a-pilot-is-a-learning-service",
+          "max": 147.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "14-build-the-service-that-can-disprove-itself",
+          "hash": "#card-14-build-the-service-that-can-disprove-itself",
+          "max": 58.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "15-spend-the-first-quarter-on-decisive-evidence",
+          "hash": "#card-15-spend-the-first-quarter-on-decisive-evidence",
+          "max": 484.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/calendar.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "16-each-partner-keeps-a-way-out",
+          "hash": "#card-16-each-partner-keeps-a-way-out",
+          "max": 359.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/two-gates.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "17-earn-buyers-and-clinical-credibility",
+          "hash": "#card-17-earn-buyers-and-clinical-credibility",
+          "max": 121.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "18-finance-the-next-question",
+          "hash": "#card-18-finance-the-next-question",
+          "max": 598.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/capital.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "19-what-the-founder-can-actually-earn",
+          "hash": "#card-19-what-the-founder-can-actually-earn",
+          "max": 89.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 862,
+            "text": ""
+          }
+        },
+        {
+          "slug": "20-a-company-worth-earning",
+          "hash": "#card-20-a-company-worth-earning",
+          "max": 1655.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 813.515380859375,
+            "limit": 862,
+            "text": "stician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 21,
+      "errors": [],
+      "docOverflow": false,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 279.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/thesis.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "01-what-the-acquisition-actually-buys",
+          "hash": "#card-01-what-the-acquisition-actually-buys",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "02-a-signalling-molecule-is-not-a-relationship",
+          "hash": "#card-02-a-signalling-molecule-is-not-a-relationship",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "03-a-laboratory-conversation-is-a-beginning",
+          "hash": "#card-03-a-laboratory-conversation-is-a-beginning",
+          "max": 9.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/translation.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-bridge-is-durable-change",
+          "hash": "#card-04-the-missing-bridge-is-durable-change",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/session-bridge.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "05-the-unregulated-premise-fails",
+          "hash": "#card-05-the-unregulated-premise-fails",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "06-give-mdma-its-strongest-case",
+          "hash": "#card-06-give-mdma-its-strongest-case",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/evidence.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "07-treating-ptsd-together-is-a-narrower-question",
+          "hash": "#card-07-treating-ptsd-together-is-a-narrower-question",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "08-a-positive-paper-is-not-an-approval",
+          "hash": "#card-08-a-positive-paper-is-not-an-approval",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "09-pick-the-company-before-the-molecule",
+          "hash": "#card-09-pick-the-company-before-the-molecule",
+          "max": 177.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/routes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "10-legal-access-is-local-and-specific",
+          "hash": "#card-10-legal-access-is-local-and-specific",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "11-what-the-headline-omits",
+          "hash": "#card-11-what-the-headline-omits",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "12-the-cost-of-helping-a-couple",
+          "hash": "#card-12-the-cost-of-helping-a-couple",
+          "max": 476.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "13-a-pilot-is-a-learning-service",
+          "hash": "#card-13-a-pilot-is-a-learning-service",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "14-build-the-service-that-can-disprove-itself",
+          "hash": "#card-14-build-the-service-that-can-disprove-itself",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "15-spend-the-first-quarter-on-decisive-evidence",
+          "hash": "#card-15-spend-the-first-quarter-on-decisive-evidence",
+          "max": 56.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/calendar.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "16-each-partner-keeps-a-way-out",
+          "hash": "#card-16-each-partner-keeps-a-way-out",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/two-gates.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "17-earn-buyers-and-clinical-credibility",
+          "hash": "#card-17-earn-buyers-and-clinical-credibility",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "18-finance-the-next-question",
+          "hash": "#card-18-finance-the-next-question",
+          "max": 112.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/capital.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "19-what-the-founder-can-actually-earn",
+          "hash": "#card-19-what-the-founder-can-actually-earn",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "bottom": {
+            "reachable": true,
+            "bottom": 0,
+            "limit": 1000,
+            "text": ""
+          }
+        },
+        {
+          "slug": "20-a-company-worth-earning",
+          "hash": "#card-20-a-company-worth-earning",
+          "max": 782.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1417/images/pair-bond-medicine/gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "bottom": 951.75,
+            "limit": 1000,
+            "text": "stician fixes the evaluation before outcomes are seen. The stop rules above govern further spending."
+          }
+        }
+      ]
+    }
+  ],
+  "hashChecks": [
+    {
+      "width": 390,
+      "hash": "#card-cover",
+      "expected": "cover",
+      "actual": "cover",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-01-what-the-acquisition-actually-buys",
+      "expected": "01-what-the-acquisition-actually-buys",
+      "actual": "01-what-the-acquisition-actually-buys",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-02-a-signalling-molecule-is-not-a-relationship",
+      "expected": "02-a-signalling-molecule-is-not-a-relationship",
+      "actual": "02-a-signalling-molecule-is-not-a-relationship",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-03-a-laboratory-conversation-is-a-beginning",
+      "expected": "03-a-laboratory-conversation-is-a-beginning",
+      "actual": "03-a-laboratory-conversation-is-a-beginning",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-04-the-missing-bridge-is-durable-change",
+      "expected": "04-the-missing-bridge-is-durable-change",
+      "actual": "04-the-missing-bridge-is-durable-change",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-05-the-unregulated-premise-fails",
+      "expected": "05-the-unregulated-premise-fails",
+      "actual": "05-the-unregulated-premise-fails",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-06-give-mdma-its-strongest-case",
+      "expected": "06-give-mdma-its-strongest-case",
+      "actual": "06-give-mdma-its-strongest-case",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-07-treating-ptsd-together-is-a-narrower-question",
+      "expected": "07-treating-ptsd-together-is-a-narrower-question",
+      "actual": "07-treating-ptsd-together-is-a-narrower-question",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-08-a-positive-paper-is-not-an-approval",
+      "expected": "08-a-positive-paper-is-not-an-approval",
+      "actual": "08-a-positive-paper-is-not-an-approval",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-09-pick-the-company-before-the-molecule",
+      "expected": "09-pick-the-company-before-the-molecule",
+      "actual": "09-pick-the-company-before-the-molecule",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-10-legal-access-is-local-and-specific",
+      "expected": "10-legal-access-is-local-and-specific",
+      "actual": "10-legal-access-is-local-and-specific",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-11-what-the-headline-omits",
+      "expected": "11-what-the-headline-omits",
+      "actual": "11-what-the-headline-omits",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-12-the-cost-of-helping-a-couple",
+      "expected": "12-the-cost-of-helping-a-couple",
+      "actual": "12-the-cost-of-helping-a-couple",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-13-a-pilot-is-a-learning-service",
+      "expected": "13-a-pilot-is-a-learning-service",
+      "actual": "13-a-pilot-is-a-learning-service",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-14-build-the-service-that-can-disprove-itself",
+      "expected": "14-build-the-service-that-can-disprove-itself",
+      "actual": "14-build-the-service-that-can-disprove-itself",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-15-spend-the-first-quarter-on-decisive-evidence",
+      "expected": "15-spend-the-first-quarter-on-decisive-evidence",
+      "actual": "15-spend-the-first-quarter-on-decisive-evidence",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-16-each-partner-keeps-a-way-out",
+      "expected": "16-each-partner-keeps-a-way-out",
+      "actual": "16-each-partner-keeps-a-way-out",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-17-earn-buyers-and-clinical-credibility",
+      "expected": "17-earn-buyers-and-clinical-credibility",
+      "actual": "17-earn-buyers-and-clinical-credibility",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-18-finance-the-next-question",
+      "expected": "18-finance-the-next-question",
+      "actual": "18-finance-the-next-question",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-19-what-the-founder-can-actually-earn",
+      "expected": "19-what-the-founder-can-actually-earn",
+      "actual": "19-what-the-founder-can-actually-earn",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "hash": "#card-20-a-company-worth-earning",
+      "expected": "20-a-company-worth-earning",
+      "actual": "20-a-company-worth-earning",
+      "pass": true
+    },
+    {
+      "width": 737,
+      "hash": "#card-cover",
+      "expected": "cover",
+      "actual": "cover",
+      "pass": true
+    },
+    {
+      "width": 737,
+      "hash": "#card-20-a-company-worth-earning",
+      "expected": "20-a-company-worth-earning",
+      "actual": "20-a-company-worth-earning",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "hash": "#card-cover",
+      "expected": "cover",
+      "actual": "cover",
+      "pass": true
+    },
+    {
+      "width": 1440,
+      "hash": "#card-20-a-company-worth-earning",
+      "expected": "20-a-company-worth-earning",
+      "actual": "20-a-company-worth-earning",
+      "pass": true
+    }
+  ]
+}
