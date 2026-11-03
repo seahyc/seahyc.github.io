@@ -1,0 +1,14 @@
+Planning scenarios: USD; inputs invented, not quotes.
+low: variable=1630.00; contribution=-230.00; margin=-16.43%; monthly_result=-21450.00; break_even=impossible at price
+base: variable=1255.00; contribution=545.00; margin=30.28%; monthly_result=2525.00; break_even=41
+high: variable=957.50; contribution=1142.50; margin=54.40%; monthly_result=72825.00; break_even=27
+price minus 20 percent: contribution=185.00; monthly_result=-13675.00
+lab cost plus 50 percent: contribution=105.00; monthly_result=-17275.00
+lab cost doubles: contribution=-335.00; monthly_result=-37075.00
+lab cost triples: contribution=-1215.00; monthly_result=-76675.00
+review doubles: contribution=345.00; monthly_result=-6475.00
+repeat fraction 30 percent: contribution=385.00; monthly_result=-4675.00
+volume halves: contribution=545.00; monthly_result=-9737.50
+fixed expense plus 10000: contribution=545.00; monthly_result=-7475.00
+Base incremental post-discovery cash screen=100475.00
+PASS: arithmetic identities checked; no input validated by customer or lab quote.

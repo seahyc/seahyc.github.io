@@ -1,0 +1,243 @@
+{
+  "date": "2026-11-03",
+  "currency": "USD",
+  "status": "invented planning scenarios, not quotes, forecasts or statistical bounds",
+  "unit": "one standardized buyer lot-evidence case with a stipulated external laboratory panel",
+  "scope_warning": "Panel is an assumption for a narrow qualified workflow. It does not price full HHS draft characterization, all methods, multiple sampled vials, finished product testing, stability or supplier audit. Quote these separately before offering the service.",
+  "equations": {
+    "variable": "lab_cost * (1 + repeat_fraction) + logistics + review_hours * loaded_hourly_rate + support + risk_allowance",
+    "contribution": "price - variable",
+    "monthly_result": "cases_per_month * contribution - fixed_expense",
+    "break_even": "ceil(fixed_expense / contribution) when contribution > 0; otherwise impossible at this price",
+    "working_capital": "monthly_cases * variable * collection_days / 30 (simplified upfront-cost screen)"
+  },
+  "cases": [
+    {
+      "name": "low",
+      "inputs": {
+        "price_per_case": 1400,
+        "lab_cost_per_initial_panel": 950,
+        "repeat_panel_fraction": 0.2,
+        "logistics_per_case": 80,
+        "technical_review_hours": 3,
+        "loaded_hourly_review_cost": 100,
+        "support_per_case": 50,
+        "risk_allowance_per_case": 60,
+        "cases_per_month": 15,
+        "fixed_expense_per_month": 18000
+      },
+      "outputs": {
+        "variable_cost_per_case": 1630.0,
+        "contribution_per_case": -230.0,
+        "contribution_margin": -0.164286,
+        "monthly_revenue": 21000,
+        "monthly_operating_result": -21450.0,
+        "break_even_cases_per_month": null,
+        "price_for_30_percent_contribution": 2328.57
+      }
+    },
+    {
+      "name": "base",
+      "inputs": {
+        "price_per_case": 1800,
+        "lab_cost_per_initial_panel": 800,
+        "repeat_panel_fraction": 0.1,
+        "logistics_per_case": 65,
+        "technical_review_hours": 2,
+        "loaded_hourly_review_cost": 100,
+        "support_per_case": 50,
+        "risk_allowance_per_case": 60,
+        "cases_per_month": 45,
+        "fixed_expense_per_month": 22000
+      },
+      "outputs": {
+        "variable_cost_per_case": 1255.0,
+        "contribution_per_case": 545.0,
+        "contribution_margin": 0.302778,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": 2525.0,
+        "break_even_cases_per_month": 41,
+        "price_for_30_percent_contribution": 1792.86
+      }
+    },
+    {
+      "name": "high",
+      "inputs": {
+        "price_per_case": 2100,
+        "lab_cost_per_initial_panel": 650,
+        "repeat_panel_fraction": 0.05,
+        "logistics_per_case": 50,
+        "technical_review_hours": 1.25,
+        "loaded_hourly_review_cost": 100,
+        "support_per_case": 40,
+        "risk_allowance_per_case": 60,
+        "cases_per_month": 90,
+        "fixed_expense_per_month": 30000
+      },
+      "outputs": {
+        "variable_cost_per_case": 957.5,
+        "contribution_per_case": 1142.5,
+        "contribution_margin": 0.544048,
+        "monthly_revenue": 189000,
+        "monthly_operating_result": 72825.0,
+        "break_even_cases_per_month": 27,
+        "price_for_30_percent_contribution": 1367.86
+      }
+    }
+  ],
+  "base_fixed_expense_allocation": {
+    "founder_salary": 6000,
+    "quality_supervision_and_systems": 7000,
+    "sales_admin_security": 4000,
+    "professional_fees_insurance_rent_allowance": 5000,
+    "warning": "All invented; variable technical reviewers are costed per case separately. Risk allowance is not an insurance quote or a liability cap."
+  },
+  "sensitivities": [
+    {
+      "name": "price minus 20 percent",
+      "changed_inputs": {
+        "price_per_case": 1440
+      },
+      "outputs": {
+        "variable_cost_per_case": 1255.0,
+        "contribution_per_case": 185.0,
+        "contribution_margin": 0.128472,
+        "monthly_revenue": 64800,
+        "monthly_operating_result": -13675.0,
+        "break_even_cases_per_month": 119,
+        "price_for_30_percent_contribution": 1792.86
+      }
+    },
+    {
+      "name": "lab cost plus 50 percent",
+      "changed_inputs": {
+        "lab_cost_per_initial_panel": 1200
+      },
+      "outputs": {
+        "variable_cost_per_case": 1695.0,
+        "contribution_per_case": 105.0,
+        "contribution_margin": 0.058333,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -17275.0,
+        "break_even_cases_per_month": 210,
+        "price_for_30_percent_contribution": 2421.43
+      }
+    },
+    {
+      "name": "lab cost doubles",
+      "changed_inputs": {
+        "lab_cost_per_initial_panel": 1600
+      },
+      "outputs": {
+        "variable_cost_per_case": 2135.0,
+        "contribution_per_case": -335.0,
+        "contribution_margin": -0.186111,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -37075.0,
+        "break_even_cases_per_month": null,
+        "price_for_30_percent_contribution": 3050.0
+      }
+    },
+    {
+      "name": "lab cost triples",
+      "changed_inputs": {
+        "lab_cost_per_initial_panel": 2400
+      },
+      "outputs": {
+        "variable_cost_per_case": 3015.0,
+        "contribution_per_case": -1215.0,
+        "contribution_margin": -0.675,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -76675.0,
+        "break_even_cases_per_month": null,
+        "price_for_30_percent_contribution": 4307.14
+      }
+    },
+    {
+      "name": "review doubles",
+      "changed_inputs": {
+        "technical_review_hours": 4
+      },
+      "outputs": {
+        "variable_cost_per_case": 1455.0,
+        "contribution_per_case": 345.0,
+        "contribution_margin": 0.191667,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -6475.0,
+        "break_even_cases_per_month": 64,
+        "price_for_30_percent_contribution": 2078.57
+      }
+    },
+    {
+      "name": "repeat fraction 30 percent",
+      "changed_inputs": {
+        "repeat_panel_fraction": 0.3
+      },
+      "outputs": {
+        "variable_cost_per_case": 1415.0,
+        "contribution_per_case": 385.0,
+        "contribution_margin": 0.213889,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -4675.0,
+        "break_even_cases_per_month": 58,
+        "price_for_30_percent_contribution": 2021.43
+      }
+    },
+    {
+      "name": "volume halves",
+      "changed_inputs": {
+        "cases_per_month": 22.5
+      },
+      "outputs": {
+        "variable_cost_per_case": 1255.0,
+        "contribution_per_case": 545.0,
+        "contribution_margin": 0.302778,
+        "monthly_revenue": 40500.0,
+        "monthly_operating_result": -9737.5,
+        "break_even_cases_per_month": 41,
+        "price_for_30_percent_contribution": 1792.86
+      }
+    },
+    {
+      "name": "fixed expense plus 10000",
+      "changed_inputs": {
+        "fixed_expense_per_month": 32000
+      },
+      "outputs": {
+        "variable_cost_per_case": 1255.0,
+        "contribution_per_case": 545.0,
+        "contribution_margin": 0.302778,
+        "monthly_revenue": 81000,
+        "monthly_operating_result": -7475.0,
+        "break_even_cases_per_month": 59,
+        "price_for_30_percent_contribution": 1792.86
+      }
+    }
+  ],
+  "capital": {
+    "gross_discovery_budget_90_days": 80000,
+    "pilot_prepay_target_two_buyers": 10000,
+    "net_discovery_burn_if_both_pay_and_full_budget_spent": 70000,
+    "post_discovery_base_receivables_days_assumed": 30,
+    "post_discovery_base_variable_working_capital_screen": 56475.0,
+    "post_discovery_two_month_fixed_reserve": 44000,
+    "post_discovery_incremental_cash_screen": 100475.0,
+    "warning": "Discovery spending is sunk before the separate scale-up cash screen. No equipment capex priced. Prepayments, payables, growth, collections, tax and exact staffing cash timing alter this simplified screen."
+  },
+  "exclusions": [
+    "tax and financing",
+    "owned-lab capex, accreditation fees and instrument depreciation",
+    "large claims, recall and uninsurable liabilities",
+    "supplier-audit travel and new-method development unless separately priced",
+    "client inventory hold and sacrificed sample value",
+    "consumer acquisition and product distribution",
+    "full HHS draft characterization scope unless expressly quoted"
+  ],
+  "validation_needed": [
+    "three matched laboratory bids with matrices/methods/sample counts and turnaround",
+    "buyer-approved sampling and acceptance rules",
+    "measured reviewer time and repeat investigations",
+    "paid follow-on orders and collected receipts",
+    "binding insurance terms and written legal scope"
+  ]
+}

@@ -1,0 +1,42 @@
+$ hugo --destination /tmp/fb-peptide-proof/site --cacheDir /tmp/fb-peptide-proof/cache --noBuildLock --quiet
+exit_code=0
+
+$ node /Users/yingcong/.agents/skills/fieldbook/scripts/check-visuals.mjs content/research/peptide-proof/index.md
+cards 18 · visuals on cards 18 · svg 12 · raster 6 (need ≥6)
+PASS
+exit_code=0
+
+$ sips -g hasAlpha static/images/peptide-proof/cover.png static/images/peptide-proof/gates.png static/images/peptide-proof/independence.png static/images/peptide-proof/sampling.png static/images/peptide-proof/service.png static/images/peptide-proof/team.png
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/cover.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/gates.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/independence.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/sampling.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/service.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/peptide-proof/team.png
+  hasAlpha: yes
+exit_code=0
+
+cover.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+gates.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+independence.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+sampling.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+service.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+team.png: RGBA; corner alpha=[0, 0, 0, 0]
+
+{"viewport": "390x844", "cards": 18, "endingsReachable": 18, "directHashes": 18, "pageErrors": 0, "failures": []}
+
+{"viewport": "737x862", "cards": 18, "endingsReachable": 18, "directHashes": 18, "pageErrors": 0, "failures": []}
+
+{"viewport": "1440x1000", "cards": 18, "endingsReachable": 18, "directHashes": 18, "pageErrors": 0, "failures": []}
+
+PASS: one canonical sitemap entry /learning/peptide-proof/; private build; 18 cards / 18 unique visuals / 6 watercolors.

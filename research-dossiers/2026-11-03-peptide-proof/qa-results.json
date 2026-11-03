@@ -1,0 +1,26 @@
+[
+  {
+    "viewport": "390x844",
+    "cards": 18,
+    "endingsReachable": 18,
+    "directHashes": 18,
+    "pageErrors": 0,
+    "failures": []
+  },
+  {
+    "viewport": "737x862",
+    "cards": 18,
+    "endingsReachable": 18,
+    "directHashes": 18,
+    "pageErrors": 0,
+    "failures": []
+  },
+  {
+    "viewport": "1440x1000",
+    "cards": 18,
+    "endingsReachable": 18,
+    "directHashes": 18,
+    "pageErrors": 0,
+    "failures": []
+  }
+]
