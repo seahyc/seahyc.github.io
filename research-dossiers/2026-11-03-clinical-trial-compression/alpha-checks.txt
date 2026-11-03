@@ -1,0 +1,6 @@
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/evidence-bridge.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/patient-paths.png
+  hasAlpha: yes
+evidence-bridge.png: size=(1774, 887), corner alpha=[0, 0, 0, 0], alpha extrema=(0, 255)
+patient-paths.png: size=(1536, 1024), corner alpha=[0, 0, 0, 0], alpha extrema=(0, 254)

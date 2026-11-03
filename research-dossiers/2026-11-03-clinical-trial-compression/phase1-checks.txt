@@ -1,0 +1,10 @@
+service low PASS; contribution -30000 capacity 6 annual -360000 customer_net -65000
+service base PASS; contribution 24800 capacity 10 annual 68000 customer_net -30000.0
+service high PASS; contribution 64400 capacity 13 annual 657200 customer_net 70000.0
+software low PASS; first contract contribution -35000
+software base PASS; first contract contribution 37000
+software high PASS; first contract contribution 120000
+sensitivity rows 7 PASS
+registry hash, count and saved sample PASS
+required dossier files and 27 material-claim IDs PASS
+No public article, visual generation, Hugo build, deployment or git operation performed in Phase 1.

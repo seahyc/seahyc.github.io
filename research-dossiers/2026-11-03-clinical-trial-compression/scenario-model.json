@@ -1,0 +1,198 @@
+{
+  "as_of": "2026-11-03",
+  "currency": "USD nominal; no inflation or FX conversion",
+  "status": "SCENARIO ONLY: every commercial input is an assumption; outputs are arithmetic, not forecasts",
+  "unit": "One sponsor-accepted Phase II outpatient protocol-feasibility and startup-readiness package; no drug supply, full CRO services, site grants or clinical care included",
+  "service_cases": [
+    {
+      "name": "low",
+      "price": 65000,
+      "delivery_hours": 520,
+      "loaded_hourly_rate": 125,
+      "other_direct_cost": 12000,
+      "rework_and_cancellation_reserve": 6000,
+      "acquisition_cost_per_project": 12000,
+      "direct_delivery_cost": 83000,
+      "delivery_margin": -18000,
+      "delivery_margin_pct": -0.27692307692307694,
+      "contribution_after_acquisition": -30000,
+      "annual_delivery_hours": 3600,
+      "annual_project_capacity": 6,
+      "annual_fixed_overhead_excluding_direct_labor": 180000,
+      "break_even_projects": null,
+      "annual_result_at_capacity": -360000,
+      "workflow_days_saved": 10,
+      "critical_path_fraction": 0,
+      "critical_path_days_saved": 0,
+      "avoidable_customer_cash_per_day": 2000,
+      "customer_cash_benefit": 0,
+      "customer_cash_benefit_less_fee": -65000,
+      "critical_path_days_to_cover_fee": 32.5,
+      "project_cash_exposure_before_balance": 62500.0
+    },
+    {
+      "name": "base",
+      "price": 90000,
+      "delivery_hours": 360,
+      "loaded_hourly_rate": 120,
+      "other_direct_cost": 9000,
+      "rework_and_cancellation_reserve": 4000,
+      "acquisition_cost_per_project": 9000,
+      "direct_delivery_cost": 56200,
+      "delivery_margin": 33800,
+      "delivery_margin_pct": 0.37555555555555553,
+      "contribution_after_acquisition": 24800,
+      "annual_delivery_hours": 3600,
+      "annual_project_capacity": 10,
+      "annual_fixed_overhead_excluding_direct_labor": 180000,
+      "break_even_projects": 8,
+      "annual_result_at_capacity": 68000,
+      "workflow_days_saved": 30,
+      "critical_path_fraction": 0.5,
+      "critical_path_days_saved": 15.0,
+      "avoidable_customer_cash_per_day": 4000,
+      "customer_cash_benefit": 60000.0,
+      "customer_cash_benefit_less_fee": -30000.0,
+      "critical_path_days_to_cover_fee": 22.5,
+      "project_cash_exposure_before_balance": 20200.0
+    },
+    {
+      "name": "high",
+      "price": 110000,
+      "delivery_hours": 260,
+      "loaded_hourly_rate": 110,
+      "other_direct_cost": 7000,
+      "rework_and_cancellation_reserve": 3000,
+      "acquisition_cost_per_project": 7000,
+      "direct_delivery_cost": 38600,
+      "delivery_margin": 71400,
+      "delivery_margin_pct": 0.649090909090909,
+      "contribution_after_acquisition": 64400,
+      "annual_delivery_hours": 3600,
+      "annual_project_capacity": 13,
+      "annual_fixed_overhead_excluding_direct_labor": 180000,
+      "break_even_projects": 3,
+      "annual_result_at_capacity": 657200,
+      "workflow_days_saved": 40,
+      "critical_path_fraction": 0.75,
+      "critical_path_days_saved": 30.0,
+      "avoidable_customer_cash_per_day": 6000,
+      "customer_cash_benefit": 180000.0,
+      "customer_cash_benefit_less_fee": 70000.0,
+      "critical_path_days_to_cover_fee": 18.333333333333332,
+      "project_cash_exposure_before_balance": 0
+    }
+  ],
+  "software_comparator_cases": [
+    {
+      "name": "low",
+      "annual_contract_value": 75000,
+      "onboarding_cost": 35000,
+      "annual_support_hosting": 20000,
+      "acquisition_cost": 30000,
+      "customer_specific_validation_cost": 25000,
+      "first_contract_year_contribution": -35000,
+      "annual_fixed_cost_excluding_above": 400000,
+      "new_customers_to_cover_fixed": null,
+      "renewal_contribution_before_retention_sales_cost": 55000
+    },
+    {
+      "name": "base",
+      "annual_contract_value": 120000,
+      "onboarding_cost": 25000,
+      "annual_support_hosting": 18000,
+      "acquisition_cost": 25000,
+      "customer_specific_validation_cost": 15000,
+      "first_contract_year_contribution": 37000,
+      "annual_fixed_cost_excluding_above": 400000,
+      "new_customers_to_cover_fixed": 11,
+      "renewal_contribution_before_retention_sales_cost": 102000
+    },
+    {
+      "name": "high",
+      "annual_contract_value": 180000,
+      "onboarding_cost": 15000,
+      "annual_support_hosting": 15000,
+      "acquisition_cost": 20000,
+      "customer_specific_validation_cost": 10000,
+      "first_contract_year_contribution": 120000,
+      "annual_fixed_cost_excluding_above": 400000,
+      "new_customers_to_cover_fixed": 4,
+      "renewal_contribution_before_retention_sales_cost": 165000
+    }
+  ],
+  "sensitivities": [
+    {
+      "price": 90000,
+      "hours": 360,
+      "cac": 9000,
+      "projects": 10,
+      "contribution": 24800,
+      "annual_result": 68000
+    },
+    {
+      "price": 75000,
+      "hours": 360,
+      "cac": 9000,
+      "projects": 10,
+      "contribution": 9800,
+      "annual_result": -82000
+    },
+    {
+      "price": 105000,
+      "hours": 360,
+      "cac": 9000,
+      "projects": 10,
+      "contribution": 39800,
+      "annual_result": 218000
+    },
+    {
+      "price": 90000,
+      "hours": 480,
+      "cac": 9000,
+      "projects": 7,
+      "contribution": 10400,
+      "annual_result": -107200
+    },
+    {
+      "price": 90000,
+      "hours": 260,
+      "cac": 9000,
+      "projects": 13,
+      "contribution": 36800,
+      "annual_result": 298400
+    },
+    {
+      "price": 90000,
+      "hours": 360,
+      "cac": 18000,
+      "projects": 10,
+      "contribution": 15800,
+      "annual_result": -22000
+    },
+    {
+      "price": 90000,
+      "hours": 360,
+      "cac": 9000,
+      "projects": 6,
+      "contribution": 24800,
+      "annual_result": -31200
+    }
+  ],
+  "assumptions": {
+    "capacity": "3600 annual project-delivery hours across a small expert team/contractor pool; non-delivery work is outside capacity and paid through fixed overhead. Loaded labor is charged once in project costs; overhead excludes that labor. Validate actual role bottlenecks before hiring.",
+    "annual_view": "Full-year steady paid throughput, not first-year ramp; acquisition costs are allocated per won project including failed sales effort. No success fee or equity assumed.",
+    "customer_value": "Only documented avoidable cash attributable to critical-path time; excludes speculative drug NPV, unavoidable payroll and unproven efficacy gains. Clinical observation periods unchanged.",
+    "cash": "50% fee deposit, balance on acceptance; client pays its own clinical pass-throughs. Peak project cash exposure before final collection=max(0,direct_cost+CAC-0.5*fee). Fixed overhead and receivable risk additional.",
+    "software": "First contract year per new customer; not calendar-year revenue after a long sales cycle. Renewals not assumed and engineering runway is excluded from client unit cost but included in fixed cost."
+  },
+  "equations": [
+    "direct_delivery_cost=hours*loaded_rate+other_direct_cost+reserve",
+    "delivery_margin=fee-direct_delivery_cost",
+    "contribution=delivery_margin-CAC",
+    "annual_result=paid_projects*contribution-fixed_overhead",
+    "project_capacity=floor(delivery_hours_available/project_hours)",
+    "customer_cash_benefit=workflow_days_saved*critical_path_fraction*avoidable_daily_cash",
+    "software_first_year_contribution=ACV-onboarding-support-CAC-customer_validation"
+  ]
+}

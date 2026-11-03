@@ -1,0 +1,340 @@
+{
+  "retrieved_at_utc": "2026-11-03T04:10:31.940919+00:00",
+  "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=atopic+dermatitis&filter.overallStatus=RECRUITING&pageSize=10&countTotal=true&format=json",
+  "version": {
+    "apiVersion": "2.0.5",
+    "dataTimestamp": "2026-11-02T10:00:05"
+  },
+  "sha256": "a2e514e09c0c8b0d3dda6cd3d92ccd50fed884b7ff939730b271d5d2c38677e6",
+  "api_totalCount": 182,
+  "returned_records": 10,
+  "scope": "First API page only; no sort specified. Broad condition search, all phases and sponsor types; NOT the commercial target cohort. No patient-level data.",
+  "records": [
+    {
+      "nctId": "NCT06547372",
+      "url": "https://clinicaltrials.gov/study/NCT06547372",
+      "title": "Dietary Intervention on Atopy",
+      "leadSponsor": {
+        "name": "National University of Singapore",
+        "class": "OTHER"
+      },
+      "phases": [
+        "NA"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 110,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-04-01",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2024-05-10",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2027-12-31",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "Singapore"
+      ]
+    },
+    {
+      "nctId": "NCT05285839",
+      "url": "https://clinicaltrials.gov/study/NCT05285839",
+      "title": "Dupixent and Narrowband UVB for Atopic Dermatitis",
+      "leadSponsor": {
+        "name": "Psoriasis Treatment Center of Central New Jersey",
+        "class": "OTHER"
+      },
+      "phases": [
+        "PHASE4"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 40,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2024-03-15",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2022-04-19",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2024-12-01",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "United States"
+      ]
+    },
+    {
+      "nctId": "NCT07056569",
+      "url": "https://clinicaltrials.gov/study/NCT07056569",
+      "title": "Post-Marketing Clinical Follow-Up Trial to Evaluate the Performance and Safety of the Medical Device 047 TD Dermatitis Cream in Adults and Children With Atopic and Contact Dermatitis Symptoms Confirmed by Clinical Parameters",
+      "leadSponsor": {
+        "name": "Biokosmes Srl",
+        "class": "INDUSTRY"
+      },
+      "phases": [
+        "NA"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 90,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2025-07-09",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2025-06-05",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2025-08",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "Italy"
+      ]
+    },
+    {
+      "nctId": "NCT07239947",
+      "url": "https://clinicaltrials.gov/study/NCT07239947",
+      "title": "A Study of BBT001 in Healthy Volunteers (HVs) and in Adult Patients With Moderate to Severe Atopic Dermatitis (AD)",
+      "leadSponsor": {
+        "name": "Bambusa Therapeutics",
+        "class": "INDUSTRY"
+      },
+      "phases": [
+        "PHASE1"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 99,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-07-22",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2025-08-09",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2027-12-31",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "China"
+      ]
+    },
+    {
+      "nctId": "NCT07235384",
+      "url": "https://clinicaltrials.gov/study/NCT07235384",
+      "title": "A Phase 1/1b Study to Evaluate Safety, Tolerability and Pharmacokinetics of ZL-1503 in Healthy Volunteers and Participants With Moderate to Severe Atopic Dermatitis",
+      "leadSponsor": {
+        "name": "Zai Lab (Shanghai) Co., Ltd.",
+        "class": "INDUSTRY"
+      },
+      "phases": [
+        "PHASE1"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 84,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-08-07",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2025-12-01",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2027-12-28",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "Australia",
+        "China",
+        "New Zealand"
+      ]
+    },
+    {
+      "nctId": "NCT07598058",
+      "url": "https://clinicaltrials.gov/study/NCT07598058",
+      "title": "PPDTM CorEvitasTM Chronic Hand Eczema (CHE) Drug Safety and Effectiveness Registry",
+      "leadSponsor": {
+        "name": "CorEvitas",
+        "class": "NETWORK"
+      },
+      "phases": [],
+      "studyType": "OBSERVATIONAL",
+      "enrollment": {
+        "count": 2000,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-08-26",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2026-07-21",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2099-12-31",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "United States"
+      ]
+    },
+    {
+      "nctId": "NCT03358693",
+      "url": "https://clinicaltrials.gov/study/NCT03358693",
+      "title": "Molecular Signatures in Inflammatory Skin Disease",
+      "leadSponsor": {
+        "name": "Prof. Dr. Stephan Weidinger",
+        "class": "OTHER"
+      },
+      "phases": [],
+      "studyType": "OBSERVATIONAL",
+      "enrollment": {
+        "count": 300,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2025-07-22",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2017-01-20",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2028-12-31",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "Germany"
+      ]
+    },
+    {
+      "nctId": "NCT06192563",
+      "url": "https://clinicaltrials.gov/study/NCT06192563",
+      "title": "A Study to Observe How Pediatric Patients With Severe Atopic Dermatitis Despite Less Extensive Skin Lesions Respond to Dupilumab Treatment",
+      "leadSponsor": {
+        "name": "Sanofi",
+        "class": "INDUSTRY"
+      },
+      "phases": [],
+      "studyType": "OBSERVATIONAL",
+      "enrollment": {
+        "count": 230,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-08-13",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2023-11-30",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2028-03-31",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "Italy"
+      ]
+    },
+    {
+      "nctId": "NCT07015762",
+      "url": "https://clinicaltrials.gov/study/NCT07015762",
+      "title": "A Study to Evaluate the Safety and Tolerability of Multiple Dose of IBI3002 in Patients With Atopic Dermatitis",
+      "leadSponsor": {
+        "name": "The First Affiliated Hospital of Soochow University",
+        "class": "OTHER"
+      },
+      "phases": [
+        "PHASE1"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 9,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2025-08-07",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2025-07-14",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2026-05-20",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "China"
+      ]
+    },
+    {
+      "nctId": "NCT06244212",
+      "url": "https://clinicaltrials.gov/study/NCT06244212",
+      "title": "Topical Treatment for Atopic Dermatitis",
+      "leadSponsor": {
+        "name": "Wake Forest University Health Sciences",
+        "class": "OTHER"
+      },
+      "phases": [
+        "NA"
+      ],
+      "studyType": "INTERVENTIONAL",
+      "enrollment": {
+        "count": 30,
+        "type": "ESTIMATED"
+      },
+      "status": "RECRUITING",
+      "lastUpdate": {
+        "date": "2026-08-04",
+        "type": "ACTUAL"
+      },
+      "start": {
+        "date": "2024-09-19",
+        "type": "ACTUAL"
+      },
+      "primaryCompletion": {
+        "date": "2027-01",
+        "type": "ESTIMATED"
+      },
+      "locationCountries": [
+        "United States"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+$ hugo --destination /tmp/fb-clinical-trial-compression/site --cacheDir /tmp/fb-clinical-trial-compression/cache --noBuildLock --quiet
+Exit code: 0
