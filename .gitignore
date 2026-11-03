@@ -23,3 +23,9 @@ __pycache__/
 !projects-src/forest-crew/*/public/**
 projects-src/forest-crew/*/dist-public/
 .build/
+
+# Fieldbook QA screenshots and scratch renders stay local, never in git
+research-dossiers/**/*.png
+research-dossiers/**/*.jpg
+research-dossiers/**/*.webp
+research-dossiers/**/*.mp4
