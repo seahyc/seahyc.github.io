@@ -117,6 +117,44 @@
     dot.setAttribute('aria-label', 'Go to card ' + (index + 1) + ' (unread)');
     dots.appendChild(dot);
   });
+  // Phones use the browser's document scroll, without gesture interception.
+  var readingViewport = window.matchMedia('(max-width: 900px)');
+  function restoreReadingPosition() {
+    var slug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
+    var target = slides.find(function (slide) { return slide.dataset.cardSlug === slug; });
+    if (target) {
+      readingSection = target;
+      target.scrollIntoView({ block: 'start' });
+    }
+  }
+  if (readingViewport.matches) {
+    document.documentElement.classList.add('fieldbook-continuous');
+    viewport.classList.remove('swiper');
+    track.classList.remove('swiper-wrapper');
+    slides.forEach(function (slide) { slide.classList.remove('swiper-slide'); });
+    dots.hidden = true;
+    document.querySelector('.swipe-controls').hidden = true;
+    requestAnimationFrame(restoreReadingPosition);
+    window.addEventListener('hashchange', restoreReadingPosition);
+    var readingSection = slides[0];
+    var readingFrame = null;
+    window.addEventListener('scroll', function () {
+      if (readingFrame !== null || !readingViewport.matches) return;
+      readingFrame = requestAnimationFrame(function () {
+        readingFrame = null;
+        if (!readingViewport.matches) return;
+        slides.forEach(function (slide) {
+          if (slide.getBoundingClientRect().top <= window.innerHeight / 2) readingSection = slide;
+        });
+      });
+    }, { passive: true });
+    readingViewport.addEventListener('change', function () {
+      window.history.replaceState(null, '', '#card-' + readingSection.dataset.cardSlug);
+      window.location.reload();
+    });
+    return;
+  }
+  readingViewport.addEventListener('change', function () { window.location.reload(); });
   var requestedSlug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
   var initialSlide = requestedSlug ? slides.findIndex(function (slide) { return slide.dataset.cardSlug === requestedSlug; }) : 0;
   if (initialSlide < 0) initialSlide = 0;

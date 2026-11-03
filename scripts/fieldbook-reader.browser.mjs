@@ -52,13 +52,16 @@ try {
   const hashPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await hashPage.goto(`${baseUrl}/learning/the-joint-that-has-to-survive/#card-02-the-mechanism`, { waitUntil: 'networkidle' });
   assert.equal(
-    await hashPage.locator('.swiper-slide-active').getAttribute('data-card-slug'),
+    await hashPage.evaluate(() => {
+      const card = document.getElementById('card-02-the-mechanism');
+      return Math.abs(card.getBoundingClientRect().top - 30) < 5 ? card.dataset.cardSlug : null;
+    }),
     '02-the-mechanism',
     'a direct card hash must open the requested sheet',
   );
   await hashPage.close();
 
-  const page = await browser.newPage({ viewport: { width: 737, height: 862 } });
+  const page = await browser.newPage({ viewport: { width: 1100, height: 862 } });
   await page.goto(`${baseUrl}/learning/the-joint-that-has-to-survive/`, { waitUntil: 'networkidle' });
   await page.locator('.swipe-progress button:nth-child(3)').click();
   await page.waitForTimeout(550);
@@ -105,39 +108,29 @@ try {
     isMobile: true,
   });
   const mobilePage = await mobileContext.newPage();
-  await mobilePage.goto(`${baseUrl}/learning/the-joint-that-has-to-survive/`, { waitUntil: 'networkidle' });
-  await mobilePage.locator('.swipe-progress button:nth-child(3)').click();
-  await mobilePage.waitForTimeout(550);
+  await mobilePage.goto(`${baseUrl}/learning/the-joint-that-has-to-survive/#card-02-the-mechanism`, { waitUntil: 'networkidle' });
+  assert.equal(await mobilePage.locator('.swiper').count(), 0, 'mobile must not initialise a gesture reader');
+  const originalHash = await mobilePage.evaluate(() => location.hash);
+  const initialY = await mobilePage.evaluate(() => scrollY);
   const session = await mobileContext.newCDPSession(mobilePage);
-  const touch = async (type, y) => session.send('Input.dispatchTouchEvent', {
-    type,
-    touchPoints: type === 'touchEnd' ? [] : [{ x: 195, y }],
-  });
-  await touch('touchStart', 620);
-  await touch('touchMove', 360);
-  await touch('touchEnd', 360);
-  await mobilePage.waitForTimeout(80);
-  const mobileSheet = mobilePage.locator('.swiper-slide-active .story-scroll');
-  const mobileMoved = await mobileSheet.evaluate((node) => ({
-    scrollTop: node.scrollTop,
-    translate: getComputedStyle(node).getPropertyValue('--card-scroll-y').trim(),
-  }));
-  assert.equal(mobileMoved.scrollTop, 0, 'touch reading must not create an inner scroll pane');
-  assert.notEqual(mobileMoved.translate, '0px', 'touch reading must translate the whole sheet');
-
-  await mobileSheet.evaluate((node) => node.renderCardOffset(node.cardMaxOffset()));
-  await touch('touchStart', 650);
-  await touch('touchMove', 250);
-  await touch('touchEnd', 250);
-  await mobilePage.waitForTimeout(600);
-  assert.equal(
-    await mobilePage.locator('.swiper-slide-active').getAttribute('data-card-slug'),
-    '03-the-corrected-market',
-    'touch overscroll beyond the threshold must turn to the next card',
-  );
+  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 650 }] });
+  for (const y of [580, 500, 420, 340, 250]) {
+    await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 180, y }] });
+    await mobilePage.waitForTimeout(20);
+  }
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await mobilePage.waitForTimeout(500);
+  assert.ok(await mobilePage.evaluate(() => scrollY) > initialY + 100, 'a fast slightly diagonal gesture must scroll the document');
+  assert.equal(await mobilePage.evaluate(() => location.hash), originalHash, 'scrolling must not trigger card navigation');
+  await mobilePage.locator('#card-02-the-mechanism h2').tap();
+  assert.equal(await mobilePage.evaluate(() => location.hash), originalHash, 'tapping prose must not turn a card');
+  await mobilePage.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  assert.ok(await mobilePage.locator('.story-slide:last-child').evaluate(node => node.getBoundingClientRect().bottom <= innerHeight + 1), 'final section must be reachable');
+  assert.ok(await mobilePage.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'mobile must have no horizontal page overflow');
   await mobileContext.close();
+  console.log('PASS native mobile document scrolling, fast diagonal gesture, prose taps, final section and overflow');
 
-  console.log('PASS fieldbook sheet translation and edge turn for wheel and touch');
+  console.log('PASS desktop sheet translation and wheel edge turn');
 } finally {
   await browser.close();
   server?.kill('SIGTERM');

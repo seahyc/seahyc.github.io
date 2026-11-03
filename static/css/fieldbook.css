@@ -1073,3 +1073,49 @@ body.research-swipe .story-slide .story-scroll {
 .fieldbook--strain-wave { --fieldbook-accent: #5e6f7f; }
 .fieldbook--liquid-cooling { --fieldbook-accent: #39778d; }
 .fieldbook--aerostatic { --fieldbook-accent: #536d88; }
+
+/* Native document scrolling on phones and small tablets. */
+html.fieldbook-continuous,
+html.fieldbook-continuous body.research-swipe {
+  overflow-x: clip !important;
+  overflow-y: auto !important;
+  height: auto;
+}
+.fieldbook-continuous .swipe-report,
+.fieldbook-continuous .swipe-article,
+.fieldbook-continuous .swipe-content,
+.fieldbook-continuous .swipe-track {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.fieldbook-continuous .swipe-content {
+  padding: 0 0 2rem;
+  user-select: text;
+  touch-action: auto;
+}
+.fieldbook-continuous .swipe-track { display: block; }
+.fieldbook-continuous body.research-swipe .story-slide {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  transform: none;
+  transition: none;
+  box-shadow: none;
+  will-change: auto;
+  scroll-margin-top: 3rem;
+}
+.fieldbook-continuous body.research-swipe .story-slide .story-scroll {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  transform: none;
+  transition: none;
+  will-change: auto;
+  touch-action: auto;
+  overscroll-behavior: auto;
+}
+.fieldbook-continuous .swipe-progress,
+.fieldbook-continuous .swipe-controls,
+.fieldbook-continuous .card-scroll-cue { display: none; }
