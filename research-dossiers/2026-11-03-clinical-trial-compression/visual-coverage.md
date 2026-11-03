@@ -1,18 +1,38 @@
-# Visual coverage · clinical trial compression
+# Visual coverage · clinical trial compression · visual revision
 
-3 November 2026. 21 cards including cover; 10 unique substantive visuals (8 original SVGs, 2 generated watercolor cutouts). Minimum ceil(21/3)=7; actual 10. Every rolling window of three cards contains a unique substantive visual. No shared renderer/style edits. Visuals occupy cards 0,2,4,6,8,10,12,14,16,18. No decoration counted and no asset counted twice.
+3 November 2026. 21 cards including cover; 21 distinct substantive visuals, one per card: 14 SVGs and 7 generated watercolor cutouts. Required watercolor minimum: ceil(21/3) = 7. Every asset counts once. Original facts and argument retained; only figures and captions added. Shared renderer and CSS untouched. The parent handles publication.
 
-| Consecutive partition | Visual(s) / card | Explanatory job, nearby claim | Evidence / provenance | Alpha |
-|---|---|---|---|---|
-| cover–02 | evidence-bridge.png /0; critical-path.svg /02 | Organizing evidence creates passage to a real clinical encounter; parallel dependencies govern startup | Original metaphor; original operational synthesis E26 | PNG verified alpha and zero-alpha corners; SVG transparent canvas |
-| 03–05 | clocks.svg /04 | Separate historical study clocks; not additive and not removable time | Reconstructed E09, Tufts Table 6, PMC9373886; zero-based bars, days; full cohort 187, not phase-specific denominator | SVG transparent canvas |
-| 06–08 | patient-paths.png /06; design.svg /08 | A match can become assessment, refusal or re-review; observed controls/prognosis/randomization differ | Original metaphor E10/E12/E21; guidance conceptual synthesis E04/E07/E16 | PNG verified alpha and zero-alpha corners; paper composite and rendered check passed; SVG transparent canvas |
-| 09–11 | wedge.svg /10 | Four bounded deliverables end in sponsor acceptance, clinical execution stays outside scope | Proposed operating scope E26; not a validated offer | SVG transparent canvas |
-| 12–14 | economics.svg /12; competition.svg /14 | Positive supplier contribution can coexist with buyer shortfall; roles occupied by competitors | E25 scenario-model.json; E13–E21 official vendor/filing pages linked in article; positioning only | SVG transparent canvas |
-| 15–17 | roadmap.svg /16 | Capital follows access, paid delivery, quality/milestone evidence, repeatability | Proposed 0–24 month experiment E27; not prediction | SVG transparent canvas |
-| 18–20 | decision.svg /18 | Lawful paid access, quality-preserving milestone movement and buyer/supplier value are sequential gates | Original proposed falsifiers E26–E27 | SVG transparent canvas |
+All diagrams are transparent SVG canvases, 600px wide, minimum text 21px. All PNGs are genuine RGBA cutouts with zero-alpha corners and outer-edge alpha at most 14/255; final checks in visual-pass-alpha.txt and visual-pass-checks.txt. No sourced photographs or third-party artwork reused.
 
-All SVGs are 600px wide with text >=21px. No background rectangle, gradients or copied graphics. Quantities in clocks carry source/date/cohort in article; scenario quantities carry USD, assumptions and arithmetic. Qualifying conceptual diagrams have no implied measured timing. Public captions and descriptive alt text accompany every figure. Authors retain original diagrams; generated images are new assets, not copied third-party media. No sourced photographs used.
+| Card | Visual | Job / provenance | Alpha status |
+|---|---|---|---|
+| Cover | evidence-bridge.png | Existing original metaphor: preparation bridges to human encounter | RGBA; corners 0 |
+| 01 | question-to-study.png | New watercolor: molecule → protocol → clinical question, not clinical success | RGBA; corners 0 |
+| 02 | critical-path.svg | Existing conceptual parallel dependency diagram; no measured timing | Transparent SVG |
+| 03 | clinic-fit.png | New watercolor: protocol requirements meet clinic capacity and participant obligations | RGBA; corners 0 |
+| 04 | clocks.svg | Existing zero-based historical Tufts means, Table 6 PMC9373886, not additive | Transparent SVG |
+| 05 | ai-boundary.svg | Company-reported batch review result does not establish whole-trial acceleration; Anthropic/Enveda linked on card | Transparent SVG |
+| 06 | patient-paths.png | Existing record → assessment/decline/review metaphor, no conversion claims | RGBA; corners 0 |
+| 07 | visit-network.png | New watercolor: remote and home activity return evidence to accountable clinic; FDA guidance linked on card | RGBA; corners 0 |
+| 08 | design.svg | Existing comparison-design distinctions, FDA guidance | Transparent SVG |
+| 09 | approval-path.svg | HSA CTA and ethics may proceed in parallel; site readiness is separate; HSA linked on card | Transparent SVG |
+| 10 | wedge.svg | Existing proposed readiness package and qualified acceptance boundary | Transparent SVG |
+| 11 | service-learning.png | New watercolor: service reveals reusable module, while awkward customization remains | RGBA; corners 0 |
+| 12 | economics.svg | Existing base USD scenario: supplier contribution vs buyer value; scenario-model.json | Transparent SVG |
+| 13 | scenario-range.svg | Low/base/high USD per-package supplier and buyer results from scenario-model.json, common zero/scale | Transparent SVG |
+| 14 | competition.svg | Existing official vendor role map, no comparative performance claims | Transparent SVG |
+| 15 | hidden-work.png | New watercolor: small drafting task rests on access, experts and responsibility; sizes are not cost shares | RGBA; corners 0 |
+| 16 | roadmap.svg | Existing proposed evidence-gated sequence, not forecast | Transparent SVG |
+| 17 | measurement.svg | All attempts → separate waiting/work/review/external dependencies → accepted and patient milestones; original proposed method | Transparent SVG |
+| 18 | decision.svg | Existing founder-selected stop/go gates, not medical standards | Transparent SVG |
+| 19 | model-equations.svg | Supplier and buyer equations, faithful to existing scenario model; invented inputs | Transparent SVG |
+| 20 | evidence-boundary.svg | Regulations/cohorts/company reports/scenarios prove different things; customer results remain missing | Transparent SVG |
+
+## New asset provenance
+
+Built-in image_gen, 3 November 2026. Five separate new illustrations, each requested with rough childlike wobbly ink, translucent washes bleeding past lines, muted cheerful sage/coral/ochre, no text. Each brief explicitly required **actual transparent alpha; no white, cream, paper texture, gradient, checkerboard, or baked background**. The five images are editorial mechanisms/metaphors, not clinical evidence. No image editing or inferred scientific outcomes. Exact generation output paths are in visual-pass-generation.json. Copies saved to static/images/clinical-trial-compression; originals retained. Paper composites and live-card screenshots are internal QA only.
+
+Six added SVGs are reproduced by add-visuals.py. Original eight remain reproduced by build-visuals.py. Both generators use only the existing report/dossier claims; the scenario generator reads scenario-model.json directly. Public figure captions calibrate each new asset. Narrative equality after stripping figure blocks is checked in visual-pass-checks.txt.
 
 ## Image generation briefs and provenance
 

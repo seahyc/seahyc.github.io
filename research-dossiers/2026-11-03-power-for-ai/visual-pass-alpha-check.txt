@@ -1,0 +1,18 @@
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/company-choice-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/geography-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/local-site-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/power-chain-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/reactor-watercolor.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/power-for-ai/validation-watercolor.png
+  hasAlpha: yes
+company-choice-watercolor.png: RGBA, corners=[0, 0, 0, 0]
+geography-watercolor.png: RGBA, corners=[0, 0, 0, 0]
+local-site-watercolor.png: RGBA, corners=[0, 0, 0, 0]
+power-chain-watercolor.png: RGBA, corners=[0, 0, 0, 0]
+reactor-watercolor.png: RGBA, corners=[0, 0, 0, 0]
+validation-watercolor.png: RGBA, corners=[0, 0, 0, 0]

@@ -1,6 +1,10 @@
 from pathlib import Path
 from html import escape
 import json
+import argparse
+parser=argparse.ArgumentParser()
+parser.add_argument('--only',nargs='+',help='Regenerate only these SVG names (without extension).')
+ONLY=parser.parse_args().only
 HERE=Path(__file__).resolve().parent
 OUT=HERE.parents[1]/'static/images/agent-trust'
 OUT.mkdir(parents=True,exist_ok=True)
@@ -9,6 +13,7 @@ INK='#27231e'; RED='#9d4c3f'; GREEN='#527367'; MUTED='#6d6358'
 def t(x,y,s,size=25,c=INK,anchor='start'):
  return f'<text x="{x}" y="{y}" font-family="Arial,Helvetica,sans-serif" font-size="{size}" fill="{c}" text-anchor="{anchor}">{escape(s)}</text>'
 def save(n,title,desc,b,h):
+ if ONLY and n not in ONLY:return
  (OUT/(n+'.svg')).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="600" height="{h}" viewBox="0 0 600 {h}" role="img" aria-labelledby="title desc"><title id="title">{escape(title)}</title><desc id="desc">{escape(desc)}</desc>{b}</svg>')
 def boxes(n,title,rows,foot):
  b=t(20,35,title,28,RED)
@@ -45,16 +50,53 @@ for i,r in enumerate(M['cases']):
  b+=t(20,y,r['name'].title(),25)
  b+=f'<rect x="105" y="{y-20}" width="{p/8000*320}" height="23" fill="{GREEN}"/>'+t(115+p/8000*320,y,f'${p:,.0f} fee',22)
  b+=f'<rect x="105" y="{y+17}" width="{cost/8000*320}" height="23" fill="{RED}"/>'+t(115+cost/8000*320,y+38,f'${cost:,.0f} cost',22)
- b+=t(105,y+75,f"Contribution: ${r['monthly_contribution_usd']:,.0f}",23)
+ contribution=r['monthly_contribution_usd']
+ b+=t(105,y+75,f"Contribution: {'−' if contribution<0 else ''}${abs(contribution):,.0f}",23)
 b+=t(20,495,'Both bars start at $0; scale ends at $8,000.',21,MUTED)+t(20,534,'Direct costs + reserve; central overhead excluded.',21,MUTED)+t(20,571,'Source: original scenario-model.json, 3 Nov 2026',21,MUTED)
 save('vendor-economics','Vendor fee versus recurring cost','Low contribution minus 1567; base plus 2717; high plus 6367 USD. Invented assumptions, no quotes.',b,595)
 b=t(20,35,'CAN THE CUSTOMER JUSTIFY THE FEE?',27,RED)+t(20,73,'USD / month • invented buyer cases',23,MUTED)
 for i,r in enumerate(M['buyer_cases']):
  y=115+i*90;v=r['benefit_before_fee_usd'];w=v/15000*350
- b+=t(20,y+28,r['name'].title(),25)+f'<rect x="100" y="{y}" width="{w}" height="38" fill="{GREEN if v>=10000 else RED}"/>'+t(110+w,y+28,f'${v:,.0f}',22)
+ b+=t(20,y+28,r['name'].title(),25)+f'<rect x="100" y="{y}" width="{w}" height="38" fill="{GREEN if v>=10000 else RED}"/>'
+ b+=t(100+w,y-12,f'${v:,.0f}',22,anchor='end') if r['name'].lower()=='base' else t(110+w,y+28,f'${v:,.0f}',22)
 x=100+10000/15000*350
 b+=f'<path d="M{x} 100 V365" stroke="{INK}" stroke-width="2" stroke-dasharray="6 6"/>'+t(20,407,'Dashed: proposed 2× fee hurdle = $10,000',23)+t(20,447,'Base: $6,500 benefit / $5,000 fee = 1.30×',23,RED)+t(20,490,'Zero-based scale, $0–$15,000. Before fee.',21,MUTED)+t(20,529,'Source: original scenario-model.json, 3 Nov 2026',21,MUTED)
 save('buyer-economics','Buyer benefit versus proposed continuation hurdle','Only high scenario exceeds proposed two-times-fee threshold; base fails despite vendor profitability.',b,552)
 boxes('roadmap','EARN EACH EXPANSION',[
  ('Months 0–3: prove access and paid value','Named buyer + comparator + observable outcome'),('Months 4–6: repeat with another buyer','Renewal + measured labour + cohort errors'),('Months 6–12: productise the common work','Evidence assembly + appeals + drift monitoring'),('Months 12–24: one adjacent expansion','Local sources + permissions + paid demand')], 'Proposed sequence; calendar is not proof of progress.')
-print('Wrote 7 unique explanatory SVGs; 600px width; minimum text 21px.')
+# Visual-pass additions, 3 November 2026. Conceptual diagrams reuse only
+# claims already present in the report; the sensitivity chart reads its model.
+boxes('competitive-stack','COMPETE WITH THE EXISTING STACK',[
+ ('Generic signals already have suppliers','Device / email / phone / IP / risk inputs'),
+ ('Vertical tools already cover workflow','Business checks / linked cases / bulk actions'),
+ ('The platform owns operating context','Advertiser history / outcomes / enforcement'),
+ ('A newcomer must add useful decisions','Compare with a tuned incumbent process')],
+ 'Documented overlap does not establish efficacy.')
+boxes('evaluation-design','TEST WITHOUT LEAKING THE ANSWER',[
+ ('Use evidence available at decision time','Keep later complaints out of earlier inputs'),
+ ('Hold out later periods and campaigns','Repeated templates must not cross the split'),
+ ('Inspect allowed traffic as well as flags','An all-flagged queue cannot reveal misses'),
+ ('Adjudicate outcomes independently','Match review effort and legitimate-user friction')],
+ 'Proposed evaluation design; no pilot was run.')
+b=t(20,35,'HOW OPERATING PRESSURE ERODES VALUE',25,RED)
+b+=t(20,73,'USD contribution / customer-month',23,MUTED)
+b+=t(20,108,'Invented scenarios; not a forecast',23,MUTED)
+labels=['Base','Fee −20%','Review share doubles','Support doubles','All three together']
+for i,(label,r) in enumerate(zip(labels,M['sensitivities'])):
+ y=155+i*94;v=r['monthly_contribution_usd'];w=v/3000*365
+ b+=t(20,y,label,24,GREEN if i==0 else INK)
+ b+=f'<rect x="20" y="{y+14}" width="{w}" height="25" fill="{GREEN if i==0 else RED}"/>'
+ b+=t(35+w,y+35,f'${v:,.2f}',23)
+b+=f'<path d="M20 592 H385" stroke="{MUTED}"/>'
+for v in [0,1500,3000]:b+=t(20+v/3000*365,625,f'${v:,}',21,MUTED,'middle' if v else 'start')
+b+=t(20,666,'All bars start at $0; central overhead excluded.',21,MUTED)
+b+=t(20,703,'Source: scenario-model.json · 3 Nov 2026',21,MUTED)
+save('hidden-costs','Operating pressure erodes vendor contribution',
+ 'Base 2716.67 USD; fee cut 1766.67; doubled review 1883.33; doubled support 2116.67; combined 333.33. All are invented scenarios.',b,728)
+boxes('pilot-contract','LOCATE THE REACHABLE HARM',[
+ ('Locate the contact before exposure','Does it begin inside the buyer’s workflow?'),
+ ('Establish observable outcomes','Can the buyer see what happened afterward?'),
+ ('Name the intervention authority','Who may limit reach, review or checkpoint?'),
+ ('Agree the operating boundaries','Permissions / retention / appeals / provenance')],
+ 'Discovery questions; public totals cannot answer them.')
+print(f"Wrote {', '.join(ONLY) if ONLY else '11 unique explanatory SVGs'}; 600px width; minimum text 21px.")

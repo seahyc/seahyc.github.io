@@ -1,0 +1,1328 @@
+{
+  "hashes": [
+    {
+      "expected": "cover",
+      "actual": "cover"
+    },
+    {
+      "expected": "01-more-beginnings-need-better-passages",
+      "actual": "01-more-beginnings-need-better-passages"
+    },
+    {
+      "expected": "02-the-clock-that-matters",
+      "actual": "02-the-clock-that-matters"
+    },
+    {
+      "expected": "03-a-protocol-meets-a-real-clinic",
+      "actual": "03-a-protocol-meets-a-real-clinic"
+    },
+    {
+      "expected": "04-several-clocks-one-patient-journey",
+      "actual": "04-several-clocks-one-patient-journey"
+    },
+    {
+      "expected": "05-what-the-new-ai-evidence-earns",
+      "actual": "05-what-the-new-ai-evidence-earns"
+    },
+    {
+      "expected": "06-a-match-is-an-invitation-to-investigate",
+      "actual": "06-a-match-is-an-invitation-to-investigate"
+    },
+    {
+      "expected": "07-change-where-the-visit-happens",
+      "actual": "07-change-where-the-visit-happens"
+    },
+    {
+      "expected": "08-a-control-is-a-comparison",
+      "actual": "08-a-control-is-a-comparison"
+    },
+    {
+      "expected": "09-singapore-as-a-place-to-learn",
+      "actual": "09-singapore-as-a-place-to-learn"
+    },
+    {
+      "expected": "10-sell-something-that-can-be-accepted",
+      "actual": "10-sell-something-that-can-be-accepted"
+    },
+    {
+      "expected": "11-service-first-is-a-learning-strategy",
+      "actual": "11-service-first-is-a-learning-strategy"
+    },
+    {
+      "expected": "12-the-buyer-must-win-too",
+      "actual": "12-the-buyer-must-win-too"
+    },
+    {
+      "expected": "13-expert-time-decides-the-company",
+      "actual": "13-expert-time-decides-the-company"
+    },
+    {
+      "expected": "14-the-customer-already-has-alternatives",
+      "actual": "14-the-customer-already-has-alternatives"
+    },
+    {
+      "expected": "15-what-the-headline-omits",
+      "actual": "15-what-the-headline-omits"
+    },
+    {
+      "expected": "16-earn-the-next-stage",
+      "actual": "16-earn-the-next-stage"
+    },
+    {
+      "expected": "17-measure-the-accepted-path",
+      "actual": "17-measure-the-accepted-path"
+    },
+    {
+      "expected": "18-the-company-can-fail-this-test",
+      "actual": "18-the-company-can-fail-this-test"
+    },
+    {
+      "expected": "19-the-model-notes",
+      "actual": "19-the-model-notes"
+    },
+    {
+      "expected": "20-the-evidence-boundary",
+      "actual": "20-the-evidence-boundary"
+    }
+  ],
+  "indexCount": 1,
+  "screenshotWarnings": [],
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 368.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-bridge.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-more-beginnings-need-better-passages",
+          "hash": "#card-01-more-beginnings-need-better-passages",
+          "max": 559.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/question-to-study.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-clock-that-matters",
+          "hash": "#card-02-the-clock-that-matters",
+          "max": 517.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/critical-path.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-protocol-meets-a-real-clinic",
+          "hash": "#card-03-a-protocol-meets-a-real-clinic",
+          "max": 673.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clinic-fit.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-several-clocks-one-patient-journey",
+          "hash": "#card-04-several-clocks-one-patient-journey",
+          "max": 429.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clocks.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-what-the-new-ai-evidence-earns",
+          "hash": "#card-05-what-the-new-ai-evidence-earns",
+          "max": 691.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/ai-boundary.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-a-match-is-an-invitation-to-investigate",
+          "hash": "#card-06-a-match-is-an-invitation-to-investigate",
+          "max": 435.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/patient-paths.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-change-where-the-visit-happens",
+          "hash": "#card-07-change-where-the-visit-happens",
+          "max": 617.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/visit-network.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-a-control-is-a-comparison",
+          "hash": "#card-08-a-control-is-a-comparison",
+          "max": 612.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/design.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-singapore-as-a-place-to-learn",
+          "hash": "#card-09-singapore-as-a-place-to-learn",
+          "max": 639.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/approval-path.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-sell-something-that-can-be-accepted",
+          "hash": "#card-10-sell-something-that-can-be-accepted",
+          "max": 559.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/wedge.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-service-first-is-a-learning-strategy",
+          "hash": "#card-11-service-first-is-a-learning-strategy",
+          "max": 586.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/service-learning.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-buyer-must-win-too",
+          "hash": "#card-12-the-buyer-must-win-too",
+          "max": 492.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-expert-time-decides-the-company",
+          "hash": "#card-13-expert-time-decides-the-company",
+          "max": 1479.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/scenario-range.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-customer-already-has-alternatives",
+          "hash": "#card-14-the-customer-already-has-alternatives",
+          "max": 632.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/competition.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "max": 667.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/hidden-work.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-earn-the-next-stage",
+          "hash": "#card-16-earn-the-next-stage",
+          "max": 582.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/roadmap.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-measure-the-accepted-path",
+          "hash": "#card-17-measure-the-accepted-path",
+          "max": 839.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/measurement.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "18-the-company-can-fail-this-test",
+          "hash": "#card-18-the-company-can-fail-this-test",
+          "max": 865.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/decision.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "19-the-model-notes",
+          "hash": "#card-19-the-model-notes",
+          "max": 1838.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/model-equations.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "20-the-evidence-boundary",
+          "hash": "#card-20-the-evidence-boundary",
+          "max": 1207.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-boundary.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.1574096679688,
+            "viewportBottom": 844,
+            "lastText": "a valuable milestone without degrading quality, there is a company worth building. That is the experiment I want to run."
+          }
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 558.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-bridge.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-more-beginnings-need-better-passages",
+          "hash": "#card-01-more-beginnings-need-better-passages",
+          "max": 540.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/question-to-study.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-clock-that-matters",
+          "hash": "#card-02-the-clock-that-matters",
+          "max": 579.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/critical-path.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-protocol-meets-a-real-clinic",
+          "hash": "#card-03-a-protocol-meets-a-real-clinic",
+          "max": 566.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clinic-fit.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-several-clocks-one-patient-journey",
+          "hash": "#card-04-several-clocks-one-patient-journey",
+          "max": 588.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clocks.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-what-the-new-ai-evidence-earns",
+          "hash": "#card-05-what-the-new-ai-evidence-earns",
+          "max": 756.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/ai-boundary.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-a-match-is-an-invitation-to-investigate",
+          "hash": "#card-06-a-match-is-an-invitation-to-investigate",
+          "max": 476.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/patient-paths.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-change-where-the-visit-happens",
+          "hash": "#card-07-change-where-the-visit-happens",
+          "max": 618.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/visit-network.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-a-control-is-a-comparison",
+          "hash": "#card-08-a-control-is-a-comparison",
+          "max": 663.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/design.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-singapore-as-a-place-to-learn",
+          "hash": "#card-09-singapore-as-a-place-to-learn",
+          "max": 706.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/approval-path.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-sell-something-that-can-be-accepted",
+          "hash": "#card-10-sell-something-that-can-be-accepted",
+          "max": 595.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/wedge.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-service-first-is-a-learning-strategy",
+          "hash": "#card-11-service-first-is-a-learning-strategy",
+          "max": 571.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/service-learning.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-buyer-must-win-too",
+          "hash": "#card-12-the-buyer-must-win-too",
+          "max": 598.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/economics.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-expert-time-decides-the-company",
+          "hash": "#card-13-expert-time-decides-the-company",
+          "max": 1246.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/scenario-range.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-customer-already-has-alternatives",
+          "hash": "#card-14-the-customer-already-has-alternatives",
+          "max": 698.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/competition.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "max": 566.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/hidden-work.png",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-earn-the-next-stage",
+          "hash": "#card-16-earn-the-next-stage",
+          "max": 672.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/roadmap.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-measure-the-accepted-path",
+          "hash": "#card-17-measure-the-accepted-path",
+          "max": 872.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/measurement.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "18-the-company-can-fail-this-test",
+          "hash": "#card-18-the-company-can-fail-this-test",
+          "max": 835.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/decision.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "19-the-model-notes",
+          "hash": "#card-19-the-model-notes",
+          "max": 1640.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/model-equations.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "20-the-evidence-boundary",
+          "hash": "#card-20-the-evidence-boundary",
+          "max": 1240.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-boundary.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.8240356445312,
+            "viewportBottom": 862,
+            "lastText": "a valuable milestone without degrading quality, there is a company worth building. That is the experiment I want to run."
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 70.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-bridge.png",
+              "loaded": true,
+              "width": 680
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-more-beginnings-need-better-passages",
+          "hash": "#card-01-more-beginnings-need-better-passages",
+          "max": 498.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/question-to-study.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-clock-that-matters",
+          "hash": "#card-02-the-clock-that-matters",
+          "max": 847.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/critical-path.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-protocol-meets-a-real-clinic",
+          "hash": "#card-03-a-protocol-meets-a-real-clinic",
+          "max": 530.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clinic-fit.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-several-clocks-one-patient-journey",
+          "hash": "#card-04-several-clocks-one-patient-journey",
+          "max": 861.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/clocks.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-what-the-new-ai-evidence-earns",
+          "hash": "#card-05-what-the-new-ai-evidence-earns",
+          "max": 866.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/ai-boundary.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-a-match-is-an-invitation-to-investigate",
+          "hash": "#card-06-a-match-is-an-invitation-to-investigate",
+          "max": 467.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/patient-paths.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-change-where-the-visit-happens",
+          "hash": "#card-07-change-where-the-visit-happens",
+          "max": 545.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/visit-network.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-a-control-is-a-comparison",
+          "hash": "#card-08-a-control-is-a-comparison",
+          "max": 889.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/design.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-singapore-as-a-place-to-learn",
+          "hash": "#card-09-singapore-as-a-place-to-learn",
+          "max": 866.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/approval-path.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-sell-something-that-can-be-accepted",
+          "hash": "#card-10-sell-something-that-can-be-accepted",
+          "max": 773.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/wedge.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-service-first-is-a-learning-strategy",
+          "hash": "#card-11-service-first-is-a-learning-strategy",
+          "max": 498.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/service-learning.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-buyer-must-win-too",
+          "hash": "#card-12-the-buyer-must-win-too",
+          "max": 845.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/economics.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-expert-time-decides-the-company",
+          "hash": "#card-13-expert-time-decides-the-company",
+          "max": 1732.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/scenario-range.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-customer-already-has-alternatives",
+          "hash": "#card-14-the-customer-already-has-alternatives",
+          "max": 939.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/competition.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "max": 530.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/hidden-work.png",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-earn-the-next-stage",
+          "hash": "#card-16-earn-the-next-stage",
+          "max": 929.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/roadmap.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-measure-the-accepted-path",
+          "hash": "#card-17-measure-the-accepted-path",
+          "max": 1091.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/measurement.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "18-the-company-can-fail-this-test",
+          "hash": "#card-18-the-company-can-fail-this-test",
+          "max": 1002.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/decision.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "19-the-model-notes",
+          "hash": "#card-19-the-model-notes",
+          "max": 1554.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/model-equations.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "20-the-evidence-boundary",
+          "hash": "#card-20-the-evidence-boundary",
+          "max": 1323.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1436/images/clinical-trial-compression/evidence-boundary.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.082763671875,
+            "viewportBottom": 1000,
+            "lastText": "a valuable milestone without degrading quality, there is a company worth building. That is the experiment I want to run."
+          }
+        }
+      ]
+    }
+  ]
+}

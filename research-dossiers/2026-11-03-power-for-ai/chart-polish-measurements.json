@@ -1,0 +1,20 @@
+{
+  "width": 390,
+  "valueToLowGapPx": 12.657440185546875,
+  "valueToZeroLineGapPx": 35.580010986328126,
+  "valueToBarGapPx": 10.400001525878906,
+  "text": [
+    "Scenario residuals are not forecasts",
+    "$0",
+    "−384,000",
+    "LOW",
+    "+123,000",
+    "BASE",
+    "+1,100,000",
+    "HIGH",
+    "Annual residual · overhead: $300,000/year",
+    "Assumed completed packages/year: 6 / 12 / 20",
+    "and $300k overhead; all inputs are invented.",
+    "Original scenarios · USD/year · 3 Nov 2026."
+  ]
+}

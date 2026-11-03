@@ -27,6 +27,8 @@ main_class = "main-research-swipe"
 
 The electricity question becomes tangible when a developer has a site, a customer and a date—but no accepted route to power. Buying computing equipment does not create a utility connection. Securing a generator does not secure its fuel. A signed electricity agreement does not necessarily build a new plant nearby.
 
+<figure><img src="/images/power-for-ai/local-site-watercolor.png" alt="A distant power source stops at an open switch before a waiting server building; an engineer checks the local connection." style="max-width:600px;background:transparent"><figcaption>Abundant energy and a ready connection are different things. Original generated editorial metaphor, not a site layout.</figcaption></figure>
+
 The demand signal is substantial. The IEA estimated global data-centre electricity consumption at **415 TWh in 2024**, with a **945 TWh Base Case for 2030** in its April 2025 report. These figures cover all data centres, including non-AI uses; the latter is a forecast. Its newer update reports **17% growth in 2025**, alongside tighter equipment supply. [IEA 2025 report](https://www.iea.org/reports/energy-and-ai/executive-summary) · [IEA April 2026 update](https://www.iea.org/news/data-centre-electricity-use-surged-in-2025-even-with-tightening-bottlenecks-driving-a-scramble-for-solutions)
 
 A terawatt-hour measures energy over time. A megawatt measures the rate of delivery. A site also needs acceptable voltage, outage behaviour and response to changing loads. Annual energy abundance somewhere in a region cannot establish those conditions at a particular substation.
@@ -40,6 +42,8 @@ A terawatt-hour measures energy over time. A megawatt measures the rate of deliv
 ### Choose the capability the founding team can own
 
 There are several worthwhile businesses here, with very different requirements.
+
+<figure><img src="/images/power-for-ai/company-choice-watercolor.png" alt="Four workbenches represent manufacturing, grid software, onsite integration and reactor development: distinct founding capabilities." style="max-width:600px;background:transparent"><figcaption>Choose the capability the company can own. Original generated editorial comparison; not a technology ranking.</figcaption></figure>
 
 | Entry point | What the customer receives | What the founder must be good at |
 |---|---|---|
@@ -94,6 +98,8 @@ I would compare qualified partners before inventing new generation hardware. The
 
 A new generator must be studied because connecting it changes power flows and may require network upgrades. A large new load also needs a credible delivery path. These are related system problems with different applications and datasets.
 
+<figure><img src="/images/power-for-ai/queue-outcomes.svg" alt="Historical generation queue outcomes are distinct from a load request and a site-specific critical path." style="max-width:600px;background:transparent"><figcaption>Conceptual interpretation of the generation-cohort evidence above; this is not an AI-load success probability.</figcaption></figure>
+
 LBNL’s **2026 Queued Up** edition describes about **8,200 active generation and storage projects** at the end of 2025. For capacity requested during **2000–2020**, it reports **13% operating and 75% withdrawn** by end-2025. This is a historical generation-capacity cohort, not an AI-load queue or the probability that a particular developer will succeed. [LBNL Queued Up](https://emp.lbl.gov/queues/)
 
 PJM describes vetting data-centre construction timelines and financial commitments when preparing its load forecast. A request needs evidence of maturity before it becomes credible demand. [PJM load forecasting](https://learn.pjm.com/three-priorities/planning-for-the-future/load-forecasting)
@@ -147,6 +153,8 @@ A founder with reactor, fuel and operating expertise could rationally choose thi
 | Aalo | DOE confirms Aalo-X zero-power criticality; follow-on power is a separate project | Data-centre electricity from that follow-on ([DOE](https://www.energy.gov/articles/department-energy-celebrates-fourth-criticality-ahead-july-4th-goal), [Aalo](https://www.aalo.com/post/aalo-achieves-first-criticality)) |
 | Radiant | October update describes safety-analysis approval and a readiness review before nuclear operations | Criticality or full-power operation from that announcement ([Radiant](https://radiantnuclear.com/news/radiant-secure-doe-approval-for-full-power-operations)) |
 
+<figure><img src="/images/power-for-ai/project-record.svg" alt="Separate evidence fields keep authorisation, heat, net electricity, customer contract and delivery distinct." style="max-width:600px;background:transparent"><figcaption>Proposed project-level diligence record. Empty fields are questions to verify, not inferred company statuses.</figcaption></figure>
+
 The differences matter. An isotope test reactor is not an operating commercial power product from the same company. An approval whose next step is a readiness review is not evidence that the plant has run at full power, even when a headline sounds close.
 
 I would keep a project-level record with separate fields for test authorisation, fueled operation, sustained heat, net electricity, site permissions, customer contract and delivery. A single progress score would hide precisely the uncertainty the buyer needs to understand.
@@ -165,6 +173,8 @@ The fair conclusion is encouraging and demanding: hardware milestones are accumu
 | X-energy | Says NRC completed the Long Mott safety review in **October 2026**, with construction-permit review in final stages | Company-reported review milestone; not an issued permit or operating plant ([X-energy](https://x-energy.com/news/nrc-completes-landmark-safety-review-of-x-energys-xe-100-smr/)) |
 | NuScale | Reports Standard Design Approval for its **77 MWe** module in **May 2025** | Design approval; not a specific commissioned project ([NuScale](https://www.nuscalepower.com/press-releases/2025/nuscale-powers-small-modular-reactor-smr-achieves-standard-design-approval-from-us-nuclear-regulatory-commission-for-77-mwe)) |
 | Last Energy | Company press index announces pilot safety-analysis approval | Full announcement body remained inaccessible; exact scope and operation unverified ([Company index](https://www.lastenergy.com/news-press-categories/press-release)) |
+
+<figure><img src="/images/power-for-ai/smr-boundaries.svg" alt="A design approval, a permitted site and dependable customer power are distinct objects of evidence." style="max-width:600px;background:transparent"><figcaption>Conceptual comparison of evidence boundaries in the table; no company ranking or universal regulatory sequence.</figcaption></figure>
 
 The table mixes different sizes and pathways deliberately, to show why they cannot be ranked as interchangeable products. I have not independently re-established the regulator details behind every issuer statement. No current operating-plant or cheapest-reactor ranking follows from this record.
 
@@ -193,6 +203,8 @@ I read these as evidence of serious customer intent and attempts to help finance
 ### Singapore cannot import an American site plan
 
 Singapore paused new data-centre capacity in **2019** and resumed selective allocations through calls for applications from **2022**, according to the government’s October 2026 retrospective. The same speech distinguishes IT load from whole-facility electricity use and warns against adding overlapping capacity figures. [MDDI speech](https://www.mddi.gov.sg/newsroom/closing-speech-by-sms-tan-kiat-how-for-the-second-reading-of-the-digital-infrastructure-bill/)
+
+<figure><img src="/images/power-for-ai/geography-watercolor.png" alt="An American plant plan is separated by sea from an island data centre whose local permissions require a separate check." style="max-width:600px;background:transparent"><figcaption>A supply approach does not carry its permissions across borders. Original generated metaphor, not a map or Singapore siting proposal.</figcaption></figure>
 
 The Green Data Centre Roadmap targets **at least 300 MW of additional near-term capacity**, with further growth through green energy. This is a policy ambition, not evidence that the capacity is operating or that a particular project can obtain approval. [IMDA roadmap factsheet](https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/factsheets/2024/charting-green-growth-for-data-centres-in-sg)
 
@@ -232,6 +244,8 @@ The first commercial question is therefore whether the customer will pay enough 
 
 An onsite comparison needs a consistent denominator: net electricity delivered under the promised conditions. A capital-cost quote omits fuel and operations. A fuel-only calculation omits the plant. A nameplate rating omits auxiliaries and the extra equipment needed when a unit is unavailable.
 
+<figure><img src="/images/power-for-ai/cost-boundary.svg" alt="The incomplete gas model includes capital, fuel and operations but leaves site and dependable-service costs outside the boundary." style="max-width:600px;background:transparent"><figcaption>Original model-boundary diagram. Excluded costs remain unpriced; the gas scenarios are not firm-power quotations.</figcaption></figure>
+
 Our deliberately incomplete gas illustration produces **$82.57, $144.11 and $247.11 per MWh** in low/base/high-cost cases. All fuel, capex, utilisation and financing inputs are invented. The model excludes redundancy, storage, firm pipeline reservation, gas lateral, land, interconnection, standby tariff and other site costs. These are not firm-power LCOEs and must not be compared with a complete utility tariff. [Original gas assumptions and arithmetic](#card-17-the-model-and-the-evidence-boundary)
 
 In the base illustration, **$1/MMBtu** more fuel adds **$10/MWh**, because the assumed heat rate is **10 MMBtu/MWh**. This sensitivity is arithmetic, not a fuel-price forecast. [Original model](#card-17-the-model-and-the-evidence-boundary)
@@ -247,6 +261,8 @@ I have deliberately not estimated a nuclear electricity cost from a criticality 
 ### Scarcity can ease before the startup earns a position
 
 The strongest objection is that the founder mistakes a temporary supply shortage for a durable coordination business. Manufacturers expand. Utilities improve their processes. Customers standardise designs. The capable EPC already knows how to get the project built.
+
+<figure><img src="/images/power-for-ai/bear-case.svg" alt="Supply expansion, utility improvements and standardisation can shrink the startup opportunity; paid repeated value is the test." style="max-width:600px;background:transparent"><figcaption>Conceptual bear-case mechanism, not a prediction of shortage duration or new factory output.</figcaption></figure>
 
 There is real supply-response evidence. Hitachi announced **over $1 billion** in US grid manufacturing investment, including about **$457 million** for a large-power-transformer factory. Eaton announced **over $30 million** for switchgear expansion, targeting production in the **first half of 2027**. These are investment announcements and targets, not already available output. [Hitachi](https://www.hitachi.com/en-us/press/hitachi-announces-historic-1-billion-usd-manufacturing-investment-to-power-americas-energy-future/) · [Eaton](https://www.eaton.com/us/en-us/company/news-insights/news-releases/2026/eaton-expands-operations-in-nebraska-with-new-manufacturing-facility.html)
 
@@ -282,6 +298,8 @@ For a nuclear team, I would use the same capital discipline around a different o
 
 The founder owns the commercial test; an independent qualified electrical engineer owns technical challenge. These are **proposed thresholds**, not market benchmarks. No interviews or pilots have occurred.
 
+<figure><img src="/images/power-for-ai/validation-watercolor.png" alt="An engineer and founder compare a connector with a drawing and paid-pilot documents before expanding a bridge toward a server site." style="max-width:600px;background:transparent"><figcaption>Compatibility and paid evidence precede expansion. Original generated metaphor; no pilots have occurred.</figcaption></figure>
+
 **First 30 days:** interview **12 decision makers across at least four developers** and review **six delayed-project histories**, with permission. Continue only if **three histories** show material avoidable errors accepted by the customer’s engineer. Include cancellation cases and the customer’s best existing workflow. [Original validation proposal](#card-17-the-model-and-the-evidence-boundary)
 
 **Days 31–60:** offer **three bounded pilots** and require **two paid engagements**, engineer acceptance without unresolved critical compatibility errors, and evidence of an actionable critical-path improvement or a costly mistaken commitment avoided. An initial **30-day preventable-delay target** is a screening proposal, never a promise; a revised forecast is not an actual saved day. [Original validation proposal](#card-17-the-model-and-the-evidence-boundary)
@@ -299,6 +317,8 @@ My decision is to test a company that makes the route to power more trustworthy.
 ### Read the assumptions before believing the margin
 
 **Evidence cutoff:** 3 November 2026. Public government, laboratory, issuer and original research-provider pages support the factual claims. Company statements establish announced milestones or plans, not independently measured fleet performance. Paid Wood Mackenzie research, private supplier quotes, customer records and site engineering were not available. Last Energy’s announcement body and some NRC pages remained inaccessible; the narrative narrows claims accordingly.
+
+<figure><img src="/images/power-for-ai/model-boundary.svg" alt="Invented inputs feed scenario arithmetic, while fees, engineering hours and customer demand still require real-world validation." style="max-width:600px;background:transparent"><figcaption>Original method diagram. Correct arithmetic does not validate its commercial assumptions.</figcaption></figure>
 
 **Original service model, USD; every input invented.** Low/base/high fees: **40,000 / 75,000 / 100,000**. Engineer hours: **200 / 140 / 100**, at **150/hour**. Operations hours: **100 / 60 / 40**, at **100/hour**. Other direct cost: **4,000 / 3,000 / 2,000**. Rework/risk reserve: **5% of fee**. Acquisition cost: **8,000 / 6,000 / 4,000**. Annual completed packages: **6 / 12 / 20**. Central overhead: **300,000/year**, excluding delivery labour already charged per project. These are this Fieldbook’s assumptions, not external findings.
 

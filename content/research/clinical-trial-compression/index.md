@@ -27,6 +27,8 @@ main_class = "main-research-swipe"
 
 ### A candidate is the beginning of the question
 
+<figure><img src="/images/clinical-trial-compression/question-to-study.png" alt="A researcher passes a molecule proposal through a protocol toward a clinician and patient." style="background:transparent"><figcaption>A candidate becomes a clinical question through a protocol and a real encounter. Original watercolor metaphor; no increase in programme supply or clinical success asserted.</figcaption></figure>
+
 In [Pipeline in a Person](/research/pipeline-in-a-person/), I explored the possibility of a small founder-led company coordinating the work needed to create a therapeutic asset. This Fieldbook asks what happens when such a programme reaches people.
 
 A clinical trial turns a biological proposal into a testable question: does this intervention produce a useful outcome, with acceptable risks, in the intended patients? The protocol specifies who can participate, what happens to them, what gets measured, and how the comparison will support an answer.
@@ -57,6 +59,8 @@ That distinction changes the product. A document generator reports time to outpu
 
 ### Every extra requirement has to fit someone’s life
 
+<figure><img src="/images/clinical-trial-compression/clinic-fit.png" alt="A clinician and patient consider a long protocol beside a clinic doorway and everyday responsibilities." style="background:transparent"><figcaption>Protocol requirements meet clinic capacity and the participant’s life. Original watercolor metaphor; amendment burden is not assumed preventable.</figcaption></figure>
+
 An eligibility rule can make the scientific comparison cleaner while excluding people the site actually sees. A visit can improve measurement while making participation difficult for someone with work or caring responsibilities. A test can be scientifically sensible and operationally unavailable at a proposed site.
 
 This is why I would put a clinician, a statistician and a site operator beside the software. The clinician challenges safety and relevance. The statistician challenges whether the design can answer the question. The operator challenges whether the work can actually be delivered.
@@ -84,6 +88,8 @@ I would ask the buyer to reconstruct actual dates and dependencies from recent p
 ## 05 · What the new AI evidence earns
 
 ### A narrow result can still be valuable
+
+<figure><img src="/images/clinical-trial-compression/ai-boundary.svg" alt="A task-level batch-record review result is separated from downstream clinical-trial milestones." style="background:transparent"><figcaption>The reported task result and the unmeasured downstream outcome occupy different evidence levels. Conceptual reconstruction of the company-reported evidence discussed below; no total-trial acceleration inferred.</figcaption></figure>
 
 Anthropic reports an [89% reduction in human review time at Enveda](https://www.anthropic.com/research/early-progress-drug-development). That is an exciting company-reported task result. It concerns quality review of executed manufacturing batch records, rather than total clinical-trial duration.
 
@@ -114,6 +120,8 @@ I would expand into matching only with a participating site, lawful access, clin
 ## 07 · Change where the visit happens
 
 ### Flexibility has an operating cost
+
+<figure><img src="/images/clinical-trial-compression/visit-network.png" alt="A clinic coordinates a remote consultation and home visit, each returning measurement records." style="background:transparent"><figcaption>Locations can change while evidence and oversight still return to a common accountable workflow. Original watercolor mechanism; no speed benefit implied.</figcaption></figure>
 
 Some trial activities can happen through telehealth, home visits or local healthcare professionals. FDA’s [September 2024 final guidance on decentralized elements](https://www.fda.gov/media/167696/download) describes these options while retaining the same regulatory requirements.
 
@@ -147,6 +155,8 @@ I would treat external-control work as a specialist, programme-specific business
 
 ### A defined process is useful; patient access still has to be earned
 
+<figure><img src="/images/clinical-trial-compression/approval-path.svg" alt="Authority and ethics reviews run in parallel, while site readiness remains a separate dependency." style="background:transparent"><figcaption>Parallel review is a process option, not a promise of a ready site. Original conceptual synthesis of the HSA requirements linked below; no elapsed startup forecast.</figcaption></figure>
+
 Singapore provides a concrete setting in which to understand responsibilities and process. HSA lists a [standard CTA turnaround of 30 working days](https://www.hsa.gov.sg/other-regulations/clinical-trials/application/apply-cta-ctn/). Clarification stop clocks are excluded. A clinical trial authorisation application can proceed in parallel with ethics review; that does not mean the site is ready when either finishes. [HSA application requirements](https://www.hsa.gov.sg/other-regulations/clinical-trials/application/apply-cta-ctn/)
 
 I would not borrow the shorter notification route as a new-drug shortcut: CTN applies to a different eligible category. Nor would I extrapolate Singapore’s process across Southeast Asia. [HSA route definitions](https://www.hsa.gov.sg/other-regulations/clinical-trials/application/apply-cta-ctn/)
@@ -177,6 +187,8 @@ I would add an accelerated-startup commitment only after delivery evidence suppo
 
 ### Software needs repeated work and a route to adoption
 
+<figure><img src="/images/clinical-trial-compression/service-learning.png" alt="A founder and expert sort evidence folders through a reusable template, leaving awkward papers aside." style="background:transparent"><figcaption>Service work can reveal a repeated module; the papers that do not fit represent customization that can consume its value. Original watercolor metaphor, not observed repeatability.</figcaption></figure>
+
 A service gives the founder direct contact with the problem: incomplete inputs, expert disagreements, site reality, acceptance and collections. It can reveal which work repeats and what a buyer considers valuable.
 
 It can also become bespoke consulting. Every sponsor may need a different workflow. Qualified reviewers can become the capacity constraint. The founder can finish projects without accumulating a reusable product.
@@ -206,6 +218,8 @@ This is the unresolved commercial question. A company can deliver efficiently an
 ## 13 · Expert time decides the company
 
 ### Reuse, utilization and winning work dominate
+
+<figure><img src="/images/clinical-trial-compression/scenario-range.svg" alt="Low, base and high invented cases compare supplier contribution with buyer cash benefit less fee." style="background:transparent"><figcaption>USD per package; original author scenarios from the model notes. These are assumptions, not observed outcomes, forecasts or confidence intervals.</figcaption></figure>
 
 The service cases deliberately span failure and success. All amounts are [invented USD inputs and arithmetic](#card-19-the-model-notes).
 
@@ -246,6 +260,8 @@ My defensibility hypothesis is an indication-specific operating system of accept
 
 ### The hard assets are trust, access and responsibility
 
+<figure><img src="/images/clinical-trial-compression/hidden-work.png" alt="A small document machine rests on a larger assembly of expert hands, access keys and clinical responsibility." style="background:transparent"><figcaption>Drafting rests on access, expert work and accountability. Original watercolor metaphor for the operating obligations described below; component sizes are not cost shares.</figcaption></figure>
+
 The strongest bear case is that data access and clinical judgment dominate, while drafting is readily bundled. The founder inherits integration, expert review, QA, sales and liability exposure. A cash-constrained biotech may prefer a single accountable CRO, even if a specialist has a better demonstration. That is a business-risk inference from the documented competitive surfaces, not measured win/loss evidence. [CRO model](https://www.sec.gov/Archives/edgar/data/1668397/000166839726000006/medp-20251231.htm) · [Integrated provider model](https://www.paradigmhealth.ai/solutions/sponsors)
 
 Another headline concerns animal testing. FDA’s [April 2025 NAMs roadmap announcement](https://www.fda.gov/news-events/press-announcements/fda-announces-plan-phase-out-animal-testing-requirement-monoclonal-antibodies-and-other-drugs) addresses context-specific modernization of **preclinical safety**. It does not eliminate the question of efficacy in humans. Nothing in this dossier establishes that the roadmap has already shortened clinical studies.
@@ -275,6 +291,8 @@ Patient matching and external controls are later branches, each with separate ac
 ## 17 · Measure the accepted path
 
 ### Include the projects that went badly
+
+<figure><img src="/images/clinical-trial-compression/measurement.svg" alt="All attempted packages enter a log separating input waits, work, reviews and external dependencies." style="background:transparent"><figcaption>Proposed measurement design: retain failures and cancellations, distinguish workflow effort from the downstream milestone. No pilot results are asserted.</figcaption></figure>
 
 Before delivery, I would agree what complete input means and how the sponsor will accept the output. Record the usual-workflow baseline and all external dependencies before knowing the result.
 
@@ -308,6 +326,8 @@ A critical omission pauses live use for repair and revalidation. Faster preparat
 
 ### Assumptions make the uncertainty inspectable
 
+<figure><img src="/images/clinical-trial-compression/model-equations.svg" alt="Separate supplier contribution and buyer benefit equations show how the assumptions enter the model." style="background:transparent"><figcaption>Original scenario equations. USD inputs and all low/base/high arithmetic are stated below; no market prices or observed savings.</figcaption></figure>
+
 **Original author scenarios, 3 November 2026. All commercial inputs below are invented USD assumptions.** They are not quotes, observed productivity or forecasts. This card is the public arithmetic source for the scenario links. The reproducible internal files are `scenario-model.json`, `scenario-arithmetic.md` and `build-model.py` in the topic dossier.
 
 For low/base/high respectively: fees **$65,000 / $90,000 / $110,000**; hours **520 / 360 / 260**; loaded rates **$125 / $120 / $110**; other direct cost **$12,000 / $9,000 / $7,000**; rework/cancellation reserve **$6,000 / $4,000 / $3,000**; acquisition **$12,000 / $9,000 / $7,000**.
@@ -327,6 +347,8 @@ Annual delivery capacity is assumed **3,600 hours**; fixed overhead excluding th
 ## 20 · The evidence boundary
 
 ### What would change my mind
+
+<figure><img src="/images/clinical-trial-compression/evidence-boundary.svg" alt="Regulatory, study, company and customer evidence establish different things." style="background:transparent"><figcaption>An evidence map, not a ranking of clinical outcomes. Public sources establish bounded claims; actual customer delivery evidence remains missing.</figcaption></figure>
 
 **Primary evidence:** [FDA decentralized elements](https://www.fda.gov/media/167696/download), [E6(R3)](https://www.fda.gov/media/169090/download), [RWE](https://www.fda.gov/media/171667/download), [external-control draft](https://www.fda.gov/media/164960/download), [NAMs announcement](https://www.fda.gov/news-events/press-announcements/fda-announces-plan-phase-out-animal-testing-requirement-monoclonal-antibodies-and-other-drugs), and [HSA application requirements](https://www.hsa.gov.sg/other-regulations/clinical-trials/application/apply-cta-ctn/). These define possibilities, statuses and responsibilities. They do not establish this company’s acceleration effect.
 

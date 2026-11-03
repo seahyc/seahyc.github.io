@@ -1,0 +1,1176 @@
+{
+  "direct": "10-the-charter-assumption-can-overturn-the-thesis",
+  "indexCount": null,
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "hashMatches": true,
+          "textLength": 902,
+          "max": 25.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/local-autonomy.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 759.84375,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "uipment we can buy or partner for. Build proprietary autonomy only when accepted work exposes a bottleneck worth owning."
+          }
+        },
+        {
+          "slug": "01-protection-begins-with-the-actual-failure",
+          "hash": "#card-01-protection-begins-with-the-actual-failure",
+          "hashMatches": true,
+          "textLength": 1675,
+          "max": 827.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/failure-products.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.8861694335938,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "r’s consequential maintenance decision. Protection, attribution, repair and condition inspection are different products."
+          }
+        },
+        {
+          "slug": "02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hash": "#card-02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hashMatches": true,
+          "textLength": 1544,
+          "max": 791.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/permission-funnel.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.8165893554688,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " expansion repeats that work. A Singapore base does not confer access to Taiwan’s waters, customers or naval programmes."
+          }
+        },
+        {
+          "slug": "03-why-autonomy-matters-underwater",
+          "hash": "#card-03-why-autonomy-matters-underwater",
+          "hashMatches": true,
+          "textLength": 1368,
+          "max": 658.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/mechanism.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.0736694335938,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "rn or abort policy when the link disappears. A larger model earns its place only if it improves those measured outcomes."
+          }
+        },
+        {
+          "slug": "04-where-am-i-and-what-did-i-actually-inspect",
+          "hash": "#card-04-where-am-i-and-what-did-i-actually-inspect",
+          "hashMatches": true,
+          "textLength": 1549,
+          "max": 660.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/navigation.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.3082275390625,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "positional-uncertainty agreement. Unobserved sections remain unobserved even when the robot’s track passes through them."
+          }
+        },
+        {
+          "slug": "05-choose-what-the-instruments-can-see",
+          "hash": "#card-05-choose-what-the-instruments-can-see",
+          "hashMatches": true,
+          "textLength": 1587,
+          "max": 747.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/sensor-envelope.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.2152709960938,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ge classes, missing-data treatment and recovery limits. No universal “inspection-grade accuracy” replaces that contract."
+          }
+        },
+        {
+          "slug": "06-the-expensive-machine-may-be-above-the-water",
+          "hash": "#card-06-the-expensive-machine-may-be-above-the-water",
+          "hashMatches": true,
+          "textLength": 1355,
+          "max": 567.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/recovery.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.85595703125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ons loss is part of the proposed experiment. It is not a claim that local autonomy already permits unattended operation."
+          }
+        },
+        {
+          "slug": "07-sell-a-comparison-an-engineer-can-act-on",
+          "hash": "#card-07-sell-a-comparison-an-engineer-can-act-on",
+          "hashMatches": true,
+          "textLength": 1589,
+          "max": 673.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/acceptance.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 763.777587890625,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "portunity is conditional synthesis of the existing offers, not an observed gap. BeeX workflow, EIVA inspection precedent"
+          }
+        },
+        {
+          "slug": "08-the-incumbents-already-know-the-sea",
+          "hash": "#card-08-the-incumbents-already-know-the-sea",
+          "hashMatches": true,
+          "textLength": 1510,
+          "max": 1182.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/incumbent-offers.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 763.551513671875,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "r account is meaningful precedent, not a disclosed invoice or proof of transferable telecom performance. Project account"
+          }
+        },
+        {
+          "slug": "09-a-profitable-campaign-can-hide-a-losing-company",
+          "hash": "#card-09-a-profitable-campaign-can-hide-a-losing-company",
+          "hashMatches": true,
+          "textLength": 1250,
+          "max": 593.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.4415283203125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "onomic break-even needs 34 campaigns, versus an assumed scheduling ceiling of 44. Capacity is not customer demand. Model"
+          }
+        },
+        {
+          "slug": "10-the-charter-assumption-can-overturn-the-thesis",
+          "hash": "#card-10-the-charter-assumption-can-overturn-the-thesis",
+          "hashMatches": true,
+          "textLength": 1387,
+          "max": 719.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/vessel-stress.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 763.3689575195312,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ns. Then measure the full time to accepted output. A compelling robot demonstration cannot calibrate any of those costs."
+          }
+        },
+        {
+          "slug": "11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hash": "#card-11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hashMatches": true,
+          "textLength": 1422,
+          "max": 707.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/cash-inventory.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.1060180664062,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "c, not actuarial loss or accounting guidance. The small model reserve does not establish adequate insurance. Loss stress"
+          }
+        },
+        {
+          "slug": "12-defence-is-a-different-company-building-path",
+          "hash": "#card-12-defence-is-a-different-company-building-path",
+          "hashMatches": true,
+          "textLength": 1318,
+          "max": 520.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/buyers.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 760.8175048828125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " forecast a small inspection service, but it makes naval-first capital risk concrete. GAO audit, programme pages 159–160"
+          }
+        },
+        {
+          "slug": "13-adjacent-demand-is-real-but-not-interchangeable",
+          "hash": "#card-13-adjacent-demand-is-real-but-not-interchangeable",
+          "hashMatches": true,
+          "textLength": 1545,
+          "max": 790.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/claims-cohort.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 761.9530639648438,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "d external observation that changes an operational decision. Neither adjacent sector rescues unvalidated telecom demand."
+          }
+        },
+        {
+          "slug": "14-the-strongest-bear-case",
+          "hash": "#card-14-the-strongest-bear-case",
+          "hashMatches": true,
+          "textLength": 1626,
+          "max": 726.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/bear-case.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 764.9530029296875,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ember 2026, after this research cutoff. Trials after that date need a refreshed classification review. Singapore Customs"
+          }
+        },
+        {
+          "slug": "15-a-conditional-path-of-attack",
+          "hash": "#card-15-a-conditional-path-of-attack",
+          "hashMatches": true,
+          "textLength": 1577,
+          "max": 816.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/roadmap.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.4912109375,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " repeat surveys. That remains a hypothesis until contracts permit reuse and the learning demonstrably improves delivery."
+          }
+        },
+        {
+          "slug": "16-let-the-first-experiment-stop-the-company",
+          "hash": "#card-16-let-the-first-experiment-stop-the-company",
+          "hashMatches": true,
+          "textLength": 1943,
+          "max": 1060.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/stop-gates.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 762.3468627929688,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " The founder owns access; the survey lead owns comparability. A disconfirming result saves capital for a better company."
+          }
+        },
+        {
+          "slug": "17-what-the-headline-omits",
+          "hash": "#card-17-what-the-headline-omits",
+          "hashMatches": true,
+          "textLength": 1925,
+          "max": 951.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/decision.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 765.2322387695312,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "he buyer, instruments and full-job economics agree, the logs will tell us which robot capability deserves to exist next."
+          }
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "hashMatches": true,
+          "textLength": 902,
+          "max": 349.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/local-autonomy.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "bottom": {
+            "lastBottom": 813.234375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "uipment we can buy or partner for. Build proprietary autonomy only when accepted work exposes a bottleneck worth owning."
+          }
+        },
+        {
+          "slug": "01-protection-begins-with-the-actual-failure",
+          "hash": "#card-01-protection-begins-with-the-actual-failure",
+          "hashMatches": true,
+          "textLength": 1675,
+          "max": 804.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/failure-products.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 808.9007568359375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "r’s consequential maintenance decision. Protection, attribution, repair and condition inspection are different products."
+          }
+        },
+        {
+          "slug": "02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hash": "#card-02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hashMatches": true,
+          "textLength": 1544,
+          "max": 725.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/permission-funnel.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 811.3220825195312,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " expansion repeats that work. A Singapore base does not confer access to Taiwan’s waters, customers or naval programmes."
+          }
+        },
+        {
+          "slug": "03-why-autonomy-matters-underwater",
+          "hash": "#card-03-why-autonomy-matters-underwater",
+          "hashMatches": true,
+          "textLength": 1368,
+          "max": 638.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/mechanism.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 808.3524169921875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "rn or abort policy when the link disappears. A larger model earns its place only if it improves those measured outcomes."
+          }
+        },
+        {
+          "slug": "04-where-am-i-and-what-did-i-actually-inspect",
+          "hash": "#card-04-where-am-i-and-what-did-i-actually-inspect",
+          "hashMatches": true,
+          "textLength": 1549,
+          "max": 518.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/navigation.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 808.445068359375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "positional-uncertainty agreement. Unobserved sections remain unobserved even when the robot’s track passes through them."
+          }
+        },
+        {
+          "slug": "05-choose-what-the-instruments-can-see",
+          "hash": "#card-05-choose-what-the-instruments-can-see",
+          "hashMatches": true,
+          "textLength": 1587,
+          "max": 741.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/sensor-envelope.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 810.203125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ge classes, missing-data treatment and recovery limits. No universal “inspection-grade accuracy” replaces that contract."
+          }
+        },
+        {
+          "slug": "06-the-expensive-machine-may-be-above-the-water",
+          "hash": "#card-06-the-expensive-machine-may-be-above-the-water",
+          "hashMatches": true,
+          "textLength": 1355,
+          "max": 484.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/recovery.png",
+              "loaded": true,
+              "width": 550
+            }
+          ],
+          "bottom": {
+            "lastBottom": 808.413818359375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ons loss is part of the proposed experiment. It is not a claim that local autonomy already permits unattended operation."
+          }
+        },
+        {
+          "slug": "07-sell-a-comparison-an-engineer-can-act-on",
+          "hash": "#card-07-sell-a-comparison-an-engineer-can-act-on",
+          "hashMatches": true,
+          "textLength": 1589,
+          "max": 644.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/acceptance.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 807.9298095703125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "portunity is conditional synthesis of the existing offers, not an observed gap. BeeX workflow, EIVA inspection precedent"
+          }
+        },
+        {
+          "slug": "08-the-incumbents-already-know-the-sea",
+          "hash": "#card-08-the-incumbents-already-know-the-sea",
+          "hashMatches": true,
+          "textLength": 1568,
+          "max": 810.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/incumbent-offers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 809.978759765625,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "r account is meaningful precedent, not a disclosed invoice or proof of transferable telecom performance. Project account"
+          }
+        },
+        {
+          "slug": "09-a-profitable-campaign-can-hide-a-losing-company",
+          "hash": "#card-09-a-profitable-campaign-can-hide-a-losing-company",
+          "hashMatches": true,
+          "textLength": 1250,
+          "max": 620.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 808.5970458984375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "onomic break-even needs 34 campaigns, versus an assumed scheduling ceiling of 44. Capacity is not customer demand. Model"
+          }
+        },
+        {
+          "slug": "10-the-charter-assumption-can-overturn-the-thesis",
+          "hash": "#card-10-the-charter-assumption-can-overturn-the-thesis",
+          "hashMatches": true,
+          "textLength": 1387,
+          "max": 687.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/vessel-stress.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 811.609130859375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ns. Then measure the full time to accepted output. A compelling robot demonstration cannot calibrate any of those costs."
+          }
+        },
+        {
+          "slug": "11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hash": "#card-11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hashMatches": true,
+          "textLength": 1422,
+          "max": 631.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/cash-inventory.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 811.8827514648438,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "c, not actuarial loss or accounting guidance. The small model reserve does not establish adequate insurance. Loss stress"
+          }
+        },
+        {
+          "slug": "12-defence-is-a-different-company-building-path",
+          "hash": "#card-12-defence-is-a-different-company-building-path",
+          "hashMatches": true,
+          "textLength": 1318,
+          "max": 498.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/buyers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 810.5352783203125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " forecast a small inspection service, but it makes naval-first capital risk concrete. GAO audit, programme pages 159–160"
+          }
+        },
+        {
+          "slug": "13-adjacent-demand-is-real-but-not-interchangeable",
+          "hash": "#card-13-adjacent-demand-is-real-but-not-interchangeable",
+          "hashMatches": true,
+          "textLength": 1545,
+          "max": 777.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/claims-cohort.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 810.6405639648438,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "d external observation that changes an operational decision. Neither adjacent sector rescues unvalidated telecom demand."
+          }
+        },
+        {
+          "slug": "14-the-strongest-bear-case",
+          "hash": "#card-14-the-strongest-bear-case",
+          "hashMatches": true,
+          "textLength": 1626,
+          "max": 625.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/bear-case.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 810.6135864257812,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ember 2026, after this research cutoff. Trials after that date need a refreshed classification review. Singapore Customs"
+          }
+        },
+        {
+          "slug": "15-a-conditional-path-of-attack",
+          "hash": "#card-15-a-conditional-path-of-attack",
+          "hashMatches": true,
+          "textLength": 1577,
+          "max": 720.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/roadmap.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 811.0917358398438,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " repeat surveys. That remains a hypothesis until contracts permit reuse and the learning demonstrably improves delivery."
+          }
+        },
+        {
+          "slug": "16-let-the-first-experiment-stop-the-company",
+          "hash": "#card-16-let-the-first-experiment-stop-the-company",
+          "hashMatches": true,
+          "textLength": 1943,
+          "max": 883.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/stop-gates.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 807.9606323242188,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " The founder owns access; the survey lead owns comparability. A disconfirming result saves capital for a better company."
+          }
+        },
+        {
+          "slug": "17-what-the-headline-omits",
+          "hash": "#card-17-what-the-headline-omits",
+          "hashMatches": true,
+          "textLength": 1925,
+          "max": 780.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/decision.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 810.2919311523438,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "he buyer, instruments and full-job economics agree, the logs will tell us which robot capability deserves to exist next."
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "hashMatches": true,
+          "textLength": 902,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/local-autonomy.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "bottom": {
+            "lastBottom": 931.53125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "uipment we can buy or partner for. Build proprietary autonomy only when accepted work exposes a bottleneck worth owning."
+          }
+        },
+        {
+          "slug": "01-protection-begins-with-the-actual-failure",
+          "hash": "#card-01-protection-begins-with-the-actual-failure",
+          "hashMatches": true,
+          "textLength": 1675,
+          "max": 250.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/failure-products.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 948.9254760742188,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "r’s consequential maintenance decision. Protection, attribution, repair and condition inspection are different products."
+          }
+        },
+        {
+          "slug": "02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hash": "#card-02-singapore-is-a-starting-place-not-a-market-calculation",
+          "hashMatches": true,
+          "textLength": 1544,
+          "max": 203.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/permission-funnel.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.20947265625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " expansion repeats that work. A Singapore base does not confer access to Taiwan’s waters, customers or naval programmes."
+          }
+        },
+        {
+          "slug": "03-why-autonomy-matters-underwater",
+          "hash": "#card-03-why-autonomy-matters-underwater",
+          "hashMatches": true,
+          "textLength": 1368,
+          "max": 179.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/mechanism.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.2534790039062,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "rn or abort policy when the link disappears. A larger model earns its place only if it improves those measured outcomes."
+          }
+        },
+        {
+          "slug": "04-where-am-i-and-what-did-i-actually-inspect",
+          "hash": "#card-04-where-am-i-and-what-did-i-actually-inspect",
+          "hashMatches": true,
+          "textLength": 1549,
+          "max": 28.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/navigation.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 948.9628295898438,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "positional-uncertainty agreement. Unobserved sections remain unobserved even when the robot’s track passes through them."
+          }
+        },
+        {
+          "slug": "05-choose-what-the-instruments-can-see",
+          "hash": "#card-05-choose-what-the-instruments-can-see",
+          "hashMatches": true,
+          "textLength": 1587,
+          "max": 187.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/sensor-envelope.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.7176513671875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ge classes, missing-data treatment and recovery limits. No universal “inspection-grade accuracy” replaces that contract."
+          }
+        },
+        {
+          "slug": "06-the-expensive-machine-may-be-above-the-water",
+          "hash": "#card-06-the-expensive-machine-may-be-above-the-water",
+          "hashMatches": true,
+          "textLength": 1355,
+          "max": 57.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/recovery.png",
+              "loaded": true,
+              "width": 550
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.6640014648438,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ons loss is part of the proposed experiment. It is not a claim that local autonomy already permits unattended operation."
+          }
+        },
+        {
+          "slug": "07-sell-a-comparison-an-engineer-can-act-on",
+          "hash": "#card-07-sell-a-comparison-an-engineer-can-act-on",
+          "hashMatches": true,
+          "textLength": 1589,
+          "max": 90.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/acceptance.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 951.3232421875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "portunity is conditional synthesis of the existing offers, not an observed gap. BeeX workflow, EIVA inspection precedent"
+          }
+        },
+        {
+          "slug": "08-the-incumbents-already-know-the-sea",
+          "hash": "#card-08-the-incumbents-already-know-the-sea",
+          "hashMatches": true,
+          "textLength": 1568,
+          "max": 299.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/incumbent-offers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 950.6746826171875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "r account is meaningful precedent, not a disclosed invoice or proof of transferable telecom performance. Project account"
+          }
+        },
+        {
+          "slug": "09-a-profitable-campaign-can-hide-a-losing-company",
+          "hash": "#card-09-a-profitable-campaign-can-hide-a-losing-company",
+          "hashMatches": true,
+          "textLength": 1250,
+          "max": 193.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.1688232421875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "onomic break-even needs 34 campaigns, versus an assumed scheduling ceiling of 44. Capacity is not customer demand. Model"
+          }
+        },
+        {
+          "slug": "10-the-charter-assumption-can-overturn-the-thesis",
+          "hash": "#card-10-the-charter-assumption-can-overturn-the-thesis",
+          "hashMatches": true,
+          "textLength": 1387,
+          "max": 165.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/vessel-stress.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 951.473388671875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ns. Then measure the full time to accepted output. A compelling robot demonstration cannot calibrate any of those costs."
+          }
+        },
+        {
+          "slug": "11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hash": "#card-11-mature-margins-are-evidence-of-a-business-not-our-margin",
+          "hashMatches": true,
+          "textLength": 1422,
+          "max": 172.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/cash-inventory.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.9667358398438,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "c, not actuarial loss or accounting guidance. The small model reserve does not establish adequate insurance. Loss stress"
+          }
+        },
+        {
+          "slug": "12-defence-is-a-different-company-building-path",
+          "hash": "#card-12-defence-is-a-different-company-building-path",
+          "hashMatches": true,
+          "textLength": 1318,
+          "max": 8.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/buyers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 948.0042114257812,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " forecast a small inspection service, but it makes naval-first capital risk concrete. GAO audit, programme pages 159–160"
+          }
+        },
+        {
+          "slug": "13-adjacent-demand-is-real-but-not-interchangeable",
+          "hash": "#card-13-adjacent-demand-is-real-but-not-interchangeable",
+          "hashMatches": true,
+          "textLength": 1545,
+          "max": 300.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/claims-cohort.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 948.177978515625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "d external observation that changes an operational decision. Neither adjacent sector rescues unvalidated telecom demand."
+          }
+        },
+        {
+          "slug": "14-the-strongest-bear-case",
+          "hash": "#card-14-the-strongest-bear-case",
+          "hashMatches": true,
+          "textLength": 1626,
+          "max": 153.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/bear-case.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.3887939453125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ember 2026, after this research cutoff. Trials after that date need a refreshed classification review. Singapore Customs"
+          }
+        },
+        {
+          "slug": "15-a-conditional-path-of-attack",
+          "hash": "#card-15-a-conditional-path-of-attack",
+          "hashMatches": true,
+          "textLength": 1577,
+          "max": 266.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/roadmap.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 950.821044921875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " repeat surveys. That remains a hypothesis until contracts permit reuse and the learning demonstrably improves delivery."
+          }
+        },
+        {
+          "slug": "16-let-the-first-experiment-stop-the-company",
+          "hash": "#card-16-let-the-first-experiment-stop-the-company",
+          "hashMatches": true,
+          "textLength": 1943,
+          "max": 329.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/stop-gates.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.606689453125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " The founder owns access; the survey lead owns comparability. A disconfirming result saves capital for a better company."
+          }
+        },
+        {
+          "slug": "17-what-the-headline-omits",
+          "hash": "#card-17-what-the-headline-omits",
+          "hashMatches": true,
+          "textLength": 1925,
+          "max": 200.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1433/images/subsea-robotics/decision.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 949.5593872070312,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "he buyer, instruments and full-job economics agree, the logs will tell us which robot capability deserves to exist next."
+          }
+        }
+      ]
+    }
+  ]
+}

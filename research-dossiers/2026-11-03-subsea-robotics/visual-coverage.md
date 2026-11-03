@@ -1,13 +1,32 @@
-# Visual coverage · 3 November 2026
-18 cards including cover. Six unique substantive visuals at cards 0, 3, 6, 9, 12, 15; no reuse counted. Four original SVGs, two generated watercolor illustrations. Shared renderer and CSS unchanged. Model JSON is a public supporting artifact, not a seventh visual.
+# Visual coverage · visual revision · 3 November 2026
 
-| Card range | Asset/card | Explanatory job | Provenance and limits | Alpha |
+18 cards; 18 unique substantive visuals, one per card. Twelve SVGs and six watercolors (required minimum: six). All six existing good visuals retained. No asset counted twice. Facts, argument and original numerical claims unchanged; added captions distinguish diagrams, scenarios and editorial metaphors.
+
+| Card | Visual | Explanatory job | Provenance and limits | Alpha |
 |---|---|---|---|---|
-| Cover–02 | local-autonomy.png / cover | Local sonar control vs sparse surface communications | Built-in image generation; conceptual E08/E09/E27, not a measured vehicle | PNG alpha verified; all corner alpha 0 |
-| 03–05 | mechanism.svg /03 | Plan, local navigation, acoustic status, recovered evidence | Original synthesis E08/E09/E27; WHOI/NOAA/NOC linked in prose | SVG has no canvas background |
-| 06–08 | recovery.png /06 | Robot relies on vessel, crane, crew and recovery | Built-in image generation; logistics metaphor E25/E26, no cost measurement | PNG alpha verified; all corner alpha 0; clean rendered cutout |
-| 09–11 | economics.svg /09 | Positive job contribution can coexist with company losses | Original scenario-model.json E26; USD thousands/year, 3 Nov 2026; zero origin and direct labels | SVG has no canvas background |
-| 12–14 | buyers.svg /12 | Service, component and defence companies sell different accepted objects | Original comparison E12/E14/E16/E17/E21; not a market-size chart | SVG has no canvas background |
-| 15–17 | roadmap.svg /15 | Conditional investment sequence and stop gates | Original founder plan E25/research-map; not a forecast | SVG has no canvas background |
+| Cover | local-autonomy.png | Local sensing closes the underwater loop while surface messages are sparse. | Existing generated watercolor; conceptual, not measured; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
+| 01 | failure-products.svg | Separate inspection, protection, attribution and repair products. | Original conceptual synthesis of unchanged card sources; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 02 | permission-funnel.svg | Infrastructure must pass observation, permission, acceptance and payment. | Original commercial-filter diagram, not a market count; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 03 | mechanism.svg | Surface plan, local navigation, sparse messages, recovered evidence. | Existing conceptual synthesis; NOAA / WHOI / NOC; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 04 | navigation.png | Misregistration can resemble real change. | New generated watercolor; uncertain overlapping passes metaphor; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
+| 05 | sensor-envelope.svg | Match each question to sensing; identify exclusions. | Original diagram of proposed scope; HUGIN architecture cited in card; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 06 | recovery.png | Launch and recovery still depend on crew and vessel. | Existing generated watercolor; logistics metaphor; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
+| 07 | acceptance.png | Sell an engineer-reviewed comparison with missing coverage explicit. | New generated watercolor; proposed deliverable, no customer evidence; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
+| 08 | incumbent-offers.svg | Capture, survey stack, residency and workflow already have suppliers. | Original offer comparison; supplier sources on card, not a ranking; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 09 | economics.svg | Job contribution differs from annual company contribution. | Existing original scenario chart; USD thousands/year, 3 Nov 2026; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 10 | vessel-stress.svg | Vessel rates overturn campaign contribution. | Original scenario-model arithmetic; USD thousands/campaign; invented inputs; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 11 | cash-inventory.svg | Equipment, invoices and fixed expenses tie up cash. | Original base scenario restated; incomplete financing inventory; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 12 | buyers.svg | Service, components and defence sell different paid objects. | Existing original strategic comparison, not market size; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 13 | claims-cohort.svg | Claim frequency and loss severity are different denominators. | Reconstruction of cited JNRC/AXIS cohort, Jan 2021–Sep 2025; selected categories; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 14 | bear-case.png | Marine and research costs may outweigh repeat revenue. | New generated watercolor; bear-case metaphor, not measured economics; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
+| 15 | roadmap.svg | Gate spending through access, accepted savings and replication. | Existing founder-designed timeline, not forecast; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 16 | stop-gates.svg | Access, comparison and collected repeat payment gate continuation. | Original founder screening plan; not safety certification; generated/reconstructed 3 Nov 2026 | SVG: no canvas background; text ≥21px at width 600; collision checker PASS |
+| 17 | decision.png | Inspect observable changes while leaving hidden segments unresolved. | New generated watercolor; bounded inspection thesis, not field result; generated/reconstructed 3 Nov 2026 | RGBA checked with sips and Pillow; corners 0–1/255; paper composite inspected, no rectangle or halo |
 
-SVG text minimum 21px at 600px width; captions, alt text and sources adjacent. All original diagrams generated by build-visuals.py. No third-party photographs or licensed chart copies. Illustration provenance: built-in image_gen, generated 3 November 2026; no external reference images. Prompts preserved in illustration-prompts.md. No public claim of measured performance from artwork.
+## Provenance and checks
+
+All new SVGs are reproducible with `build-visuals.py`. No third-party image or chart copying. Primary-source links remain beside each figure in the unchanged prose. Quantitative SVGs repeat only card/model values; stress and annual economics use explicit zero axes, separate category/value lanes, and label invented inputs. Claims chart uses a zero baseline and identifies the selected cohort and denominator.
+
+Built-in image generation created four new illustrations. Prompts and original file IDs are recorded in `illustration-prompts.md`. Production PNGs are unedited copies preserving generated alpha. New corners contain at most 1/255 alpha (0.4% opacity); sampled edges pass the skill checker. Hidden RGB in transparent pixels can look hazy in raw previews; actual alpha composites on #f3eadb have no broad haze or rectangles. Inspection composites are in `visual-qa/`, not public assets.
+
+`check-visuals.mjs`: cards 18 · visuals on cards 18 · svg 12 · raster 6 (need ≥6); PASS. Rendered viewport details and screenshots: `visual-qa/report.json`; independent verdict: `visual-release-review.md`. Shared renderer and CSS unchanged.

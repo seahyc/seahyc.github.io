@@ -1,0 +1,21 @@
+$ hugo --destination /tmp/fb-subsea-robotics/site --cacheDir /tmp/fb-subsea-robotics/cache --noBuildLock --quiet
+
+
+exit=0
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/acceptance.png
+  hasAlpha: yes
+
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/bear-case.png
+  hasAlpha: yes
+
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/decision.png
+  hasAlpha: yes
+
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/local-autonomy.png
+  hasAlpha: yes
+
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/navigation.png
+  hasAlpha: yes
+
+/Users/yingcong/Code/seahyc.github.io/static/images/subsea-robotics/recovery.png
+  hasAlpha: yes

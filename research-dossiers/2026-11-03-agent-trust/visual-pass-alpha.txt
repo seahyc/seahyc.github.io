@@ -1,0 +1,19 @@
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/authority-link.png
+  hasAlpha: yes
+  alpha extrema: (0, 255) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/borrowed-badge.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/demand-gap.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/owned-trust-roots.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/permission-gate.png
+  hasAlpha: yes
+  alpha extrema: (0, 252) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/right-checkpoint.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+PASS: six real-alpha raster cutouts; every corner fully transparent.

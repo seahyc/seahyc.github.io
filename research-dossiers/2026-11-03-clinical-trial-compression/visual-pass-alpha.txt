@@ -1,0 +1,21 @@
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/clinic-fit.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/evidence-bridge.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/hidden-work.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/patient-paths.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/question-to-study.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/service-learning.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/clinical-trial-compression/visit-network.png
+  hasAlpha: yes
+service-learning.png: corners=[0, 0, 0, 0]; max outer-edge alpha=14
+patient-paths.png: corners=[0, 0, 0, 0]; max outer-edge alpha=0
+hidden-work.png: corners=[0, 0, 0, 0]; max outer-edge alpha=2
+evidence-bridge.png: corners=[0, 0, 0, 0]; max outer-edge alpha=3
+visit-network.png: corners=[0, 0, 0, 0]; max outer-edge alpha=1
+clinic-fit.png: corners=[0, 0, 0, 0]; max outer-edge alpha=3
+question-to-study.png: corners=[0, 0, 0, 0]; max outer-edge alpha=1

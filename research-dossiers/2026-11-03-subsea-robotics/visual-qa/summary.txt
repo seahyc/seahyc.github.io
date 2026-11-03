@@ -1,0 +1,9 @@
+390x844: 18 cards; 18 images loaded; ending/overflow/hash failures=0; page errors=0
+737x862: 18 cards; 18 images loaded; ending/overflow/hash failures=0; page errors=0
+1440x1000: 18 cards; 18 images loaded; ending/overflow/hash failures=0; page errors=0
+acceptance.png: hasAlpha: yes; corner alpha=[0, 0, 1, 0]
+bear-case.png: hasAlpha: yes; corner alpha=[0, 0, 0, 1]
+decision.png: hasAlpha: yes; corner alpha=[1, 0, 0, 0]
+local-autonomy.png: hasAlpha: yes; corner alpha=[0, 0, 0, 0]
+navigation.png: hasAlpha: yes; corner alpha=[0, 0, 0, 0]
+recovery.png: hasAlpha: yes; corner alpha=[0, 0, 0, 0]

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "question-to-study",
+    "hint": "Generated images are saved to /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10 as /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10/exec-fc1bfc3d-dfd3-467f-83da-567576bd94af.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  },
+  {
+    "name": "clinic-fit",
+    "hint": "Generated images are saved to /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10 as /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10/exec-fef65973-8de0-4ada-b81d-a6b8fc6d1f9a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  },
+  {
+    "name": "visit-network",
+    "hint": "Generated images are saved to /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10 as /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10/exec-0c854ab7-216a-46a0-8a08-5573d24353f1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  },
+  {
+    "name": "service-learning",
+    "hint": "Generated images are saved to /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10 as /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10/exec-bfa73765-3434-4380-8d6d-cd50a1bde5d9.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  },
+  {
+    "name": "hidden-work",
+    "hint": "Generated images are saved to /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10 as /Users/yingcong/.codex/generated_images/01a1a0a0-07e4-71c2-aa92-083f8a91ee10/exec-c3e91b0b-96a2-47f7-bf1e-999d88639178.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+  }
+]

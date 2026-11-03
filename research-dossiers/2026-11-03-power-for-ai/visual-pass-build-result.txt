@@ -1,0 +1,2 @@
+hugo --destination /tmp/fb-power-for-ai/site --cacheDir /tmp/fb-power-for-ai/cache --noBuildLock --quiet
+exit_code=0

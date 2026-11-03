@@ -93,7 +93,8 @@ def economics():
     for i,(c,v,col) in enumerate(zip(cases,vals,colors)):
         x=130+i*155; yy=y(v); h=abs(y(0)-yy)
         b+=f'<rect x="{x}" y="{min(yy,y(0))}" width="78" height="{max(3,h)}" fill="{col}" opacity="0.88"/>'
-        b+=text(x+39,yy-10 if v>=0 else yy+27,f'{v:+,}',21,col,"700")
+        label = f'{v:+,}'.replace('-', '−')
+        b+=text(x+39 if v>=0 else x-16,yy-10 if v>=0 else yy+7,label,21,col,"700","middle" if v>=0 else "end")
         b+=text(x+39,458,c["name"].upper(),21,INK,"700")
     b+=text(300,493,"Annual residual · overhead: $300,000/year",21,INK,"700")
     b+=text(300,522,"Assumed completed packages/year: 6 / 12 / 20",21)

@@ -1,0 +1,32 @@
+$ hugo --destination /tmp/fb-agent-trust/site --cacheDir /tmp/fb-agent-trust/cache --noBuildLock --quiet
+exit_code=0
+cards 18 · visuals on cards 17 · svg 11 · raster 6 (need ≥6)
+PASS
+
+390x844: cards=18; images=17; unloaded=0; page_errors=0; document_overflow=False; element_overflow=0; unreachable_endings=0; hash_failures=0
+737x862: cards=18; images=17; unloaded=0; page_errors=0; document_overflow=False; element_overflow=0; unreachable_endings=0; hash_failures=0
+1440x1000: cards=18; images=17; unloaded=0; page_errors=0; document_overflow=False; element_overflow=0; unreachable_endings=0; hash_failures=0
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/authority-link.png
+  hasAlpha: yes
+  alpha extrema: (0, 255) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/borrowed-badge.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/demand-gap.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/owned-trust-roots.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/permission-gate.png
+  hasAlpha: yes
+  alpha extrema: (0, 252) corner alpha: [0, 0, 0, 0]
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/right-checkpoint.png
+  hasAlpha: yes
+  alpha extrema: (0, 254) corner alpha: [0, 0, 0, 0]
+PASS: six real-alpha raster cutouts; every corner fully transparent.
+
+PASS: removing exactly eight added figures reproduces the original article byte for byte.
+All original prose, sources, model figures and good visuals preserved.
+
+Independent release review: PASS (visual-pass-release-review.md). Preview server stopped. Parent publishes; no git or publication performed.

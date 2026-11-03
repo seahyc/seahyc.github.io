@@ -1,0 +1,474 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "docOverflow": false,
+    "errors": [],
+    "cards": [
+      {
+        "i": null,
+        "slug": "cover",
+        "images": [
+          {
+            "src": "/images/agent-trust/permission-gate.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+        "images": [
+          {
+            "src": "/images/agent-trust/demand-gap.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "02-a-signature-answers-one-question",
+        "images": [
+          {
+            "src": "/images/agent-trust/trust-layers.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "03-the-trust-roots-already-have-owners",
+        "images": [
+          {
+            "src": "/images/agent-trust/owned-trust-roots.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "04-the-human-harm-is-real-and-declining",
+        "images": [
+          {
+            "src": "/images/agent-trust/reported-harm.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "05-the-bottleneck-is-a-relationship",
+        "images": [
+          {
+            "src": "/images/agent-trust/borrowed-badge.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "06-intervene-before-the-first-harmful-contact",
+        "images": [
+          {
+            "src": "/images/agent-trust/wedge.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "07-choose-the-checkpoint-for-the-missing-fact",
+        "images": [
+          {
+            "src": "/images/agent-trust/right-checkpoint.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "08-the-authority-link-must-stay-inspectable",
+        "images": [
+          {
+            "src": "/images/agent-trust/authority-link.png",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "09-the-generic-stack-is-crowded",
+        "images": [
+          {
+            "src": "/images/agent-trust/competitive-stack.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "10-a-good-looking-score-can-make-a-bad-queue",
+        "images": [
+          {
+            "src": "/images/agent-trust/base-rates.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "11-prove-incremental-benefit-without-leaking-the-answer",
+        "images": [
+          {
+            "src": "/images/agent-trust/evaluation-design.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "12-review-labour-decides-the-vendor-economics",
+        "images": [
+          {
+            "src": "/images/agent-trust/vendor-economics.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "13-the-expensive-part-can-hide-behind-the-api",
+        "images": [
+          {
+            "src": "/images/agent-trust/hidden-costs.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "14-the-buyer-has-a-different-equation",
+        "images": [
+          {
+            "src": "/images/agent-trust/buyer-economics.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "15-what-the-headline-omits",
+        "images": [
+          {
+            "src": "/images/agent-trust/pilot-contract.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "16-a-path-that-earns-the-next-stage",
+        "images": [
+          {
+            "src": "/images/agent-trust/roadmap.svg",
+            "loaded": true,
+            "width": 345
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "17-evidence-and-model",
+        "images": [],
+        "tables": 4,
+        "overflow": []
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "height": 1000,
+    "docOverflow": false,
+    "errors": [],
+    "cards": [
+      {
+        "i": null,
+        "slug": "cover",
+        "images": [
+          {
+            "src": "/images/agent-trust/permission-gate.png",
+            "loaded": true,
+            "width": 560
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+        "images": [
+          {
+            "src": "/images/agent-trust/demand-gap.png",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "02-a-signature-answers-one-question",
+        "images": [
+          {
+            "src": "/images/agent-trust/trust-layers.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "03-the-trust-roots-already-have-owners",
+        "images": [
+          {
+            "src": "/images/agent-trust/owned-trust-roots.png",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "04-the-human-harm-is-real-and-declining",
+        "images": [
+          {
+            "src": "/images/agent-trust/reported-harm.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "05-the-bottleneck-is-a-relationship",
+        "images": [
+          {
+            "src": "/images/agent-trust/borrowed-badge.png",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "06-intervene-before-the-first-harmful-contact",
+        "images": [
+          {
+            "src": "/images/agent-trust/wedge.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "07-choose-the-checkpoint-for-the-missing-fact",
+        "images": [
+          {
+            "src": "/images/agent-trust/right-checkpoint.png",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "08-the-authority-link-must-stay-inspectable",
+        "images": [
+          {
+            "src": "/images/agent-trust/authority-link.png",
+            "loaded": true,
+            "width": 560
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "09-the-generic-stack-is-crowded",
+        "images": [
+          {
+            "src": "/images/agent-trust/competitive-stack.svg",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "10-a-good-looking-score-can-make-a-bad-queue",
+        "images": [
+          {
+            "src": "/images/agent-trust/base-rates.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "11-prove-incremental-benefit-without-leaking-the-answer",
+        "images": [
+          {
+            "src": "/images/agent-trust/evaluation-design.svg",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "12-review-labour-decides-the-vendor-economics",
+        "images": [
+          {
+            "src": "/images/agent-trust/vendor-economics.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "13-the-expensive-part-can-hide-behind-the-api",
+        "images": [
+          {
+            "src": "/images/agent-trust/hidden-costs.svg",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "14-the-buyer-has-a-different-equation",
+        "images": [
+          {
+            "src": "/images/agent-trust/buyer-economics.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "15-what-the-headline-omits",
+        "images": [
+          {
+            "src": "/images/agent-trust/pilot-contract.svg",
+            "loaded": true,
+            "width": 600
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "16-a-path-that-earns-the-next-stage",
+        "images": [
+          {
+            "src": "/images/agent-trust/roadmap.svg",
+            "loaded": true,
+            "width": 1260
+          }
+        ],
+        "tables": 0,
+        "overflow": []
+      },
+      {
+        "i": null,
+        "slug": "17-evidence-and-model",
+        "images": [],
+        "tables": 4,
+        "overflow": []
+      }
+    ]
+  }
+]

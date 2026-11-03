@@ -25,6 +25,8 @@ main_class = "main-research-swipe"
 
 ### Start with the outcome worth protecting
 
+<figure><img src="/images/agent-trust/demand-gap.png" alt="Automated recruitment envelopes arrive at a marketplace desk, while a buyer keeps a closed coin purse beside an empty order tray." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>More automated abuse does not establish vendor demand. Generated watercolor metaphor; no buyer study is implied.</figcaption></figure>
+
 A job seeker should be able to explore an opportunity without becoming an investigator. A small employer should be able to recruit without a burdensome identity ritual. A helpful agent should be able to act within a person’s permission. These goals belong together.
 
 The seed for this investigation was Nikita Bier’s account of consumer-app abuse. He recommends internally built risk scoring, selective checkpoints and close attention to the friction imposed on legitimate users. His estimate that fixes last **three to twelve months** is practitioner experience, not a measured industry survival curve. His own reply raises the privacy and speech costs of universal identity checks. [Bier’s post and reply](https://x.com/nikitabier/status/2116246313914479047)
@@ -53,6 +55,8 @@ The Web Bot Auth working draft explicitly leaves human authentication, authoriza
 
 ### A universal agent passport faces powerful distribution
 
+<figure><img src="/images/agent-trust/owned-trust-roots.png" alt="Established trees shelter web, shopping and payment gateways; a founder considers where a new seedling could grow among their roots." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>An incumbent’s distribution is part of the competitive constraint. Generated watercolor metaphor, not a market-share chart.</figcaption></figure>
+
 Cloudflare already documents signed-request verification through Web Bot Auth. Its Pay Per Crawl offering addresses a separate question: whether a cooperating crawler pays for access. Recognition, payment and permission are related, but they are different products. [Web Bot Auth](https://developers.cloudflare.com/bots/reference/bot-verification/web-bot-auth/), [Pay Per Crawl, labelled Beta](https://developers.cloudflare.com/ai-crawl-control/features/pay-per-crawl/)
 
 Visa’s Trusted Agent Protocol adds commerce recognition and payment context. Mastercard describes a framework covering identity, intent, controls, execution and intelligence; its agent-initiation score was announced for US testing, which does not establish global availability or fraud reduction. [Visa protocol](https://developer.visa.com/docs/trusted-agent-protocol), [Mastercard announcement](https://investor.mastercard.com/investor-news/investor-news-details/2026/Mastercard-Advances-Agentic-Commerce-With-New-Trust-and-Intelligence-Services/default.aspx)
@@ -80,6 +84,8 @@ Important harm remains. These numbers do not reveal which exposure a job marketp
 ## 05 · The bottleneck is a relationship
 
 ### A real company can be impersonated
+
+<figure><img src="/images/agent-trust/borrowed-badge.png" alt="A messenger holds a plausible agency badge, but its cord does not connect to the real agency owner." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>A genuine agency record leaves the representative’s authority unresolved. Generated watercolor metaphor for the advisory’s failure mode.</figcaption></figure>
 
 Suppose a recruiter provides a genuine agency licence number. Checking the registry establishes that the agency exists. It does not establish that this account belongs to someone authorized to recruit for it.
 
@@ -113,6 +119,8 @@ If the buyer cannot observe outcomes or act early enough, this wedge fails befor
 
 ### More identification is not always more useful evidence
 
+<figure><img src="/images/agent-trust/right-checkpoint.png" alt="A gatekeeper chooses a call to a company administrator from among authentication and proof-of-human checks." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Choose the check that answers the missing question. Generated watercolor metaphor for a proposed design option, not tested efficacy.</figcaption></figure>
+
 Device attestation can help establish that a request came from an expected app and device environment. Google recommends combining Play Integrity with other signals and observing effects before enforcement. Apple’s App Attest uses an app-instance key and server validation. Neither certifies a recruiter’s authority. [Google documentation](https://developer.android.com/google/play/integrity/overview), [Apple documentation](https://developer.apple.com/documentation/devicecheck/establishing-your-app-s-integrity)
 
 Passkeys strengthen account authentication; World ID targets proof of human. A scammer can authenticate to their own account, and a real human can participate in fraud. These controls answer useful but narrower questions. [FIDO](https://fidoalliance.org/passkeys/), [World whitepaper](https://whitepaper.world.org/achieving-proof-of-human)
@@ -141,6 +149,8 @@ The difficult product work is handling ambiguity. Agencies delegate work; repres
 
 ### Compare against a competent incumbent
 
+<figure><img src="/images/agent-trust/competitive-stack.svg" alt="Generic signals, vertical investigation workflows and customer-owned context overlap in the proposed product." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Original conceptual comparison of the documented offerings discussed here. Overlap does not establish comparative efficacy.</figcaption></figure>
+
 Stytch advertises device intelligence, risk decisions and agent monitoring. SEON documents email, phone, IP, device and scoring inputs. Castle connects client signals with backend decisions. Arkose and Fingerprint also market bot or agent defenses. These menus establish overlap; they do not establish comparable efficacy. [Stytch](https://stytch.com/fraud), [SEON](https://docs.seon.io/api-reference/fraud-api), [Castle](https://docs.castle.io/docs/integration-guide), [Arkose](https://www.arkoselabs.com/arkose-bot-manager), [Fingerprint](https://fingerprint.com/products/bot-detection/)
 
 The vertical layer is crowded too. Persona offers business verification and workflows. Sift documents related-content investigation and bulk action. SEEK describes internal advertiser screening, while Australia’s job-scam fusion-cell report documents coordinated disruption. [Persona](https://help.withpersona.com/articles/3OGe9IwySJmDvXL2DOfV7N/), [Sift](https://siftscience.zendesk.com/hc/en-us/articles/1500007825722-Text-Clustering-for-Content-Integrity), [SEEK](https://au.seek.com/career-advice/article/ways-to-spot-a-job-scam), [NASC report](https://www.nasc.gov.au/system/files/nasc-job-scam-fusion-cell-final-report-2025.pdf)
@@ -166,6 +176,8 @@ Measure harmful exposures, investigation time, good-employer approval, appeal re
 ## 11 · Prove incremental benefit without leaking the answer
 
 ### The evaluation is part of the product
+
+<figure><img src="/images/agent-trust/evaluation-design.svg" alt="Decision-time inputs are separated from later outcomes, with held-out campaigns and sampled allowed traffic." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Proposed evaluation design. Held-out campaigns and independent outcomes test incremental value; no pilot was run.</figcaption></figure>
 
 The proposed comparison uses the same eligible traffic, decision time, review effort and legitimate-user friction budget as the customer’s tuned existing process. Future complaints and takedown outcomes must not leak into inputs used to replay an earlier decision.
 
@@ -197,6 +209,8 @@ The cost boundary includes screening, enrichment, selected checkpoints, manual r
 
 ### Price pressure and bespoke work compound
 
+<figure><img src="/images/agent-trust/hidden-costs.svg" alt="Base recurring contribution is compared with fee, review and support shocks and their combined effect." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Original sensitivity arithmetic in USD per customer-month; all inputs are invented. <a href="#card-17-evidence-and-model">Model assumptions</a></figcaption></figure>
+
 In the base scenario, review share doubling reduces contribution margin to **37.67%**. Combining that with doubled support and a **20% fee reduction** leaves approximately **$333 per month**, or **8.33% contribution**. These are sensitivity calculations, not forecasts. [Planning model](#card-17-evidence-and-model)
 
 Acquisition and onboarding matter separately. Assumed acquisition cost of **$10,000** plus **$1,800 onboarding** takes **4.34 months** to recover at base recurring contribution, assuming immediate steady billing and no churn or payment delay. Those assumptions are favourable. [Planning model](#card-17-evidence-and-model)
@@ -224,6 +238,8 @@ Holding the other base inputs fixed, that hurdle requires a **$26,000 monthly bu
 ## 15 · What the headline omits
 
 ### The missing denominator is reachable harm
+
+<figure><img src="/images/agent-trust/pilot-contract.svg" alt="Reachable workflow, visible outcomes and permission to intervene are separate discovery gates." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Original discovery framework: public harm totals do not establish permissioned, observable exposure inside a buyer’s workflow.</figcaption></figure>
 
 No source here establishes how much LLMs lower the cost of a successful scam in the proposed workflow. Cheaper message generation may matter, but account access, distribution, cooperation and cash-out can still constrain success. I would not model a causal AI loss multiplier.
 

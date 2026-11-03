@@ -1,0 +1,8 @@
+cards 21 · visuals on cards 21 · svg 14 · raster 7 (need ≥7)
+PASS
+Narrative unchanged after removing figures: True
+Hugo private build exit: 0
+390x844: 21 cards; 21 images loaded; overflow=false; errors=0; unreachable=0
+737x862: 21 cards; 21 images loaded; overflow=false; errors=0; unreachable=0
+1440x1000: 21 cards; 21 images loaded; overflow=false; errors=0; unreachable=0
+Direct hashes: 21/21

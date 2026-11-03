@@ -1,0 +1,47 @@
+{
+  "screenshotWarnings": [],
+  "hashesPassed": 21,
+  "hashesTotal": 21,
+  "indexCount": 1,
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "overflows": [],
+      "unreachable": []
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "overflows": [],
+      "unreachable": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": 21,
+      "images": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "badLinks": [],
+      "overflows": [],
+      "unreachable": []
+    }
+  ]
+}

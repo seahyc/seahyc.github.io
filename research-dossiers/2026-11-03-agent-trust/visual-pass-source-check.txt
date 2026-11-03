@@ -1,0 +1,2 @@
+PASS: removing exactly eight added figures reproduces the original article byte for byte.
+All original prose, sources, model figures and good visuals preserved.

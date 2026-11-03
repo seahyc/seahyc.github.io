@@ -18,11 +18,14 @@ main_class = "main-research-swipe"
 <p>I want that capability to become ordinary. My starting hypothesis is a Singapore-based inspection service selling repeat, permissioned cable-corridor comparisons through an established survey contractor. Begin with equipment we can buy or partner for. Build proprietary autonomy only when accepted work exposes a bottleneck worth owning.</p>
 </div>
 
+
 ---
 
 ## 01 · Protection begins with the actual failure
 
 ### A broken cable does not tell us why it broke
+
+<figure><img src="/images/subsea-robotics/failure-products.svg" alt="Inspection, protection, attribution and repair answer different questions." style="max-width:600px;background:transparent"><figcaption>Original conceptual comparison of the product boundaries described below; no fault is attributed from its appearance.</figcaption></figure>
 
 For people relying on an island’s connection, the distinction between an accident and an attack does not restore service. Chunghwa Telecom’s account of the **two Matsu cable breaks in February 2023** describes microwave fallback preserving some services while other traffic became congested. It supports a tangible resilience problem, rather than total communications loss or an established state-directed attack. [Operator statement](https://www.cht.com.tw/zh-tw/home/cht/messages/2023/20230208_1232)
 
@@ -37,6 +40,8 @@ My inference is that a founder should start with an owner’s consequential main
 ## 02 · Singapore is a starting place, not a market calculation
 
 ### Infrastructure stock must become permissioned, paid work
+
+<figure><img src="/images/subsea-robotics/permission-funnel.svg" alt="Useful observation must pass permission, acceptance and payment gates." style="max-width:600px;background:transparent"><figcaption>Proposed commercial filter: infrastructure stock becomes a business only after these gates; this is not a market-size estimate.</figcaption></figure>
 
 IMDA’s **2023** Digital Connectivity Blueprint seeks to enable a **doubling of cable landings over ten years**. That is a capacity ambition, not a count of completed installations or a survey revenue forecast. [IMDA blueprint](https://www.imda.gov.sg/how-we-can-help/digital-connectivity-blueprint), [original report](https://www.imda.gov.sg/-/media/imda/files/programme/digital-connectivity-blueprint/digital-connectivity-blueprint-report.pdf)
 
@@ -64,11 +69,14 @@ WHOI’s Micromodem documentation lists **80–5,400 bits per second** packet ra
 
 The promising AI job is bounded: interpret local observations, maintain a useful route, recognise uncertainty, and execute a safe return or abort policy when the link disappears. A larger model earns its place only if it improves those measured outcomes.
 
+
 ---
 
 ## 04 · Where am I, and what did I actually inspect?
 
 ### Navigation uncertainty becomes evidence uncertainty
+
+<figure><img src="/images/subsea-robotics/navigation.png" alt="Two survey passes beside the same rock and cable have overlapping uncertain position estimates." style="max-width:600px;background:transparent"><figcaption>Generated watercolor explanation: inconsistent registration can resemble a physical change. This is a conceptual uncertainty metaphor, not measured navigation performance.</figcaption></figure>
 
 A robot needs a position estimate before it can tell an owner that a particular feature changed. Surface GPS can initialise or correct a mission; submerged navigation combines other instruments and references. NOAA describes surface fixes and inertial navigation, while NOC describes acoustic positioning and seafloor mapping where GPS cannot penetrate. [NOAA REMUS account](https://oceanexplorer.noaa.gov/expedition-feature/technology-development-partnerships-ex1904-logs-july25-2/), [NOC vehicle overview](https://www.noc.ac.uk/our-work/marine-technology/ocean-vehicles/autonomous-underwater-vehicles)
 
@@ -83,6 +91,8 @@ Distance travelled is a poor success metric. The useful denominator is route dis
 ## 05 · Choose what the instruments can see
 
 ### A cable corridor is not the cable’s complete health record
+
+<figure><img src="/images/subsea-robotics/sensor-envelope.svg" alt="Sonar, optics, burial sensing and internal health answer different questions." style="max-width:600px;background:transparent"><figcaption>Proposed sensing envelope, based on the architectures cited below. External observation does not establish internal cable health.</figcaption></figure>
 
 My proposed first scope is repeat change detection on permissioned shallow-water corridors: newly exposed cable where observable, seabed disturbance and visible free spans. A free span is a section unsupported by the seabed. The owner’s engineer must define which changes matter and how confidently they must be located.
 
@@ -108,11 +118,14 @@ I would ask a narrow operational question after every proposed improvement: **wh
 
 Safe recovery after communications loss is part of the proposed experiment. It is not a claim that local autonomy already permits unattended operation.
 
+
 ---
 
 ## 07 · Sell a comparison an engineer can act on
 
 ### Begin with the service boundary we can test
+
+<figure><img src="/images/subsea-robotics/acceptance.png" alt="Two engineers compare survey sheets with a changed segment and an explicit missing-data gap." style="max-width:600px;background:transparent"><figcaption>Generated watercolor explanation: the paid object is an engineer-reviewed comparison, including unresolved coverage; no accepted customer deliverable is claimed.</figcaption></figure>
 
 The candidate customer is the cable owner or consortium’s marine-maintenance budget holder. The accepting party is its competent survey or asset engineer. The first channel is an established marine survey contractor with operating competence, vessel access and a customer relationship. These are buyer hypotheses; no interviews or paid scopes have validated them.
 
@@ -127,6 +140,8 @@ I would pay for an incumbent comparison before commissioning a new vehicle. If t
 ## 08 · The incumbents already know the sea
 
 ### “Nobody is doing this” fails in Singapore itself
+
+<figure><img src="/images/subsea-robotics/incumbent-offers.svg" alt="Existing suppliers offer capture, integrated survey, resident operation and inspection workflows." style="max-width:600px;background:transparent"><figcaption>Supplier-described capability categories from the sources below, not an independently measured performance ranking.</figcaption></figure>
 
 BeeX advertises autonomous capture through georeferenced reporting. DSTA’s **6 October 2025** announcement confirms a MINDEF acquisition contract and co-development involving its hover-capable autonomous underwater vehicles. That establishes a local supplier and a buyer relationship, without disclosing its margins or proving performance on our proposed job. [BeeX](https://www.beex.sg/), [DSTA announcement](https://www.dsta.gov.sg/docs/default-source/news-releases/dsta-partners-local-start-up-beex-to-deliver-advanced-underwater-capabilities-for-the-saf.pdf?sfvrsn=946673f_1)
 
@@ -156,11 +171,14 @@ For an assumed **20 accepted kilometres**, the base captures **8 kilometres per 
 
 Assume **12 campaigns annually**, **$600,000** cash fixed costs and **$100,000** depreciation: annual economic contribution is **−$448,000**. Base economic break-even needs **34 campaigns**, versus an assumed scheduling ceiling of **44**. Capacity is not customer demand. [Model](/images/subsea-robotics/scenario-model.json)
 
+
 ---
 
 ## 10 · The charter assumption can overturn the thesis
 
 ### Stress the least grounded cost before optimising the robot
+
+<figure><img src="/images/subsea-robotics/vessel-stress.svg" alt="Campaign contribution falls from positive 21 thousand dollars to negative 19 thousand as the assumed vessel day rate increases." style="max-width:600px;background:transparent"><figcaption>Original USD scenario arithmetic, 3 November 2026. All charter inputs are invented stresses, not market quotes. <a href="/images/subsea-robotics/scenario-model.json">Model and assumptions</a>.</figcaption></figure>
 
 The model’s **$4,000 vessel day is uncalibrated and potentially optimistic**. Holding other base inputs constant, doubling it to **$8,000** raises campaign cost to **$59,000** and leaves **$1,000** contribution. Annual economic contribution falls to **−$688,000**. Break-even would require **700 campaigns**, far beyond the assumed **44-campaign** capacity. [Original stress model](/images/subsea-robotics/scenario-model.json)
 
@@ -175,6 +193,8 @@ The research priority follows directly: obtain comparable charter terms, includi
 ## 11 · Mature margins are evidence of a business, not our margin
 
 ### Keep segment accounting, job contribution and cash separate
+
+<figure><img src="/images/subsea-robotics/cash-inventory.svg" alt="Equipment, receivables and fixed cash expenses add to an incomplete cash inventory." style="max-width:600px;background:transparent"><figcaption>Original base-scenario USD arithmetic, not a financing recommendation or a market benchmark. <a href="/images/subsea-robotics/scenario-model.json">Model and exclusions</a>.</figcaption></figure>
 
 Oceaneering reported Subsea Robotics revenue of about **US$233 million**, **32% operating margin**, **65% ROV utilisation** and **US$11,781 ROV revenue per utilised day** for the quarter ended **30 September 2026**. The segment includes more than the ROV rate metric, and corporate unallocated expenses sit separately. This is evidence of mature value capture; it is not a vessel-inclusive Asian AUV price or a startup margin. [Q3 filing](https://www.sec.gov/Archives/edgar/data/73756/000007375626000152/exhibit_991x8kx3qx2026.htm)
 
@@ -196,11 +216,14 @@ DIU’s small-UUV account gives a real prototype-to-production precedent with HI
 
 Defence is possible; BeeX is a local counterexample to blanket pessimism. It also demands eligibility, testing, integration and support. GAO records roughly **five years of delay** on the much larger Orca prototype programme, associated with materials and pressure-vessel construction. That does not forecast a small inspection service, but it makes naval-first capital risk concrete. [GAO audit, programme pages 159–160](https://www.gao.gov/assets/gao-26-108457.pdf)
 
+
 ---
 
 ## 13 · Adjacent demand is real, but not interchangeable
 
 ### Wind, components and civil inspection have different acceptance tests
+
+<figure><img src="/images/subsea-robotics/claims-cohort.svg" alt="Turbine claims dominate the cited count while export cable claims have a large average size." style="max-width:600px;background:transparent"><figcaption>Reconstruction of the JNRC/AXIS cohort cited below: January 2021–September 2025 loss dates. The selected categories do not exhaust claims; counts do not measure preventability.</figcaption></figure>
 
 Offshore-wind cable losses can be severe without dominating claim frequency. The JNRC bulletin’s AXIS cohort, with loss dates **January 2021–September 2025**, assigns **57%** of claims by count to turbines, **14%** to inter-array cables and **6%** to export cables; average export-cable claim size is **US$18.8 million**. Those figures do not establish fleet-wide failure rates or preventability by external imaging. [2026 claims bulletin](https://lmalloyds.com/wp-content/uploads/2026/10/Offshore-Wind-Claims-Bulletin-2026-.pdf)
 
@@ -215,6 +238,8 @@ I would switch to a subsystem wedge only when an OEM identifies a missing capabi
 ## 14 · The strongest bear case
 
 ### We build a survey subcontractor with an expensive research department
+
+<figure><img src="/images/subsea-robotics/bear-case.png" alt="A small survey robot and a modest coin basket are outweighed by vessel bills and a research machine." style="max-width:600px;background:transparent"><figcaption>Generated watercolor bear-case metaphor: the founder may inherit marine and research costs without enough repeat revenue. No measured cost is depicted.</figcaption></figure>
 
 Owners may prefer burial, diverse routes, surface monitoring and repair readiness to another periodic survey. That is an unresolved substitution hypothesis. The cable sections we can observe may be too few; incumbent reports may already be good enough; the owner may buy too infrequently to fund a company.
 
@@ -242,11 +267,14 @@ Singapore’s announced control-list change takes effect **1 December 2026**, af
 
 The defensible asset might become accumulated same-route learning and a dependable operating system for repeat surveys. That remains a hypothesis until contracts permit reuse and the learning demonstrably improves delivery.
 
+
 ---
 
 ## 16 · Let the first experiment stop the company
 
 ### Define failure while conviction is still cheap
+
+<figure><img src="/images/subsea-robotics/stop-gates.svg" alt="Access, operating envelope, matched comparisons and paid repeat work gate further spending." style="max-width:600px;background:transparent"><figcaption>Original screening plan restated from this card. Targets are founder-designed; the small experiment cannot certify rare-event safety.</figcaption></figure>
 
 These are **original screening thresholds**, not regulatory standards or statistically sufficient safety certification. The founder and retained survey lead own them; no outreach or field experiment has occurred.
 
@@ -263,6 +291,8 @@ The next action is concrete: assemble the historical scopes, full time logs, raw
 ## 17 · What the headline omits
 
 ### A hidden world deserves visible evidence
+
+<figure><img src="/images/subsea-robotics/decision.png" alt="An engineer compares a newly exposed cable segment with a previous survey while buried sections remain hidden." style="max-width:600px;background:transparent"><figcaption>Generated watercolor explanation of the bounded thesis: repeat evidence can reveal an observable change while other segments remain unresolved. No field result is depicted.</figcaption></figure>
 
 A naval drone announcement does not identify the paid inspection job. A long-range specification does not establish accepted coverage. A large insurance claim does not show that a robot could have prevented the failure. A positive campaign contribution does not fund the whole company.
 

@@ -1,0 +1,1059 @@
+{
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 18,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 514.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-the-opportunity-is-local",
+          "hash": "#card-01-the-opportunity-is-local",
+          "max": 553.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/local-site-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-four-companies-hiding-in-one-bottleneck",
+          "hash": "#card-02-four-companies-hiding-in-one-bottleneck",
+          "max": 1109.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/company-choice-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-the-transformer-is-a-physical-promise",
+          "hash": "#card-03-the-transformer-is-a-physical-promise",
+          "max": 725.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/equipment.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-onsite-power-moves-the-boundary",
+          "hash": "#card-04-onsite-power-moves-the-boundary",
+          "max": 584.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-a-queue-is-a-request",
+          "hash": "#card-05-a-queue-is-a-request",
+          "max": 881.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/queue-outcomes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-nuclear-deserves-a-serious-hearing",
+          "hash": "#card-06-nuclear-deserves-a-serious-hearing",
+          "max": 725.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/nuclear-gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-valar-atomics-and-the-hardware-loop",
+          "hash": "#card-07-valar-atomics-and-the-hardware-loop",
+          "max": 697.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/reactor-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-compare-projects-not-company-headlines",
+          "hash": "#card-08-compare-projects-not-company-headlines",
+          "max": 1005.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/project-record.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-the-larger-smr-path",
+          "hash": "#card-09-the-larger-smr-path",
+          "max": 1063.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/smr-boundaries.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-a-nuclear-deal-can-mean-several-things",
+          "hash": "#card-10-a-nuclear-deal-can-mean-several-things",
+          "max": 621.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/deal-map.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-geography-changes-the-answer",
+          "hash": "#card-11-geography-changes-the-answer",
+          "max": 730.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/geography-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-economics-of-readiness",
+          "hash": "#card-12-the-economics-of-readiness",
+          "max": 1296.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-what-cheap-power-leaves-out",
+          "hash": "#card-13-what-cheap-power-leaves-out",
+          "max": 902.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/cost-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-bear-case-should-change-the-plan",
+          "hash": "#card-14-the-bear-case-should-change-the-plan",
+          "max": 908.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/bear-case.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-path-that-earns-its-expansion",
+          "hash": "#card-15-a-path-that-earns-its-expansion",
+          "max": 937.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-the-first-decision-gate",
+          "hash": "#card-16-the-first-decision-gate",
+          "max": 997.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/validation-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-the-model-and-the-evidence-boundary",
+          "hash": "#card-17-the-model-and-the-evidence-boundary",
+          "max": 2217.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/model-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 765.2770385742188,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "tion is abundant dependable energy. The first commitment should buy the evidence needed to build it."
+          }
+        }
+      ],
+      "directFailures": [],
+      "internalBroken": [],
+      "docOverflow": false
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 18,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 574.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-the-opportunity-is-local",
+          "hash": "#card-01-the-opportunity-is-local",
+          "max": 372.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/local-site-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-four-companies-hiding-in-one-bottleneck",
+          "hash": "#card-02-four-companies-hiding-in-one-bottleneck",
+          "max": 767.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/company-choice-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-the-transformer-is-a-physical-promise",
+          "hash": "#card-03-the-transformer-is-a-physical-promise",
+          "max": 740.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/equipment.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-onsite-power-moves-the-boundary",
+          "hash": "#card-04-onsite-power-moves-the-boundary",
+          "max": 479.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-a-queue-is-a-request",
+          "hash": "#card-05-a-queue-is-a-request",
+          "max": 864.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/queue-outcomes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-nuclear-deserves-a-serious-hearing",
+          "hash": "#card-06-nuclear-deserves-a-serious-hearing",
+          "max": 772.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/nuclear-gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-valar-atomics-and-the-hardware-loop",
+          "hash": "#card-07-valar-atomics-and-the-hardware-loop",
+          "max": 503.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/reactor-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-compare-projects-not-company-headlines",
+          "hash": "#card-08-compare-projects-not-company-headlines",
+          "max": 803.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/project-record.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-the-larger-smr-path",
+          "hash": "#card-09-the-larger-smr-path",
+          "max": 805.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/smr-boundaries.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-a-nuclear-deal-can-mean-several-things",
+          "hash": "#card-10-a-nuclear-deal-can-mean-several-things",
+          "max": 686.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/deal-map.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-geography-changes-the-answer",
+          "hash": "#card-11-geography-changes-the-answer",
+          "max": 545.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/geography-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-economics-of-readiness",
+          "hash": "#card-12-the-economics-of-readiness",
+          "max": 835.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-what-cheap-power-leaves-out",
+          "hash": "#card-13-what-cheap-power-leaves-out",
+          "max": 845.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/cost-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-bear-case-should-change-the-plan",
+          "hash": "#card-14-the-bear-case-should-change-the-plan",
+          "max": 851.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/bear-case.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-path-that-earns-its-expansion",
+          "hash": "#card-15-a-path-that-earns-its-expansion",
+          "max": 822.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-the-first-decision-gate",
+          "hash": "#card-16-the-first-decision-gate",
+          "max": 758.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/validation-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-the-model-and-the-evidence-boundary",
+          "hash": "#card-17-the-model-and-the-evidence-boundary",
+          "max": 1876.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/model-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 813.2254638671875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "tion is abundant dependable energy. The first commitment should buy the evidence needed to build it."
+          }
+        }
+      ],
+      "directFailures": [],
+      "internalBroken": [],
+      "docOverflow": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 18,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 244.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-the-opportunity-is-local",
+          "hash": "#card-01-the-opportunity-is-local",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/local-site-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-four-companies-hiding-in-one-bottleneck",
+          "hash": "#card-02-four-companies-hiding-in-one-bottleneck",
+          "max": 244.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/company-choice-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-the-transformer-is-a-physical-promise",
+          "hash": "#card-03-the-transformer-is-a-physical-promise",
+          "max": 218.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/equipment.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-onsite-power-moves-the-boundary",
+          "hash": "#card-04-onsite-power-moves-the-boundary",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/power-chain-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-a-queue-is-a-request",
+          "hash": "#card-05-a-queue-is-a-request",
+          "max": 297.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/queue-outcomes.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-nuclear-deserves-a-serious-hearing",
+          "hash": "#card-06-nuclear-deserves-a-serious-hearing",
+          "max": 281.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/nuclear-gates.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-valar-atomics-and-the-hardware-loop",
+          "hash": "#card-07-valar-atomics-and-the-hardware-loop",
+          "max": 13.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/reactor-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-compare-projects-not-company-headlines",
+          "hash": "#card-08-compare-projects-not-company-headlines",
+          "max": 346.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/project-record.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-the-larger-smr-path",
+          "hash": "#card-09-the-larger-smr-path",
+          "max": 378.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/smr-boundaries.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-a-nuclear-deal-can-mean-several-things",
+          "hash": "#card-10-a-nuclear-deal-can-mean-several-things",
+          "max": 227.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/deal-map.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-geography-changes-the-answer",
+          "hash": "#card-11-geography-changes-the-answer",
+          "max": 28.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/geography-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-economics-of-readiness",
+          "hash": "#card-12-the-economics-of-readiness",
+          "max": 432.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/economics.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-what-cheap-power-leaves-out",
+          "hash": "#card-13-what-cheap-power-leaves-out",
+          "max": 360.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/cost-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-the-bear-case-should-change-the-plan",
+          "hash": "#card-14-the-bear-case-should-change-the-plan",
+          "max": 297.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/bear-case.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-path-that-earns-its-expansion",
+          "hash": "#card-15-a-path-that-earns-its-expansion",
+          "max": 305.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-the-first-decision-gate",
+          "hash": "#card-16-the-first-decision-gate",
+          "max": 114.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/validation-watercolor.png",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-the-model-and-the-evidence-boundary",
+          "hash": "#card-17-the-model-and-the-evidence-boundary",
+          "max": 849.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1434/images/power-for-ai/model-boundary.svg",
+              "loaded": true
+            }
+          ],
+          "bottom": {
+            "lastBottom": 951.1085205078125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "tion is abundant dependable energy. The first commitment should buy the evidence needed to build it."
+          }
+        }
+      ],
+      "directFailures": [],
+      "internalBroken": [],
+      "docOverflow": false
+    }
+  ],
+  "svg": [
+    {
+      "name": "power-chain",
+      "overflow": []
+    },
+    {
+      "name": "equipment",
+      "overflow": []
+    },
+    {
+      "name": "nuclear-gates",
+      "overflow": []
+    },
+    {
+      "name": "deal-map",
+      "overflow": []
+    },
+    {
+      "name": "economics",
+      "overflow": []
+    },
+    {
+      "name": "roadmap",
+      "overflow": []
+    },
+    {
+      "name": "queue-outcomes",
+      "overflow": []
+    },
+    {
+      "name": "project-record",
+      "overflow": []
+    },
+    {
+      "name": "smr-boundaries",
+      "overflow": []
+    },
+    {
+      "name": "cost-boundary",
+      "overflow": []
+    },
+    {
+      "name": "bear-case",
+      "overflow": []
+    },
+    {
+      "name": "model-boundary",
+      "overflow": []
+    }
+  ]
+}

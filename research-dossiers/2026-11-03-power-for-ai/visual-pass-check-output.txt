@@ -1,0 +1,93 @@
+{
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": 18,
+      "images": 18,
+      "unloaded": [],
+      "errors": [],
+      "horizontalOverflow": false,
+      "cardOverflows": [],
+      "unreachable": [],
+      "directHashFailures": [],
+      "brokenInternalHashes": []
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": 18,
+      "images": 18,
+      "unloaded": [],
+      "errors": [],
+      "horizontalOverflow": false,
+      "cardOverflows": [],
+      "unreachable": [],
+      "directHashFailures": [],
+      "brokenInternalHashes": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": 18,
+      "images": 18,
+      "unloaded": [],
+      "errors": [],
+      "horizontalOverflow": false,
+      "cardOverflows": [],
+      "unreachable": [],
+      "directHashFailures": [],
+      "brokenInternalHashes": []
+    }
+  ],
+  "svg": [
+    {
+      "name": "power-chain",
+      "overflow": []
+    },
+    {
+      "name": "equipment",
+      "overflow": []
+    },
+    {
+      "name": "nuclear-gates",
+      "overflow": []
+    },
+    {
+      "name": "deal-map",
+      "overflow": []
+    },
+    {
+      "name": "economics",
+      "overflow": []
+    },
+    {
+      "name": "roadmap",
+      "overflow": []
+    },
+    {
+      "name": "queue-outcomes",
+      "overflow": []
+    },
+    {
+      "name": "project-record",
+      "overflow": []
+    },
+    {
+      "name": "smr-boundaries",
+      "overflow": []
+    },
+    {
+      "name": "cost-boundary",
+      "overflow": []
+    },
+    {
+      "name": "bear-case",
+      "overflow": []
+    },
+    {
+      "name": "model-boundary",
+      "overflow": []
+    }
+  ]
+}
