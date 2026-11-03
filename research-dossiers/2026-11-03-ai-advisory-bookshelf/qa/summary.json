@@ -1,0 +1,54 @@
+{
+  "indexCount": 1,
+  "aliases": [
+    {
+      "path": "/research/ai-advisory-bookshelf/",
+      "canonical": true
+    },
+    {
+      "path": "/learning/ai-advisory-bookshelf/",
+      "canonical": true
+    }
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    }
+  ]
+}

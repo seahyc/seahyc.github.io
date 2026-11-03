@@ -1,0 +1,205 @@
+{
+  "currency": "USD",
+  "as_of": "2026-11-03",
+  "status": "All commercial inputs are chosen assumptions; outputs are arithmetic, not forecasts.",
+  "product_boundary": "Paid curated evidence MCP; host AI subscription billed separately to user. No full generation included; variable service reserve covers retrieval and occasional checking.",
+  "fixed_cash_monthly": {
+    "hosting_monitoring": 200,
+    "editorial_source_maintenance": 1400,
+    "admin_rights_review_allowance": 400
+  },
+  "founder_opportunity_cost_monthly": 10000,
+  "support_hourly_cost": 45,
+  "payment_fee_fraction": 0.03,
+  "payment_fee_fixed_per_monthly_charge": 0.3,
+  "annual_revenue_scale_screens": [
+    1000000,
+    10000000,
+    100000000
+  ],
+  "scale_screen_note": "Chosen revenue thresholds, not TAM or investor criteria. No reachable payer population is known.",
+  "exclusions": [
+    "tax",
+    "VAT/GST",
+    "refunds and chargebacks beyond fee assumption",
+    "major litigation",
+    "contracted book rights beyond illustrative reserve",
+    "employee benefits beyond loaded hourly assumption",
+    "customer host AI subscription",
+    "unexpected security incident",
+    "growth acquisitions beyond replacement budget"
+  ],
+  "rights_warning": "A royalty reserve is not a licence offer or evidence permission can be bought at this price. No licensed books in initial public-source wedge; reserve tests later expansion.",
+  "steady_state_warning": "Constant churn and CAC, immediate collections, no expansion or annual billing. No discounted cash flows. Replacement-spend model assumes churned users can actually be replaced at assumed CAC.",
+  "formulas": {
+    "contribution": "price - (0.03*price+0.30) - service - rights_reserve - support_minutes/60*45",
+    "net_after_replacement": "contribution - monthly_churn*(cash_CAC + onboarding_minutes/60*45)",
+    "cash_break_even": "ceil(2000/net_after_replacement); undefined if net <= 0",
+    "economic_break_even": "ceil(12000/net_after_replacement); undefined if net <= 0",
+    "simple_lifetime_contribution": "contribution/churn, before acquisition and fixed; geometric constant-churn approximation, not empirical LTV"
+  },
+  "cases": [
+    {
+      "name": "low",
+      "price_monthly": 9,
+      "variable_service_cost": 4,
+      "rights_reserve": 0,
+      "support_minutes": 10,
+      "acquisition_cash": 90,
+      "onboarding_minutes": 45,
+      "monthly_logo_churn": 0.1,
+      "payment_cost": 0.5700000000000001,
+      "support_cost": 7.5,
+      "onboarding_cost": 33.75,
+      "acquisition_plus_onboarding": 123.75,
+      "contribution_before_acquisition_and_fixed": -3.0700000000000003,
+      "contribution_margin": -0.34111111111111114,
+      "payback_months_ignoring_churn": null,
+      "simple_lifetime_contribution_before_acquisition": null,
+      "simple_lifetime_contribution_after_acquisition": null,
+      "replacement_acquisition_per_active_payer_month": 12.375,
+      "net_per_payer_after_replacement": -15.445,
+      "cash_break_even_payers": null,
+      "economic_break_even_payers": null,
+      "at_1000_active_payers": {
+        "arr": 108000,
+        "monthly_net_after_replacement_and_cash_fixed": -17445.0,
+        "monthly_net_after_replacement_and_founder": -27445.0
+      },
+      "payers_for_annual_revenue_screens": {
+        "1000000": 9260,
+        "10000000": 92593,
+        "100000000": 925926
+      }
+    },
+    {
+      "name": "base",
+      "price_monthly": 19,
+      "variable_service_cost": 1.5,
+      "rights_reserve": 2,
+      "support_minutes": 4,
+      "acquisition_cash": 60,
+      "onboarding_minutes": 30,
+      "monthly_logo_churn": 0.05,
+      "payment_cost": 0.8699999999999999,
+      "support_cost": 3.0,
+      "onboarding_cost": 22.5,
+      "acquisition_plus_onboarding": 82.5,
+      "contribution_before_acquisition_and_fixed": 11.629999999999999,
+      "contribution_margin": 0.6121052631578947,
+      "payback_months_ignoring_churn": 7.09372312983663,
+      "simple_lifetime_contribution_before_acquisition": 232.59999999999997,
+      "simple_lifetime_contribution_after_acquisition": 150.09999999999997,
+      "replacement_acquisition_per_active_payer_month": 4.125,
+      "net_per_payer_after_replacement": 7.504999999999999,
+      "cash_break_even_payers": 267,
+      "economic_break_even_payers": 1599,
+      "at_1000_active_payers": {
+        "arr": 228000,
+        "monthly_net_after_replacement_and_cash_fixed": 5504.999999999999,
+        "monthly_net_after_replacement_and_founder": -4495.000000000001
+      },
+      "payers_for_annual_revenue_screens": {
+        "1000000": 4386,
+        "10000000": 43860,
+        "100000000": 438597
+      }
+    },
+    {
+      "name": "high",
+      "price_monthly": 29,
+      "variable_service_cost": 1,
+      "rights_reserve": 3,
+      "support_minutes": 2,
+      "acquisition_cash": 30,
+      "onboarding_minutes": 15,
+      "monthly_logo_churn": 0.02,
+      "payment_cost": 1.17,
+      "support_cost": 1.5,
+      "onboarding_cost": 11.25,
+      "acquisition_plus_onboarding": 41.25,
+      "contribution_before_acquisition_and_fixed": 22.33,
+      "contribution_margin": 0.7699999999999999,
+      "payback_months_ignoring_churn": 1.8472906403940887,
+      "simple_lifetime_contribution_before_acquisition": 1116.5,
+      "simple_lifetime_contribution_after_acquisition": 1075.25,
+      "replacement_acquisition_per_active_payer_month": 0.8250000000000001,
+      "net_per_payer_after_replacement": 21.505,
+      "cash_break_even_payers": 94,
+      "economic_break_even_payers": 559,
+      "at_1000_active_payers": {
+        "arr": 348000,
+        "monthly_net_after_replacement_and_cash_fixed": 19505.0,
+        "monthly_net_after_replacement_and_founder": 9505.0
+      },
+      "payers_for_annual_revenue_screens": {
+        "1000000": 2874,
+        "10000000": 28736,
+        "100000000": 287357
+      }
+    }
+  ],
+  "base_sensitivities": [
+    {
+      "label": "base",
+      "updates": {},
+      "contribution": 11.629999999999999,
+      "net_after_replacement": 7.504999999999999,
+      "economic_break_even_payers": 1599
+    },
+    {
+      "label": "support doubles",
+      "updates": {
+        "support_minutes": 8
+      },
+      "contribution": 8.629999999999999,
+      "net_after_replacement": 4.504999999999999,
+      "economic_break_even_payers": 2664
+    },
+    {
+      "label": "price falls to 9",
+      "updates": {
+        "price_monthly": 9
+      },
+      "contribution": 1.9299999999999997,
+      "net_after_replacement": -2.1950000000000003,
+      "economic_break_even_payers": null
+    },
+    {
+      "label": "churn doubles",
+      "updates": {
+        "monthly_logo_churn": 0.1
+      },
+      "contribution": 11.629999999999999,
+      "net_after_replacement": 3.379999999999999,
+      "economic_break_even_payers": 3551
+    },
+    {
+      "label": "rights reserve rises to 5",
+      "updates": {
+        "rights_reserve": 5
+      },
+      "contribution": 8.629999999999999,
+      "net_after_replacement": 4.504999999999999,
+      "economic_break_even_payers": 2664
+    },
+    {
+      "label": "CAC rises to 120",
+      "updates": {
+        "acquisition_cash": 120
+      },
+      "contribution": 11.629999999999999,
+      "net_after_replacement": 4.504999999999999,
+      "economic_break_even_payers": 2664
+    },
+    {
+      "label": "service reserve doubles",
+      "updates": {
+        "variable_service_cost": 3
+      },
+      "contribution": 10.129999999999999,
+      "net_after_replacement": 6.004999999999999,
+      "economic_break_even_payers": 1999
+    }
+  ]
+}

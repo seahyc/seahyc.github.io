@@ -1,0 +1,802 @@
+{
+  "summary": {
+    "indexCount": 1,
+    "aliases": [
+      {
+        "path": "/research/ai-advisory-bookshelf/",
+        "canonical": true
+      },
+      {
+        "path": "/learning/ai-advisory-bookshelf/",
+        "canonical": true
+      }
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "cards": 15,
+        "images": 6,
+        "uniqueImages": 6,
+        "unloaded": 0,
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      },
+      {
+        "width": 737,
+        "height": 862,
+        "cards": 15,
+        "images": 6,
+        "uniqueImages": 6,
+        "unloaded": 0,
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      },
+      {
+        "width": 1440,
+        "height": 1000,
+        "cards": 15,
+        "images": 6,
+        "uniqueImages": 6,
+        "unloaded": 0,
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      }
+    ]
+  },
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 198.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.96875,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ommitting my time to a venture. Useful advice, recurring payment and a defensible business are separate accomplishments."
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "max": 379.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.25,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "advice is an established AI use. Whether someone will pay an additional provider for better evidence remains unanswered."
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "max": 362.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.09375,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ing opportunity begins after a search succeeds: determine whether the source actually supports the advice being offered."
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "max": 590.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.546875,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "nnector cannot establish faithful use. That is a validation requirement, not a capability demonstrated by this research."
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "max": 362.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.09375,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "e against the strongest available substitute, including a well-written prompt that asks the existing AI to challenge us."
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "max": 352.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.390625,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ith a documented access policy. Unclear rights exclude a source. A royalty allowance in a spreadsheet is not permission."
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "max": 564.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.5625,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "own outcome record. Competitors and ordinary documents may reproduce it. This research establishes no exclusive opening."
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "max": 442.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.671875,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "s report. Neither justifies advertising a bookshelf as proven expertise training. ShadowBox paper, publisher description"
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "max": 327.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.78125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " reasoning. Whether people value that enough to return is the experiment. A delightful demonstration does not answer it."
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "max": 641.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.953125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "forecast. The low case loses money before fixed costs; adding customers compounds that loss. Scenario inputs and outputs"
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "max": 379.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.25,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "the allowance are excluded. A subscription business can look healthy while consuming the founder’s better opportunities."
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "max": 359.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.453125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " those conditions, doing nothing is reasonable. Calling it a side project does not make losses or maintenance disappear."
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "max": 570.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.3125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": " separately. Repeated participants and a small convenience sample preclude a population claim. Quality rubric and limits"
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "max": 350.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.140625,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ed case library or trusted channel might strengthen the thesis; neither has been established. Conditional expansion rule"
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "max": 620.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 765.984375,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ],
+      "errors": [],
+      "docOverflow": false
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 250.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.46875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ommitting my time to a venture. Useful advice, recurring payment and a defensible business are separate accomplishments."
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "max": 121.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.3125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "advice is an established AI use. Whether someone will pay an additional provider for better evidence remains unanswered."
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "max": 89.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.734375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ing opportunity begins after a search succeeds: determine whether the source actually supports the advice being offered."
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "max": 661.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.921875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "nnector cannot establish faithful use. That is a validation requirement, not a capability demonstrated by this research."
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "max": 52.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.984375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "e against the strongest available substitute, including a well-written prompt that asks the existing AI to challenge us."
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "max": 26.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.578125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ith a documented access policy. Unclear rights exclude a source. A royalty allowance in a spreadsheet is not permission."
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "max": 627.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.5,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "own outcome record. Competitors and ordinary documents may reproduce it. This research establishes no exclusive opening."
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "max": 116.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.140625,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "s report. Neither justifies advertising a bookshelf as proven expertise training. ShadowBox paper, publisher description"
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "max": 26.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.578125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " reasoning. Whether people value that enough to return is the experiment. A delightful demonstration does not answer it."
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "max": 691.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.078125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "forecast. The low case loses money before fixed costs; adding customers compounds that loss. Scenario inputs and outputs"
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "max": 52.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.984375,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "the allowance are excluded. A subscription business can look healthy while consuming the founder’s better opportunities."
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "max": 240.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.921875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " those conditions, doing nothing is reasonable. Calling it a side project does not make losses or maintenance disappear."
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "max": 669.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.078125,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": " separately. Repeated participants and a small convenience sample preclude a population claim. Quality rubric and limits"
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "max": 84.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.5625,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ed case library or trusted channel might strengthen the thesis; neither has been established. Conditional expansion rule"
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "max": 210.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 813.875,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ],
+      "errors": [],
+      "docOverflow": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 909.6353759765625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ommitting my time to a venture. Useful advice, recurring payment and a defensible business are separate accomplishments."
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 581.879638671875,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "advice is an established AI use. Whether someone will pay an additional provider for better evidence remains unanswered."
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 550.26025390625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ing opportunity begins after a search succeeds: determine whether the source actually supports the advice being offered."
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "max": 266.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 951.125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "nnector cannot establish faithful use. That is a validation requirement, not a capability demonstrated by this research."
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 550.2603759765625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "e against the strongest available substitute, including a well-written prompt that asks the existing AI to challenge us."
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 518.6822509765625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ith a documented access policy. Unclear rights exclude a source. A royalty allowance in a spreadsheet is not permission."
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "max": 200.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 951.125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "own outcome record. Competitors and ordinary documents may reproduce it. This research establishes no exclusive opening."
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 613.4575805664062,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "s report. Neither justifies advertising a bookshelf as proven expertise training. ShadowBox paper, publisher description"
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 550.3779907226562,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " reasoning. Whether people value that enough to return is the experiment. A delightful demonstration does not answer it."
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "max": 295.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 951.28125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "forecast. The low case loses money before fixed costs; adding customers compounds that loss. Scenario inputs and outputs"
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 581.87939453125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "the allowance are excluded. A subscription business can look healthy while consuming the founder’s better opportunities."
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 796.2230834960938,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " those conditions, doing nothing is reasonable. Calling it a side project does not make losses or maintenance disappear."
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "max": 210.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1416/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true
+            }
+          ],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 951.125,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": " separately. Repeated participants and a small convenience sample preclude a population claim. Quality rubric and limits"
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 581.8796997070312,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ed case library or trusted channel might strengthen the thesis; neither has been established. Conditional expansion rule"
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "max": 0.5,
+          "overflow": [],
+          "images": [],
+          "directHashPass": true,
+          "bottom": {
+            "lastBottom": 645.0358276367188,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ],
+      "errors": [],
+      "docOverflow": false
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+$ hugo --destination /tmp/fb-ai-advisory-bookshelf/site --cacheDir /tmp/fb-ai-advisory-bookshelf/cache --noBuildLock --quiet
+
+exit_code=0
+$ sips -g hasAlpha static/images/ai-advisory-bookshelf/advisers.png static/images/ai-advisory-bookshelf/founder-time.png
+/Users/yingcong/Code/seahyc.github.io/static/images/ai-advisory-bookshelf/advisers.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/ai-advisory-bookshelf/founder-time.png
+  hasAlpha: yes
+
+exit_code=0
+advisers.png: corner alpha=[0, 0, 0, 0]; size=1536x1024
+founder-time.png: corner alpha=[0, 0, 0, 0]; size=1774x887
+$ node research-dossiers/2026-11-03-ai-advisory-bookshelf/check.mjs
+{
+  "indexCount": 1,
+  "aliases": [
+    {
+      "path": "/research/ai-advisory-bookshelf/",
+      "canonical": true
+    },
+    {
+      "path": "/learning/ai-advisory-bookshelf/",
+      "canonical": true
+    }
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": 15,
+      "images": 6,
+      "uniqueImages": 6,
+      "unloaded": 0,
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": [],
+      "hashFailures": []
+    }
+  ]
+}
+exit_code=0 (captured final run)
+15 cards;6 unique explanatory visuals;all13 rolling three-card windows covered
