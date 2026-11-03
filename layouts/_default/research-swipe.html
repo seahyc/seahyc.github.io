@@ -5,7 +5,7 @@
 <link rel="icon" type="image/svg+xml" href="/images/fieldbook-favicon.svg">
 <link rel="apple-touch-icon" href="/images/fieldbook-favicon.svg">
 <meta name="theme-color" content="#d4c6b4">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
 {{ end }}
 
 {{ define "main" }}
@@ -15,16 +15,10 @@
     <article class="swipe-article">
         <div class="swipe-content">{{ .Content }}</div>
     </article>
-    <nav class="swipe-progress" aria-label="Fieldbook card progress"></nav>
-    <div class="swipe-controls" aria-label="Slide navigation">
-        <button type="button" data-swipe="prev" aria-label="Previous card">←</button>
-        <button type="button" data-swipe="next" aria-label="Next card">→</button>
-    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function () {
-  document.documentElement.classList.add('research-swipe-root');
+  document.documentElement.classList.add('research-swipe-root', 'fieldbook-continuous');
   var configNode = document.getElementById('fieldbook-config');
   var fieldbookConfig = configNode ? JSON.parse(configNode.textContent || '{}') : {};
   var illustrations = fieldbookConfig.illustrations || {};
@@ -35,7 +29,6 @@
   var nodes = Array.prototype.slice.call(viewport.children);
   var slides = [];
   var current = null;
-  var h2Count = 0;
 
   function cardSlug(text, fallback) {
     var slug = String(text || '').toLowerCase().trim()
@@ -46,17 +39,14 @@
 
   nodes.forEach(function (node) {
     var isSection = node.tagName === 'H2';
-    if (isSection) h2Count += 1;
     if (isSection) {
       current = document.createElement('section');
       current.className = 'story-slide';
-      current.setAttribute('tabindex', '0');
       viewport.appendChild(current);
       slides.push(current);
     } else if (!current) {
       current = document.createElement('section');
       current.className = 'story-slide story-slide--cover';
-      current.setAttribute('tabindex', '0');
       viewport.appendChild(current);
       slides.push(current);
     }
@@ -79,10 +69,8 @@
   });
 
   var track = document.createElement('div');
-  track.className = 'swipe-track swiper-wrapper';
-  viewport.classList.add('swiper');
+  track.className = 'swipe-track';
   slides.forEach(function (slide) {
-    slide.classList.add('swiper-slide');
     var scroll = document.createElement('div');
     scroll.className = 'story-scroll';
     while (slide.firstChild) scroll.appendChild(slide.firstChild);
@@ -107,391 +95,13 @@
     track.appendChild(slide);
   });
   viewport.appendChild(track);
-  var dots = document.querySelector('.swipe-progress');
-  slides.forEach(function (_, index) {
-    var dot = document.createElement('button');
-    dot.type = 'button';
-    dot.setAttribute('role', 'tab');
-    dot.setAttribute('aria-controls', slides[index].id);
-    dot.dataset.cardIndex = index + 1;
-    dot.setAttribute('aria-label', 'Go to card ' + (index + 1) + ' (unread)');
-    dots.appendChild(dot);
-  });
-  // Phones use the browser's document scroll, without gesture interception.
-  var readingViewport = window.matchMedia('(max-width: 900px)');
   function restoreReadingPosition() {
     var slug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
     var target = slides.find(function (slide) { return slide.dataset.cardSlug === slug; });
-    if (target) {
-      readingSection = target;
-      target.scrollIntoView({ block: 'start' });
-    }
+    if (target) target.scrollIntoView({ block: 'start' });
   }
-  if (readingViewport.matches) {
-    document.documentElement.classList.add('fieldbook-continuous');
-    viewport.classList.remove('swiper');
-    track.classList.remove('swiper-wrapper');
-    slides.forEach(function (slide) { slide.classList.remove('swiper-slide'); });
-    dots.hidden = true;
-    document.querySelector('.swipe-controls').hidden = true;
-    requestAnimationFrame(restoreReadingPosition);
-    window.addEventListener('hashchange', restoreReadingPosition);
-    var readingSection = slides[0];
-    var readingFrame = null;
-    window.addEventListener('scroll', function () {
-      if (readingFrame !== null || !readingViewport.matches) return;
-      readingFrame = requestAnimationFrame(function () {
-        readingFrame = null;
-        if (!readingViewport.matches) return;
-        slides.forEach(function (slide) {
-          if (slide.getBoundingClientRect().top <= window.innerHeight / 2) readingSection = slide;
-        });
-      });
-    }, { passive: true });
-    readingViewport.addEventListener('change', function () {
-      window.history.replaceState(null, '', '#card-' + readingSection.dataset.cardSlug);
-      window.location.reload();
-    });
-    return;
-  }
-  readingViewport.addEventListener('change', function () { window.location.reload(); });
-  var requestedSlug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
-  var initialSlide = requestedSlug ? slides.findIndex(function (slide) { return slide.dataset.cardSlug === requestedSlug; }) : 0;
-  if (initialSlide < 0) initialSlide = 0;
-  // A direct hash makes the browser scroll the horizontal viewport before
-  // Swiper starts. Reset that native anchor movement so the initial slide is
-  // positioned exactly once by Swiper.
-  viewport.scrollLeft = 0;
-  viewport.scrollTop = 0;
-  var swiper = new Swiper(viewport, {
-    effect: 'slide',
-    grabCursor: true,
-    threshold: 0,
-    touchAngle: 28,
-    touchRatio: 1.2,
-    followFinger: true,
-    longSwipes: true,
-    longSwipesRatio: .18,
-    longSwipesMs: 0,
-    shortSwipes: false,
-    speed: 460,
-    resistance: true,
-    resistanceRatio: .55,
-    watchSlidesProgress: true,
-    preventInteractionOnTransition: true,
-    nested: false,
-    touchMoveStopPropagation: false,
-    noSwipingSelector: 'table, .wide-object',
-    keyboard: { enabled: true, onlyInViewport: true },
-    initialSlide: initialSlide
-  });
-  function syncUrl(replace) {
-    var slide = slides[swiper.activeIndex];
-    if (!slide) return;
-    var hash = '#card-' + slide.dataset.cardSlug;
-    var nextUrl = window.location.pathname + window.location.search + hash;
-    if (replace) window.history.replaceState({ card: slide.dataset.cardSlug }, '', nextUrl);
-    else if (window.location.hash !== hash) window.history.pushState({ card: slide.dataset.cardSlug }, '', nextUrl);
-  }
-  function syncNavigation() {
-    var active = swiper.activeIndex;
-    slides.forEach(function (slide, index) {
-      var distance = Math.abs(index - active);
-      slide.style.setProperty('z-index', index === active ? '20' : String(Math.max(1, 10 - distance)), 'important');
-      if (index !== active && slide.contains(document.activeElement)) document.activeElement.blur();
-      slide.inert = index !== active;
-    });
-    Array.prototype.forEach.call(dots.children, function (dot, index) {
-      var isCurrent = index === active;
-      var isRead = index < active;
-      dot.classList.toggle('is-active', isCurrent);
-      dot.classList.toggle('is-complete', isRead);
-      dot.classList.toggle('is-unread', !isCurrent && !isRead);
-      dot.style.setProperty('--card-scroll-progress', isCurrent ? String(slides[index]._cardScrollProgress || 0) : '0');
-      dot.setAttribute('aria-current', isCurrent ? 'step' : 'false');
-      dot.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
-      dot.tabIndex = isCurrent ? 0 : -1;
-      dot.setAttribute('aria-label', 'Card ' + (index + 1) + ' (' + (isCurrent ? 'current' : isRead ? 'read' : 'unread') + ')');
-    });
-  }
-  function setCardMotion(slide, progress) {
-    var distance = Math.min(1.25, Math.abs(progress));
-    var eased = Math.pow(distance, .72);
-    // Swiper's progress sign is opposite the finger direction: a leftward
-    // drag makes the current slide's progress positive, so invert it here.
-    var tilt = Math.max(-10, Math.min(10, -Math.sign(progress) * eased * 10));
-    slide.style.setProperty('--card-tilt', tilt.toFixed(2) + 'deg');
-    slide.style.setProperty('--card-lift', (eased * -10).toFixed(2) + 'px');
-    slide.style.setProperty('--card-shadow-x', (tilt * -1.1).toFixed(2) + 'px');
-  }
-  function applyCardTilt() {
-    slides.forEach(function (slide) { setCardMotion(slide, Number(slide.progress || 0)); });
-  }
-  var arrowRaf = null;
-  function animateArrowCards() {
-    var direction = swiper.activeIndex > swiper.previousIndex ? 1 : -1;
-    var outgoing = slides[swiper.previousIndex];
-    var incoming = slides[swiper.activeIndex];
-    var start = performance.now();
-    function frame(now) {
-      var t = Math.min(1, (now - start) / swiper.params.speed);
-      var eased = 1 - Math.pow(1 - t, 3);
-      setCardMotion(outgoing, direction * eased);
-      setCardMotion(incoming, -direction * (1 - eased));
-      if (t < 1) arrowRaf = requestAnimationFrame(frame);
-    }
-    if (arrowRaf) cancelAnimationFrame(arrowRaf);
-    arrowRaf = requestAnimationFrame(frame);
-  }
-  var edgePreview = null;
-  var edgePreviewTimer = null;
-  function renderEdgeFlipPreview(direction, amount) {
-    if (swiper.animating) return;
-    var active = swiper.activeIndex;
-    var incoming = active + direction;
-    if (!slides[incoming] || amount <= 0) return;
-    var eased = Math.min(.3, Math.pow(Math.min(1, amount), .78) * .3);
-    edgePreview = { active: active, incoming: incoming };
-    if (edgePreviewTimer) clearTimeout(edgePreviewTimer);
-    track.style.transitionDuration = '0ms';
-    track.style.transform = 'translate3d(' + (swiper.translate - direction * viewport.clientWidth * eased).toFixed(2) + 'px, 0px, 0px)';
-    slides[active].querySelector('.story-scroll').classList.add('is-edge-preview');
-    slides[incoming].querySelector('.story-scroll').classList.add('is-edge-preview');
-    // Match the first fraction of a horizontal swipe: the current card
-    // departs while its neighbour enters along the complementary trajectory.
-    setCardMotion(slides[active], direction * eased);
-    setCardMotion(slides[incoming], -direction * (1 - eased));
-  }
-  function clearEdgeFlipPreview(animate) {
-    if (swiper.animating) return;
-    if (!edgePreview) return;
-    var previous = edgePreview;
-    edgePreview = null;
-    if (slides[previous.active]) slides[previous.active].querySelector('.story-scroll').classList.remove('is-edge-preview');
-    if (slides[previous.incoming]) slides[previous.incoming].querySelector('.story-scroll').classList.remove('is-edge-preview');
-    if (edgePreviewTimer) clearTimeout(edgePreviewTimer);
-    track.style.transitionDuration = animate ? '190ms' : '0ms';
-    track.style.transform = 'translate3d(' + Number(swiper.translate || 0).toFixed(2) + 'px, 0px, 0px)';
-    applyCardTilt();
-    if (animate) edgePreviewTimer = setTimeout(function () { if (!edgePreview) track.style.transitionDuration = ''; }, 210);
-    else track.style.transitionDuration = '';
-  }
-  swiper.on('setTranslate', applyCardTilt);
-  swiper.on('slideChangeTransitionStart', animateArrowCards);
-  var boundaryLanding = 0;
-  var nativeCardScroll = false;
-  swiper.on('transitionEnd', function () {
-    if (arrowRaf) cancelAnimationFrame(arrowRaf);
-    if (boundaryLanding) {
-      var landedScroll = slides[swiper.activeIndex].querySelector('.story-scroll');
-      if (landedScroll && landedScroll.renderCardOffset) {
-        landedScroll.renderCardOffset(boundaryLanding < 0 ? landedScroll.cardMaxOffset() : 0);
-      }
-      boundaryLanding = 0;
-    }
-    clearEdgeFlipPreview(false);
-    applyCardTilt(); syncNavigation(); syncUrl(false);
-  });
-  swiper.on('slideChangeTransitionEnd', function () { clearEdgeFlipPreview(false); });
-  swiper.on('touchStart', function () { slides.forEach(function (slide) { slide.classList.add('is-dragging'); }); });
-  swiper.on('touchEnd', function () { slides.forEach(function (slide) { slide.classList.remove('is-dragging'); }); });
-  document.querySelector('[data-swipe="prev"]').addEventListener('click', function () { swiper.slidePrev(); });
-  document.querySelector('[data-swipe="next"]').addEventListener('click', function () { swiper.slideNext(); });
-  Array.prototype.forEach.call(dots.children, function (dot, index) {
-    dot.addEventListener('click', function () { swiper.slideTo(index); });
-  });
-  syncNavigation();
-  applyCardTilt();
-  syncUrl(true);
-  window.addEventListener('popstate', function () {
-    var slug = window.location.hash.replace(/^#/, '').replace(/^card-/, '');
-    var target = slides.findIndex(function (slide) { return slide.dataset.cardSlug === slug; });
-    if (target >= 0 && target !== swiper.activeIndex) swiper.slideTo(target);
-  });
-
-  // Development-only harness: ?tilt-test=1 drives the same progress values
-  // used during a live drag and exposes the resulting CSS variables.
-  if (new URLSearchParams(window.location.search).has('tilt-test')) {
-    var harness = document.createElement('div');
-    harness.className = 'tilt-test-harness';
-    harness.innerHTML = '<label>tilt test <input type="range" min="-1" max="1" step=".01" value="0"></label><output></output>';
-    document.body.appendChild(harness);
-    var tiltInput = harness.querySelector('input');
-    var tiltOutput = harness.querySelector('output');
-    function runTiltTest(value) {
-      var translate = Number(value) * viewport.clientWidth;
-      swiper.updateSlidesProgress(translate);
-      swiper.emit('setTranslate', translate);
-      var activeSlide = slides[swiper.activeIndex];
-      var tilt = activeSlide.style.getPropertyValue('--card-tilt') || '0deg';
-      var lift = activeSlide.style.getPropertyValue('--card-lift') || '0px';
-      tiltOutput.textContent = 'progress ' + Number(value).toFixed(2) + ' · ' + tilt + ' · ' + lift;
-    }
-    tiltInput.addEventListener('input', function () { runTiltTest(tiltInput.value); });
-    window.__fieldbookTiltTest = runTiltTest;
-    window.__fieldbookEdgePreview = function (direction, amount) {
-      renderEdgeFlipPreview(direction < 0 ? -1 : 1, amount);
-    };
-    window.__fieldbookClearEdgePreview = function () { clearEdgeFlipPreview(true); };
-    runTiltTest(tiltInput.value);
-  }
-  slides.forEach(function (slide) {
-    var scroll = slide.querySelector('.story-scroll');
-    if (!scroll) return;
-    scroll._cardOffset = 0;
-    function cardMaxOffset() {
-      if (nativeCardScroll) return Math.max(0, scroll.scrollHeight - scroll.clientHeight);
-      var styles = getComputedStyle(scroll);
-      var bottomGap = parseFloat(styles.marginBottom) || 0;
-      var available = slide.clientHeight - scroll.offsetTop - bottomGap;
-      return Math.max(0, scroll.offsetHeight - available);
-    }
-    function boundaryThreshold() {
-      return Math.max(180, Math.min(300, slide.clientHeight * .26));
-    }
-    function renderCardOffset(offset) {
-      var max = cardMaxOffset();
-      var clampedOffset = Math.max(0, Math.min(max, offset));
-      scroll._cardMaxOffset = max;
-      scroll._cardOffset = clampedOffset;
-      if (nativeCardScroll) {
-        scroll.style.setProperty('--card-scroll-y', '0px');
-        if (Math.abs(scroll.scrollTop - clampedOffset) > 1) scroll.scrollTop = clampedOffset;
-      } else {
-        scroll.style.setProperty('--card-scroll-y', (-clampedOffset).toFixed(2) + 'px');
-      }
-      var beyond = offset < 0 ? -offset : (offset > max ? offset - max : 0);
-      if (beyond > 0) {
-        renderEdgeFlipPreview(offset > max ? 1 : -1, beyond / boundaryThreshold());
-      } else {
-        scroll.parentElement.style.setProperty('--edge-tilt', '0deg');
-        clearEdgeFlipPreview(false);
-      }
-      var progress = max > 0 ? scroll._cardOffset / max : 0;
-      var slide = scroll.parentElement;
-      slide._cardScrollProgress = progress;
-      slide.classList.toggle('has-vertical-overflow', max > 8);
-      slide.classList.toggle('is-reading-deeper', progress > .04);
-      slide.style.setProperty('--card-scroll-progress', progress.toFixed(4));
-      if (slides[swiper.activeIndex] === slide) dots.children[swiper.activeIndex].style.setProperty('--card-scroll-progress', progress.toFixed(4));
-    }
-    scroll.renderCardOffset = renderCardOffset;
-    scroll.cardMaxOffset = cardMaxOffset;
-    renderCardOffset(0);
-    function crossCardBoundary(rawOffset) {
-      var max = cardMaxOffset();
-      if (swiper.animating) return true;
-      if (rawOffset > max + boundaryThreshold() && swiper.activeIndex < slides.length - 1) {
-        boundaryLanding = 1;
-        swiper.slideNext();
-        setTimeout(function () { clearEdgeFlipPreview(false); }, swiper.params.speed + 80);
-        return true;
-      }
-      if (rawOffset < -boundaryThreshold() && swiper.activeIndex > 0) {
-        boundaryLanding = -1;
-        swiper.slidePrev();
-        setTimeout(function () { clearEdgeFlipPreview(false); }, swiper.params.speed + 80);
-        return true;
-      }
-      return false;
-    }
-    scroll.crossCardBoundary = crossCardBoundary;
-    var gesture = null;
-    scroll.addEventListener('touchstart', function (event) {
-      var touch = event.touches[0];
-      gesture = { x: touch.clientX, y: touch.clientY, vertical: false, offset: scroll._cardOffset };
-    }, { passive: true });
-    scroll.addEventListener('touchmove', function (event) {
-      if (!gesture) return;
-      var touch = event.touches[0];
-      var dx = touch.clientX - gesture.x;
-      var dy = touch.clientY - gesture.y;
-      if (!gesture.vertical && Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
-        gesture.vertical = true;
-        event.stopPropagation();
-        swiper.allowTouchMove = false;
-      } else if (gesture.vertical) {
-        event.stopPropagation();
-      }
-      if (gesture.vertical) {
-        scroll.classList.add('is-vertical-dragging');
-        if (!nativeCardScroll) {
-          event.preventDefault();
-          gesture.rawOffset = gesture.offset - dy;
-          renderCardOffset(gesture.rawOffset);
-        }
-      }
-    }, { passive: false });
-    scroll.addEventListener('touchend', function () {
-      scroll.classList.remove('is-vertical-dragging');
-      if (nativeCardScroll) renderCardOffset(scroll.scrollTop);
-      else if (!crossCardBoundary(gesture && typeof gesture.rawOffset === 'number' ? gesture.rawOffset : scroll._cardOffset)) renderCardOffset(scroll._cardOffset);
-      gesture = null;
-      swiper.allowTouchMove = true;
-    }, { passive: true });
-    scroll.addEventListener('touchcancel', function () {
-      scroll.classList.remove('is-vertical-dragging');
-      renderCardOffset(nativeCardScroll ? scroll.scrollTop : scroll._cardOffset);
-      gesture = null;
-      swiper.allowTouchMove = true;
-    }, { passive: true });
-    if (nativeCardScroll) {
-      scroll.addEventListener('scroll', function () { renderCardOffset(scroll.scrollTop); }, { passive: true });
-    }
-  });
-  viewport.addEventListener('wheel', function (event) {
-    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-    // A momentum event must not replace the transform while Swiper owns it.
-    if (swiper.animating) { event.preventDefault(); return; }
-    var activeScroll = viewport.querySelector('.swiper-slide-active .story-scroll');
-    if (!activeScroll) return;
-    if (nativeCardScroll) return;
-    var styles = getComputedStyle(activeScroll);
-    var bottomGap = parseFloat(styles.marginBottom) || 0;
-    var available = activeScroll.parentElement.clientHeight - activeScroll.offsetTop - bottomGap;
-    var max = Math.max(0, activeScroll.offsetHeight - available);
-    var current = activeScroll._cardOffset || 0;
-    var requested = current + event.deltaY;
-    if (requested >= 0 && requested <= max) {
-      activeScroll._boundaryPush = 0;
-      activeScroll.renderCardOffset(requested);
-    } else {
-      var beyond = requested < 0 ? requested : requested - max;
-      var previous = activeScroll._boundaryPush || 0;
-      activeScroll._boundaryPush = Math.sign(previous) === Math.sign(beyond) ? previous + event.deltaY : beyond;
-      var raw = activeScroll._boundaryPush < 0 ? activeScroll._boundaryPush : max + activeScroll._boundaryPush;
-      activeScroll.renderCardOffset(raw);
-      if (activeScroll._boundaryTimer) clearTimeout(activeScroll._boundaryTimer);
-      if (activeScroll.crossCardBoundary && activeScroll.crossCardBoundary(raw)) {
-        activeScroll._boundaryPush = 0;
-      } else {
-        activeScroll._boundaryTimer = setTimeout(function () {
-          activeScroll._boundaryPush = 0;
-          clearEdgeFlipPreview(true);
-        }, 220);
-      }
-    }
-    event.preventDefault();
-  }, { passive: false });
-
-  // Instagram-style tap zones. Interactive content keeps its native behavior.
-  var tap = null;
-  viewport.addEventListener('touchstart', function (event) {
-    var touch = event.touches[0];
-    tap = { x: touch.clientX, y: touch.clientY, moved: false };
-  }, { passive: true });
-  viewport.addEventListener('touchmove', function (event) {
-    if (!tap) return;
-    var touch = event.touches[0];
-    if (Math.hypot(touch.clientX - tap.x, touch.clientY - tap.y) > 12) tap.moved = true;
-  }, { passive: true });
-  viewport.addEventListener('click', function (event) {
-    if (tap && tap.moved) { tap = null; return; }
-    if (event.target.closest('a, button, input, textarea, select, .swipe-progress, .swipe-controls, .tilt-test-harness')) return;
-    if (event.clientX < viewport.clientWidth / 2) swiper.slidePrev();
-    else swiper.slideNext();
-    tap = null;
-  });
+  requestAnimationFrame(restoreReadingPosition);
+  window.addEventListener('hashchange', restoreReadingPosition);
 })();
 </script>
 {{ end }}

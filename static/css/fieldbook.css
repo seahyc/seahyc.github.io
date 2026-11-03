@@ -1074,7 +1074,7 @@ body.research-swipe .story-slide .story-scroll {
 .fieldbook--liquid-cooling { --fieldbook-accent: #39778d; }
 .fieldbook--aerostatic { --fieldbook-accent: #536d88; }
 
-/* Native document scrolling on phones and small tablets. */
+/* Native document scrolling at every screen size. */
 html.fieldbook-continuous,
 html.fieldbook-continuous body.research-swipe {
   overflow-x: clip !important;
@@ -1119,3 +1119,77 @@ html.fieldbook-continuous body.research-swipe {
 .fieldbook-continuous .swipe-progress,
 .fieldbook-continuous .swipe-controls,
 .fieldbook-continuous .card-scroll-cue { display: none; }
+
+@media (min-width: 901px) {
+  .fieldbook-continuous .swipe-content {
+    padding: 4rem 3.2rem 8rem;
+    font-size: 20px;
+    line-height: 1.7;
+  }
+  .fieldbook-continuous body.research-swipe .story-slide {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .fieldbook-continuous body.research-swipe .story-slide .story-scroll {
+    display: flow-root;
+    width: 100%;
+    margin: 0;
+    padding: 6rem 7rem;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(55, 42, 31, .15);
+  }
+  .fieldbook-continuous .story-scroll > p,
+  .fieldbook-continuous .story-scroll > ul,
+  .fieldbook-continuous .story-scroll > ol,
+  .fieldbook-continuous .story-scroll > blockquote,
+  .fieldbook-continuous .story-scroll > h1,
+  .fieldbook-continuous .story-scroll > h2,
+  .fieldbook-continuous .story-scroll > h3 {
+    width: 100%;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .fieldbook-continuous .story-scroll h1 {
+    padding-top: 0;
+    font-size: clamp(44px, 4vw, 64px);
+    line-height: 1.06;
+  }
+  .fieldbook-continuous .story-scroll h2 {
+    margin-top: 0;
+    font-size: 38px;
+    line-height: 1.15;
+  }
+  .fieldbook-continuous .story-scroll h3 {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .fieldbook-continuous .story-scroll > img.story-illustration,
+  .fieldbook-continuous .story-scroll > img.cover-illustration {
+    display: block;
+    float: none;
+    width: min(100%, 420px);
+    margin: 3rem auto;
+    transform: none;
+  }
+  .fieldbook-continuous .story-scroll img.editorial-plate {
+    float: none;
+    display: block;
+    width: min(100%, 680px);
+    margin: 3rem auto;
+    transform: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .fieldbook-continuous .story-scroll > figure {
+    width: 100%;
+    max-width: 680px;
+    margin: 3rem auto;
+  }
+  .fieldbook-continuous .story-scroll figcaption {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+}
