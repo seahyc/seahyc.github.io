@@ -1,0 +1,1280 @@
+[
+  {
+    "viewport": "390x844",
+    "cards": 23,
+    "passed": 23,
+    "images": true,
+    "noHorizontalOverflow": true,
+    "allEndings": true,
+    "directHashes": true,
+    "pageErrors": [],
+    "checks": [
+      {
+        "id": "card-cover",
+        "hash": "#card-cover",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1115,
+        "clientHeight": 1115,
+        "ending": {
+          "offset": 296.5,
+          "max": 296.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-01-how-we-choose",
+        "hash": "#card-01-how-we-choose",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1765,
+        "clientHeight": 1765,
+        "ending": {
+          "offset": 946.5,
+          "max": 946.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-02-begin-with-something-that-can-be-wrong",
+        "hash": "#card-02-begin-with-something-that-can-be-wrong",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1298,
+        "clientHeight": 1298,
+        "ending": {
+          "offset": 479.5,
+          "max": 479.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-03-demand-is-moving-our-demand-is-unproven",
+        "hash": "#card-03-demand-is-moving-our-demand-is-unproven",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1231,
+        "clientHeight": 1231,
+        "ending": {
+          "offset": 412.5,
+          "max": 412.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-04-the-research-layer-is-already-occupied",
+        "hash": "#card-04-the-research-layer-is-already-occupied",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1516,
+        "clientHeight": 1516,
+        "ending": {
+          "offset": 697.5,
+          "max": 697.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-05-independence-must-survive-the-revenue-meeting",
+        "hash": "#card-05-independence-must-survive-the-revenue-meeting",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1463,
+        "clientHeight": 1463,
+        "ending": {
+          "offset": 644.5,
+          "max": 644.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-06-people-already-pay-for-judgment",
+        "hash": "#card-06-people-already-pay-for-judgment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1710,
+        "clientHeight": 1710,
+        "ending": {
+          "offset": 891.5,
+          "max": 891.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-07-put-every-revenue-line-through-the-same-test",
+        "hash": "#card-07-put-every-revenue-line-through-the-same-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1743,
+        "clientHeight": 1743,
+        "ending": {
+          "offset": 924.5,
+          "max": 924.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-08-the-strongest-bear-has-the-distribution",
+        "hash": "#card-08-the-strongest-bear-has-the-distribution",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1403,
+        "clientHeight": 1403,
+        "ending": {
+          "offset": 584.5,
+          "max": 584.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-09-aggregate-demand-before-executing-purchases",
+        "hash": "#card-09-aggregate-demand-before-executing-purchases",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1343,
+        "clientHeight": 1343,
+        "ending": {
+          "offset": 524.5,
+          "max": 524.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "hash": "#card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1395,
+        "clientHeight": 1395,
+        "ending": {
+          "offset": 576.5,
+          "max": 576.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-11-a-receipt-begins-the-review",
+        "hash": "#card-11-a-receipt-begins-the-review",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1360,
+        "clientHeight": 1360,
+        "ending": {
+          "offset": 541.5,
+          "max": 541.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-12-own-the-decision-before-the-payment",
+        "hash": "#card-12-own-the-decision-before-the-payment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1474,
+        "clientHeight": 1474,
+        "ending": {
+          "offset": 655.5,
+          "max": 655.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-13-the-membership-test",
+        "hash": "#card-13-the-membership-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1519,
+        "clientHeight": 1519,
+        "ending": {
+          "offset": 700.5,
+          "max": 700.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-14-the-master-plan",
+        "hash": "#card-14-the-master-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1912,
+        "clientHeight": 1912,
+        "ending": {
+          "offset": 1093.5,
+          "max": 1093.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-15-stage-one-curate-at-a-bench",
+        "hash": "#card-15-stage-one-curate-at-a-bench",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1461,
+        "clientHeight": 1461,
+        "ending": {
+          "offset": 642.5,
+          "max": 642.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-16-stage-two-win-optional-routing",
+        "hash": "#card-16-stage-two-win-optional-routing",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1608,
+        "clientHeight": 1608,
+        "ending": {
+          "offset": 789.5,
+          "max": 789.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-17-stage-three-earn-the-outcome-asset",
+        "hash": "#card-17-stage-three-earn-the-outcome-asset",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1779,
+        "clientHeight": 1779,
+        "ending": {
+          "offset": 960.5,
+          "max": 960.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-18-finance-a-useful-company-first",
+        "hash": "#card-18-finance-a-useful-company-first",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1524,
+        "clientHeight": 1524,
+        "ending": {
+          "offset": 705.5,
+          "max": 705.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-19-guarantees-then-an-open-standard",
+        "hash": "#card-19-guarantees-then-an-open-standard",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 2159,
+        "clientHeight": 2159,
+        "ending": {
+          "offset": 1340.5,
+          "max": 1340.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-20-working-backwards",
+        "hash": "#card-20-working-backwards",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 1786,
+        "clientHeight": 1786,
+        "ending": {
+          "offset": 967.5,
+          "max": 967.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-21-questions-that-can-kill-the-plan",
+        "hash": "#card-21-questions-that-can-kill-the-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 2220,
+        "clientHeight": 2220,
+        "ending": {
+          "offset": 1401.5,
+          "max": 1401.5,
+          "bottom": 0,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-22-evidence-and-stop-rules",
+        "hash": "#card-22-evidence-and-stop-rules",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 375,
+        "scrollHeight": 6648,
+        "clientHeight": 6648,
+        "ending": {
+          "offset": 5829.5,
+          "max": 5829.5,
+          "bottom": 765,
+          "viewportBottom": 844,
+          "reachable": true
+        },
+        "pass": true
+      }
+    ]
+  },
+  {
+    "viewport": "737x862",
+    "cards": 23,
+    "passed": 23,
+    "images": true,
+    "noHorizontalOverflow": true,
+    "allEndings": true,
+    "directHashes": true,
+    "pageErrors": [],
+    "checks": [
+      {
+        "id": "card-cover",
+        "hash": "#card-cover",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1102,
+        "clientHeight": 1102,
+        "ending": {
+          "offset": 265.5,
+          "max": 265.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-01-how-we-choose",
+        "hash": "#card-01-how-we-choose",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1717,
+        "clientHeight": 1717,
+        "ending": {
+          "offset": 880.5,
+          "max": 880.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-02-begin-with-something-that-can-be-wrong",
+        "hash": "#card-02-begin-with-something-that-can-be-wrong",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1190,
+        "clientHeight": 1190,
+        "ending": {
+          "offset": 353.5,
+          "max": 353.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-03-demand-is-moving-our-demand-is-unproven",
+        "hash": "#card-03-demand-is-moving-our-demand-is-unproven",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1256,
+        "clientHeight": 1256,
+        "ending": {
+          "offset": 419.5,
+          "max": 419.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-04-the-research-layer-is-already-occupied",
+        "hash": "#card-04-the-research-layer-is-already-occupied",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1453,
+        "clientHeight": 1453,
+        "ending": {
+          "offset": 616.5,
+          "max": 616.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-05-independence-must-survive-the-revenue-meeting",
+        "hash": "#card-05-independence-must-survive-the-revenue-meeting",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1286,
+        "clientHeight": 1286,
+        "ending": {
+          "offset": 449.5,
+          "max": 449.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-06-people-already-pay-for-judgment",
+        "hash": "#card-06-people-already-pay-for-judgment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1581,
+        "clientHeight": 1581,
+        "ending": {
+          "offset": 744.5,
+          "max": 744.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-07-put-every-revenue-line-through-the-same-test",
+        "hash": "#card-07-put-every-revenue-line-through-the-same-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1643,
+        "clientHeight": 1643,
+        "ending": {
+          "offset": 806.5,
+          "max": 806.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-08-the-strongest-bear-has-the-distribution",
+        "hash": "#card-08-the-strongest-bear-has-the-distribution",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1316,
+        "clientHeight": 1316,
+        "ending": {
+          "offset": 479.5,
+          "max": 479.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-09-aggregate-demand-before-executing-purchases",
+        "hash": "#card-09-aggregate-demand-before-executing-purchases",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1366,
+        "clientHeight": 1366,
+        "ending": {
+          "offset": 529.5,
+          "max": 529.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "hash": "#card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1375,
+        "clientHeight": 1375,
+        "ending": {
+          "offset": 538.5,
+          "max": 538.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-11-a-receipt-begins-the-review",
+        "hash": "#card-11-a-receipt-begins-the-review",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1281,
+        "clientHeight": 1281,
+        "ending": {
+          "offset": 444.5,
+          "max": 444.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-12-own-the-decision-before-the-payment",
+        "hash": "#card-12-own-the-decision-before-the-payment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1469,
+        "clientHeight": 1469,
+        "ending": {
+          "offset": 632.5,
+          "max": 632.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-13-the-membership-test",
+        "hash": "#card-13-the-membership-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1614,
+        "clientHeight": 1614,
+        "ending": {
+          "offset": 777.5,
+          "max": 777.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-14-the-master-plan",
+        "hash": "#card-14-the-master-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1788,
+        "clientHeight": 1788,
+        "ending": {
+          "offset": 951.5,
+          "max": 951.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-15-stage-one-curate-at-a-bench",
+        "hash": "#card-15-stage-one-curate-at-a-bench",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1312,
+        "clientHeight": 1312,
+        "ending": {
+          "offset": 475.5,
+          "max": 475.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-16-stage-two-win-optional-routing",
+        "hash": "#card-16-stage-two-win-optional-routing",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1533,
+        "clientHeight": 1533,
+        "ending": {
+          "offset": 696.5,
+          "max": 696.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-17-stage-three-earn-the-outcome-asset",
+        "hash": "#card-17-stage-three-earn-the-outcome-asset",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1643,
+        "clientHeight": 1643,
+        "ending": {
+          "offset": 806.5,
+          "max": 806.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-18-finance-a-useful-company-first",
+        "hash": "#card-18-finance-a-useful-company-first",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1312,
+        "clientHeight": 1312,
+        "ending": {
+          "offset": 475.5,
+          "max": 475.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-19-guarantees-then-an-open-standard",
+        "hash": "#card-19-guarantees-then-an-open-standard",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1990,
+        "clientHeight": 1990,
+        "ending": {
+          "offset": 1153.5,
+          "max": 1153.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-20-working-backwards",
+        "hash": "#card-20-working-backwards",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1524,
+        "clientHeight": 1524,
+        "ending": {
+          "offset": 687.5,
+          "max": 687.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-21-questions-that-can-kill-the-plan",
+        "hash": "#card-21-questions-that-can-kill-the-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 1800,
+        "clientHeight": 1800,
+        "ending": {
+          "offset": 963.5,
+          "max": 963.5,
+          "bottom": 0,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-22-evidence-and-stop-rules",
+        "hash": "#card-22-evidence-and-stop-rules",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 722,
+        "scrollHeight": 3483,
+        "clientHeight": 3483,
+        "ending": {
+          "offset": 2646.5,
+          "max": 2646.5,
+          "bottom": 813.703125,
+          "viewportBottom": 862,
+          "reachable": true
+        },
+        "pass": true
+      }
+    ]
+  },
+  {
+    "viewport": "1440x1000",
+    "cards": 23,
+    "passed": 23,
+    "images": true,
+    "noHorizontalOverflow": true,
+    "allEndings": true,
+    "directHashes": true,
+    "pageErrors": [],
+    "checks": [
+      {
+        "id": "card-cover",
+        "hash": "#card-cover",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-01-how-we-choose",
+        "hash": "#card-01-how-we-choose",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1275,
+        "clientHeight": 1275,
+        "ending": {
+          "offset": 300.5,
+          "max": 300.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-02-begin-with-something-that-can-be-wrong",
+        "hash": "#card-02-begin-with-something-that-can-be-wrong",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-03-demand-is-moving-our-demand-is-unproven",
+        "hash": "#card-03-demand-is-moving-our-demand-is-unproven",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-04-the-research-layer-is-already-occupied",
+        "hash": "#card-04-the-research-layer-is-already-occupied",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1101,
+        "clientHeight": 1101,
+        "ending": {
+          "offset": 126.5,
+          "max": 126.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-05-independence-must-survive-the-revenue-meeting",
+        "hash": "#card-05-independence-must-survive-the-revenue-meeting",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-06-people-already-pay-for-judgment",
+        "hash": "#card-06-people-already-pay-for-judgment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1133,
+        "clientHeight": 1133,
+        "ending": {
+          "offset": 158.5,
+          "max": 158.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-07-put-every-revenue-line-through-the-same-test",
+        "hash": "#card-07-put-every-revenue-line-through-the-same-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1227,
+        "clientHeight": 1227,
+        "ending": {
+          "offset": 252.5,
+          "max": 252.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-08-the-strongest-bear-has-the-distribution",
+        "hash": "#card-08-the-strongest-bear-has-the-distribution",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-09-aggregate-demand-before-executing-purchases",
+        "hash": "#card-09-aggregate-demand-before-executing-purchases",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1014,
+        "clientHeight": 1014,
+        "ending": {
+          "offset": 39.5,
+          "max": 39.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "hash": "#card-10-capture-why-do-not-pretend-it-is-exclusive",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1054,
+        "clientHeight": 1054,
+        "ending": {
+          "offset": 79.5,
+          "max": 79.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-11-a-receipt-begins-the-review",
+        "hash": "#card-11-a-receipt-begins-the-review",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-12-own-the-decision-before-the-payment",
+        "hash": "#card-12-own-the-decision-before-the-payment",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1085,
+        "clientHeight": 1085,
+        "ending": {
+          "offset": 110.5,
+          "max": 110.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-13-the-membership-test",
+        "hash": "#card-13-the-membership-test",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1330,
+        "clientHeight": 1330,
+        "ending": {
+          "offset": 355.5,
+          "max": 355.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-14-the-master-plan",
+        "hash": "#card-14-the-master-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1346,
+        "clientHeight": 1346,
+        "ending": {
+          "offset": 371.5,
+          "max": 371.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-15-stage-one-curate-at-a-bench",
+        "hash": "#card-15-stage-one-curate-at-a-bench",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-16-stage-two-win-optional-routing",
+        "hash": "#card-16-stage-two-win-optional-routing",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1117,
+        "clientHeight": 1117,
+        "ending": {
+          "offset": 142.5,
+          "max": 142.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-17-stage-three-earn-the-outcome-asset",
+        "hash": "#card-17-stage-three-earn-the-outcome-asset",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1196,
+        "clientHeight": 1196,
+        "ending": {
+          "offset": 221.5,
+          "max": 221.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-18-finance-a-useful-company-first",
+        "hash": "#card-18-finance-a-useful-company-first",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 975,
+        "clientHeight": 975,
+        "ending": {
+          "offset": 0.5,
+          "max": 0.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-19-guarantees-then-an-open-standard",
+        "hash": "#card-19-guarantees-then-an-open-standard",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1384,
+        "clientHeight": 1384,
+        "ending": {
+          "offset": 409.5,
+          "max": 409.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-20-working-backwards",
+        "hash": "#card-20-working-backwards",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1145,
+        "clientHeight": 1145,
+        "ending": {
+          "offset": 170.5,
+          "max": 170.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-21-questions-that-can-kill-the-plan",
+        "hash": "#card-21-questions-that-can-kill-the-plan",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 1434,
+        "clientHeight": 1434,
+        "ending": {
+          "offset": 459.5,
+          "max": 459.5,
+          "bottom": 0,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      },
+      {
+        "id": "card-22-evidence-and-stop-rules",
+        "hash": "#card-22-evidence-and-stop-rules",
+        "images": true,
+        "pageOverflow": false,
+        "cardOverflow": false,
+        "contentWidth": 1425,
+        "scrollHeight": 2805,
+        "clientHeight": 2805,
+        "ending": {
+          "offset": 1830.5,
+          "max": 1830.5,
+          "bottom": 951.640625,
+          "viewportBottom": 1000,
+          "reachable": true
+        },
+        "pass": true
+      }
+    ]
+  }
+]

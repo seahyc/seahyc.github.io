@@ -1,0 +1,42 @@
+$ hugo --destination /tmp/fb-agentic-commerce/site --cacheDir /tmp/fb-agentic-commerce/cache --noBuildLock --quiet
+
+exit_code=0
+$ node /Users/yingcong/.agents/skills/fieldbook/scripts/check-visuals.mjs content/research/agentic-commerce/index.md
+cards 23 · visuals on cards 23 · svg 15 · raster 8 (need ≥8)
+PASS
+
+exit_code=0
+$ node research-dossiers/2026-11-03-agentic-commerce/check.mjs
+{"viewport":"390x844","cards":23,"passed":23,"images":true,"noHorizontalOverflow":true,"allEndings":true,"directHashes":true,"pageErrors":[]}
+{"viewport":"737x862","cards":23,"passed":23,"images":true,"noHorizontalOverflow":true,"allEndings":true,"directHashes":true,"pageErrors":[]}
+{"viewport":"1440x1000","cards":23,"passed":23,"images":true,"noHorizontalOverflow":true,"allEndings":true,"directHashes":true,"pageErrors":[]}
+
+exit_code=0
+$ sips -g hasAlpha /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/bench-work.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/buyer-guide.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/garden-gate.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/plug-reality.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/receipt-loop.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/revenue-wall.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/staged-company.png /Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/working-backwards.png
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/bench-work.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/buyer-guide.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/garden-gate.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/plug-reality.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/receipt-loop.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/revenue-wall.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/staged-company.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agentic-commerce/working-backwards.png
+  hasAlpha: yes
+
+exit_code=0
+bench-work.png: corners=[0, 0, 0, 0]; edgeMax=3; alpha_range=(0, 255)
+buyer-guide.png: corners=[0, 0, 0, 0]; edgeMax=4; alpha_range=(0, 255)
+garden-gate.png: corners=[0, 0, 0, 0]; edgeMax=3; alpha_range=(0, 255)
+plug-reality.png: corners=[0, 0, 0, 0]; edgeMax=0; alpha_range=(0, 255)
+receipt-loop.png: corners=[0, 0, 0, 0]; edgeMax=5; alpha_range=(0, 255)
+revenue-wall.png: corners=[0, 0, 0, 0]; edgeMax=0; alpha_range=(0, 255)
+staged-company.png: corners=[0, 0, 0, 0]; edgeMax=3; alpha_range=(0, 255)
+working-backwards.png: corners=[0, 0, 0, 0]; edgeMax=6; alpha_range=(0, 255)
+PASS build, visual coverage/collisions, all viewports, saved-file alpha

@@ -1,0 +1,286 @@
+{
+  "as_of": "2026-11-03",
+  "currency": "USD",
+  "period": "one steady-state month",
+  "status": "Every numeric scenario input is an explicit original assumption, not measured demand, a supplier quote, empirical willingness to pay, or a forecast. No merchant revenue in any case.",
+  "unit": "paying consumer member; task usage includes failures, abstentions and free-trial costs allocated to paying members",
+  "formula": "members * (monthly_price * (1-payment_fee_fraction) - tasks_per_member*(inference+data+testing_qa+infrastructure) - support_per_member - distribution_per_member - monthly_churn*acquisition_cost) - fixed",
+  "ranking_policy": "Only buyer fit, verified outcomes and true landed cost determine ranking. No sponsored placement, auction or commission-based catalog exclusion.",
+  "cases": [
+    {
+      "name": "low",
+      "members": 200,
+      "monthly_price": 5,
+      "tasks_per_member": 3,
+      "inference": 0.12,
+      "data": 0.08,
+      "testing_qa": 0.2,
+      "infrastructure": 0.02,
+      "support_per_member": 1.2,
+      "distribution_per_member": 0.4,
+      "monthly_churn": 0.12,
+      "acquisition_cost": 25,
+      "payment_fee_fraction": 0.04,
+      "fixed": 10000,
+      "outputs": {
+        "tasks": 600,
+        "revenue": 1000,
+        "task_cost": 0.42,
+        "variable_cost_per_member": 6.06,
+        "contribution_per_member": -1.0599999999999996,
+        "replacement_members": 24.0,
+        "replacement_acquisition_cost": 600.0,
+        "monthly_operating_contribution": -10212.0,
+        "break_even_members": null,
+        "initial_acquisition_cash": 5000
+      }
+    },
+    {
+      "name": "base",
+      "members": 2000,
+      "monthly_price": 8,
+      "tasks_per_member": 4,
+      "inference": 0.06,
+      "data": 0.04,
+      "testing_qa": 0.1,
+      "infrastructure": 0.01,
+      "support_per_member": 0.75,
+      "distribution_per_member": 0.3,
+      "monthly_churn": 0.08,
+      "acquisition_cost": 20,
+      "payment_fee_fraction": 0.04,
+      "fixed": 20000,
+      "outputs": {
+        "tasks": 8000,
+        "revenue": 16000,
+        "task_cost": 0.21,
+        "variable_cost_per_member": 3.81,
+        "contribution_per_member": 4.1899999999999995,
+        "replacement_members": 160.0,
+        "replacement_acquisition_cost": 3200.0,
+        "monthly_operating_contribution": -11620.000000000002,
+        "break_even_members": 4774,
+        "initial_acquisition_cash": 40000
+      }
+    },
+    {
+      "name": "high",
+      "members": 10000,
+      "monthly_price": 10,
+      "tasks_per_member": 5,
+      "inference": 0.04,
+      "data": 0.03,
+      "testing_qa": 0.06,
+      "infrastructure": 0.01,
+      "support_per_member": 0.5,
+      "distribution_per_member": 0.25,
+      "monthly_churn": 0.04,
+      "acquisition_cost": 15,
+      "payment_fee_fraction": 0.04,
+      "fixed": 45000,
+      "outputs": {
+        "tasks": 50000,
+        "revenue": 100000,
+        "task_cost": 0.13999999999999999,
+        "variable_cost_per_member": 2.4499999999999997,
+        "contribution_per_member": 7.550000000000001,
+        "replacement_members": 400.0,
+        "replacement_acquisition_cost": 6000.0,
+        "monthly_operating_contribution": 30500.0,
+        "break_even_members": 5961,
+        "initial_acquisition_cash": 150000
+      }
+    }
+  ],
+  "base_sensitivities": [
+    {
+      "name": "base",
+      "changes": {},
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 3.81,
+      "contribution_per_member": 4.1899999999999995,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -11620.000000000002,
+      "break_even_members": 4774,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "half members",
+      "changes": {
+        "members": 1000
+      },
+      "tasks": 4000,
+      "revenue": 8000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 3.81,
+      "contribution_per_member": 4.1899999999999995,
+      "replacement_members": 80.0,
+      "replacement_acquisition_cost": 1600.0,
+      "monthly_operating_contribution": -15810.0,
+      "break_even_members": 4774,
+      "initial_acquisition_cash": 20000
+    },
+    {
+      "name": "price $5",
+      "changes": {
+        "monthly_price": 5
+      },
+      "tasks": 8000,
+      "revenue": 10000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 3.6900000000000004,
+      "contribution_per_member": 1.3099999999999996,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -17380.0,
+      "break_even_members": 15268,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "double usage",
+      "changes": {
+        "tasks_per_member": 8
+      },
+      "tasks": 16000,
+      "revenue": 16000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 4.65,
+      "contribution_per_member": 3.3499999999999996,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -13300.0,
+      "break_even_members": 5971,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "double inference",
+      "changes": {
+        "inference": 0.12
+      },
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.27,
+      "variable_cost_per_member": 4.05,
+      "contribution_per_member": 3.95,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -12100.0,
+      "break_even_members": 5064,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "double testing QA",
+      "changes": {
+        "testing_qa": 0.2
+      },
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.31,
+      "variable_cost_per_member": 4.21,
+      "contribution_per_member": 3.79,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -12420.0,
+      "break_even_members": 5278,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "churn 16%",
+      "changes": {
+        "monthly_churn": 0.16
+      },
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 5.41,
+      "contribution_per_member": 2.59,
+      "replacement_members": 320.0,
+      "replacement_acquisition_cost": 6400.0,
+      "monthly_operating_contribution": -14820.0,
+      "break_even_members": 7723,
+      "initial_acquisition_cash": 40000
+    },
+    {
+      "name": "CAC $40",
+      "changes": {
+        "acquisition_cost": 40
+      },
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 5.41,
+      "contribution_per_member": 2.59,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 6400.0,
+      "monthly_operating_contribution": -14820.0,
+      "break_even_members": 7723,
+      "initial_acquisition_cash": 80000
+    },
+    {
+      "name": "zero merchant revenue",
+      "changes": {},
+      "tasks": 8000,
+      "revenue": 16000,
+      "task_cost": 0.21,
+      "variable_cost_per_member": 3.81,
+      "contribution_per_member": 4.1899999999999995,
+      "replacement_members": 160.0,
+      "replacement_acquisition_cost": 3200.0,
+      "monthly_operating_contribution": -11620.000000000002,
+      "break_even_members": 4774,
+      "initial_acquisition_cash": 40000
+    }
+  ],
+  "revenue_tests": [
+    {
+      "line": "flat completed-purchase fee",
+      "can_anyone_pay_to_rank": false,
+      "included_in_core": false,
+      "condition": "Unvalidated optional route; uniform effective fee, nonpaying-product inclusion, disclosed charge and independent ranking; no fee in forecasts."
+    },
+    {
+      "line": "consumer membership",
+      "can_anyone_pay_to_rank": false,
+      "included_in_core": true,
+      "condition": "Same ranking for members and nonmembers; payment buys research access/service, never product preference."
+    },
+    {
+      "line": "uniform effective fee or rebate affiliate",
+      "can_anyone_pay_to_rank": false,
+      "included_in_core": false,
+      "condition": "Unvalidated optional route; equal effective fee/rebate, all eligible and nonpaying candidates considered, revenue system firewalled; written permission and settled receipts required."
+    },
+    {
+      "line": "post-ranking aggregate brand insights",
+      "can_anyone_pay_to_rank": false,
+      "included_in_core": false,
+      "condition": "Unvalidated; explicit separate consent, proposed minimum cohort 30 distinct consenting buyers, suppression against reidentification, equal published price, no merchant ranking influence or raw chat resale."
+    },
+    {
+      "line": "sponsored placements / auctions / differentiated profitable links",
+      "can_anyone_pay_to_rank": true,
+      "included_in_core": false,
+      "condition": "Prohibited, not upside."
+    }
+  ],
+  "budget_90_days": {
+    "founder_stipend": 15000,
+    "contract_engineering": 12000,
+    "test_devices": 6000,
+    "legal_privacy_and_licenses": 5000,
+    "data_compute": 2000,
+    "research_ops": 3000,
+    "reserve": 2000,
+    "total": 45000
+  },
+  "accounting_limits": [
+    "Fixed costs cover ongoing lean payroll/admin/legal amortization; task QA is incremental, avoid double counting.",
+    "Replacement CAC models steady-state churn only; initial acquisition and growth acquisition are separate cash requirements, not silently free.",
+    "No guarantee underwriting, merchant revenue, brand insight revenue, taxes, financing, equity dilution or founder dividends modeled.",
+    "A dock purchase is infrequent; recurring cross-task membership value is unproven. Usage and retention require observation.",
+    "Cash stress assumes two months of fixed and variable spend without receipts; not an empirical settlement forecast."
+  ]
+}

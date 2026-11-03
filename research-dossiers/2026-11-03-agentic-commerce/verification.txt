@@ -1,0 +1,9 @@
+low: independent operating arithmetic PASS -13180.32
+base: independent operating arithmetic PASS -17760.08
+high: independent operating arithmetic PASS 61797.20
+Shopify preview rate-only sensitivity PASS -23578.256
+Budget assertion PASS 45000 USD
+Base break-even brand buyers PASS 33; high break-even sessions PASS 57195
+No Hugo build, content/image output, git command, outreach, purchase or publication in this phase.
+Task-owned browser tabs closed; source detail gaps in needs-browser.md.
+Parent-supplied parent-notes.md read and preserved without editing.
