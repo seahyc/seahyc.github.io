@@ -100,7 +100,8 @@ for i, case in enumerate(model["cases"]):
     body += text(24, y, f'{case["name"].title()}: {value:+,.0f}', 27)
     end = zero + value * scale
     body += f'<rect x="{min(zero,end):.3f}" y="{y+20}" width="{abs(end-zero):.3f}" height="34" fill="{RED if value < 0 else GREEN}"/>'
-body += line(zero, 182, zero, 466, INK)
+for y0 in (190, 305, 420):  # zero line per bar only, so it never crosses the label rows
+    body += line(zero, y0 - 6, zero, y0 + 40, INK)
 body += line(24, 475, 576, 475)
 for value, label in [(-400000, "−400k"), (0, "0"), (1000000, "+1m")]:
     x = zero + value * scale

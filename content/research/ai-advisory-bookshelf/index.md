@@ -24,6 +24,8 @@ main_class = "main-research-swipe"
 
 ### The behaviour is real. The additional budget is unknown.
 
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/denominators.svg" alt="Different study denominators prevent a market-size comparison." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Separate populations and units: these shares cannot be added or compared as market sizes. Sources and denominators in the adjacent text.</figcaption></figure>
+
 Sam Parr described using ChatGPT as a thought partner: supplying personal context and books, asking how an author would approach a problem, and wanting the manual setup automated. The parent research run verified his thread through the signed-in X session. It is an unusually concrete workflow anecdote, rather than customer validation. The complaint is also old enough that changing host capabilities could have addressed part of it. [Parr’s thread](https://x.com/thesamparr/status/1869117964194124071)
 
 There is broader evidence that people ask AI what to do. Anthropic classified roughly **6%** of its filtered conversation sample as personal guidance. Within guidance conversations, **26%** concerned professional or career matters, and **9%** exhibited sycophancy—excessive validation or praise. These are separate denominators; the last figure is neither a harm rate nor evidence that a bookshelf fixes the problem. [Anthropic, April 2026](https://www.anthropic.com/research/claude-personal-guidance)
@@ -37,6 +39,8 @@ My inference is modest: advice is an established AI use. Whether someone will pa
 ## 02 · The plumbing is already available
 
 ### Give the AI a tool for finding sources
+
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/tool-boundary.svg" alt="Retrieval returns notes to a host, while source verification and tool use remain separate checks." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Conceptual boundary: retrieved notes, original passages and applied advice are different objects; host adoption still needs observation.</figcaption></figure>
 
 A model answering from its internal training can sound authoritative without showing where a particular recommendation came from. Retrieval adds a different step: search an external collection and return material for the model to consider. MCP is the connector through which that collection can offer tools to an existing AI application. Readwise describes this bridge in its own documentation. [Readwise MCP](https://docs.readwise.io/tools/mcp)
 
@@ -66,6 +70,8 @@ The host still has to call the tool and preserve those distinctions in its respo
 
 ### Make the competing assumptions visible
 
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/disagreement.png" alt="A bridge fits a narrow gap while a boat fits deep water: advice differs because conditions differ." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Generated watercolor metaphor: compare the circumstances that make each recommendation useful, rather than staging a debate.</figcaption></figure>
+
 I like the idea of a bookshelf that resists my preferred answer. It could surface a recommendation I dislike, show its supporting conditions, and ask which facts I am overlooking. But staged argument can become theatre: a model invents contrasting personalities and then congratulates me for choosing between them.
 
 A useful disagreement has a traceable cause. Advisers may optimise different outcomes, face different constraints, expect different customer behaviour, or work over different time horizons. Sometimes their recommendations only appear inconsistent because their circumstances differ. My proposed interface would preserve those distinctions instead of forcing an entertaining debate.
@@ -79,6 +85,8 @@ My inference: disagreement is a quality discipline that a new product should tes
 ## 05 · Owning a book is a starting condition
 
 ### Access, attribution and permission are different questions
+
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/rights.png" alt="A held book, a gated open book and a permission stamp represent ownership, access and reuse permission." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Generated watercolor metaphor: ownership, access and permission require separate checks; the stamp depicts a question to resolve, not clearance obtained.</figcaption></figure>
 
 The appealing version includes books I already own. Google’s Expert Intelligence announcement makes that possibility concrete: more than **100,000 books**, publisher participation and an ownership requirement through Google Play Books; collaborators need their own copies. This establishes an announced distribution and permission channel, not universal availability or an effectiveness result. [Google, August 2026](https://blog.google/innovation-and-ai/products/gemini-notebook/expert-intelligence-leading-sources/)
 
@@ -108,6 +116,8 @@ The remaining hypothesis is a maintained decision practice: original-context che
 
 ### Build case files before rating experts
 
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/case-file.svg" alt="A case file separates dated statements, actions, explanations, outcomes and missing information." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Proposed case-file structure. Sequence alone cannot establish causation or validate an expert score.</figcaption></figure>
+
 A track record sounds like the missing ingredient. If someone recommends a strategy, show what happened when they used it. I would want that context beside the advice.
 
 But a successful company does not validate every principle its founder later teaches. Public accounts select memorable successes. Private constraints are missing. An action can precede a good outcome without causing it. A reliable expert score would need a denominator of decisions, including failures, and rules written before the outcomes were known. We have no such dataset. These are methodological limits of the proposed feature, not measured findings about particular people.
@@ -121,6 +131,8 @@ ShadowBox offers a useful design lesson: learners commit judgments before seeing
 ## 08 · Start with a decision, then choose a shelf
 
 ### Pricing and packaging for bootstrapped B2B founders
+
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/wedge.png" alt="A small curated shelf feeds a pricing decision journal while a large catalogue remains aside." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Generated watercolor metaphor: curate evidence around one concrete pricing choice before building a broad catalogue.</figcaption></figure>
 
 My proposed first user already uses AI and has a real pricing or packaging decision ahead. The product would stay inside that conversation. It would return a small evidence pack and offer an exportable decision journal, with the user controlling whether anything is retained. This is a customer and workflow hypothesis. [Research map](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-ai-advisory-bookshelf/research-map.md)
 
@@ -149,6 +161,8 @@ The favourable case combines higher price with lower support, acquisition cost a
 ## 10 · The cost of staying small
 
 ### Count the founder even when no salary leaves the bank
+
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/break-even.svg" alt="Scenario break-even payer counts distinguish cash costs from founder opportunity cost and support and churn sensitivities." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Original planning scenarios, not observed demand. Payers needed at break-even; zero-based scale. Model and sensitivity arithmetic linked in the adjacent text.</figcaption></figure>
 
 The original model budgets **US$2,000 monthly** fixed cash costs: **$200** hosting and monitoring, **$1,400** shared editorial maintenance and **$400** administration and rights-review allowance. It adds **$10,000 monthly** as a chosen value of founder opportunity cost. These are planning assumptions, including an untested editorial capacity limit, rather than salary data or supplier quotes. [Model](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-ai-advisory-bookshelf/scenario-model.json)
 
@@ -192,6 +206,8 @@ The proposed quality hurdle is a curated-arm win on **16 of 24** comparisons aga
 
 ### A conditional path through the next two years
 
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/renewal-gate.svg" alt="Day 75 proposed payment, renewal, return and support gates." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Chosen trial hurdles, not achieved results or validated benchmarks. Payment, renewal, independent return and human effort must each pass.</figcaption></figure>
+
 By **day 75**, the proposed demand gate requires **6 of 12** participants to pay **US$19** for a month, **4** to renew without bundled consulting, and **4** to return for another independent decision. The operational target is median recurring support of **at most 4 minutes per payer per month**, while also reporting tail effort and founder time. Failure means archive the product or keep it as an unpaid personal tool. Passing earns another limited test. [Chosen gates](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-ai-advisory-bookshelf/research-map.md)
 
 **Months 0–3:** run that screen with manual evidence packs. Build only enough machinery to preserve sources, compare alternatives and export the user’s journal. Keep the host AI people already use. [Proposed roadmap](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-ai-advisory-bookshelf/research-map.md)
@@ -205,6 +221,8 @@ By **day 75**, the proposed demand gate requires **6 of 12** participants to pay
 ## 14 · What would change my mind
 
 ### Keep the tool; make the company earn its existence
+
+<figure style="max-width:600px;margin:1rem auto;"><img src="/images/ai-advisory-bookshelf/falsifiers.svg" alt="Four stop conditions cover substitutes, attribution, rights and contribution." width="600" style="width:100%;height:auto;background:transparent;"><figcaption>Proposed stop rules: a useful tool earns a company only if it survives these tests. No trial outcomes have been collected.</figcaption></figure>
 
 The strongest bear case is straightforward. Users want better answers, their host already owns the conversation, existing services supply much of the source material, and good prompts may reproduce the residual benefit. The valuable human work—context checking, case selection and maintenance—is also the cost centre. Occasional decisions may never produce recurring subscriptions. [Evidence and counterevidence ledger](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-ai-advisory-bookshelf/evidence-ledger.md)
 

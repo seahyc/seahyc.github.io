@@ -27,6 +27,9 @@ main_class = "main-research-swipe"
 
 ### Resilience becomes real at the replacement decision
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/acceptance-decision.png" alt="An engineer checks a replacement controller against test records even though its connector fits."><figcaption>Original watercolor metaphor: physical fit leaves the acceptance decision open; no test result is implied.</figcaption></figure>
+
+
 A component is useful only inside a working machine. A replacement may fit the connector and still behave differently when hot, at low battery voltage or under a sudden load. Procurement needs a delivery date; engineering needs an operating envelope; compliance needs evidence of the right kind of origin.
 
 I want the founder to take responsibility for that intersection. The customer would be an allied aircraft manufacturer with a failed procurement and a named engineer who can accept a replacement. An authorized interceptor manufacturer could be such a customer. A facility buying drone detection usually is a different prospect.
@@ -40,6 +43,9 @@ The second outcome matters. A successful search can kill the new-hardware idea a
 ## 02 · Policy creates friction, not an empty shelf
 
 ### The original control is more precise than the headline
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/02-policy-scope.svg" alt="Motor criteria form a conjunction; the ESC definition is linked, and licensing does not establish a destination ban."><figcaption>Published-control logic, summarized from the MOFCOM source below; classify the actual item and export leg.</figcaption></figure>
+
 
 China’s published motor provision requires a conjunction: rated voltage **at least 48 V**, power **at least 3 kW**, power density **at least 3 kW/kg**, speed **at most 3,000 rpm**, and the stated drone-propeller purpose. The linked ESC clause has voltage and power conditions and a design linkage to those motors; it has no separate density or speed test. The announcement takes effect **18 November 2026**. It requires export permission and names no destination ban. [MOFCOM Announcement 49, clauses 9A901.a–b](https://www.mofcom.gov.cn/zcfb/zc/art/2026/art_b2fa4e60bcd24bdf8c658e476b808785.html)
 
@@ -69,6 +75,9 @@ I would choose a controller only after an aircraft engineer defines those condit
 
 ### Existing controllers are the first experiment
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/04-matched-comparison.svg" alt="Scorpion and APD publish ratings under different duration and airflow conditions."><figcaption>Vendor test conditions are different; this comparison establishes neither equivalent endurance nor relative value. Sources linked below.</figcaption></figure>
+
+
 Scorpion lists a Taiwan-manufactured controller at **$499.99**, with currency unverified in this research. Its published **220 A** rating is conditional on **60 seconds** and **35 m/s** airflow. Those are vendor claims, not an independent endurance test or audited sub-tier origin. [Scorpion Tribunus III](https://www.scorpionsystem.com/catalog/speed_controllers/tribunus_esc/hv_tribunusIII_series/III_14_220/)
 
 APD documents Australian manufacture and offers NDAA/DFARS options on request. Its UHV guide uses a different rating condition: **180 seconds** at full throttle and **10 m/s** airflow. A compliance option is not a claim that every variant qualifies. [APD UHV documentation](https://docs.powerdrives.net/products/uhv)
@@ -82,6 +91,9 @@ My first engineering purchase would be a matched comparison, with written quotat
 ## 05 · Why try the controller first?
 
 ### Choose a tractable experiment, then let the buyer overturn it
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/controller-wedge.png" alt="Electronics assembly sits beside a motor with rotor magnets, illustrating the different manufacturing tasks."><figcaption>Original watercolor: the proposed ESC experiment avoids rotor-magnet manufacturing, while semiconductor and PCB provenance remain unresolved.</figcaption></figure>
+
 
 My provisional choice is an ESC for a buyer-defined **48–60 V nominal** system and **at least 3 kW electrical** requirement. These are discovery filters, not a universal interceptor specification or a claim that the design automatically falls within China’s motor-linked control. Maximum pack voltage and continuous duty still need agreement. [Original research plan](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/research-map.md)
 
@@ -111,6 +123,9 @@ I would make unresolved origin visible before quoting. Otherwise the company ris
 
 ### The US route may require a different company footprint
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/07-eligibility.svg" alt="Assembly origin and buyer-specific authorization require separate determinations."><figcaption>Conceptual eligibility checks from the FCC documents below; this controller’s coverage and authorization remain unresolved.</figcaption></figure>
+
+
 The FCC notice quotes a National Security Determination that “UAS and UAS critical components must be produced in the United States.” It bases the foreign-production listing on manufacturing location and affects equipment authorization. It also provides a route through specific DoW or DHS determinations. The FAQ describes domestic-end-product treatment under the Buy American standard and Conditional Approvals. None of this is a blanket ban on all foreign-component import or sale. [FCC notice](https://docs.fcc.gov/public/attachments/DA-25-1086A1.pdf) · [Expanded FAQ](https://www.fcc.gov/covered-list-faqs-uas-and-uas-critical-components)
 
 ESCs are not expressly named in the non-exhaustive critical-component list. The FAQ limits the category to items designed and intended primarily for UAS, and says previously exempt devices do not acquire a new authorization requirement. Whether this proposed controller is covered, or requires authorization, is unresolved. [FCC FAQ](https://www.fcc.gov/covered-list-faqs-uas-and-uas-critical-components)
@@ -124,6 +139,9 @@ Taiwan’s policy supports component localization and testing; it does not confe
 ## 08 · Sell evidence with a repeatable product
 
 ### A qualification package is not a self-issued badge
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/qualification-package.png" alt="A controller travels with its revision, firmware and test records to a receiving engineer."><figcaption>Original watercolor of the proposed deliverable. Traceability supports a buyer decision; it does not confer a self-issued approval.</figcaption></figure>
+
 
 My proposed deliverable includes a frozen hardware revision, firmware hash, authorized BOM, serial and lot genealogy, buyer-agreed tests, raw logs, instrument records, nonconformance history and change notifications. Independent witnessing belongs in the contract when the buyer requires it.
 
@@ -153,6 +171,9 @@ The component opportunity sits downstream of a particular lawful system choice. 
 
 ### Detection budgets are not interceptor orders
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/10-buyer-paths.svg" alt="Civil sensing customers and authorized aircraft integrators follow different procurement paths."><figcaption>Conceptual buyer map: a detection site count cannot establish controller demand. Legal sources and qualifications appear below.</figcaption></figure>
+
+
 A civil facility might buy sensing, alerting and escalation. An authorized mitigation integrator might buy physical systems, including interceptors. The former’s site count cannot be multiplied into the latter’s controller demand.
 
 US guidance needs care: newer authority extends to qualified state, local, tribal and territorial law-enforcement bodies under conditions. “Only federal agencies” is incomplete as a current universal US claim. That exception also does not grant ordinary private facilities blanket defeat authority. [FBI testimony](https://www.fbi.gov/news/speeches-and-testimony/statement-of-special-agent-in-charge-douglas-olson-to-senate-appropriations) · [Federal Register rule](https://www.govinfo.gov/content/pkg/FR-2026-07-06/pdf/2026-13609.pdf)
@@ -166,6 +187,9 @@ I would keep distinct pipelines: lawful detection customers for sensing supplier
 ## 11 · The incumbents can close the gap
 
 ### A capable supplier may be the strongest reason to stop
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/11-competition.svg" alt="Controller suppliers, integrated propulsion makers, assessors and domestic capacity can each close a different gap."><figcaption>Competitive alternatives, rather than an empty shelf. Published offerings and announcements below do not prove available capacity or comparable cost.</figcaption></figure>
+
 
 The competitive set includes established controller suppliers, integrated propulsion makers, assessors and OEM-backed domestic manufacturing. It is larger than a contest between a new Asian supplier and Chinese catalogues.
 
@@ -201,6 +225,9 @@ All values are [original planning assumptions](https://github.com/seahyc/seahyc.
 
 ### Pay for engineering once; measure repeat releases separately
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/13-hardware-economics.svg" alt="Base scenario separates unit contribution, fixed expense, depreciation and net qualification income."><figcaption>USD, original invented base scenario as of 3 November 2026; calculations from the model linked below, not achieved margins.</figcaption></figure>
+
+
 In the base scenario, a **2.5% warranty allowance** leaves about **US$114.73 contribution per accepted unit**. Annual fixed expense is **US$500,000**, with **US$60,000** depreciation. Qualification projects add **US$30,000 net**, producing about **US$43,641** annual contribution after depreciation. Without NRE, repeat hardware alone contributes about **US$13,641**. These are calculated scenarios, not achievable margins. [Original model](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/scenario-model.json)
 
 The assumed NRE fee is **US$75,000** against **US$65,000** project cost, across **three projects**. Break-even is **4,620 accepted units** with that NRE contribution, or **4,882** without it. Doubling qualification cost turns the annual result into approximately **minus US$151,359**. [Scenario arithmetic](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/scenario-arithmetic.md)
@@ -214,6 +241,9 @@ Renting a factory removes factory ownership. It does not remove the need to earn
 ## 14 · What the headline omits
 
 ### Capacity, accepted lots and collected cash are different
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/14-demand-denominators.svg" alt="Aircraft ordered and accepted use different denominators; neither establishes startup controller receipts."><figcaption>Aircraft counts in the official 2 November 2026 snapshot linked below; no attach rate or component revenue is inferred.</figcaption></figure>
+
 
 A **20% selling-price reduction** turns the base annual contribution into about **minus US$297,609**. The base tooling, simplified working-capital screen and NRE cash gap together require about **US$479,445**, before operating losses and excluded shocks. That sum is a financing screen, not a dated cash forecast. [Original scenario model](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/scenario-model.json)
 
@@ -243,6 +273,9 @@ Only after repeat paid releases would I fund a second buyer or manufacturing sit
 
 ### The founder needs rules that survive enthusiasm
 
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/stop-go-gate.png" alt="A founder can stop a new board at a gate and choose an existing supplier, or proceed only with paid repeat demand."><figcaption>Original watercolor of a deliberate stop/go decision. Finding that an incumbent solves the problem is a successful discovery outcome.</figcaption></figure>
+
+
 My proposed **90-day** gate requires **two independent OEMs**, each funding at least **US$75,000 NRE**, a named accepting engineer and a credible release schedule. Letters of interest do not pass. These are founder-chosen hurdles, not market benchmarks. [Original gates](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/research-map.md)
 
 Stop the shortage claim if **two incumbent quotes** satisfy the same origin, duty, mass, price and delivery requirements. Stop the new SKU if origin cannot be evidenced to the actual buyer rule. Stop if accepted-unit contribution is below the proposed **25%** hurdle or credible releases cannot pay fixed expense and customer engineering. [Original gates](https://github.com/seahyc/seahyc.github.io/blob/main/research-dossiers/2026-11-03-allied-drone-components/research-map.md)
@@ -256,6 +289,9 @@ I like the possibility of making trusted supply less scarce. I would earn convic
 ## 17 · Method and sources
 
 ### What is known, inferred and still hypothetical
+
+<figure style="max-width:600px;margin:1rem auto"><img style="background:transparent" src="/images/allied-drone-components/17-evidence-types.svg" alt="Published facts, vendor claims, inferences, invented scenarios and missing customer evidence remain distinct."><figcaption>Method map for this report: evidence status determines what the reader may conclude. No private validation has occurred.</figcaption></figure>
+
 
 This Fieldbook uses public primary policy, regulator and company documents, plus saved rendered captures for the FCC FAQ, DIU assessor page and official leaderboard. Company pages establish published offerings and claims. They do not establish audited provenance, inventory, actual fulfillment or comparative value. Undated vendor claims remain undated.
 

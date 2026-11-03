@@ -1,0 +1,33 @@
+$ hugo --destination /tmp/fb-allied-drone-components/site --cacheDir /tmp/fb-allied-drone-components/cache --noBuildLock --quiet
+exit=0
+$ node /Users/yingcong/.agents/skills/fieldbook/scripts/check-visuals.mjs content/research/allied-drone-components/index.md
+cards 18 · visuals on cards 18 · svg 12 · raster 6 (need ≥6)
+PASS
+exit=0
+$ sips -g hasAlpha proof-bench.png origin-tree.png acceptance-decision.png controller-wedge.png qualification-package.png stop-go-gate.png
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/proof-bench.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/origin-tree.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/acceptance-decision.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/controller-wedge.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/qualification-package.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/allied-drone-components/stop-go-gate.png
+  hasAlpha: yes
+exit=0
+proof-bench.png: corners=[0, 0, 0, 0]; sampled edgeMax=1; PASS
+origin-tree.png: corners=[0, 0, 0, 0]; sampled edgeMax=6; PASS
+acceptance-decision.png: corners=[0, 0, 0, 0]; sampled edgeMax=0; PASS
+controller-wedge.png: corners=[0, 0, 0, 0]; sampled edgeMax=0; PASS
+qualification-package.png: corners=[0, 0, 0, 0]; sampled edgeMax=0; PASS
+stop-go-gate.png: corners=[0, 0, 0, 0]; sampled edgeMax=0; PASS
+390x844: cards=18 images=18 overflow=0 unreachable=0 unloaded=0 errors=0 PASS
+737x862: cards=18 images=18 overflow=0 unreachable=0 unloaded=0 errors=0 PASS
+1440x1000: cards=18 images=18 overflow=0 unreachable=0 unloaded=0 errors=0 PASS
+Direct hashes: 18 checked; failures=0
+18 cards / 18 unique visuals / 12 SVG / 6 watercolor cutouts
+Independent release review: PASS
+Task Hugo server on1432 stopped after review.

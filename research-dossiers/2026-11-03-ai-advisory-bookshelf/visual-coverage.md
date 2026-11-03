@@ -1,21 +1,37 @@
-# Visual coverage · A Bookshelf That Argues Back
+# Visual coverage · visual revision · 3 November 2026
 
-15 cards including cover; 6 distinct substantive visuals (4 SVGs, 2 generated watercolor illustrations). Every rolling window of 3 cards contains a substantive visual. No repeated asset counted twice. Reference source facts are linked adjacent to each figure in the article. Figures are embedded; no third-party photographs or screenshots reused.
+15 cards; 15 unique substantive visuals: 10 SVGs and 5 generated watercolor illustrations. Every card including cover has its own explanatory visual. Existing six good visuals retained. Original prose and claims unchanged (figure-stripped invariant passed).
 
-| Card range | Visual and placement | Claim / explanatory job | Provenance and limits | Alpha / readiness |
+| Card | Visual | Explanatory job | Provenance / limits | Alpha |
 |---|---|---|---|---|
-| cover–02 | advisers.png / cover | Different sources offer different considerations to one decision record | Generated watercolor metaphor; not evidence of efficacy or a real person | Regenerated true cutout; real alpha and transparent corners verified |
-| 03–05 | mechanism.svg /03 | Context checking separates retrieval from applied advice | Original proposed process; Brains README + E15 | Transparent SVG canvas; built by build-visuals.py |
-| 06–08 | competition.svg /06 | Original concept overlaps several documented alternatives | Reconstructed offering comparison from Google E04, Readwise E05, Delphi E07/E08 and Brains E03; not hands-on ranking | Transparent SVG canvas; built |
-| 09–11 | economics.svg /09 | Human service and replacement acquisition determine contribution | Original scenario-model.json E16, USD/month/payer as of 3 Nov2026; inputs assumptions, not customer evidence; linear shared axis includes negative values and zero | Transparent SVG canvas; built |
-| 09–11, extra | founder-time.png /11 | Useful small product can be outweighed by founder opportunity cost | Generated watercolor metaphor; no market size claim | Real alpha; 1/255 corner artifact corrected by zeroing alpha below1%, preserving other semitransparency |
-| 12–14 | roadmap.svg /12 | Expansion is conditional on renewed paid use | Original proposed research-map E18; dates are planning gates, not forecast | Transparent SVG canvas; built |
+| Cover | advisers.png | Several sources inform one decision, none is an oracle | Existing generated watercolor metaphor | RGBA; corners 0 |
+| 01 | denominators.svg | Different populations and units prevent market-share comparison | New original diagram; existing adjacent Anthropic and OpenAI/NBER citations; ledger | Transparent SVG |
+| 02 | tool-boundary.svg | Retrieval, host adoption and original context are separate checks | New proposed process; existing Brains and Readwise documentation | Transparent SVG |
+| 03 | mechanism.svg | Original source → context → conditions → decision → outcome | Existing proposed process, not efficacy evidence | Transparent SVG |
+| 04 | disagreement.png | Bridge and boat fit different circumstances; conditions explain disagreement | New generated editorial metaphor, not factual evidence | RGBA; corners 0 |
+| 05 | rights.png | Ownership, access and reuse permission need separate checks | New generated metaphor; stamp represents unresolved permission, not clearance | RGBA; corners 0 |
+| 06 | competition.svg | Existing products occupy different parts of pitch | Existing documented-offering comparison; no hands-on efficacy ranking | Transparent SVG |
+| 07 | case-file.svg | Separate statement, action, explanation, result, counterexamples, unknowns | New proposed case-file diagram; sequence is not causation | Transparent SVG |
+| 08 | wedge.png | Curate a small evidence shelf around one real pricing decision | New generated metaphor; customer/workflow remain hypotheses | RGBA; corners 0 |
+| 09 | economics.svg | Recurring contribution after replacement acquisition | Existing zero-based scenario chart; not measured economics | Transparent SVG |
+| 10 | break-even.svg | Cash versus founder-time cost and support/churn sensitivities | New zero-based chart; existing JSON and arithmetic, chosen assumptions | Transparent SVG |
+| 11 | founder-time.png | Useful tool competes for scarce founder time | Existing generated metaphor, no market-size claim | RGBA; corners 0 |
+| 12 | roadmap.svg | Each stage must earn the next | Existing proposed calendar, not forecast | Transparent SVG |
+| 13 | renewal-gate.svg | Payment, renewal, return and support must each pass | New proposed operating hurdles from research-map; not achieved results | Transparent SVG |
+| 14 | falsifiers.svg | Substitution, attribution, rights and contribution can stop thesis | New original decision diagram; existing research-map and ledger | Transparent SVG |
 
-## Generation briefs and provenance
-Tool: built-in image_gen, 3 November2026, illustration-story. Briefs required rough childlike wobbly ink, translucent watercolor bleeding locally past contours, muted cheerful palette, no lettering, and exactly: “actual transparent alpha; no white, cream, paper texture, gradient, checkerboard, or baked background”. No artist or protected character imitation requested. Model identifier not exposed by tool; no claim about one.
+## Generation and reproducibility
 
-advisers.png: three books offer compass, balance scales and warning flag to a blank decision notebook; threads show competing considerations. Initial generation included a background haze despite alpha and was rejected after perceptual inspection. Regenerated with no people, furniture, ground, shadows or ambient paint haze, requiring empty perimeter and space between objects. Final asset must pass saved-file alpha and rendered review.
+Built-in image_gen tool used for each new illustration, 3 November 2026. Use case: illustration-story. Shared brief: Hand-watercolor editorial illustration for a founder Fieldbook. Rough childlike wobbly dark ink contours, translucent washes bleeding locally past lines, faded cheerful sage green, dusty blue, ochre and rust. Simple isolated cutout composition, no lettering, no symbols resembling text. **actual transparent alpha; no white, cream, paper texture, gradient, checkerboard, or baked background**. Generous transparent margin, no atmospheric glow or drop shadow.
 
-founder-time.png: modest bookshelf on a seesaw outweighed by founder hourglass and gardening trowel. Book utility vs scarce time is the nearby allocation judgment. Original generated asset preserved by tool; saved project PNG corrected with ImageMagick `-channel A -fx 'u<0.01?0:u' +channel` to remove nearly invisible residual alpha. No resizing or background compositing.
+- disagreement.png: two open books; bridge across narrow gap versus boat across deeper water, their paths informing one decision notebook. Different circumstances explain different solutions; no debating personalities.
+- rights.png: held closed book, gated open book, permission stamp and separate pages. Tentative dashed paths and gaps; no legal conclusion.
+- wedge.png: founder choosing a blank price tag over product boxes; tiny curated shelf feeds a decision journal while large catalogue stays disconnected.
 
-SVGs: original Python-authored accessible vector documents, canvas600px, smallest text22px. Corpus offerings are source claims; process and roadmap are proposals; economics only calculates assumptions. Copyright: original commissioned/generated illustrations and original diagrams, no external asset licences needed. No cutout is treated as factual evidence.
+Generated files copied from tool output without pixel editing. Existing artwork retained; no third-party images reproduced. Watercolor illustrations are illustrative, not evidence or real people. Captions identify metaphors and limits. New SVGs reproduced by `python3 research-dossiers/2026-11-03-ai-advisory-bookshelf/build-visual-pass.py`; existing four by `build-visuals.py`. All SVG text >=21px at 600px width. Category and value labels occupy separate space; zero-based quantitative scales.
+
+## Verification
+
+`check-visuals.mjs`: cards 15 · visuals on cards 15 · svg 10 · raster 5 (need ≥5); PASS. Checks include SVG text bounding boxes and raster edge alpha. `sips -g hasAlpha`: yes for all five raster assets. PIL: RGBA, all four corners exactly zero for each file. New watercolors inspected on rendered paper cards at 390px and desktop: no background rectangles or halos.
+
+Private Hugo build and three-viewport report: see `visual-pass-results.md`, `report.json`, `check-visual-pass.mjs` and viewport screenshots. Direct hashes tested with a fresh reload (same-document hash assignment is not a direct-page-load test). No shared renderer/CSS edits; publication belongs to parent.

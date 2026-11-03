@@ -1,0 +1,945 @@
+{
+  "direct": "10-the-cost-of-staying-small",
+  "indexCount": null,
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 15,
+      "images": 15,
+      "uniqueImages": 15,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "hashFailures": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 661,
+          "max": 198.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "textLength": 1559,
+          "max": 867.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/denominators.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "textLength": 1599,
+          "max": 853.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/tool-boundary.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "textLength": 1229,
+          "max": 590.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "textLength": 1551,
+          "max": 635.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/disagreement.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "textLength": 1549,
+          "max": 568.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/rights.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "textLength": 1179,
+          "max": 564.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "textLength": 1649,
+          "max": 940.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/case-file.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "textLength": 1460,
+          "max": 605.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/wedge.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "textLength": 1290,
+          "max": 641.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "textLength": 1562,
+          "max": 894.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/break-even.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "textLength": 1118,
+          "max": 359.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "textLength": 1199,
+          "max": 570.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "textLength": 1577,
+          "max": 855.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/renewal-gate.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "textLength": 1920,
+          "max": 1121.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/falsifiers.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 764.7843627929688,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 15,
+      "images": 15,
+      "uniqueImages": 15,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "hashFailures": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 661,
+          "max": 250.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true,
+              "width": 510
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "textLength": 1559,
+          "max": 928.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/denominators.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "textLength": 1599,
+          "max": 870.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/tool-boundary.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "textLength": 1229,
+          "max": 661.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "textLength": 1551,
+          "max": 454.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/disagreement.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "textLength": 1549,
+          "max": 359.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/rights.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "textLength": 1179,
+          "max": 627.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "textLength": 1649,
+          "max": 944.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/case-file.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "textLength": 1460,
+          "max": 434.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/wedge.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "textLength": 1290,
+          "max": 691.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "textLength": 1562,
+          "max": 905.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/break-even.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "textLength": 1118,
+          "max": 240.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true,
+              "width": 510
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "textLength": 1199,
+          "max": 669.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "textLength": 1577,
+          "max": 920.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/renewal-gate.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "textLength": 1920,
+          "max": 1007.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/falsifiers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 812.7868041992188,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 15,
+      "images": 15,
+      "uniqueImages": 15,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "hashFailures": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 661,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/advisers.png",
+              "loaded": true,
+              "width": 510
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-people-already-bring-their-problems",
+          "hash": "#card-01-people-already-bring-their-problems",
+          "textLength": 1559,
+          "max": 437.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/denominators.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-the-plumbing-is-already-available",
+          "hash": "#card-02-the-plumbing-is-already-available",
+          "textLength": 1599,
+          "max": 380.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/tool-boundary.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-a-citation-needs-a-chain-of-custody",
+          "hash": "#card-03-a-citation-needs-a-chain-of-custody",
+          "textLength": 1229,
+          "max": 266.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/mechanism.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-disagreement-is-a-method",
+          "hash": "#card-04-disagreement-is-a-method",
+          "textLength": 1551,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/disagreement.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-owning-a-book-is-a-starting-condition",
+          "hash": "#card-05-owning-a-book-is-a-starting-condition",
+          "textLength": 1549,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/rights.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-most-of-the-attractive-surface-is-occupied",
+          "hash": "#card-06-most-of-the-attractive-surface-is-occupied",
+          "textLength": 1179,
+          "max": 200.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/competition.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-what-they-said-what-they-did",
+          "hash": "#card-07-what-they-said-what-they-did",
+          "textLength": 1649,
+          "max": 490.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/case-file.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-start-with-a-decision-then-choose-a-shelf",
+          "hash": "#card-08-start-with-a-decision-then-choose-a-shelf",
+          "textLength": 1460,
+          "max": 7.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/wedge.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-cheap-retrieval-can-support-expensive-service",
+          "hash": "#card-09-cheap-retrieval-can-support-expensive-service",
+          "textLength": 1290,
+          "max": 295.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-the-cost-of-staying-small",
+          "hash": "#card-10-the-cost-of-staying-small",
+          "textLength": 1562,
+          "max": 483.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/break-even.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-a-useful-project-can-still-be-the-wrong-venture",
+          "hash": "#card-11-a-useful-project-can-still-be-the-wrong-venture",
+          "textLength": 1118,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/founder-time.png",
+              "loaded": true,
+              "width": 510
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-buy-evidence-before-building-a-catalogue",
+          "hash": "#card-12-buy-evidence-before-building-a-catalogue",
+          "textLength": 1199,
+          "max": 210.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/roadmap.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-earn-the-next-stage",
+          "hash": "#card-13-earn-the-next-stage",
+          "textLength": 1577,
+          "max": 466.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/renewal-gate.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-would-change-my-mind",
+          "hash": "#card-14-what-would-change-my-mind",
+          "textLength": 1920,
+          "max": 490.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1431/images/ai-advisory-bookshelf/falsifiers.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 951.0827026367188,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "any, I want evidence that other people return, pay and make use of something their existing tools cannot readily supply."
+          }
+        }
+      ]
+    }
+  ]
+}

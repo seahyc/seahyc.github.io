@@ -44,13 +44,13 @@ m=json.loads((D/'scenario-model.json').read_text())
 b=t(16,34,'CONTRIBUTION PER ENROLLED COUPLE',27)+t(16,70,'USD • original scenarios • 3 Nov 2026',23,MUTED)
 x0=240; scale=.9
 for i,c in enumerate(m['cases']):
- y=124+i*102;v=c['after_acquisition_contribution_usd'];x=x0+min(v,0)*scale;w=abs(v)*scale
- b+=t(16,y+28,c['name'].title(),25)+f'<rect x="{x}" y="{y}" width="{w}" height="38" fill="{RED if v<0 else GREEN}"/>'+t(x0+v*scale+(10 if v>=0 else -10),y+29,f'{v:,.2f}',24,INK,'start' if v>=0 else 'end')
-b+=line(x0,103,x0,377)
+ y=154+i*122;v=c['after_acquisition_contribution_usd'];x=x0+min(v,0)*scale;w=abs(v)*scale
+ b+=t(16,y-16,c['name'].title(),25)+f'<rect x="{x}" y="{y}" width="{w}" height="38" fill="{RED if v<0 else GREEN}"/>'+t(x0+v*scale+10,y+29,f'{v:,.2f}',24,INK if v>=0 else '#ffffff','start')
+b+=line(x0,125,x0,451)
 for v in [-200,0,300]:
- x=x0+v*scale;b+=line(x,400,x,407)+t(x,439,str(v),22,MUTED,'middle')
-b+=line(60,400,510,400)+t(16,485,'After support, fees, refunds and acquisition.',23)+t(16,521,'Before $300,000 assumed annual fixed cost.',23)+t(16,557,'Negative contribution has no volume break-even.',22,RED)
-save('economics','Scenario contribution after acquisition','Low −155.90, base 129.05, high 249.03 USD. Zero shown; no observed margins.',b,580)
+ x=x0+v*scale;b+=line(x,475,x,482)+t(x,514,str(v),22,MUTED,'middle')
+b+=line(60,475,510,475)+t(16,560,'After support, fees, refunds and acquisition.',23)+t(16,596,'Before $300,000 assumed annual fixed cost.',23)+t(16,632,'Negative contribution has no volume break-even.',22,RED)
+save('economics','Scenario contribution after acquisition','Low −155.90, base 129.05, high 249.03 USD. Zero shown; no observed margins.',b,660)
 flow('calendar','TWO CLOCKS IN THE FIRST QUARTER',[
  ('Days 1–30: challenge the job','Founder + clinical lead • compare incumbent'),
  ('Days 31–90: sell and deliver','3 paid scopes • target 2 renewals'),

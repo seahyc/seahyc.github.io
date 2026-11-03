@@ -1,0 +1,2 @@
+# Visual pass · Gate 2 re-review · 3 November 2026
+Independent Claude reviewer: PASS after parent fix: economics.svg zero line split per bar so it no longer crosses the Base/High value labels (generator build-visuals.py updated to match). check-visuals.mjs (with line/text collision + clearance rules) PASS; every card carries a visual; watercolors ≥ ceil(cards/3) with clean alpha; renders clean at 390x844, 737x862, 1440x1000; prose unchanged (figure blocks only).

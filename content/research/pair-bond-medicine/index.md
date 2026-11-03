@@ -31,6 +31,8 @@ main_class = "main-research-swipe"
 
 Lilly’s lead acquired programme, BPL-003, is an investigational nasal formulation of **5-MeO-DMT for treatment-resistant depression**. The filed announcement describes initiated Phase 3 activities and also lists EMP-01, an **(R)-MDMA programme in Phase 2 for social anxiety**. Neither is a demonstrated couples treatment. [Lilly’s filed portfolio description](https://www.sec.gov/Archives/edgar/data/2081043/000114036126028604/ef20078103_ex99-1.htm)
 
+<figure><img src="/images/pair-bond-medicine/asset-rights.svg" alt="A psychiatric asset combines a defined indication, human evidence and transferable rights." style="max-width:600px;background:transparent"><figcaption>Original conceptual map of what an acquisition buys; a precedent is not a sale probability.</figcaption></figure>
+
 AbbVie supplies another precedent: its bretisilocin transaction concerned an investigational depression asset, then in **Phase 2**, for **up to $1.2 billion including milestones**. It was announced in **August 2025**, rather than the date in the initial lead. Other Gilgamesh programmes continued separately. [AbbVie announcement](https://news.abbvie.com/2025-08-25-AbbVie-to-Acquire-Gilgamesh-Pharmaceuticals-Bretisilocin,-a-Novel,-Investigational-Therapy-for-Major-Depressive-Disorder,-Expanding-Psychiatry-Pipeline)
 
 My inference is that an indication-specific psychiatric programme can attract a strategic buyer. These examples do not establish a minimum stage pharma always requires, a sale probability, or a valuation for relationship-support software. A successful transaction also hides the denominator of programmes that never reached one.
@@ -44,6 +46,8 @@ The founder question is therefore sharper than whether bonding biology is intere
 ### First separate the substances and the outcomes
 
 Oxytocin is a peptide signal involved in physiology and social behaviour. MDMA is a different drug class with different actions and risks; an entactogen is a substance associated with feelings of emotional openness or interpersonal connection. A DMT-based programme is different again. Their shared appearance in a psychiatric investment story does not make their clinical evidence interchangeable. [Oxytocin review](https://pmc.ncbi.nlm.nih.gov/articles/PMC4690817/); [MDMA clinical study](https://pmc.ncbi.nlm.nih.gov/articles/PMC7748057/); [Acquired portfolio](https://www.sec.gov/Archives/edgar/data/2081043/000114036126028604/ef20078103_ex99-1.htm)
+
+<figure><img src="/images/pair-bond-medicine/molecule-relationship.png" alt="A molecular model sits apart from partners choosing their own bridge planks." style="max-width:600px;background:transparent"><figcaption>Generated watercolor metaphor: molecular action and a freely chosen relationship require separate explanations.</figcaption></figure>
 
 I find the biological possibility exciting: altering a person’s state might make a useful therapeutic interaction possible. But an acute state, a learned skill, relief from PTSD, relationship satisfaction and a decision to remain together are separate outcomes.
 
@@ -87,6 +91,8 @@ I would require a credible delivery argument, reproducible human findings and a 
 
 The posted Luckey transcription calls the space “totally unregulated.” The FDA’s Pitocin label identifies a **prescription oxytocin injection with obstetric uses**. A hormone being endogenous, or different from a scheduled recreational drug, does not remove medicine regulation. [Triggering post](https://x.com/dnapway/status/2107872799801094301); [FDA label](https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/018261Orig1s041lbl.pdf)
 
+<figure><img src="/images/pair-bond-medicine/research-clinic.png" alt="A closed gate separates laboratory supply from a clinician checking medicine documentation." style="max-width:600px;background:transparent"><figcaption>Generated watercolor metaphor: research availability does not establish a lawful human-medicine supply chain.</figcaption></figure>
+
 A research catalogue is also not a human-medicine supply chain. The checked Sigma listing does not establish the claimed kilogram offer, a clinically suitable preparation, or permission to administer it to people. [Supplier listing](https://www.sigmaaldrich.com/US/en/product/sigma/o3251); [Supplier terms](https://www.sigmaaldrich.com/US/en/life-science/legal/terms-and-conditions)
 
 I found no adequate repeated-use dependence or withdrawal evidence for the proposed couples product in this dossier. That leaves the transcription’s reassuring dependence claim unsupported; it does not establish that oxytocin causes dependence. Nor do the checked labels establish emotional bonding with a husband as an approved indication. [FDA label](https://www.accessdata.fda.gov/drugsatfda_docs/label/2021/018261Orig1s041lbl.pdf)
@@ -115,6 +121,8 @@ For a founder with deep CNS development expertise, a differentiated psychiatric 
 
 Monson and colleagues studied MDMA-assisted cognitive-behavioural conjoint therapy in **six couples**, with both partners receiving MDMA. They reported improvements, but the study was uncontrolled. It cannot isolate the added drug effect from the therapy, selection, expectation or attention. [Original author paper](https://www.coupletherapyforptsd.com/wp-content/uploads/Monson-et-al-2020.pdf)
 
+<figure><img src="/images/pair-bond-medicine/conjoint-comparison.svg" alt="Uncontrolled conjoint evidence cannot isolate the drug contribution; an active comparison asks the narrower question." style="max-width:600px;background:transparent"><figcaption>Original study-design map from the primary papers and registry linked on this card; planned recruitment is not completed treatment.</figcaption></figure>
+
 This is not the entire subsequent literature. A later veteran-partner pilot exists, but our access was abstract-level and the repeat retrieval failed; I am not using it for an effect-size or safety headline. [Later pilot record](https://doi.org/10.1002/jts.70126)
 
 The registered conjoint comparison is more directly relevant: **NCT06044675** lists randomized, open-label treatment, an estimated **60 individuals**, and no posted results at the research cutoff. Those are planned individuals, not completed couples. [Official registry](https://clinicaltrials.gov/study/NCT06044675)
@@ -128,6 +136,8 @@ Therapy itself is an active ingredient: an earlier **40-couple** randomized tria
 ### The evidence system is part of the product
 
 The FDA rejected the Lykos application in **August 2024**. Its released letter raises substantial concerns over the **reliability of safety data**, including how potentially favourable experiences relevant to abuse potential were collected and reported. A developer needs a trustworthy safety picture as well as a compelling symptom signal. [FDA complete response letter, safety discussion on printed page 2](https://download.open.fda.gov/crl/CRL_NDA215455_20240808.pdf#page=2)
+
+<figure><img src="/images/pair-bond-medicine/safety-records.png" alt="A researcher assembles safety observations beside an incomplete bridge." style="max-width:600px;background:transparent"><figcaption>Generated watercolor metaphor: a symptom signal cannot bridge an unreliable safety record. This is not a depiction of an approval.</figcaption></figure>
 
 I take that as an execution lesson, not proof that the modality can never work. A therapy-dependent treatment has to make the people, protocol, reporting and oversight reproducible enough to support its claims.
 
@@ -159,6 +169,8 @@ MAPS later acknowledged a reported sponsor resubmission while stating it was no 
 
 **United States.** An approved injection used off label, a compounded nasal formulation, investigational access and a newly approved product are different objects. Compounded drugs are not FDA-approved. The **503A and 503B** pathways have different conditions; this research clears no pharmacy, API, formulation or state-level operation. Existing online offers establish availability claims, not effectiveness or compliance. [FDA Q&A](https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers); [503A bulk criteria](https://www.fda.gov/drugs/human-drug-compounding/bulk-drug-substances-used-compounding-under-section-503a-fdc-act); [503B bulk criteria](https://www.fda.gov/drugs/human-drug-compounding/bulk-drug-substances-used-compounding-under-section-503b-fdc-act)
 
+<figure><img src="/images/pair-bond-medicine/local-access.svg" alt="US, Australian and Singapore access routes each have distinct product and permission boundaries." style="max-width:600px;background:transparent"><figcaption>Original jurisdiction comparison, summarising the linked authorities below; no product-specific permission is established.</figcaption></figure>
+
 **Australia.** The scheme that began in **2023** allows a restricted psychiatrist-led route for **MDMA for PTSD** and **psilocybine for treatment-resistant depression**. Current guidance requires an ethics-approved protocol and product-specific Authorised Prescriber approval alongside other permissions. These remain unapproved goods, with supervised access rather than a take-home couples subscription. [Current TGA guidance](https://www.tga.gov.au/resources/guidance/accessing-mdma-34-methylenedioxy-methamphetamine-and-psilocybine-psychiatrist)
 
 **Singapore.** The formulary lists prescription oxytocin injection for obstetric uses; CNB identifies MDMA as controlled. HSA’s trial and controlled-drug machinery requires separate assessment. No relationship-enhancement clinic permission follows. Exact statutory exemptions remain unverified here. [National Drug Formulary](https://www.ndf.gov.sg/about-drugs/product-information/sin02496p/); [CNB](https://www.cnb.gov.sg/singapore-drug-situation/drugs--psychoactive-substances--and-inhalants/ecstasy/); [HSA trials](https://www.hsa.gov.sg/other-regulations/clinical-trials/overview/)
@@ -170,6 +182,8 @@ MAPS later acknowledged a reported sponsor resubmission while stating it was no 
 ### Better functioning and fewer separations are different endpoints
 
 A randomized digital-programme study involving **742 low-income couples** found improved relationship functioning without a significant reduction in breakup frequency at **six months**. This is abstract-level evidence for particular programmes and a particular population. It supports a narrower, useful possibility; it does not validate our proposed service. [Doss et al., author abstract](https://pubmed.ncbi.nlm.nih.gov/32134290/)
+
+<figure><img src="/images/pair-bond-medicine/endpoint-split.svg" alt="Better relationship functioning and fewer breakups are distinct outcomes." style="max-width:600px;background:transparent"><figcaption>Original endpoint comparison from the randomized programme study linked above; no effect is claimed for our proposed service.</figcaption></figure>
 
 The first product I would test is a bounded relationship-skills programme referred by a small couples practice: structured between-session work, private check-ins and a useful handoff to the clinician. A **proposed eight-week** course is a delivery assumption, not a discovered optimum. [Original model and boundaries](#card-12-the-cost-of-helping-a-couple)
 
@@ -208,6 +222,8 @@ Do not confuse our assumed price with a market quote. Research-agent collection 
 
 With assumed annual fixed cost of **$300,000**, the base contribution of **$129.05** requires **2,325 paid enrolments per year** to break even: round up fixed cost divided by positive contribution. The loss-making low case has no volume break-even. Fixed costs cover central governance, product, legal/security and administration; variable delivery and acquisition hours must not be counted twice. [Original unit model](#card-12-the-cost-of-helping-a-couple)
 
+<figure><img src="/images/pair-bond-medicine/pilot-scale.svg" alt="A learning cohort contributes far less than the assumed annual fixed-cost budget." style="max-width:600px;background:transparent"><figcaption>Original scenarios from the unit model: contribution is not cash available to fund drug development.</figcaption></figure>
+
 | Change from the base scenario | USD contribution per enrolment |
 |---|---:|
 | Support hours doubled | 64.05 |
@@ -227,6 +243,8 @@ Venture scale would require a repeatable advantage, much wider distribution and 
 ### Execution begins with an incumbent comparison
 
 I would start in a defined US practice jurisdiction, with a licensed clinical cofounder and counsel reviewing the actual service. The initial buyer hypothesis is a small practice owner with a recurring between-session or referral problem. Their first task is to show us a problem that a purchasable alternative does not already solve. [Existing therapist workflow offer](https://www.ourrelationship.com/therapists/)
+
+<figure><img src="/images/pair-bond-medicine/earned-stages.png" alt="Manual service, repeatable workflow and independent comparison are connected by conditional stepping stones." style="max-width:600px;background:transparent"><figcaption>Generated watercolor metaphor for the proposed staged company. Each gap needs evidence before expansion.</figcaption></figure>
 
 The staged company is **manual service → repeatable workflow → independent comparison → broader distribution**. Each transition is conditional. Software should encode repeated work after we understand it; it should not conceal founder labour during the pilot.
 
@@ -274,6 +292,8 @@ An optional future drug protocol would add sober consent and reassessment, indep
 
 The clinical cofounder’s professional network and training ecosystem are plausible routes to practice owners. IBCT courses establish an education community, not access to a mailing list, a licence or a promised introduction. [Training provider](https://ibct.org/courses/)
 
+<figure><img src="/images/pair-bond-medicine/paid-commitment.png" alt="A practice owner offers payment and a calendar commitment to a clinician and founder." style="max-width:600px;background:transparent"><figcaption>Generated watercolor metaphor: a paid scope, clinical owner and renewal decision are stronger demand signals than enthusiasm.</figcaption></figure>
+
 Ask a practice for a paid bounded cohort, a named clinical owner, a deidentified operational baseline and a renewal date. Resolve who pays: practice seats, couples directly or a sponsor. Our model assumes net revenue after channel arrangements and no referral kickback; counsel must review any fee-splitting structure. Praise and a free trial are insufficient evidence of demand.
 
 The founding team needs couples-treatment judgment, safeguarding, privacy-conscious engineering and an independent statistician. Learn dyadic measurement: partners’ outcomes are related, so treating them as unrelated observations can mislead. Publish participant flow, missing outcomes, support hours and failures; compare with an available alternative. [Relevant randomized programme evidence](https://pubmed.ncbi.nlm.nih.gov/32134290/)
@@ -301,6 +321,8 @@ Before enrolment, counsel must classify intended use, professional scope, privac
 ### Salary, profit and an exit are separate outcomes
 
 The planned **$9,000 quarter draw** is compensation funded from the cash cap. It is not evidence of a profitable company. At **3,000 paid annual enrolments**, the original base model produces **$387,150 contribution** less **$300,000 fixed cost**, leaving **$87,150 before tax, extraordinary loss and financing**. This is arithmetic for a potentially useful small business, not a venture valuation. [Budget](#card-18-finance-the-next-question); [Unit-model source](#card-12-the-cost-of-helping-a-couple)
+
+<figure><img src="/images/pair-bond-medicine/founder-proceeds.svg" alt="A funded draw, operating surplus and hypothetical exit proceeds are separate financial outcomes." style="max-width:600px;background:transparent"><figcaption>Original scenarios, using only the assumptions on this card; no salary sustainability, dividend or exit is promised.</figcaption></figure>
 
 I would fund delivery obligations, safety reserves and ongoing staff before considering dividends. A venture round trades ownership for capacity and usually means reinvesting rather than distributing cash. A secondary needs a willing buyer and permitted terms; an acquisition needs a strategic reason and transferable rights.
 

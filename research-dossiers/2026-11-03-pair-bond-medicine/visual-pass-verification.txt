@@ -1,0 +1,95 @@
+Visual revision verification · 3 November 2026
+
+$ node ~/.agents/skills/fieldbook/scripts/check-visuals.mjs content/research/pair-bond-medicine/index.md
+cards 21 · visuals on cards 21 · svg 14 · raster 7 (need ≥7)
+PASS
+(Actual parent execution exit 0; Chromium launched outside sandbox.)
+
+$ hugo --destination /tmp/fb-pair-bond-medicine/site --cacheDir /tmp/fb-pair-bond-medicine/cache --noBuildLock --quiet
+
+
+exit 0
+$ sips -g hasAlpha static/images/pair-bond-medicine/earned-stages.png static/images/pair-bond-medicine/molecule-relationship.png static/images/pair-bond-medicine/paid-commitment.png static/images/pair-bond-medicine/research-clinic.png static/images/pair-bond-medicine/safety-records.png static/images/pair-bond-medicine/session-bridge.png static/images/pair-bond-medicine/two-gates.png
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/earned-stages.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/molecule-relationship.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/paid-commitment.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/research-clinic.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/safety-records.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/session-bridge.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/pair-bond-medicine/two-gates.png
+  hasAlpha: yes
+
+
+exit 0
+earned-stages.png: RGBA, corners=[0, 0, 1, 0], edgeMax=1
+molecule-relationship.png: RGBA, corners=[0, 0, 0, 0], edgeMax=1
+paid-commitment.png: RGBA, corners=[0, 0, 0, 0], edgeMax=8
+research-clinic.png: RGBA, corners=[0, 0, 0, 0], edgeMax=0
+safety-records.png: RGBA, corners=[0, 0, 0, 0], edgeMax=1
+session-bridge.png: RGBA, corners=[0, 0, 0, 0], edgeMax=2
+two-gates.png: RGBA, corners=[1, 0, 0, 0], edgeMax=9
+
+$ node research-dossiers/2026-11-03-pair-bond-medicine/check-visual-pass.mjs
+{
+  "indexCount": 1,
+  "aliases": [
+    {
+      "path": "/research/pair-bond-medicine/",
+      "url": "http://localhost:1437/learning/can-we-build-better-bonds/#card-cover",
+      "canonical": true
+    },
+    {
+      "path": "/learning/pair-bond-medicine/",
+      "url": "http://localhost:1437/learning/can-we-build-better-bonds/#card-cover",
+      "canonical": true
+    }
+  ],
+  "hashChecks": 63,
+  "hashFailures": [],
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "cards": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": []
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "cards": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": 21,
+      "uniqueImages": 21,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "overflows": [],
+      "unreachable": []
+    }
+  ]
+}
+exit 0
+
+Final regenerated local-access diagram: checker PASS (21 cards / 21 visuals /14 SVG /7 raster); private Hugo build exit 0.
+Independent Gate 2 PASS: visual-pass-release-review.md.
+QA Hugo server1437 stopped after checks.

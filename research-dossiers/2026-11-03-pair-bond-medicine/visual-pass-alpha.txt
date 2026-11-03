@@ -1,0 +1,7 @@
+earned-stages.png: RGBA, corners=[0, 0, 1, 0], edgeMax=1
+molecule-relationship.png: RGBA, corners=[0, 0, 0, 0], edgeMax=1
+paid-commitment.png: RGBA, corners=[0, 0, 0, 0], edgeMax=8
+research-clinic.png: RGBA, corners=[0, 0, 0, 0], edgeMax=0
+safety-records.png: RGBA, corners=[0, 0, 0, 0], edgeMax=1
+session-bridge.png: RGBA, corners=[0, 0, 0, 0], edgeMax=2
+two-gates.png: RGBA, corners=[1, 0, 0, 0], edgeMax=9

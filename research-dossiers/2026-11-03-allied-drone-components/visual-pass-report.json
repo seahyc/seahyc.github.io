@@ -1,0 +1,1196 @@
+{
+  "direct": "12-the-arithmetic-is-thin-in-the-middle",
+  "indexCount": 1,
+  "hashes": [
+    {
+      "expected": "cover",
+      "actual": "cover"
+    },
+    {
+      "expected": "01-start-with-the-engineer",
+      "actual": "01-start-with-the-engineer"
+    },
+    {
+      "expected": "02-policy-creates-friction-not-an-empty-shelf",
+      "actual": "02-policy-creates-friction-not-an-empty-shelf"
+    },
+    {
+      "expected": "03-what-an-esc-actually-does",
+      "actual": "03-what-an-esc-actually-does"
+    },
+    {
+      "expected": "04-the-missing-source-has-not-been-found",
+      "actual": "04-the-missing-source-has-not-been-found"
+    },
+    {
+      "expected": "05-why-try-the-controller-first",
+      "actual": "05-why-try-the-controller-first"
+    },
+    {
+      "expected": "06-origin-is-a-tree",
+      "actual": "06-origin-is-a-tree"
+    },
+    {
+      "expected": "07-allied-is-not-the-same-as-eligible",
+      "actual": "07-allied-is-not-the-same-as-eligible"
+    },
+    {
+      "expected": "08-sell-evidence-with-a-repeatable-product",
+      "actual": "08-sell-evidence-with-a-repeatable-product"
+    },
+    {
+      "expected": "09-counter-drone-is-a-chain-of-decisions",
+      "actual": "09-counter-drone-is-a-chain-of-decisions"
+    },
+    {
+      "expected": "10-separate-the-two-customer-lists",
+      "actual": "10-separate-the-two-customer-lists"
+    },
+    {
+      "expected": "11-the-incumbents-can-close-the-gap",
+      "actual": "11-the-incumbents-can-close-the-gap"
+    },
+    {
+      "expected": "12-the-arithmetic-is-thin-in-the-middle",
+      "actual": "12-the-arithmetic-is-thin-in-the-middle"
+    },
+    {
+      "expected": "13-qualification-cannot-hide-the-hardware-business",
+      "actual": "13-qualification-cannot-hide-the-hardware-business"
+    },
+    {
+      "expected": "14-what-the-headline-omits",
+      "actual": "14-what-the-headline-omits"
+    },
+    {
+      "expected": "15-a-plan-that-buys-the-next-answer",
+      "actual": "15-a-plan-that-buys-the-next-answer"
+    },
+    {
+      "expected": "16-make-stopping-a-successful-outcome",
+      "actual": "16-make-stopping-a-successful-outcome"
+    },
+    {
+      "expected": "17-method-and-sources",
+      "actual": "17-method-and-sources"
+    }
+  ],
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 951,
+          "max": 390.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/proof-bench.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-start-with-the-engineer",
+          "hash": "#card-01-start-with-the-engineer",
+          "textLength": 1230,
+          "max": 474.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/acceptance-decision.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-policy-creates-friction-not-an-empty-shelf",
+          "hash": "#card-02-policy-creates-friction-not-an-empty-shelf",
+          "textLength": 1237,
+          "max": 625.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/02-policy-scope.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-what-an-esc-actually-does",
+          "hash": "#card-03-what-an-esc-actually-does",
+          "textLength": 920,
+          "max": 447.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/power-chain.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-source-has-not-been-found",
+          "hash": "#card-04-the-missing-source-has-not-been-found",
+          "textLength": 1184,
+          "max": 544.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/04-matched-comparison.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-why-try-the-controller-first",
+          "hash": "#card-05-why-try-the-controller-first",
+          "textLength": 1367,
+          "max": 518.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/controller-wedge.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-origin-is-a-tree",
+          "hash": "#card-06-origin-is-a-tree",
+          "textLength": 848,
+          "max": 208.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/origin-tree.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-allied-is-not-the-same-as-eligible",
+          "hash": "#card-07-allied-is-not-the-same-as-eligible",
+          "textLength": 1590,
+          "max": 841.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/07-eligibility.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-sell-evidence-with-a-repeatable-product",
+          "hash": "#card-08-sell-evidence-with-a-repeatable-product",
+          "textLength": 1361,
+          "max": 602.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/qualification-package.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-counter-drone-is-a-chain-of-decisions",
+          "hash": "#card-09-counter-drone-is-a-chain-of-decisions",
+          "textLength": 969,
+          "max": 523.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/counter-drone.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-separate-the-two-customer-lists",
+          "hash": "#card-10-separate-the-two-customer-lists",
+          "textLength": 1278,
+          "max": 625.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/10-buyer-paths.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-the-incumbents-can-close-the-gap",
+          "hash": "#card-11-the-incumbents-can-close-the-gap",
+          "textLength": 1342,
+          "max": 683.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/11-competition.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-arithmetic-is-thin-in-the-middle",
+          "hash": "#card-12-the-arithmetic-is-thin-in-the-middle",
+          "textLength": 885,
+          "max": 1184.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-qualification-cannot-hide-the-hardware-business",
+          "hash": "#card-13-qualification-cannot-hide-the-hardware-business",
+          "textLength": 1254,
+          "max": 631.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/13-hardware-economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-the-headline-omits",
+          "hash": "#card-14-what-the-headline-omits",
+          "textLength": 1445,
+          "max": 737.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/14-demand-denominators.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-plan-that-buys-the-next-answer",
+          "hash": "#card-15-a-plan-that-buys-the-next-answer",
+          "textLength": 1064,
+          "max": 543.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/roadmap.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-make-stopping-a-successful-outcome",
+          "hash": "#card-16-make-stopping-a-successful-outcome",
+          "textLength": 1307,
+          "max": 522.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/stop-go-gate.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-method-and-sources",
+          "hash": "#card-17-method-and-sources",
+          "textLength": 1684,
+          "max": 886.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/17-evidence-types.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "bottom": {
+            "lastBottom": 758.5938720703125,
+            "viewportBottom": 844,
+            "reachable": true,
+            "lastText": "ate and specific: matched quotations, a buyer-approved test plan and money committed against acceptance. Evidence ledger"
+          }
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 951,
+          "max": 567.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/proof-bench.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-start-with-the-engineer",
+          "hash": "#card-01-start-with-the-engineer",
+          "textLength": 1230,
+          "max": 396.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/acceptance-decision.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-policy-creates-friction-not-an-empty-shelf",
+          "hash": "#card-02-policy-creates-friction-not-an-empty-shelf",
+          "textLength": 1237,
+          "max": 662.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/02-policy-scope.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-what-an-esc-actually-does",
+          "hash": "#card-03-what-an-esc-actually-does",
+          "textLength": 920,
+          "max": 590.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/power-chain.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-source-has-not-been-found",
+          "hash": "#card-04-the-missing-source-has-not-been-found",
+          "textLength": 1184,
+          "max": 613.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/04-matched-comparison.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-why-try-the-controller-first",
+          "hash": "#card-05-why-try-the-controller-first",
+          "textLength": 1367,
+          "max": 359.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/controller-wedge.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-origin-is-a-tree",
+          "hash": "#card-06-origin-is-a-tree",
+          "textLength": 848,
+          "max": 182.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/origin-tree.png",
+              "loaded": true,
+              "width": 540
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-allied-is-not-the-same-as-eligible",
+          "hash": "#card-07-allied-is-not-the-same-as-eligible",
+          "textLength": 1590,
+          "max": 772.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/07-eligibility.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-sell-evidence-with-a-repeatable-product",
+          "hash": "#card-08-sell-evidence-with-a-repeatable-product",
+          "textLength": 1361,
+          "max": 496.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/qualification-package.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-counter-drone-is-a-chain-of-decisions",
+          "hash": "#card-09-counter-drone-is-a-chain-of-decisions",
+          "textLength": 969,
+          "max": 828.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/counter-drone.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-separate-the-two-customer-lists",
+          "hash": "#card-10-separate-the-two-customer-lists",
+          "textLength": 1278,
+          "max": 644.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/10-buyer-paths.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-the-incumbents-can-close-the-gap",
+          "hash": "#card-11-the-incumbents-can-close-the-gap",
+          "textLength": 1342,
+          "max": 762.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/11-competition.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-arithmetic-is-thin-in-the-middle",
+          "hash": "#card-12-the-arithmetic-is-thin-in-the-middle",
+          "textLength": 914,
+          "max": 763.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/economics.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-qualification-cannot-hide-the-hardware-business",
+          "hash": "#card-13-qualification-cannot-hide-the-hardware-business",
+          "textLength": 1254,
+          "max": 650.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/13-hardware-economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-the-headline-omits",
+          "hash": "#card-14-what-the-headline-omits",
+          "textLength": 1445,
+          "max": 678.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/14-demand-denominators.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-plan-that-buys-the-next-answer",
+          "hash": "#card-15-a-plan-that-buys-the-next-answer",
+          "textLength": 1064,
+          "max": 699.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/roadmap.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-make-stopping-a-successful-outcome",
+          "hash": "#card-16-make-stopping-a-successful-outcome",
+          "textLength": 1307,
+          "max": 433.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/stop-go-gate.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-method-and-sources",
+          "hash": "#card-17-method-and-sources",
+          "textLength": 1684,
+          "max": 855.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/17-evidence-types.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 806.1871337890625,
+            "viewportBottom": 862,
+            "reachable": true,
+            "lastText": "ate and specific: matched quotations, a buyer-approved test plan and money committed against acceptance. Evidence ledger"
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 18,
+      "images": 18,
+      "uniqueImages": 18,
+      "unloaded": [],
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "textLength": 951,
+          "max": 79.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/proof-bench.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "01-start-with-the-engineer",
+          "hash": "#card-01-start-with-the-engineer",
+          "textLength": 1230,
+          "max": 68.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/acceptance-decision.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "02-policy-creates-friction-not-an-empty-shelf",
+          "hash": "#card-02-policy-creates-friction-not-an-empty-shelf",
+          "textLength": 1237,
+          "max": 234.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/02-policy-scope.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "03-what-an-esc-actually-does",
+          "hash": "#card-03-what-an-esc-actually-does",
+          "textLength": 920,
+          "max": 1062.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/power-chain.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "04-the-missing-source-has-not-been-found",
+          "hash": "#card-04-the-missing-source-has-not-been-found",
+          "textLength": 1184,
+          "max": 248.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/04-matched-comparison.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "05-why-try-the-controller-first",
+          "hash": "#card-05-why-try-the-controller-first",
+          "textLength": 1367,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/controller-wedge.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "06-origin-is-a-tree",
+          "hash": "#card-06-origin-is-a-tree",
+          "textLength": 848,
+          "max": 0.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/origin-tree.png",
+              "loaded": true,
+              "width": 540
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "07-allied-is-not-the-same-as-eligible",
+          "hash": "#card-07-allied-is-not-the-same-as-eligible",
+          "textLength": 1590,
+          "max": 282.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/07-eligibility.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "08-sell-evidence-with-a-repeatable-product",
+          "hash": "#card-08-sell-evidence-with-a-repeatable-product",
+          "textLength": 1361,
+          "max": 68.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/qualification-package.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "09-counter-drone-is-a-chain-of-decisions",
+          "hash": "#card-09-counter-drone-is-a-chain-of-decisions",
+          "textLength": 969,
+          "max": 1337.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/counter-drone.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "10-separate-the-two-customer-lists",
+          "hash": "#card-10-separate-the-two-customer-lists",
+          "textLength": 1278,
+          "max": 217.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/10-buyer-paths.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "11-the-incumbents-can-close-the-gap",
+          "hash": "#card-11-the-incumbents-can-close-the-gap",
+          "textLength": 1342,
+          "max": 335.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/11-competition.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "12-the-arithmetic-is-thin-in-the-middle",
+          "hash": "#card-12-the-arithmetic-is-thin-in-the-middle",
+          "textLength": 914,
+          "max": 1219.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/economics.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "13-qualification-cannot-hide-the-hardware-business",
+          "hash": "#card-13-qualification-cannot-hide-the-hardware-business",
+          "textLength": 1254,
+          "max": 254.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/13-hardware-economics.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "14-what-the-headline-omits",
+          "hash": "#card-14-what-the-headline-omits",
+          "textLength": 1445,
+          "max": 288.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/14-demand-denominators.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "15-a-plan-that-buys-the-next-answer",
+          "hash": "#card-15-a-plan-that-buys-the-next-answer",
+          "textLength": 1064,
+          "max": 1050.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/roadmap.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "16-make-stopping-a-successful-outcome",
+          "hash": "#card-16-make-stopping-a-successful-outcome",
+          "textLength": 1307,
+          "max": 37.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/stop-go-gate.png",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 0,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": ""
+          }
+        },
+        {
+          "slug": "17-method-and-sources",
+          "hash": "#card-17-method-and-sources",
+          "textLength": 1684,
+          "max": 338.5,
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1432/images/allied-drone-components/17-evidence-types.svg",
+              "loaded": true,
+              "width": 600
+            }
+          ],
+          "bottom": {
+            "lastBottom": 950.129150390625,
+            "viewportBottom": 1000,
+            "reachable": true,
+            "lastText": "ate and specific: matched quotations, a buyer-approved test plan and money committed against acceptance. Evidence ledger"
+          }
+        }
+      ]
+    }
+  ]
+}
