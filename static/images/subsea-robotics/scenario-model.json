@@ -1,0 +1,196 @@
+{
+  "as_of": "2026-11-03",
+  "status": "All numerical commercial inputs invented planning assumptions, not quotes, market rates, forecasts, or field results.",
+  "boundary": "Future one-cell inspection operator with bought vehicle; founder chooses partner/leased baseline first. No weapon systems. All costs borne by operator; contractor commissions require additional input.",
+  "common_assumptions": {
+    "currency": "USD",
+    "route_accepted_km": 20,
+    "vessel_day_cost": 4000,
+    "contract_robot_crew_day_cost": 2000,
+    "mobilisation_fixed_cost": 4000,
+    "processing_review_campaign_cost": 4000,
+    "recovery_damage_reserve_campaign": 1000,
+    "owned_vehicle_and_sensor_capex": 300000,
+    "asset_life_years": 3,
+    "residual_value": 0,
+    "annual_cell_insurance_storage_maintenance": 100000,
+    "annual_central_commercial_R_and_D": 500000,
+    "annual_available_field_days": 220,
+    "receivable_days": 90
+  },
+  "cases": [
+    {
+      "name": "low",
+      "price_per_accepted_km": 2000,
+      "capture_km_per_survey_day": 4,
+      "acceptance_yield": 0.8,
+      "weather_standby_days": 2,
+      "mobilisation_days": 2,
+      "annual_campaigns": 6,
+      "survey_days": 7,
+      "total_vessel_and_robot_crew_days": 11,
+      "campaign_revenue": 40000,
+      "campaign_variable_cost": 75000,
+      "campaign_contribution_before_fixed": -35000,
+      "campaign_contribution_margin": -0.875,
+      "annual_revenue": 240000,
+      "annual_field_days": 66,
+      "annual_cash_operating_contribution_before_capex_tax_finance": -810000,
+      "annual_economic_contribution_after_depreciation": -910000.0,
+      "full_company_cost_per_accepted_km": 9583.333333333334,
+      "break_even_campaign_price_at_assumed_volume": 191666.6666666667,
+      "break_even_price_per_accepted_km_at_assumed_volume": 9583.333333333334,
+      "cash_break_even_campaigns": null,
+      "economic_break_even_campaigns": null,
+      "maximum_campaigns_at_assumed_field_days": 20,
+      "trade_receivables_proxy": 59178.08219178082,
+      "starting_cash_capex_plus_receivables_plus_six_month_cash_fixed": 659178.0821917808,
+      "simple_capex_payback_years_if_positive_cash_contribution": null
+    },
+    {
+      "name": "base",
+      "price_per_accepted_km": 3000,
+      "capture_km_per_survey_day": 8,
+      "acceptance_yield": 0.9,
+      "weather_standby_days": 1,
+      "mobilisation_days": 1,
+      "annual_campaigns": 12,
+      "survey_days": 3,
+      "total_vessel_and_robot_crew_days": 5,
+      "campaign_revenue": 60000,
+      "campaign_variable_cost": 39000,
+      "campaign_contribution_before_fixed": 21000,
+      "campaign_contribution_margin": 0.35,
+      "annual_revenue": 720000,
+      "annual_field_days": 60,
+      "annual_cash_operating_contribution_before_capex_tax_finance": -348000,
+      "annual_economic_contribution_after_depreciation": -448000.0,
+      "full_company_cost_per_accepted_km": 4866.666666666667,
+      "break_even_campaign_price_at_assumed_volume": 97333.33333333334,
+      "break_even_price_per_accepted_km_at_assumed_volume": 4866.666666666667,
+      "cash_break_even_campaigns": 29,
+      "economic_break_even_campaigns": 34,
+      "maximum_campaigns_at_assumed_field_days": 44,
+      "trade_receivables_proxy": 177534.24657534246,
+      "starting_cash_capex_plus_receivables_plus_six_month_cash_fixed": 777534.2465753425,
+      "simple_capex_payback_years_if_positive_cash_contribution": null
+    },
+    {
+      "name": "high",
+      "price_per_accepted_km": 3500,
+      "capture_km_per_survey_day": 12,
+      "acceptance_yield": 0.95,
+      "weather_standby_days": 0,
+      "mobilisation_days": 1,
+      "annual_campaigns": 24,
+      "survey_days": 2,
+      "total_vessel_and_robot_crew_days": 3,
+      "campaign_revenue": 70000,
+      "campaign_variable_cost": 27000,
+      "campaign_contribution_before_fixed": 43000,
+      "campaign_contribution_margin": 0.6142857142857143,
+      "annual_revenue": 1680000,
+      "annual_field_days": 72,
+      "annual_cash_operating_contribution_before_capex_tax_finance": 432000,
+      "annual_economic_contribution_after_depreciation": 332000.0,
+      "full_company_cost_per_accepted_km": 2808.3333333333335,
+      "break_even_campaign_price_at_assumed_volume": 56166.66666666667,
+      "break_even_price_per_accepted_km_at_assumed_volume": 2808.3333333333335,
+      "cash_break_even_campaigns": 14,
+      "economic_break_even_campaigns": 17,
+      "maximum_campaigns_at_assumed_field_days": 73,
+      "trade_receivables_proxy": 414246.5753424658,
+      "starting_cash_capex_plus_receivables_plus_six_month_cash_fixed": 1014246.5753424658,
+      "simple_capex_payback_years_if_positive_cash_contribution": 0.6944444444444444
+    }
+  ],
+  "sensitivities_from_base": [
+    {
+      "change": "price minus 20 percent",
+      "campaign_variable_cost": 39000,
+      "campaign_contribution": 9000,
+      "annual_economic_contribution": -592000.0,
+      "annual_field_days": 60
+    },
+    {
+      "change": "price plus 20 percent",
+      "campaign_variable_cost": 39000,
+      "campaign_contribution": 33000,
+      "annual_economic_contribution": -304000.0,
+      "annual_field_days": 60
+    },
+    {
+      "change": "one extra standby day",
+      "campaign_variable_cost": 45000,
+      "campaign_contribution": 15000,
+      "annual_economic_contribution": -520000.0,
+      "annual_field_days": 72
+    },
+    {
+      "change": "capture throughput halves",
+      "campaign_variable_cost": 57000,
+      "campaign_contribution": 3000,
+      "annual_economic_contribution": -664000.0,
+      "annual_field_days": 96
+    },
+    {
+      "change": "acceptance yield falls to 60 percent",
+      "campaign_variable_cost": 51000,
+      "campaign_contribution": 9000,
+      "annual_economic_contribution": -592000.0,
+      "annual_field_days": 84
+    },
+    {
+      "change": "annual demand doubles",
+      "campaign_variable_cost": 39000,
+      "campaign_contribution": 21000,
+      "annual_economic_contribution": -196000.0,
+      "annual_field_days": 120
+    },
+    {
+      "change": "vessel day cost plus 50 percent",
+      "annual_economic_contribution": -568000.0
+    },
+    {
+      "change": "vessel day cost 2x (uncalibrated stress)",
+      "vessel_day_cost": 8000,
+      "campaign_contribution": 1000,
+      "annual_economic_contribution": -688000.0,
+      "economic_break_even_campaigns": 700,
+      "note": "Not a market benchmark. Baseline charter is uncalibrated and potentially optimistic."
+    },
+    {
+      "change": "vessel day cost 3x (uncalibrated stress)",
+      "vessel_day_cost": 12000,
+      "campaign_contribution": -19000,
+      "annual_economic_contribution": -928000.0,
+      "economic_break_even_campaigns": null,
+      "note": "Not a market benchmark. Baseline charter is uncalibrated and potentially optimistic."
+    },
+    {
+      "change": "one uninsured vehicle loss plus one base campaign contribution lost",
+      "annual_economic_contribution": -769000.0,
+      "note": "Illustrative incremental cash replacement charge against economic result; not actuarial expected loss or accounting treatment."
+    }
+  ],
+  "exclusions_and_limits": [
+    "tax",
+    "finance cost",
+    "contractor revenue share or sales commission",
+    "duties and FX",
+    "bespoke dock construction",
+    "extra fleet or staff when capacity exhausted",
+    "catastrophic liability above reserve",
+    "billing delays beyond receivable assumption",
+    "customer churn and seasonal scheduling conflicts"
+  ],
+  "equations": {
+    "survey_days": "ceil(accepted_route_km / (capture_km_per_day * acceptance_yield))",
+    "total_days": "survey_days + weather_standby_days + mobilisation_days",
+    "campaign_variable_cost": "total_days*(vessel_day_cost+contract_robot_crew_day_cost)+mobilisation_fixed_cost+processing_review+recovery_reserve",
+    "campaign_contribution": "accepted_route_km*price_per_accepted_km-campaign_variable_cost",
+    "annual_economic_contribution": "annual_campaigns*campaign_contribution-annual_cash_fixed-depreciation",
+    "economic_break_even_campaigns": "ceil((annual_cash_fixed+depreciation)/campaign_contribution), undefined if contribution <= 0",
+    "receivables_proxy": "annual_revenue*receivable_days/365, steady billing and no customer prepayments assumed"
+  }
+}

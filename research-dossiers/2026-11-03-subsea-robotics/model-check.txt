@@ -1,0 +1,4 @@
+low: days=11; campaign contribution=$-35,000; annual cash=$-810,000; annual economic=$-910,000; break-even campaigns=None; capacity=20
+base: days=5; campaign contribution=$21,000; annual cash=$-348,000; annual economic=$-448,000; break-even campaigns=34; capacity=44
+high: days=3; campaign contribution=$43,000; annual cash=$432,000; annual economic=$332,000; break-even campaigns=17; capacity=73
+PASS: scenario arithmetic, capacity checks, and sensitivity outputs generated; commercial inputs remain unverified.
