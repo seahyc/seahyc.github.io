@@ -1,0 +1,1161 @@
+{
+  "summary": {
+    "indexCount": 1,
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "cards": 18,
+        "images": 9,
+        "uniqueImages": 9,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      },
+      {
+        "width": 737,
+        "height": 862,
+        "cards": 18,
+        "images": 9,
+        "uniqueImages": 9,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      },
+      {
+        "width": 1440,
+        "height": 1000,
+        "cards": 18,
+        "images": 9,
+        "uniqueImages": 9,
+        "unloaded": [],
+        "docOverflow": false,
+        "errors": [],
+        "overflows": [],
+        "unreachable": [],
+        "hashFailures": []
+      }
+    ]
+  },
+  "report": [
+    {
+      "width": 390,
+      "height": 844,
+      "count": 18,
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/permission-gate.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 313.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.96875,
+            "viewportBottom": 844,
+            "lastText": " justified only if it beats existing protection at a price the buyer will renew."
+          }
+        },
+        {
+          "slug": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "hash": "#card-01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "overflow": [],
+          "images": [],
+          "max": 274.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 763.092529296875,
+            "viewportBottom": 844,
+            "lastText": "today. Neither demand nor that performance advantage has been demonstrated here."
+          }
+        },
+        {
+          "slug": "02-a-signature-answers-one-question",
+          "hash": "#card-02-a-signature-answers-one-question",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/trust-layers.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 278.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.140625,
+            "viewportBottom": 844,
+            "lastText": "l opportunity must explain what better decision follows from knowing the signer."
+          }
+        },
+        {
+          "slug": "03-the-trust-roots-already-have-owners",
+          "hash": "#card-03-the-trust-roots-already-have-owners",
+          "overflow": [],
+          "images": [],
+          "max": 218.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 762.0799560546875,
+            "viewportBottom": 844,
+            "lastText": "ntegrate the protocol and spend engineering effort closer to the harmful action."
+          }
+        },
+        {
+          "slug": "04-the-human-harm-is-real-and-declining",
+          "hash": "#card-04-the-human-harm-is-real-and-declining",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/reported-harm.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 256.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.078125,
+            "viewportBottom": 844,
+            "lastText": "rm will pay. National victim losses cannot be treated as fraud-software revenue."
+          }
+        },
+        {
+          "slug": "05-the-bottleneck-is-a-relationship",
+          "hash": "#card-05-the-bottleneck-is-a-relationship",
+          "overflow": [],
+          "images": [],
+          "max": 216.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.4375,
+            "viewportBottom": 844,
+            "lastText": " does not prove a new vendor can resolve it cheaply or better than the customer."
+          }
+        },
+        {
+          "slug": "06-intervene-before-the-first-harmful-contact",
+          "hash": "#card-06-intervene-before-the-first-harmful-contact",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/wedge.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 453.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 764.8983154296875,
+            "viewportBottom": 844,
+            "lastText": "observe outcomes or act early enough, this wedge fails before the model matters."
+          }
+        },
+        {
+          "slug": "07-choose-the-checkpoint-for-the-missing-fact",
+          "hash": "#card-07-choose-the-checkpoint-for-the-missing-fact",
+          "overflow": [],
+          "images": [],
+          "max": 300.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 762.8995361328125,
+            "viewportBottom": 844,
+            "lastText": "nce and near-bulletproof replacement are not established efficacy findings. Bier"
+          }
+        },
+        {
+          "slug": "08-the-authority-link-must-stay-inspectable",
+          "hash": "#card-08-the-authority-link-must-stay-inspectable",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/authority-link.png",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 306.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.21875,
+            "viewportBottom": 844,
+            "lastText": ". Appeals, source provenance and reversible limits belong in the initial design."
+          }
+        },
+        {
+          "slug": "09-the-generic-stack-is-crowded",
+          "hash": "#card-09-the-generic-stack-is-crowded",
+          "overflow": [],
+          "images": [],
+          "max": 104.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 763.888427734375,
+            "viewportBottom": 844,
+            "lastText": "mpany. The pilot must compare against those alternatives, not an empty baseline."
+          }
+        },
+        {
+          "slug": "10-a-good-looking-score-can-make-a-bad-queue",
+          "hash": "#card-10-a-good-looking-score-can-make-a-bad-queue",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/base-rates.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 329.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.015625,
+            "viewportBottom": 844,
+            "lastText": "d. A convincing dashboard of blocked requests is insufficient evidence of value."
+          }
+        },
+        {
+          "slug": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "hash": "#card-11-prove-incremental-benefit-without-leaking-the-answer",
+          "overflow": [],
+          "images": [],
+          "max": 406.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 763.7360229492188,
+            "viewportBottom": 844,
+            "lastText": " measurements from a pilot. No customer integration or experiment was performed."
+          }
+        },
+        {
+          "slug": "12-review-labour-decides-the-vendor-economics",
+          "hash": "#card-12-review-labour-decides-the-vendor-economics",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/vendor-economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 503.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.4375,
+            "viewportBottom": 844,
+            "lastText": " reserve. This is contribution arithmetic, not an audited software gross margin."
+          }
+        },
+        {
+          "slug": "13-the-expensive-part-can-hide-behind-the-api",
+          "hash": "#card-13-the-expensive-part-can-hide-behind-the-api",
+          "overflow": [],
+          "images": [],
+          "max": 244.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 763.983154296875,
+            "viewportBottom": 844,
+            "lastText": "stigations may create a good service business while failing the software thesis."
+          }
+        },
+        {
+          "slug": "14-the-buyer-has-a-different-equation",
+          "hash": "#card-14-the-buyer-has-a-different-equation",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/buyer-economics.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 414.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.234375,
+            "viewportBottom": 844,
+            "lastText": " economics determines whether this buyer can sustain the company. Planning model"
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "overflow": [],
+          "images": [],
+          "max": 271.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 762.8014526367188,
+            "viewportBottom": 844,
+            "lastText": "tance to poisoned evidence are operating work, not details to defer until scale."
+          }
+        },
+        {
+          "slug": "16-a-path-that-earns-the-next-stage",
+          "hash": "#card-16-a-path-that-earns-the-next-stage",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/roadmap.svg",
+              "loaded": true,
+              "width": 345
+            }
+          ],
+          "max": 668.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.46875,
+            "viewportBottom": 844,
+            "lastText": "n is safer access to real work; the company must earn its role in delivering it."
+          }
+        },
+        {
+          "slug": "17-evidence-and-model",
+          "hash": "#card-17-evidence-and-model",
+          "overflow": [],
+          "images": [],
+          "max": 5529.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 765.234375,
+            "viewportBottom": 844,
+            "lastText": "lan. No outreach, purchase, enforcement or pilot was performed by this research."
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "expected": "cover",
+          "actual": "cover"
+        },
+        {
+          "expected": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "actual": "01-a-cheaper-attacker-does-not-guarantee-a-company"
+        },
+        {
+          "expected": "02-a-signature-answers-one-question",
+          "actual": "02-a-signature-answers-one-question"
+        },
+        {
+          "expected": "03-the-trust-roots-already-have-owners",
+          "actual": "03-the-trust-roots-already-have-owners"
+        },
+        {
+          "expected": "04-the-human-harm-is-real-and-declining",
+          "actual": "04-the-human-harm-is-real-and-declining"
+        },
+        {
+          "expected": "05-the-bottleneck-is-a-relationship",
+          "actual": "05-the-bottleneck-is-a-relationship"
+        },
+        {
+          "expected": "06-intervene-before-the-first-harmful-contact",
+          "actual": "06-intervene-before-the-first-harmful-contact"
+        },
+        {
+          "expected": "07-choose-the-checkpoint-for-the-missing-fact",
+          "actual": "07-choose-the-checkpoint-for-the-missing-fact"
+        },
+        {
+          "expected": "08-the-authority-link-must-stay-inspectable",
+          "actual": "08-the-authority-link-must-stay-inspectable"
+        },
+        {
+          "expected": "09-the-generic-stack-is-crowded",
+          "actual": "09-the-generic-stack-is-crowded"
+        },
+        {
+          "expected": "10-a-good-looking-score-can-make-a-bad-queue",
+          "actual": "10-a-good-looking-score-can-make-a-bad-queue"
+        },
+        {
+          "expected": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "actual": "11-prove-incremental-benefit-without-leaking-the-answer"
+        },
+        {
+          "expected": "12-review-labour-decides-the-vendor-economics",
+          "actual": "12-review-labour-decides-the-vendor-economics"
+        },
+        {
+          "expected": "13-the-expensive-part-can-hide-behind-the-api",
+          "actual": "13-the-expensive-part-can-hide-behind-the-api"
+        },
+        {
+          "expected": "14-the-buyer-has-a-different-equation",
+          "actual": "14-the-buyer-has-a-different-equation"
+        },
+        {
+          "expected": "15-what-the-headline-omits",
+          "actual": "15-what-the-headline-omits"
+        },
+        {
+          "expected": "16-a-path-that-earns-the-next-stage",
+          "actual": "16-a-path-that-earns-the-next-stage"
+        },
+        {
+          "expected": "17-evidence-and-model",
+          "actual": "17-evidence-and-model"
+        }
+      ]
+    },
+    {
+      "width": 737,
+      "height": 862,
+      "count": 18,
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/permission-gate.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "max": 377.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.875,
+            "viewportBottom": 862,
+            "lastText": " justified only if it beats existing protection at a price the buyer will renew."
+          }
+        },
+        {
+          "slug": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "hash": "#card-01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 816.3304443359375,
+            "viewportBottom": 862,
+            "lastText": "today. Neither demand nor that performance advantage has been demonstrated here."
+          }
+        },
+        {
+          "slug": "02-a-signature-answers-one-question",
+          "hash": "#card-02-a-signature-answers-one-question",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/trust-layers.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 402.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.859375,
+            "viewportBottom": 862,
+            "lastText": "l opportunity must explain what better decision follows from knowing the signer."
+          }
+        },
+        {
+          "slug": "03-the-trust-roots-already-have-owners",
+          "hash": "#card-03-the-trust-roots-already-have-owners",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 784.7776489257812,
+            "viewportBottom": 862,
+            "lastText": "ntegrate the protocol and spend engineering effort closer to the harmful action."
+          }
+        },
+        {
+          "slug": "04-the-human-harm-is-real-and-declining",
+          "hash": "#card-04-the-human-harm-is-real-and-declining",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/reported-harm.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 400.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.75,
+            "viewportBottom": 862,
+            "lastText": "rm will pay. National victim losses cannot be treated as fraud-software revenue."
+          }
+        },
+        {
+          "slug": "05-the-bottleneck-is-a-relationship",
+          "hash": "#card-05-the-bottleneck-is-a-relationship",
+          "overflow": [],
+          "images": [],
+          "max": 42.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 811.7691040039062,
+            "viewportBottom": 862,
+            "lastText": " does not prove a new vendor can resolve it cheaply or better than the customer."
+          }
+        },
+        {
+          "slug": "06-intervene-before-the-first-harmful-contact",
+          "hash": "#card-06-intervene-before-the-first-harmful-contact",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/wedge.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 513.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 811.0934448242188,
+            "viewportBottom": 862,
+            "lastText": "observe outcomes or act early enough, this wedge fails before the model matters."
+          }
+        },
+        {
+          "slug": "07-choose-the-checkpoint-for-the-missing-fact",
+          "hash": "#card-07-choose-the-checkpoint-for-the-missing-fact",
+          "overflow": [],
+          "images": [],
+          "max": 26.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 810.4918212890625,
+            "viewportBottom": 862,
+            "lastText": "nce and near-bulletproof replacement are not established efficacy findings. Bier"
+          }
+        },
+        {
+          "slug": "08-the-authority-link-must-stay-inspectable",
+          "hash": "#card-08-the-authority-link-must-stay-inspectable",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/authority-link.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "max": 214.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.796875,
+            "viewportBottom": 862,
+            "lastText": ". Appeals, source provenance and reversible limits belong in the initial design."
+          }
+        },
+        {
+          "slug": "09-the-generic-stack-is-crowded",
+          "hash": "#card-09-the-generic-stack-is-crowded",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 697.8319091796875,
+            "viewportBottom": 862,
+            "lastText": "mpany. The pilot must compare against those alternatives, not an empty baseline."
+          }
+        },
+        {
+          "slug": "10-a-good-looking-score-can-make-a-bad-queue",
+          "hash": "#card-10-a-good-looking-score-can-make-a-bad-queue",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/base-rates.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 442.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.890625,
+            "viewportBottom": 862,
+            "lastText": "d. A convincing dashboard of blocked requests is insufficient evidence of value."
+          }
+        },
+        {
+          "slug": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "hash": "#card-11-prove-incremental-benefit-without-leaking-the-answer",
+          "overflow": [],
+          "images": [],
+          "max": 73.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 810.6356811523438,
+            "viewportBottom": 862,
+            "lastText": " measurements from a pilot. No customer integration or experiment was performed."
+          }
+        },
+        {
+          "slug": "12-review-labour-decides-the-vendor-economics",
+          "hash": "#card-12-review-labour-decides-the-vendor-economics",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/vendor-economics.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 572.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.625,
+            "viewportBottom": 862,
+            "lastText": " reserve. This is contribution arithmetic, not an audited software gross margin."
+          }
+        },
+        {
+          "slug": "13-the-expensive-part-can-hide-behind-the-api",
+          "hash": "#card-13-the-expensive-part-can-hide-behind-the-api",
+          "overflow": [],
+          "images": [],
+          "max": 26.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 810.5635986328125,
+            "viewportBottom": 862,
+            "lastText": "stigations may create a good service business while failing the software thesis."
+          }
+        },
+        {
+          "slug": "14-the-buyer-has-a-different-equation",
+          "hash": "#card-14-the-buyer-has-a-different-equation",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/buyer-economics.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 455.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.5625,
+            "viewportBottom": 862,
+            "lastText": " economics determines whether this buyer can sustain the company. Planning model"
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 786.3723754882812,
+            "viewportBottom": 862,
+            "lastText": "tance to poisoned evidence are operating work, not details to defer until scale."
+          }
+        },
+        {
+          "slug": "16-a-path-that-earns-the-next-stage",
+          "hash": "#card-16-a-path-that-earns-the-next-stage",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/roadmap.svg",
+              "loaded": true,
+              "width": 634
+            }
+          ],
+          "max": 647.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.90625,
+            "viewportBottom": 862,
+            "lastText": "n is safer access to real work; the company must earn its role in delivering it."
+          }
+        },
+        {
+          "slug": "17-evidence-and-model",
+          "hash": "#card-17-evidence-and-model",
+          "overflow": [],
+          "images": [],
+          "max": 2819.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 813.1875,
+            "viewportBottom": 862,
+            "lastText": "lan. No outreach, purchase, enforcement or pilot was performed by this research."
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "expected": "cover",
+          "actual": "cover"
+        },
+        {
+          "expected": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "actual": "01-a-cheaper-attacker-does-not-guarantee-a-company"
+        },
+        {
+          "expected": "02-a-signature-answers-one-question",
+          "actual": "02-a-signature-answers-one-question"
+        },
+        {
+          "expected": "03-the-trust-roots-already-have-owners",
+          "actual": "03-the-trust-roots-already-have-owners"
+        },
+        {
+          "expected": "04-the-human-harm-is-real-and-declining",
+          "actual": "04-the-human-harm-is-real-and-declining"
+        },
+        {
+          "expected": "05-the-bottleneck-is-a-relationship",
+          "actual": "05-the-bottleneck-is-a-relationship"
+        },
+        {
+          "expected": "06-intervene-before-the-first-harmful-contact",
+          "actual": "06-intervene-before-the-first-harmful-contact"
+        },
+        {
+          "expected": "07-choose-the-checkpoint-for-the-missing-fact",
+          "actual": "07-choose-the-checkpoint-for-the-missing-fact"
+        },
+        {
+          "expected": "08-the-authority-link-must-stay-inspectable",
+          "actual": "08-the-authority-link-must-stay-inspectable"
+        },
+        {
+          "expected": "09-the-generic-stack-is-crowded",
+          "actual": "09-the-generic-stack-is-crowded"
+        },
+        {
+          "expected": "10-a-good-looking-score-can-make-a-bad-queue",
+          "actual": "10-a-good-looking-score-can-make-a-bad-queue"
+        },
+        {
+          "expected": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "actual": "11-prove-incremental-benefit-without-leaking-the-answer"
+        },
+        {
+          "expected": "12-review-labour-decides-the-vendor-economics",
+          "actual": "12-review-labour-decides-the-vendor-economics"
+        },
+        {
+          "expected": "13-the-expensive-part-can-hide-behind-the-api",
+          "actual": "13-the-expensive-part-can-hide-behind-the-api"
+        },
+        {
+          "expected": "14-the-buyer-has-a-different-equation",
+          "actual": "14-the-buyer-has-a-different-equation"
+        },
+        {
+          "expected": "15-what-the-headline-omits",
+          "actual": "15-what-the-headline-omits"
+        },
+        {
+          "expected": "16-a-path-that-earns-the-next-stage",
+          "actual": "16-a-path-that-earns-the-next-stage"
+        },
+        {
+          "expected": "17-evidence-and-model",
+          "actual": "17-evidence-and-model"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "count": 18,
+      "docOverflow": false,
+      "errors": [],
+      "cards": [
+        {
+          "slug": "cover",
+          "hash": "#card-cover",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/permission-gate.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 910.453125,
+            "viewportBottom": 1000,
+            "lastText": " justified only if it beats existing protection at a price the buyer will renew."
+          }
+        },
+        {
+          "slug": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "hash": "#card-01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 537.5509643554688,
+            "viewportBottom": 1000,
+            "lastText": "today. Neither demand nor that performance advantage has been demonstrated here."
+          }
+        },
+        {
+          "slug": "02-a-signature-answers-one-question",
+          "hash": "#card-02-a-signature-answers-one-question",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/trust-layers.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 594.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.078125,
+            "viewportBottom": 1000,
+            "lastText": "l opportunity must explain what better decision follows from knowing the signer."
+          }
+        },
+        {
+          "slug": "03-the-trust-roots-already-have-owners",
+          "hash": "#card-03-the-trust-roots-already-have-owners",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 537.5274658203125,
+            "viewportBottom": 1000,
+            "lastText": "ntegrate the protocol and spend engineering effort closer to the harmful action."
+          }
+        },
+        {
+          "slug": "04-the-human-harm-is-real-and-declining",
+          "hash": "#card-04-the-human-harm-is-real-and-declining",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/reported-harm.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 589.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.890625,
+            "viewportBottom": 1000,
+            "lastText": "rm will pay. National victim losses cannot be treated as fraud-software revenue."
+          }
+        },
+        {
+          "slug": "05-the-bottleneck-is-a-relationship",
+          "hash": "#card-05-the-bottleneck-is-a-relationship",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 618.612548828125,
+            "viewportBottom": 1000,
+            "lastText": " does not prove a new vendor can resolve it cheaply or better than the customer."
+          }
+        },
+        {
+          "slug": "06-intervene-before-the-first-harmful-contact",
+          "hash": "#card-06-intervene-before-the-first-harmful-contact",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/wedge.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 641.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 948.035400390625,
+            "viewportBottom": 1000,
+            "lastText": "observe outcomes or act early enough, this wedge fails before the model matters."
+          }
+        },
+        {
+          "slug": "07-choose-the-checkpoint-for-the-missing-fact",
+          "hash": "#card-07-choose-the-checkpoint-for-the-missing-fact",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 555.366455078125,
+            "viewportBottom": 1000,
+            "lastText": "nce and near-bulletproof replacement are not established efficacy findings. Bier"
+          }
+        },
+        {
+          "slug": "08-the-authority-link-must-stay-inspectable",
+          "hash": "#card-08-the-authority-link-must-stay-inspectable",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/authority-link.png",
+              "loaded": true,
+              "width": 560
+            }
+          ],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 770.5,
+            "viewportBottom": 1000,
+            "lastText": ". Appeals, source provenance and reversible limits belong in the initial design."
+          }
+        },
+        {
+          "slug": "09-the-generic-stack-is-crowded",
+          "hash": "#card-09-the-generic-stack-is-crowded",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 490.4443054199219,
+            "viewportBottom": 1000,
+            "lastText": "mpany. The pilot must compare against those alternatives, not an empty baseline."
+          }
+        },
+        {
+          "slug": "10-a-good-looking-score-can-make-a-bad-queue",
+          "hash": "#card-10-a-good-looking-score-can-make-a-bad-queue",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/base-rates.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 642.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.46875,
+            "viewportBottom": 1000,
+            "lastText": "d. A convincing dashboard of blocked requests is insufficient evidence of value."
+          }
+        },
+        {
+          "slug": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "hash": "#card-11-prove-incremental-benefit-without-leaking-the-answer",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 555.4244384765625,
+            "viewportBottom": 1000,
+            "lastText": " measurements from a pilot. No customer integration or experiment was performed."
+          }
+        },
+        {
+          "slug": "12-review-labour-decides-the-vendor-economics",
+          "hash": "#card-12-review-labour-decides-the-vendor-economics",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/vendor-economics.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 798.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.046875,
+            "viewportBottom": 1000,
+            "lastText": " reserve. This is contribution arithmetic, not an audited software gross margin."
+          }
+        },
+        {
+          "slug": "13-the-expensive-part-can-hide-behind-the-api",
+          "hash": "#card-13-the-expensive-part-can-hide-behind-the-api",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 552.7986450195312,
+            "viewportBottom": 1000,
+            "lastText": "stigations may create a good service business while failing the software thesis."
+          }
+        },
+        {
+          "slug": "14-the-buyer-has-a-different-equation",
+          "hash": "#card-14-the-buyer-has-a-different-equation",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/buyer-economics.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 667.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.65625,
+            "viewportBottom": 1000,
+            "lastText": " economics determines whether this buyer can sustain the company. Planning model"
+          }
+        },
+        {
+          "slug": "15-what-the-headline-omits",
+          "hash": "#card-15-what-the-headline-omits",
+          "overflow": [],
+          "images": [],
+          "max": 0.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 530.4198608398438,
+            "viewportBottom": 1000,
+            "lastText": "tance to poisoned evidence are operating work, not details to defer until scale."
+          }
+        },
+        {
+          "slug": "16-a-path-that-earns-the-next-stage",
+          "hash": "#card-16-a-path-that-earns-the-next-stage",
+          "overflow": [],
+          "images": [
+            {
+              "src": "http://127.0.0.1:1413/images/agent-trust/roadmap.svg",
+              "loaded": true,
+              "width": 1260
+            }
+          ],
+          "max": 744.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.390625,
+            "viewportBottom": 1000,
+            "lastText": "n is safer access to real work; the company must earn its role in delivering it."
+          }
+        },
+        {
+          "slug": "17-evidence-and-model",
+          "hash": "#card-17-evidence-and-model",
+          "overflow": [],
+          "images": [],
+          "max": 1469.5,
+          "bottom": {
+            "reachable": true,
+            "lastBottom": 951.03125,
+            "viewportBottom": 1000,
+            "lastText": "lan. No outreach, purchase, enforcement or pilot was performed by this research."
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "expected": "cover",
+          "actual": "cover"
+        },
+        {
+          "expected": "01-a-cheaper-attacker-does-not-guarantee-a-company",
+          "actual": "01-a-cheaper-attacker-does-not-guarantee-a-company"
+        },
+        {
+          "expected": "02-a-signature-answers-one-question",
+          "actual": "02-a-signature-answers-one-question"
+        },
+        {
+          "expected": "03-the-trust-roots-already-have-owners",
+          "actual": "03-the-trust-roots-already-have-owners"
+        },
+        {
+          "expected": "04-the-human-harm-is-real-and-declining",
+          "actual": "04-the-human-harm-is-real-and-declining"
+        },
+        {
+          "expected": "05-the-bottleneck-is-a-relationship",
+          "actual": "05-the-bottleneck-is-a-relationship"
+        },
+        {
+          "expected": "06-intervene-before-the-first-harmful-contact",
+          "actual": "06-intervene-before-the-first-harmful-contact"
+        },
+        {
+          "expected": "07-choose-the-checkpoint-for-the-missing-fact",
+          "actual": "07-choose-the-checkpoint-for-the-missing-fact"
+        },
+        {
+          "expected": "08-the-authority-link-must-stay-inspectable",
+          "actual": "08-the-authority-link-must-stay-inspectable"
+        },
+        {
+          "expected": "09-the-generic-stack-is-crowded",
+          "actual": "09-the-generic-stack-is-crowded"
+        },
+        {
+          "expected": "10-a-good-looking-score-can-make-a-bad-queue",
+          "actual": "10-a-good-looking-score-can-make-a-bad-queue"
+        },
+        {
+          "expected": "11-prove-incremental-benefit-without-leaking-the-answer",
+          "actual": "11-prove-incremental-benefit-without-leaking-the-answer"
+        },
+        {
+          "expected": "12-review-labour-decides-the-vendor-economics",
+          "actual": "12-review-labour-decides-the-vendor-economics"
+        },
+        {
+          "expected": "13-the-expensive-part-can-hide-behind-the-api",
+          "actual": "13-the-expensive-part-can-hide-behind-the-api"
+        },
+        {
+          "expected": "14-the-buyer-has-a-different-equation",
+          "actual": "14-the-buyer-has-a-different-equation"
+        },
+        {
+          "expected": "15-what-the-headline-omits",
+          "actual": "15-what-the-headline-omits"
+        },
+        {
+          "expected": "16-a-path-that-earns-the-next-stage",
+          "actual": "16-a-path-that-earns-the-next-stage"
+        },
+        {
+          "expected": "17-evidence-and-model",
+          "actual": "17-evidence-and-model"
+        }
+      ]
+    }
+  ]
+}

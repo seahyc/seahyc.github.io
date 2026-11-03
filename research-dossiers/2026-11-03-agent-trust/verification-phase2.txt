@@ -1,0 +1,29 @@
+Phase 2 verification, 3 November 2026
+Initial sandbox Chromium launch failed: bootstrap_check_in Permission denied (1100).
+Approved outside-sandbox local Playwright launch succeeded. Initial review found shared CSS image backgrounds, two clipped SVG headings, and literal Markdown caption links. Fixed in report-owned content/assets only. One early full check timed out during screenshot collection, so it was not counted as a passing result. Final results below supersede it.
+hugo --destination /tmp/fb-agent-trust/site --cacheDir /tmp/fb-agent-trust/cache --noBuildLock --quiet
+Hugo exit=0 (quiet; no stdout). Canonical HTML exists: True
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/permission-gate.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/agent-trust/authority-link.png
+  hasAlpha: yes
+
+authority-link.png: RGBA, alpha extrema=(0, 255), corner alpha=[0, 0, 0, 0]
+permission-gate.png: RGBA, alpha extrema=(0, 252), corner alpha=[0, 0, 0, 0]
+All seven SVG actual text-bound checks: no clipping.
+Full checker before cover minimum-font adjustment: PASS; prior hash failures were same-document navigation checked before settling. Final direct-load test uses unique query per target.
+390x844: cards=18 images=9 unloaded=0 docOverflow=False errors=0 overflows=0 unreachable=0 hashFailures=0
+737x862: cards=18 images=9 unloaded=0 docOverflow=False errors=0 overflows=0 unreachable=0 hashFailures=0
+1440x1000: cards=18 images=9 unloaded=0 docOverflow=False errors=0 overflows=0 unreachable=0 hashFailures=0
+Index canonical link count=1. Cards=18; unique substantive visuals=9 (7 SVG + 2 watercolor PNG).
+
+FINAL VERIFIED ARTIFACT — supersedes preliminary results above
+Final Hugo private build: exit=0 (quiet; no stdout).
+390x844: PASS — 18 cards, 9 visuals, every meaningful ending reachable, every direct hash passes; zero overflow, unloaded images or page errors.
+737x862: PASS — 18 cards, 9 visuals, every meaningful ending reachable, every direct hash passes; zero overflow, unloaded images or page errors.
+1440x1000: PASS — 18 cards, 9 visuals, every meaningful ending reachable, every direct hash passes; zero overflow, unloaded images or page errors.
+Final checker targets visible paragraphs/captions/tables/headings, excluding hidden separators. All 54 ending targets have nonzero bounds.
+Gate 2 independent review: PASS.
+18 cards; 9 unique substantive visuals = 7 SVG + 2 generated watercolor PNG.
+Both PNGs: hasAlpha yes; four corner alpha values [0,0,0,0].
+No shared renderer/style edit, git command or publication performed.

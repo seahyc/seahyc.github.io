@@ -1,0 +1,13 @@
+import { chromium } from '/Users/yingcong/Code/seahyc.github.io/node_modules/playwright/index.mjs';
+const b=await chromium.launch({headless:true});
+const p=await b.newPage({viewport:{width:390,height:844}});
+await p.goto('http://127.0.0.1:1413/learning/trust-when-agents-arrive/?review=link#card-12-review-labour-decides-the-vendor-economics',{waitUntil:'networkidle'});
+await p.waitForFunction(()=>document.querySelector('.swiper')?.swiper);
+const before=await p.locator('.swiper-slide-active').getAttribute('data-card-slug');
+const link=p.locator('.swiper-slide-active a[href="#card-17-evidence-and-model"]').last();
+await p.locator('.swiper-slide-active .story-scroll').evaluate(s=>s.renderCardOffset(s.cardMaxOffset()));
+await link.click();
+await p.waitForTimeout(1000);
+const after=await p.locator('.swiper-slide-active').getAttribute('data-card-slug');
+console.log(JSON.stringify({before,after,hash:await p.evaluate(()=>location.hash),pass:after==='17-evidence-and-model'}));
+await b.close();if(after!=='17-evidence-and-model')process.exitCode=1;

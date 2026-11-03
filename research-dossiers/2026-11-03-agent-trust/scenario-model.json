@@ -1,0 +1,196 @@
+{
+  "date": "2026-11-03",
+  "currency": "USD",
+  "unit": "one platform customer per month",
+  "status": "Invented planning assumptions and arithmetic; not quotations, measured performance, forecasts or market prices.",
+  "scope": "Employer/listing/contact risk workflow; 100000 billable risk events, not people, per month.",
+  "common_inputs": {
+    "events_per_month": 100000,
+    "screening_cost_per_event_usd": 0.002,
+    "enrichment_checks": 2000,
+    "enrichment_cost_usd": 0.1,
+    "stepups": 200,
+    "stepup_cost_usd": 1,
+    "review_minutes": 4,
+    "reviewer_loaded_hourly_usd": 25,
+    "support_loaded_hourly_usd": 75,
+    "incident_reserve_revenue_share": 0.05,
+    "monthly_central_fixed_usd": 30000,
+    "acquisition_cost_usd": 10000
+  },
+  "cases": [
+    {
+      "name": "low",
+      "monthly_price_usd": 2000,
+      "manual_review_share": 0.01,
+      "support_hours": 16,
+      "onboarding_hours": 40,
+      "reviews_per_month": 1000.0,
+      "costs_usd": {
+        "screening": 200.0,
+        "enrichment": 200.0,
+        "stepups": 200,
+        "review": 1666.6666666666667,
+        "support": 1200,
+        "incident_reserve": 100.0
+      },
+      "recurring_cost_usd": 3566.666666666667,
+      "monthly_contribution_usd": -1566.666666666667,
+      "contribution_margin": -0.7833333333333334,
+      "recurring_break_even_price_usd": 3649.1228070175443,
+      "onboarding_cost_usd": 3000,
+      "cash_payback_months": null,
+      "year_one_contribution_after_acquisition_onboarding_usd": -31800.000000000004,
+      "central_fixed_break_even_customers": null
+    },
+    {
+      "name": "base",
+      "monthly_price_usd": 5000,
+      "manual_review_share": 0.005,
+      "support_hours": 8,
+      "onboarding_hours": 24,
+      "reviews_per_month": 500.0,
+      "costs_usd": {
+        "screening": 200.0,
+        "enrichment": 200.0,
+        "stepups": 200,
+        "review": 833.3333333333334,
+        "support": 600,
+        "incident_reserve": 250.0
+      },
+      "recurring_cost_usd": 2283.3333333333335,
+      "monthly_contribution_usd": 2716.6666666666665,
+      "contribution_margin": 0.5433333333333333,
+      "recurring_break_even_price_usd": 2140.350877192983,
+      "onboarding_cost_usd": 1800,
+      "cash_payback_months": 4.34355828220859,
+      "year_one_contribution_after_acquisition_onboarding_usd": 20800.0,
+      "central_fixed_break_even_customers": 12
+    },
+    {
+      "name": "high",
+      "monthly_price_usd": 8000,
+      "manual_review_share": 0.002,
+      "support_hours": 4,
+      "onboarding_hours": 16,
+      "reviews_per_month": 200.0,
+      "costs_usd": {
+        "screening": 200.0,
+        "enrichment": 200.0,
+        "stepups": 200,
+        "review": 333.33333333333337,
+        "support": 300,
+        "incident_reserve": 400.0
+      },
+      "recurring_cost_usd": 1633.3333333333335,
+      "monthly_contribution_usd": 6366.666666666666,
+      "contribution_margin": 0.7958333333333333,
+      "recurring_break_even_price_usd": 1298.245614035088,
+      "onboarding_cost_usd": 1200,
+      "cash_payback_months": 1.7591623036649215,
+      "year_one_contribution_after_acquisition_onboarding_usd": 65200.0,
+      "central_fixed_break_even_customers": 5
+    }
+  ],
+  "sensitivities": [
+    {
+      "label": "base",
+      "monthly_contribution_usd": 2716.6666666666665,
+      "margin": 0.5433333333333333
+    },
+    {
+      "label": "price minus 20%",
+      "monthly_contribution_usd": 1766.6666666666665,
+      "margin": 0.44166666666666665
+    },
+    {
+      "label": "review share doubles",
+      "monthly_contribution_usd": 1883.333333333333,
+      "margin": 0.3766666666666666
+    },
+    {
+      "label": "support doubles",
+      "monthly_contribution_usd": 2116.6666666666665,
+      "margin": 0.4233333333333333
+    },
+    {
+      "label": "price minus 20%, review share doubles, support doubles",
+      "monthly_contribution_usd": 333.33333333333303,
+      "margin": 0.08333333333333326
+    }
+  ],
+  "buyer_cases": [
+    {
+      "name": "low",
+      "net_customer_review_hours_saved": 80,
+      "customer_loaded_hourly_usd": 25,
+      "baseline_monthly_platform_captured_harm_cost_usd": 5000,
+      "incremental_reduction_fraction": 0.1,
+      "incremental_good_user_friction_cost_usd": 1000,
+      "benefit_before_fee_usd": 1500.0,
+      "fee_usd": 5000,
+      "benefit_to_fee": 0.3,
+      "net_benefit_after_fee_usd": -3500.0
+    },
+    {
+      "name": "base",
+      "net_customer_review_hours_saved": 160,
+      "customer_loaded_hourly_usd": 25,
+      "baseline_monthly_platform_captured_harm_cost_usd": 12000,
+      "incremental_reduction_fraction": 0.25,
+      "incremental_good_user_friction_cost_usd": 500,
+      "benefit_before_fee_usd": 6500.0,
+      "fee_usd": 5000,
+      "benefit_to_fee": 1.3,
+      "net_benefit_after_fee_usd": 1500.0
+    },
+    {
+      "name": "high",
+      "net_customer_review_hours_saved": 240,
+      "customer_loaded_hourly_usd": 25,
+      "baseline_monthly_platform_captured_harm_cost_usd": 20000,
+      "incremental_reduction_fraction": 0.4,
+      "incremental_good_user_friction_cost_usd": 250,
+      "benefit_before_fee_usd": 13750.0,
+      "fee_usd": 5000,
+      "benefit_to_fee": 2.75,
+      "net_benefit_after_fee_usd": 8750.0
+    }
+  ],
+  "base_rate_examples": [
+    {
+      "events": 100000,
+      "abuse_prevalence": 0.001,
+      "recall": 0.8,
+      "false_positive_rate": 0.001,
+      "true_positives": 80.0,
+      "false_positives": 99.9,
+      "precision": 0.44469149527515284
+    },
+    {
+      "events": 100000,
+      "abuse_prevalence": 0.001,
+      "recall": 0.8,
+      "false_positive_rate": 0.0001,
+      "true_positives": 80.0,
+      "false_positives": 9.99,
+      "precision": 0.888987665296144
+    }
+  ],
+  "exclusions": [
+    "tax",
+    "financing",
+    "FX",
+    "bad debt",
+    "extra security certification/legal costs",
+    "catastrophic liability beyond illustrative reserve"
+  ],
+  "central_cost_scope": "30000/month illustrative R&D, sales, founder/management and security overhead; direct support and review already charged per customer; no double counting.",
+  "assumptions_notes": [
+    "No per-event price extrapolation from SEON or other vendor menus.",
+    "Four-minute reviews are risk-event cases; repeated events for one recruiter must be deduplicated in measured workload.",
+    "Stepup includes a blended placeholder for vendor verification, not a guaranteed liveness or phone tariff.",
+    "Positive payback assumes immediate steady billing, no churn, no payment delay and no acquisition failures.",
+    "Incident reserve is an allocation, not insurance or a maximum liability."
+  ]
+}

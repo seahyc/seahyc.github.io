@@ -1,0 +1,11 @@
+low: cost=3566.67; contribution=-1566.67; margin=-78.33%; break_even_customers=None
+base: cost=2283.33; contribution=2716.67; margin=54.33%; break_even_customers=12
+high: cost=1633.33; contribution=6366.67; margin=79.58%; break_even_customers=5
+buyer low: benefit=1500.00; fee_ratio=0.30
+buyer base: benefit=6500.00; fee_ratio=1.30
+buyer high: benefit=13750.00; fee_ratio=2.75
+base_rate: FPR=0.10%; TP=80.00; FP=99.90; precision=44.47%
+base_rate: FPR=0.01%; TP=80.00; FP=9.99; precision=88.90%
+PASS: syntax, JSON, contribution, break-even, buyer benefit, base-rate arithmetic; 26 ledger entries; 32 distinct ledger source URLs.
+Phase boundary: no public narrative, images, Hugo build or deployment performed.
+Browser cleanup: owned seed tabs 68283C72 and B0310015, Apple tab A809E126 all returned their respective tab IDs in CLI close confirmations.
