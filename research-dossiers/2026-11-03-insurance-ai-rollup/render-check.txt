@@ -1,0 +1,4 @@
+390x844: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+737x862: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+1440x1000: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+PASS

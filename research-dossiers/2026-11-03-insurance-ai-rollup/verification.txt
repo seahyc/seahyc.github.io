@@ -1,0 +1,42 @@
+$ hugo --destination /tmp/fb-insurance-ai-rollup/site --cacheDir /tmp/fb-insurance-ai-rollup/cache --noBuildLock --quiet
+exit=0
+
+$ sips -g hasAlpha static/images/insurance-ai-rollup/ai.png static/images/insurance-ai-rollup/cover.png static/images/insurance-ai-rollup/expansion.png static/images/insurance-ai-rollup/retention.png static/images/insurance-ai-rollup/rights.png static/images/insurance-ai-rollup/team.png
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/ai.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/cover.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/expansion.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/retention.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/rights.png
+  hasAlpha: yes
+/Users/yingcong/Code/seahyc.github.io/static/images/insurance-ai-rollup/team.png
+  hasAlpha: yes
+exit=0
+
+$ wc -l content/research/insurance-ai-rollup/index.md
+     273 content/research/insurance-ai-rollup/index.md
+exit=0
+
+Final after diagram width cap:
+$ hugo --destination /tmp/fb-insurance-ai-rollup/site --cacheDir /tmp/fb-insurance-ai-rollup/cache --noBuildLock --quiet
+exit=0
+
+Required visual checker (final):
+cards 18 · visuals on cards 18 · svg 12 · raster 6 (need ≥6)
+PASS
+
+390x844: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+737x862: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+1440x1000: cards 18; endings 18/18; direct hashes 18/18; images 18/18; horizontal overflow 0; page errors 0; broken card refs 0
+PASS
+
+PIL saved-raster verification:
+ai.png: RGBA; corners [0, 0, 0, 0]
+cover.png: RGBA; corners [0, 0, 0, 0]
+expansion.png: RGBA; corners [0, 0, 0, 0]
+retention.png: RGBA; corners [0, 0, 0, 0]
+rights.png: RGBA; corners [0, 0, 0, 0]
+team.png: RGBA; corners [0, 0, 0, 0]

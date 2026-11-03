@@ -1,0 +1,416 @@
+[
+  {
+    "card": "card-cover",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-cover",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-cover",
+      "bottom": 930.796875,
+      "top": 877.078125,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-01-own-the-relationship-through-renewal",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-01-own-the-relationship-through-renewal",
+      "max": 210.5,
+      "offset": 0,
+      "h": 1185,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-01-own-the-relationship-through-renewal",
+      "bottom": 951.8125,
+      "top": 920.234375,
+      "offset": 210.5,
+      "max": 210.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-02-a-region-is-not-an-acquisition-inventory",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-02-a-region-is-not-an-acquisition-inventory",
+      "max": 226.5,
+      "offset": 0,
+      "h": 1201,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-02-a-region-is-not-an-acquisition-inventory",
+      "bottom": 951.3125,
+      "top": 856.578125,
+      "offset": 226.5,
+      "max": 226.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-03-two-claims-businesses-two-authorities",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-03-two-claims-businesses-two-authorities",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-03-two-claims-businesses-two-authorities",
+      "bottom": 875.6875,
+      "top": 812.53125,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-04-choose-the-operator-keep-the-alternatives-honest",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-04-choose-the-operator-keep-the-alternatives-honest",
+      "max": 90.5,
+      "offset": 0,
+      "h": 1065,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-04-choose-the-operator-keep-the-alternatives-honest",
+      "bottom": 951.453125,
+      "top": 888.296875,
+      "offset": 90.5,
+      "max": 90.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-05-let-ai-do-the-reading-then-count-the-cash",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-05-let-ai-do-the-reading-then-count-the-cash",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-05-let-ai-do-the-reading-then-count-the-cash",
+      "bottom": 860.1875,
+      "top": 765.453125,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-06-price-the-anchor",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-06-price-the-anchor",
+      "max": 242.5,
+      "offset": 0,
+      "h": 1217,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-06-price-the-anchor",
+      "bottom": 951.390625,
+      "top": 856.65625,
+      "offset": 242.5,
+      "max": 242.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-07-the-cash-test",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-07-the-cash-test",
+      "max": 532.5,
+      "offset": 0,
+      "h": 1507,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-07-the-cash-test",
+      "bottom": 951.234375,
+      "top": 888.078125,
+      "offset": 532.5,
+      "max": 532.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-08-recovery-must-survive-the-collection-lag",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-08-recovery-must-survive-the-collection-lag",
+      "max": 303.5,
+      "offset": 0,
+      "h": 1278,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-08-recovery-must-survive-the-collection-lag",
+      "bottom": 951.046875,
+      "top": 824.734375,
+      "offset": 303.5,
+      "max": 303.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-09-work-backwards-from-institutional-scale",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-09-work-backwards-from-institutional-scale",
+      "max": 278.5,
+      "offset": 0,
+      "h": 1253,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-09-work-backwards-from-institutional-scale",
+      "bottom": 951.421875,
+      "top": 856.6875,
+      "offset": 278.5,
+      "max": 278.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-10-the-people-are-part-of-the-asset",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-10-the-people-are-part-of-the-asset",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-10-the-people-are-part-of-the-asset",
+      "bottom": 838.796875,
+      "top": 744.0625,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-11-what-the-headline-omits",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-11-what-the-headline-omits",
+      "max": 273.5,
+      "offset": 0,
+      "h": 1248,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-11-what-the-headline-omits",
+      "bottom": 951.96875,
+      "top": 857.234375,
+      "offset": 273.5,
+      "max": 273.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-12-spend-the-first-tranche-on-access",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-12-spend-the-first-tranche-on-access",
+      "max": 242.5,
+      "offset": 0,
+      "h": 1217,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-12-spend-the-first-tranche-on-access",
+      "bottom": 951.390625,
+      "top": 856.65625,
+      "offset": 242.5,
+      "max": 242.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-13-earn-trust-before-asking-for-a-book",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-13-earn-trust-before-asking-for-a-book",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-13-earn-trust-before-asking-for-a-book",
+      "bottom": 880.609375,
+      "top": 817.453125,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-14-design-the-permissions-before-the-platform",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-14-design-the-permissions-before-the-platform",
+      "max": 303.5,
+      "offset": 0,
+      "h": 1278,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-14-design-the-permissions-before-the-platform",
+      "bottom": 951.046875,
+      "top": 856.3125,
+      "offset": 303.5,
+      "max": 303.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-15-negotiate-the-founder-outcome-in-the-waterfall",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-15-negotiate-the-founder-outcome-in-the-waterfall",
+      "max": 384.5,
+      "offset": 0,
+      "h": 1359,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-15-negotiate-the-founder-outcome-in-the-waterfall",
+      "bottom": 951.203125,
+      "top": 856.46875,
+      "offset": 384.5,
+      "max": 384.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-16-replicate-proof-then-widen-the-map",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-16-replicate-proof-then-widen-the-map",
+      "max": 0.5,
+      "offset": 0,
+      "h": 975,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-16-replicate-proof-then-widen-the-map",
+      "bottom": 890.8125,
+      "top": 796.078125,
+      "offset": 0.5,
+      "max": 0.5,
+      "height": 1000
+    },
+    "reachable": true
+  },
+  {
+    "card": "card-17-what-would-change-my-mind",
+    "hash": true,
+    "images": true,
+    "initial": {
+      "id": "card-17-what-would-change-my-mind",
+      "max": 539.5,
+      "offset": 0,
+      "h": 1514,
+      "overflow": false,
+      "images": true,
+      "wide": []
+    },
+    "end": {
+      "id": "card-17-what-would-change-my-mind",
+      "bottom": 951.59375,
+      "top": 856.859375,
+      "offset": 539.5,
+      "max": 539.5,
+      "height": 1000
+    },
+    "reachable": true
+  }
+]

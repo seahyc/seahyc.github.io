@@ -1,0 +1,398 @@
+{
+  "as_of": "2026-11-03",
+  "currency": "USD",
+  "units": "millions unless specified",
+  "status": "All operating inputs and valuation ranges are original planning assumptions, NOT market quotations, forecasts, commitments or estimates of addressable market. Public precedents are not used as transaction pricing inputs.",
+  "anchor": {
+    "historical_net_revenue": 8,
+    "historical_ebitda": 1.6,
+    "entry_multiple": 8,
+    "purchase_ev": 12.8,
+    "debt_at_close": 5.12,
+    "integration_cash": 0.5,
+    "transaction_fees": 0.3,
+    "working_cash": 0.7,
+    "total_uses": 14.3,
+    "equity_required": 9.18,
+    "interest_rate": 0.1,
+    "annual_principal": 0.512,
+    "cash_tax_rate": 0.25,
+    "fixed_costs": {
+      "local_admin": 0.9,
+      "compliance_PI": 0.35,
+      "AI_data_security": 0.15,
+      "central_management": 0.4
+    }
+  },
+  "anchor_cases": [
+    {
+      "name": "low",
+      "retained_revenue_fraction": 0.9,
+      "premium_commission_rate_factor": 0.95,
+      "new_net_revenue": 0.4,
+      "producer_and_service_payroll_fraction": 0.58,
+      "net_revenue": 7.24,
+      "EBITDA": 1.2408000000000003,
+      "EBITDA_margin": 0.1713812154696133,
+      "interest": 0.512,
+      "cash_tax": 0.18220000000000008,
+      "annual_principal": 0.512,
+      "post_debt_cash": 0.034600000000000186,
+      "EBITDA_debt_service_coverage": 1.2117187500000004,
+      "after_cash_tax_debt_service_coverage_before_other_cash_uses": 1.0337890625000001
+    },
+    {
+      "name": "base",
+      "retained_revenue_fraction": 0.96,
+      "premium_commission_rate_factor": 1,
+      "new_net_revenue": 0.8,
+      "producer_and_service_payroll_fraction": 0.56,
+      "net_revenue": 8.48,
+      "EBITDA": 1.9311999999999998,
+      "EBITDA_margin": 0.22773584905660374,
+      "interest": 0.512,
+      "cash_tax": 0.35479999999999995,
+      "annual_principal": 0.512,
+      "post_debt_cash": 0.5523999999999998,
+      "EBITDA_debt_service_coverage": 1.8859374999999998,
+      "after_cash_tax_debt_service_coverage_before_other_cash_uses": 1.5394531249999999
+    },
+    {
+      "name": "high",
+      "retained_revenue_fraction": 0.99,
+      "premium_commission_rate_factor": 1.05,
+      "new_net_revenue": 1.2,
+      "producer_and_service_payroll_fraction": 0.54,
+      "net_revenue": 9.516,
+      "EBITDA": 2.5773599999999997,
+      "EBITDA_margin": 0.2708448928121059,
+      "interest": 0.512,
+      "cash_tax": 0.5163399999999999,
+      "annual_principal": 0.512,
+      "post_debt_cash": 1.0370199999999996,
+      "EBITDA_debt_service_coverage": 2.5169531249999997,
+      "after_cash_tax_debt_service_coverage_before_other_cash_uses": 2.0127148437499995
+    }
+  ],
+  "entry_price_sensitivity": [
+    {
+      "entry_multiple": 8,
+      "purchase_EV": 12.8,
+      "debt_fixed": 5.12,
+      "other_uses": 1.5,
+      "equity_required": 9.18
+    },
+    {
+      "entry_multiple": 12,
+      "purchase_EV": 19.200000000000003,
+      "debt_fixed": 5.12,
+      "other_uses": 1.5,
+      "equity_required": 15.580000000000002
+    },
+    {
+      "entry_multiple": 14,
+      "purchase_EV": 22.400000000000002,
+      "debt_fixed": 5.12,
+      "other_uses": 1.5,
+      "equity_required": 18.78
+    }
+  ],
+  "one_variable_sensitivities": {
+    "base_retention_minus_5_percentage_points_EBITDA_delta": -0.17600000000000002,
+    "base_retention_minus_5_points_cash_delta": -0.132,
+    "interest_plus_2_percentage_points_annual_pretax_cost": 0.1024,
+    "producer_service_payroll_plus_5_points_EBITDA_delta": -0.42400000000000004,
+    "flat_base_EBITDA_exit_multiple_14_to_10_EV_drop_fraction": 0.2857142857142857
+  },
+  "anchor_break_even": {
+    "EBITDA_revenue_at_base_payroll": 4.090909090909091,
+    "post_tax_debt_service_cash_revenue_at_base_payroll": 6.806060606060607,
+    "minimum_revenue_retention_at_base_rate_and_new_revenue": 0.7507575757575758
+  },
+  "AI_bridge": {
+    "eligible_staff_cost": 2,
+    "hours_saved_fraction": 0.25,
+    "cash_realization_fraction": 0.4,
+    "gross_cash_saving": 0.2,
+    "incremental_software_security_review": 0.15,
+    "net_cash_saving": 0.05,
+    "note": "Do not add to anchor cases: already inclusive. At zero cash realization net saving is -0.15. Time freed is not automatically payroll saved."
+  },
+  "claims_cases": [
+    {
+      "name": "low",
+      "files": 1000,
+      "collectible_success_fraction": 0.1,
+      "collected_per_success_USD": 10000,
+      "fee_fraction": 0.15,
+      "collection_lag_months": 18,
+      "collected_recovery_USD": 1000000.0,
+      "revenue_USD": 150000.0,
+      "variable_cost_USD": 250000,
+      "fixed_cost_USD": 100000,
+      "contribution_USD": -200000.0,
+      "break_even_success_fraction": 0.23333333333333334,
+      "precollection_cost_reserve_USD": 350000
+    },
+    {
+      "name": "base",
+      "files": 1000,
+      "collectible_success_fraction": 0.2,
+      "collected_per_success_USD": 10000,
+      "fee_fraction": 0.2,
+      "collection_lag_months": 12,
+      "collected_recovery_USD": 2000000.0,
+      "revenue_USD": 400000.0,
+      "variable_cost_USD": 200000,
+      "fixed_cost_USD": 100000,
+      "contribution_USD": 100000.0,
+      "break_even_success_fraction": 0.15,
+      "precollection_cost_reserve_USD": 300000
+    },
+    {
+      "name": "high",
+      "files": 1000,
+      "collectible_success_fraction": 0.3,
+      "collected_per_success_USD": 10000,
+      "fee_fraction": 0.25,
+      "collection_lag_months": 6,
+      "collected_recovery_USD": 3000000.0,
+      "revenue_USD": 750000.0,
+      "variable_cost_USD": 150000,
+      "fixed_cost_USD": 100000,
+      "contribution_USD": 500000.0,
+      "break_even_success_fraction": 0.1,
+      "precollection_cost_reserve_USD": 250000
+    }
+  ],
+  "claims_caveats": [
+    "All screened files incur cost, not only successes.",
+    "Assumes a signed mandate from actual recovery-right holder, permitted fee structure, no double charging, and fees on incremental collected cash only.",
+    "A cohort, not annual steady-state: collection lags require funding before revenue.",
+    "Legal/expert/evidence preservation costs must fit the assumed all-in per-file cost; overruns reduce contribution dollar for dollar.",
+    "No retention uplift or brokerage cross-sell is credited; neither measured."
+  ],
+  "software_cases": [
+    {
+      "name": "low",
+      "customers": 5,
+      "monthly_price_USD": 1200,
+      "monthly_infra_per_customer_USD": 150,
+      "monthly_support_hours": 12,
+      "support_USD_per_hour": 75,
+      "annual_fixed_USD": 240000,
+      "annual_revenue_USD": 72000,
+      "annual_operating_contribution_USD": -231000,
+      "break_even_customer_count": 134
+    },
+    {
+      "name": "base",
+      "customers": 15,
+      "monthly_price_USD": 1800,
+      "monthly_infra_per_customer_USD": 150,
+      "monthly_support_hours": 8,
+      "support_USD_per_hour": 75,
+      "annual_fixed_USD": 240000,
+      "annual_revenue_USD": 324000,
+      "annual_operating_contribution_USD": -51000,
+      "break_even_customer_count": 20
+    },
+    {
+      "name": "high",
+      "customers": 30,
+      "monthly_price_USD": 2500,
+      "monthly_infra_per_customer_USD": 150,
+      "monthly_support_hours": 5,
+      "support_USD_per_hour": 75,
+      "annual_fixed_USD": 240000,
+      "annual_revenue_USD": 900000,
+      "annual_operating_contribution_USD": 471000,
+      "break_even_customer_count": 11
+    }
+  ],
+  "institutional_exit_sensitivities": [
+    {
+      "exit_EV": 1000,
+      "multiple": 10,
+      "EBITDA_margin": 0.18,
+      "required_EBITDA": 100.0,
+      "required_net_revenue": 555.5555555555555,
+      "placed_premium_at_assumed_12pct_revenue_yield": 4629.62962962963,
+      "placed_premium_at_assumed_18pct_revenue_yield": 3086.41975308642
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 10,
+      "EBITDA_margin": 0.25,
+      "required_EBITDA": 100.0,
+      "required_net_revenue": 400.0,
+      "placed_premium_at_assumed_12pct_revenue_yield": 3333.3333333333335,
+      "placed_premium_at_assumed_18pct_revenue_yield": 2222.222222222222
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 10,
+      "EBITDA_margin": 0.3,
+      "required_EBITDA": 100.0,
+      "required_net_revenue": 333.33333333333337,
+      "placed_premium_at_assumed_12pct_revenue_yield": 2777.7777777777783,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1851.8518518518522
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 14,
+      "EBITDA_margin": 0.18,
+      "required_EBITDA": 71.42857142857143,
+      "required_net_revenue": 396.82539682539687,
+      "placed_premium_at_assumed_12pct_revenue_yield": 3306.8783068783073,
+      "placed_premium_at_assumed_18pct_revenue_yield": 2204.5855379188715
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 14,
+      "EBITDA_margin": 0.25,
+      "required_EBITDA": 71.42857142857143,
+      "required_net_revenue": 285.7142857142857,
+      "placed_premium_at_assumed_12pct_revenue_yield": 2380.952380952381,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1587.3015873015875
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 14,
+      "EBITDA_margin": 0.3,
+      "required_EBITDA": 71.42857142857143,
+      "required_net_revenue": 238.0952380952381,
+      "placed_premium_at_assumed_12pct_revenue_yield": 1984.1269841269843,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1322.7513227513227
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 18,
+      "EBITDA_margin": 0.18,
+      "required_EBITDA": 55.55555555555556,
+      "required_net_revenue": 308.641975308642,
+      "placed_premium_at_assumed_12pct_revenue_yield": 2572.01646090535,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1714.6776406035665
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 18,
+      "EBITDA_margin": 0.25,
+      "required_EBITDA": 55.55555555555556,
+      "required_net_revenue": 222.22222222222223,
+      "placed_premium_at_assumed_12pct_revenue_yield": 1851.851851851852,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1234.567901234568
+    },
+    {
+      "exit_EV": 1000,
+      "multiple": 18,
+      "EBITDA_margin": 0.3,
+      "required_EBITDA": 55.55555555555556,
+      "required_net_revenue": 185.1851851851852,
+      "placed_premium_at_assumed_12pct_revenue_yield": 1543.20987654321,
+      "placed_premium_at_assumed_18pct_revenue_yield": 1028.80658436214
+    }
+  ],
+  "regional_depth_test": {
+    "method": "For each jurisdiction enumerate owners, permission, commercial net revenue, normalized EBITDA, seller willingness, price, client/producer transferability; then sum non-overlapping available EBITDA. Never use license counts or insurer premiums as broker earnings.",
+    "illustrative_needed_anchor_equivalents_at_14x": 44.64285714285714,
+    "note": "Not a deal count forecast. No valid independently owned commercial pool estimate obtained."
+  },
+  "founder_waterfalls": {
+    "status": "Assumptions only; actual sponsor preference, hurdle, catch-up, vesting, leaver, dilution and approval terms govern. All personal figures pre-tax.",
+    "simple_common_equity": [
+      {
+        "exit_EV": 1000,
+        "net_debt": 300,
+        "exit_fees": 20,
+        "common_equity_after_assumed_no_preferences": 680,
+        "founder_ownership": 0.03,
+        "proceeds": 20.4
+      },
+      {
+        "exit_EV": 1000,
+        "net_debt": 300,
+        "exit_fees": 20,
+        "common_equity_after_assumed_no_preferences": 680,
+        "founder_ownership": 0.05,
+        "proceeds": 34.0
+      },
+      {
+        "exit_EV": 1000,
+        "net_debt": 300,
+        "exit_fees": 20,
+        "common_equity_after_assumed_no_preferences": 680,
+        "founder_ownership": 0.1,
+        "proceeds": 68.0
+      }
+    ],
+    "promote_example": {
+      "exit_EV": 1000,
+      "net_debt": 300,
+      "exit_fees": 20,
+      "distributable_equity": 680,
+      "sponsor_return_of_capital_and_hurdle": 400,
+      "residual_profit": 280,
+      "management_pool_fraction": 0.15,
+      "founder_fraction_of_pool": 0.5,
+      "founder_proceeds": 21,
+      "note": "Pool applies to residual AFTER hypothetical preference/hurdle; no separate founder common shares credited."
+    },
+    "secondary_example": {
+      "common_equity_value": 300,
+      "founder_ownership": 0.12,
+      "fraction_of_holding_sold": 0.25,
+      "gross_cash": 9,
+      "remaining_ownership": 0.09
+    },
+    "dividend_recap_example": {
+      "new_debt": 80,
+      "fees_reserves": 10,
+      "distributable": 70,
+      "founder_common_ownership": 0.1,
+      "founder_cash": 7,
+      "additional_annual_interest_at_10pct": 8,
+      "note": "Requires lender permission, regulatory/solvency assessment, distributable reserves and board approval; increases leverage. Client money cannot fund it."
+    }
+  },
+  "personal_target_equity_required": [
+    {
+      "target_cash": 20,
+      "effective_common_ownership": 0.03,
+      "equity_required": 666.6666666666667
+    },
+    {
+      "target_cash": 20,
+      "effective_common_ownership": 0.05,
+      "equity_required": 400.0
+    },
+    {
+      "target_cash": 20,
+      "effective_common_ownership": 0.1,
+      "equity_required": 200.0
+    },
+    {
+      "target_cash": 30,
+      "effective_common_ownership": 0.03,
+      "equity_required": 1000.0
+    },
+    {
+      "target_cash": 30,
+      "effective_common_ownership": 0.05,
+      "equity_required": 600.0
+    },
+    {
+      "target_cash": 30,
+      "effective_common_ownership": 0.1,
+      "equity_required": 300.0
+    }
+  ],
+  "exclusions": [
+    "No FX conversion or summed cross-market TAM.",
+    "Acquisition costs/retention/AI are assumptions pending target records.",
+    "Anchor EBITDA excludes depreciation/amortization; tax is simplified cash-tax proxy, not tax advice.",
+    "No ongoing acquisition funding in anchor post-debt cash; no earnout liability assumed there.",
+    "Add earned seller payments, capex, extra integration, regulatory capital shortfalls and distributable-reserve restrictions before actual dividends.",
+    "No claim of credit availability or institutional exit demand."
+  ]
+}
