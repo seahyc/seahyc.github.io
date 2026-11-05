@@ -1,0 +1,8 @@
+{{- /* Lists every published page in the /skills/ section, so new skills appear here automatically. */ -}}
+{{- with site.GetPage "/skills" -}}
+{{- $links := slice -}}
+{{- range .Pages.ByTitle -}}
+{{- $links = $links | append (printf "<a href=\"%s\">%s</a>" .RelPermalink (.Title | htmlEscape)) -}}
+{{- end -}}
+{{- delimit $links ", " | safeHTML -}}
+{{- end -}}
