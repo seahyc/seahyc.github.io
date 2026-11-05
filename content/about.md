@@ -19,4 +19,4 @@ Penn CS and Wharton Economics.
 
 ## Skills
 
-[Marketplace Shopping](/skills/marketplace-shopping/)
+[Marketplace Shopping](/skills/marketplace-shopping/), [Humanise Writing](/skills/humanise-writing/)
