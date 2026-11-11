@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{ $fieldbooks := where (where site.RegularPages "Section" "research") "Params.layout" "research-swipe" }}
+{{ $cases := where site.RegularPages "Params.layout" "case" }}
+{{ $concepts := where site.Pages "Params.layout" "case-concept" }}
+<section class="learning-home">
+  <header class="page-header">
+    <h1 class="page-title">Learning</h1>
+    <p class="page-meta">{{ .Description }}</p>
+  </header>
+
+  <div class="shelves">
+    <a class="shelf" href="/learning/fieldbooks/">
+      <span class="shelf__label">Shelf 1</span>
+      <h2>Fieldbooks</h2>
+      <p>One opportunity investigated end to end: sources, a grounded model and the tests that would prove it wrong. Read these to decide what to build.</p>
+      <span class="shelf__count">{{ len $fieldbooks }} fieldbooks</span>
+      <span class="shelf__arrow" aria-hidden="true">&#8594;</span>
+    </a>
+    <a class="shelf" href="/learning/cases/">
+      <span class="shelf__label">Shelf 2</span>
+      <h2>Case library</h2>
+      <p>Short cases grouped by concept, with the filed numbers underneath. You commit to a forecast before the outcome is shown. Practise these to sharpen judgement.</p>
+      <span class="shelf__count">{{ len $cases }} {{ if eq (len $cases) 1 }}case{{ else }}cases{{ end }} in {{ len $concepts }} {{ if eq (len $concepts) 1 }}concept{{ else }}concepts{{ end }}</span>
+      <span class="shelf__arrow" aria-hidden="true">&#8594;</span>
+    </a>
+  </div>
+
+  <div class="page-content learning-note">
+    {{ .Content }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,12 @@
+{{ $p := .Page.Params }}
+<div class="case-table-wrap">
+<table class="case-table">
+<caption>Reported figures in $ millions, from the FY2000 10-K. Derived rows are computed here.</caption>
+<thead><tr><th scope="col"><span class="visually-hidden">Measure</span></th>{{ range $p.years }}<th scope="col" class="num">{{ . }}</th>{{ end }}<th scope="col" class="grade-col">Grade</th></tr></thead>
+<tbody>
+{{ range $p.metrics }}
+<tr{{ if .derived }} class="is-derived"{{ end }}><th scope="row">{{ .label }}</th>{{ range .values }}<td class="num">{{ . }}</td>{{ end }}<td class="grade-col"><span class="grade grade--{{ .grade }}">{{ .grade }}</span></td></tr>
+{{ end }}
+</tbody>
+</table>
+</div>

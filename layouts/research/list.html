@@ -2,7 +2,8 @@
 {{ $fieldbooks := where .RegularPages "Params.layout" "research-swipe" }}
 <section class="fieldbook-index">
     <header class="page-header">
-        <h1 class="page-title">Learning</h1>
+        <p class="crumbs"><a href="/learning/">Learning</a> / Fieldbooks</p>
+        <h1 class="page-title">Fieldbooks</h1>
         <p class="page-meta">Source-led investigations into ideas worth understanding and testing.</p>
         <p class="collection-meta">{{ len $fieldbooks }} fieldbooks</p>
     </header>

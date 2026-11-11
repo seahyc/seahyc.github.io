@@ -1,0 +1,35 @@
+{{ define "main" }}
+{{ $concepts := where site.Pages "Params.layout" "case-concept" }}
+<section class="case-library">
+  <p class="crumbs"><a href="/learning/">Learning</a> / Case library</p>
+  <header class="page-header">
+    <h1 class="page-title">Case library</h1>
+    <p class="page-meta">{{ .Description }}</p>
+  </header>
+  <div class="page-content">{{ .Content }}</div>
+
+  <h2 class="shelf-heading">Concepts</h2>
+  <ol class="concept-list">
+    {{ range $concepts.ByWeight }}
+    <li class="concept-row concept-row--live">
+      <a href="{{ .RelPermalink }}">
+        <div class="concept-row__body">
+          <h3>{{ .Title }}</h3>
+          <p>{{ .Params.question }}</p>
+        </div>
+        <span class="concept-row__count">{{ len (where .RegularPages "Params.layout" "case") }} of {{ .Params.target }} built</span>
+      </a>
+    </li>
+    {{ end }}
+    {{ range .Params.planned }}
+    <li class="concept-row">
+      <div class="concept-row__body">
+        <h3>{{ .title }}</h3>
+        <p>{{ .question }}</p>
+      </div>
+      <span class="concept-row__count">planned</span>
+    </li>
+    {{ end }}
+  </ol>
+</section>
+{{ end }}

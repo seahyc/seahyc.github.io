@@ -1,0 +1,53 @@
+{{ define "main" }}
+{{ $built := where .RegularPages "Params.layout" "case" }}
+<section class="case-concept">
+  <p class="crumbs"><a href="/learning/">Learning</a> / <a href="/learning/cases/">Case library</a> / {{ .Title }}</p>
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-meta">{{ .Params.question }}</p>
+    <p class="collection-meta">{{ len $built }} of {{ .Params.target }} cases built</p>
+  </header>
+  <div class="page-content">{{ .Content }}</div>
+
+  <div class="ledger-box" id="ledger-box" hidden></div>
+
+  <h2 class="shelf-heading">Cases</h2>
+  <ol class="case-list">
+    {{ range .Params.cases }}
+    {{ $slug := .slug }}
+    {{ $page := "" }}
+    {{ range $built }}{{ if eq .Params.slug $slug }}{{ $page = . }}{{ end }}{{ end }}
+    <li class="case-row{{ if $page }} case-row--built{{ end }}">
+      {{ if $page }}<a href="{{ $page.RelPermalink }}">{{ end }}
+      <div class="case-row__body">
+        <h3>{{ .title }}</h3>
+        <p>{{ .note }}</p>
+      </div>
+      <span class="case-row__status">{{ if $page }}built{{ else }}planned{{ end }}</span>
+      {{ if $page }}</a>{{ end }}
+    </li>
+    {{ end }}
+  </ol>
+  <p class="case-foot">The planned list is a working draft from memory. Each case is checked against filings before it is built, and some will be swapped.</p>
+</section>
+<script>
+(function () {
+  var box = document.getElementById('ledger-box');
+  var data = {};
+  try { data = JSON.parse(localStorage.getItem('learning-ledger-v1') || '{}') || {}; } catch (e) { return; }
+  var keys = Object.keys(data).filter(function (k) { return k.indexOf('{{ .Params.concept_key }}/') === 0; });
+  if (!keys.length) return;
+  var scored = keys.filter(function (k) { return !data[k].knew; });
+  var html = '<h2 class="shelf-heading">Your ledger</h2><p>' + keys.length + ' answered';
+  if (scored.length) {
+    var mean = scored.reduce(function (s, k) { return s + data[k].brier; }, 0) / scored.length;
+    html += ', ' + scored.length + ' scored. Mean Brier score <strong>' + mean.toFixed(2) + '</strong> (0 is perfect, 0.25 is a flat 50% guess).';
+  } else {
+    html += ', none scored yet because you marked them as already known.';
+  }
+  html += ' Stored in this browser only.</p>';
+  box.innerHTML = html;
+  box.hidden = false;
+})();
+</script>
+{{ end }}

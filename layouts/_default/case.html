@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class="case">
+  <p class="crumbs"><a href="/learning/">Learning</a> / <a href="/learning/cases/">Case library</a> / <a href="/learning/cases/{{ .Params.concept }}/">{{ .Params.concept_title }}</a></p>
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-meta">{{ .Description }}</p>
+    <dl class="case-meta">
+      <div><dt>Concept</dt><dd>{{ .Params.concept_title }}</dd></div>
+      <div><dt>Role</dt><dd>{{ .Params.role }}</dd></div>
+      <div><dt>As of</dt><dd>{{ .Params.as_of }}</dd></div>
+      <div><dt>Data</dt><dd>{{ .Params.data_grade }}</dd></div>
+      <div><dt>Status</dt><dd>{{ .Params.status }}</dd></div>
+    </dl>
+  </header>
+  <div class="page-content case-body">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

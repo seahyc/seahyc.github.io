@@ -1,0 +1,7 @@
+{{ $name := .Get 0 }}
+{{ with .Page.Resources.Get $name }}
+<figure class="case-figure">
+{{ .Content | safeHTML }}
+<figcaption>Capital spending against operating cash flow, $ millions. 1998 to 2000 and the 2001 guidance are from the FY2000 10-K. 2001 and 2002 actual capex are cash paid for property and equipment per the FY2002 10-K. Operating cash flow for 2001 and 2002 was not collected for this prototype.</figcaption>
+</figure>
+{{ end }}

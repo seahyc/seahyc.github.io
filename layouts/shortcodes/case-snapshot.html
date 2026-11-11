@@ -1,0 +1,5 @@
+<dl class="case-snapshot">
+{{ range .Page.Params.snapshot }}
+<div><dt>{{ .label }}</dt><dd>{{ .value }} <span class="src">{{ partial "case-src.html" .source }}</span></dd></div>
+{{ end }}
+</dl>

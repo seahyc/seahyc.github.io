@@ -14,6 +14,12 @@
     {{ if eq .Params.layout "research-swipe" }}
     <link rel="stylesheet" href="/css/fieldbook.css?v={{ now.Unix }}">
     {{ end }}
+    {{ if in (slice "learning-home" "case-library" "case-concept" "case") .Params.layout }}
+    <link rel="stylesheet" href="/css/learning.css?v={{ now.Unix }}">
+    {{ end }}
+    {{ if eq .Params.layout "research-swipe" }}{{ else if eq .Section "research" }}
+    <link rel="stylesheet" href="/css/learning.css?v={{ now.Unix }}">
+    {{ end }}
     {{ block "head" . }}{{ end }}
     {{ hugo.Generator }}
 </head>

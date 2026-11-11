@@ -1,0 +1,125 @@
+{{ $p := .Page.Params }}
+<form id="drill" class="drill" data-case="{{ $p.concept }}/{{ .Page.Slug }}" data-outcome="1" novalidate>
+  <fieldset>
+    <legend>1. Your action</legend>
+    <label class="opt"><input type="radio" name="action" value="fund"> Put in more money: the build needs funding and demand will catch up.</label>
+    <label class="opt"><input type="radio" name="action" value="hold"> Hold what you have and wait for the ILEC sale proceeds.</label>
+    <label class="opt"><input type="radio" name="action" value="avoid"> Reduce or avoid: the funding gap is too wide.</label>
+  </fieldset>
+  <fieldset>
+    <legend>2. Your forecast</legend>
+    <label for="drill-p">Probability that Global Crossing files for bankruptcy protection by 31 December 2002 (1 to 99)</label>
+    <input id="drill-p" name="p" type="number" min="1" max="99" step="1" inputmode="numeric" placeholder="e.g. 30" required>
+  </fieldset>
+  <fieldset>
+    <legend>3. Which cues drove you? Pick up to three.</legend>
+    {{ range $p.cues }}
+    <label class="opt"><input type="checkbox" name="cue" value="{{ .id }}"> {{ .text }}</label>
+    {{ end }}
+  </fieldset>
+  <label class="opt knew"><input type="checkbox" id="drill-knew"> I already know how this ended. Save my answer but leave it out of my score.</label>
+  <p class="drill-error" id="drill-error" role="alert" hidden></p>
+  <button type="submit" class="drill-button">Lock in and reveal</button>
+  <p class="drill-prior" id="drill-prior" hidden></p>
+</form>
+<div id="drill-result" class="drill-result" aria-live="polite" hidden></div>
+<script type="application/json" id="drill-cues">{{ $p.cues | jsonify | safeJS }}</script>
+<script>
+(function () {
+  var form = document.getElementById('drill');
+  if (!form) return;
+  var KEY = 'learning-ledger-v1';
+  var cues = JSON.parse(document.getElementById('drill-cues').textContent);
+  var byId = {};
+  cues.forEach(function (c) { byId[c.id] = c; });
+  var caseKey = form.getAttribute('data-case');
+  var outcome = Number(form.getAttribute('data-outcome'));
+  var errBox = document.getElementById('drill-error');
+  var result = document.getElementById('drill-result');
+  var prior = document.getElementById('drill-prior');
+
+  function read() {
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function write(data) {
+    try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch (e) { return false; }
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+
+  var old = read()[caseKey];
+  if (old) {
+    prior.hidden = false;
+    prior.textContent = 'Last time you forecast ' + old.p + '% on ' + old.date + (old.knew ? ' (marked as already known).' : '.') + ' You can answer again; the latest answer replaces it.';
+  }
+
+  form.addEventListener('change', function (e) {
+    if (e.target && e.target.name === 'cue') {
+      var picked = form.querySelectorAll('input[name=cue]:checked');
+      if (picked.length > 3) { e.target.checked = false; }
+    }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var action = form.querySelector('input[name=action]:checked');
+    var pRaw = form.elements['p'].value;
+    var p = Number(pRaw);
+    if (!action || pRaw === '' || !isFinite(p) || p < 1 || p > 99) {
+      errBox.hidden = false;
+      errBox.textContent = 'Choose an action and enter a probability from 1 to 99 before you reveal.';
+      return;
+    }
+    errBox.hidden = true;
+    var picked = Array.prototype.map.call(form.querySelectorAll('input[name=cue]:checked'), function (c) { return c.value; });
+    var knew = document.getElementById('drill-knew').checked;
+    var brier = Math.pow(p / 100 - outcome, 2);
+    var d = new Date();
+    var date = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+
+    var ledger = read();
+    ledger[caseKey] = { p: p, action: action.value, cues: picked, knew: knew, brier: Number(brier.toFixed(4)), date: date };
+    var saved = write(ledger);
+
+    var highs = cues.filter(function (c) { return c.weight === 'high'; });
+    var hit = picked.filter(function (id) { return byId[id].weight === 'high'; });
+    var miss = highs.filter(function (c) { return picked.indexOf(c.id) === -1; });
+    var lowPicked = picked.filter(function (id) { return byId[id].weight === 'low'; });
+
+    var html = '<h3>Your result</h3>';
+    html += '<p>You forecast <strong>' + p + '%</strong>. It happened (Chapter 11 was filed on 28 January 2002). ';
+    html += 'Brier score for this forecast: <strong>' + brier.toFixed(2) + '</strong> ';
+    html += '(0 is perfect, 0.25 is what a flat 50% earns, 1 is the worst). ';
+    html += knew ? 'You marked this as already known, so it is not counted in your calibration.' : 'It counts in your calibration.';
+    html += '</p>';
+    html += '<p>One forecast says little. The point is the pattern across many cases, kept in your ledger on the <a href="/learning/cases/capital-cycle/">Capital cycle</a> page.</p>';
+    html += '<h4>Your cues against my ranking</h4><ul>';
+    if (!picked.length) { html += '<li>You picked no cues.</li>'; }
+    picked.forEach(function (id) {
+      var c = byId[id];
+      html += '<li><strong>' + esc(c.weight) + ':</strong> ' + esc(c.text) + '. ' + esc(c.why) + '</li>';
+    });
+    html += '</ul>';
+    if (miss.length) {
+      html += '<p>High-weight cues you did not pick:</p><ul>';
+      miss.forEach(function (c) { html += '<li>' + esc(c.text) + '. ' + esc(c.why) + '</li>'; });
+      html += '</ul>';
+    } else if (hit.length) {
+      html += '<p>You picked every high-weight cue available to you.</p>';
+    }
+    if (lowPicked.length) {
+      html += '<p>You leaned on ' + lowPicked.length + ' low-weight cue' + (lowPicked.length > 1 ? 's' : '') + '. These looked reassuring at the time and said little about the next year.</p>';
+    }
+    html += '<p class="drill-note">My cue ranking is an author draft, not an expert-interview result. Whether your action was right depends on your seat in the capital structure; see the reveal below.</p>';
+    if (!saved) { html += '<p class="drill-note">Your browser blocked local storage, so this answer was not saved.</p>'; }
+    result.innerHTML = html;
+    result.hidden = false;
+    var reveal = document.getElementById('case-reveal');
+    if (reveal) { reveal.hidden = false; }
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>

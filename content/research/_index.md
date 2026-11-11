@@ -1,9 +1,9 @@
 ---
-title: "Learning"
+title: "Fieldbooks"
 description: "Operator-first research fieldbooks with grounded models, source trails, and falsification tests."
-url: "/learning/"
+url: "/learning/fieldbooks/"
 aliases:
   - "/research/"
 ---
 
-This library is generated from published Fieldbook pages. Any future research page using the `research-swipe` layout appears here automatically, newest first.
+This shelf is generated from published Fieldbook pages. Any future research page using the `research-swipe` layout appears here automatically, newest first.

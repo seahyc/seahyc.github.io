@@ -1,0 +1,5 @@
+<ol class="case-sources">
+{{ range .Page.Params.sources }}
+<li><a href="{{ .url }}" rel="noopener">{{ .label }}</a>, filed {{ .filed }}, accession {{ .accession }}.<br><span class="src">{{ .used }}</span></li>
+{{ end }}
+</ol>

@@ -1,0 +1,13 @@
+{{ $cues := .Page.Params.cues }}
+<div class="case-table-wrap">
+<table class="case-table case-cues">
+<thead><tr><th scope="col">Weight</th><th scope="col">Cue available on 2 April 2001</th><th scope="col">Why</th></tr></thead>
+<tbody>
+{{ range $w := slice "high" "medium" "low" }}
+{{ range where $cues "weight" $w }}
+<tr><td><span class="weight weight--{{ .weight }}">{{ .weight }}</span></td><th scope="row">{{ .text }}</th><td>{{ .why }}</td></tr>
+{{ end }}
+{{ end }}
+</tbody>
+</table>
+</div>

@@ -1,0 +1,10 @@
+<div class="case-table-wrap">
+<table class="case-table case-ledger">
+<thead><tr><th scope="col">Claim</th><th scope="col">What the filings show</th><th scope="col">Verdict</th></tr></thead>
+<tbody>
+{{ range .Page.Params.claims }}
+<tr><th scope="row">{{ .claim }}</th><td>{{ .evidence }}<span class="src">{{ partial "case-src.html" .source }}</span></td><td><span class="verdict verdict--{{ .tone }}">{{ if eq .tone "contradicted" }}&#10005;{{ else if eq .tone "supported" }}&#10003;{{ else }}?{{ end }} {{ .verdict }}</span></td></tr>
+{{ end }}
+</tbody>
+</table>
+</div>
