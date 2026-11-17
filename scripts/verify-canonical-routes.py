@@ -93,6 +93,10 @@ if hand_walk.exists():
     if "Hand Walk — Follow me" not in hand_walk_html or "/making/hand-walk/assets/" not in hand_walk_html:
         errors.append("/making/hand-walk/: canonical route does not contain the deployed game")
 
+walking = output("/making/walking-meditation/")
+if walking.exists() and "Walking Meditation (Caṅkama)" not in walking.read_text():
+    errors.append("/making/walking-meditation/: canonical route does not contain the deployed game")
+
 forest_crew = output("/making/forest-crew-grove-01/")
 if forest_crew.exists():
     forest_crew_html = forest_crew.read_text()

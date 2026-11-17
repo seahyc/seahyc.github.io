@@ -3,7 +3,7 @@ title: "Forest Crew — AI crew"
 slug: "forest-crew-ai-crew"
 aliases:
   - "/projects/forest-crew-ai-crew/"
-visibility: public
+visibility: unlisted
 description: "Two AI firefighters negotiate hose and pump jobs while you fight the fire. An invitation-only playable cooperation test, with public code."
 tech: ["Babylon.js", "Codex", "Agent tools"]
 weight: -5

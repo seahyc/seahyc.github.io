@@ -122,6 +122,8 @@ jobs:
           cp -R public/projects/bishan-ridges-atmosphere/. public/making/bishan-ridges-atmosphere/
           cp -R public/projects/family-road-book/. public/making/family-road-book/
           cp -R .build/hand-walk/dist-public/. public/making/hand-walk/
+          mkdir -p public/making/walking-meditation
+          cp projects-src/walking-meditation/index.html public/making/walking-meditation/index.html
           rsync -a --exclude index.html public/projects/retirement-planning/ public/making/retirement-planning/
       - name: Publish Forest Crew milestone releases
         run: node scripts/publish-forest-crew.mjs publish public
