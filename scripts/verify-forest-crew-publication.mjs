@@ -37,8 +37,12 @@ for (const build of await manifests()) {
   for (const required of ['hand-worker.js', 'models/hand_landmarker.task', 'models/j-toastie-rigged-astronaut-no-pack.glb', 'models/ASTRONAUT-LICENSE.md', 'models/coast-rocks.glb', 'models/COAST-ROCKS-LICENSE.md', 'models/fern-02/fern.gltf', 'models/FERN-LICENSE.md', 'textures/LICENSE.md']) {
     if (!(await stat(path.join(route, required)).catch(() => null))?.isFile()) errors.push(`/making/${build.slug}/${required}: required runtime asset absent`);
   }
+  // Public builds must be listed; an unlisted build (e.g. the invitation-only AI crew) is reachable by link only.
+  const entry = await readFile(path.join(root, 'content', 'projects', `${build.slug}.md`), 'utf8');
+  const visibility = entry.match(/^visibility:\s*["']?(\w+)/m)?.[1] ?? 'public';
   const makingIndex = await readFile(path.join(publicRoot, 'making/index.html'), 'utf8');
-  if (!makingIndex.includes(`/making/${build.slug}/`)) errors.push(`/making/${build.slug}/: absent from Making index`);
+  if (visibility === 'public' && !makingIndex.includes(`/making/${build.slug}/`)) errors.push(`/making/${build.slug}/: absent from Making index`);
+  if (visibility === 'unlisted' && makingIndex.includes(`/making/${build.slug}/`)) errors.push(`/making/${build.slug}/: unlisted build appears in Making index`);
   const files = await filesBelow(route);
   for (const file of files) {
     const relative = path.relative(route, file).split(path.sep).join("/");
