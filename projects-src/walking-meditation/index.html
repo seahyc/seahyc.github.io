@@ -24,6 +24,13 @@ canvas#game{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:p
 .card .row{display:flex;gap:12px;justify-content:center;margin-top:16px}
 .btn{border:none;font:inherit;color:var(--ink);font-weight:800;font-size:15px;padding:11px 22px;cursor:pointer}
 .btn:active{transform:translateY(3px)}
+#coach{position:fixed;left:0;top:0;z-index:7;width:max-content;max-width:min(300px,calc(100vw - 24px));padding:12px 16px 8px;font-size:14.5px;line-height:1.42;font-weight:600;border-radius:18px;display:none;pointer-events:auto;will-change:transform}
+#coach.show{display:block;animation:coachIn .4s ease-out}
+@keyframes coachIn{from{opacity:0}to{opacity:1}}
+#coach b{font-weight:900}
+#coach .crow{display:flex;gap:16px;justify-content:flex-end;align-items:center;margin-top:4px;min-height:6px}
+#coach button{background:none;border:0;font:inherit;font-size:13.5px;font-weight:800;color:var(--ink);cursor:pointer;padding:6px 2px;text-decoration:underline;text-underline-offset:3px}
+#coachSkip{opacity:.6;margin-right:auto}
 #stagePick{position:fixed;z-index:6;opacity:0;font-size:16px;cursor:pointer;border:0}
 #safe{position:fixed;inset:0;pointer-events:none;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 </style>
@@ -32,6 +39,7 @@ canvas#game{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:p
 <canvas id="game"></canvas>
 <div id="safe"></div>
 <select id="stagePick" aria-label="Choose stage"></select>
+<div id="coach" class="clay" role="status" aria-live="polite"><div id="coachText"></div><div class="crow"><button id="coachSkip">Skip tutorial</button><button id="coachNext">Got it</button></div></div>
 <div id="endModal" class="modal"><div class="card clay">
   <h2 id="endTitle"></h2>
   <div id="endBody"></div>
@@ -244,6 +252,9 @@ function loadStage(i) {
   buildCaches();
   const tc = trailC.getContext('2d'); tc.setTransform(1, 0, 0, 1, 0, 0); tc.clearRect(0, 0, trailC.width, trailC.height);
   G.titleT = 0; $('stagePick').value = idx;
+  clearCoach(); TUT.on = false;
+  if (idx === 0 && !store.get('cankama.tutorial', false)) startTutorial();
+  stageTips(idx);
   try { history.replaceState(null, '', '#stage=' + idx); } catch (e) { }
   if (AU.ctx) ambienceRetune();
 }
@@ -316,7 +327,9 @@ function simRoute(type, c, r, dir, steps, zig = 0, turnPref = 0) {
 /* ---------------- Directing arrivals ---------------- */
 function command(e, c, r, dir, auto) {
   G.line.shift(); e.state = 'wait'; e.tc = c; e.tr = r; e.tdir = dir; G.waiting = e; G.placed++; G.ready = false; sel = null;
+  if (!auto) { TUT.cmds++; if (TUT.on && !TUT.walker) TUT.walker = e; }
   if (auto) {
+    tip('auto', 'They waited too long and <b>wandered in on their own</b>, and your merit streak reset.', gatePt, { auto: 6 });
     G.harm = 0;
     effects.push({ k: 'float', x: GATE.c * TS, y: GATE.r * TS, t: 0, txt: '…' });
     tone(196, .5, .08, { type: 'triangle', rev: .3 });
@@ -376,6 +389,7 @@ function stepBeat() {
     if (e.state === 'walk' && e.walkB >= SESSION) {
       e.state = 'leave'; e.bowed = true; e.moved = false;
       if (e.pure && scoring) { G.merit += 5 * G.mult; effects.push({ k: 'float', x: e.c * TS, y: e.r * TS, t: 0, txt: '+' + 5 * G.mult, good: true }); }
+      { const pt = P(e.c * TS, e.r * TS, 30); tip('session', '<b>Session complete.</b> Walkers bow out after a while. Finishing without a single slip earns bonus merit.', () => pt, { auto: 7 }); }
       continue;
     }
     if (e.state === 'leave') continue;
@@ -447,6 +461,7 @@ function stepBeat() {
       m.pause = 1; if (m.state === 'walk') m.pend = (m.dir + 2) % 4;
       if (l.pause < 1) l.pause = 1;
       sBowlStrike(); if (scoring) losePetals(DEF[l.type].cost, m, l);
+      tip('violation', '<b>A monk stepped into her glow.</b> He bows and turns back, and a petal falls. Lose all seven and the round ends.', lotusPt, { btn: 'Got it', auto: 9 });
     } else if (age % 4 === 0 && scoring) losePetals(1, m, l);
   }
   G.viol = active;
@@ -459,13 +474,14 @@ function stepBeat() {
   // merit: every harmonious, unaccompanied step; streak grows the multiplier
   if (active.size) G.harm = 0; else G.harm++;
   G.mult = Math.min(5, 1 + Math.floor(G.harm / 10));
+  if (G.mult >= 2) tip('streak', '<b>Harmony streak.</b> Every beat without a slip grows your merit multiplier, up to ×5.', lotusPt, { auto: 6 });
   for (const e of onF) if (e.state === 'walk' && e.moved) {
     let alone = true; for (const o of onF) if (o !== e && cheb(o, e) <= 1) { alone = false; break; }
     if (alone) { G.merit += G.mult; e.spark = G.mult; }
   }
-  if (G.harm > 0 && G.harm % 16 === 0 && G.petals < MAXP) { G.petals++; G.regrowT = T; }
+  if (G.harm > 0 && G.harm % 16 === 0 && G.petals < MAXP) { G.petals++; G.regrowT = T; tip('regrow', 'A long stretch of harmony <b>grew a petal back</b>.', lotusPt, { auto: 5 }); }
   if (G.petals <= 0) { lose(); return; }
-  if (G.phase === 'placing' && !G.line.length && !G.waiting && !floor.some(e => e.state === 'enter')) { G.phase = 'check'; G.checkB = 0; }
+  if (G.phase === 'placing' && !G.line.length && !G.waiting && !floor.some(e => e.state === 'enter')) { G.phase = 'check'; G.checkB = 0; tip('check', '<b>Everyone has arrived.</b> Keep the peace for 12 beats to complete the round.', lotusPt, { auto: 8 }); }
   if (G.phase === 'check') { G.checkB = active.size ? 0 : G.checkB + 1; if (G.checkB >= CHECK_BEATS) win(); }
 }
 function losePetals(n, m, l) {
@@ -485,12 +501,14 @@ function update(dt) {
   effects = effects.filter(ef => ef.t < 1.6);
   updatePetals(dt);
   ambienceTick(dt);
+  updateCoach(dt);
   G.titleT += dt;
   const scoring = G.phase === 'placing' || G.phase === 'check';
   if (scoring) {
     G.elapsed += dt;
     if (G.phase === 'placing' && G.line.length) {
-      G.arrT -= dt;
+      if (!holding()) G.arrT -= dt;
+      if (TUT.on && !G.ready && !G.waiting) { G.ready = true; G.arrT = cadence(); }
       if (G.arrT <= 0) { G.arrT = cadence(); sel = null; if (!G.waiting) { if (G.ready) autoArrive(); G.ready = true; } }
     }
   }
@@ -526,7 +544,7 @@ function saveBest(stage, stars) { const b = loadBest(); if ((b[stage] || 0) < st
 function win() { G.phase = 'won'; G.wonT = 0; sTempleBell(); for (let i = 0; i < 140; i++) spawnPetal(true); }
 function lose() { G.phase = 'lost'; sLose(); showEnd(false); }
 function showEnd(won) {
-  G.endShown = true;
+  G.endShown = true; clearCoach();
   const last = G.stage === STAGES.length - 1;
   if (won) {
     const stars = starsFor(G.stage, G.merit); saveBest(G.stage, stars);
@@ -1222,6 +1240,7 @@ function render() {
   const fm = ctx.createLinearGradient(0, H * .82, 0, H); fm.addColorStop(0, rgba(st.fog, 0)); fm.addColorStop(1, rgba(st.fog, night ? .35 : .5)); ctx.fillStyle = fm; ctx.fillRect(0, H * .82, W, H * .18);
   const tm = ctx.createLinearGradient(0, 0, 0, H * .12); tm.addColorStop(0, rgba(st.sky[0], .35)); tm.addColorStop(1, rgba(st.sky[0], 0)); ctx.fillStyle = tm; ctx.fillRect(0, 0, W, H * .12);
   drawHud();
+  drawCoachOverlay();
   for (const q of petals) { ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.rot); const g = ctx.createLinearGradient(0, -q.s, 0, q.s); g.addColorStop(0, '#fff6d0'); g.addColorStop(1, q.col); ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(0, 0, q.s * .45, q.s, 0, 0, TAU); ctx.fill(); ctx.restore(); }
   if (G.phase === 'won') glow(ctx, CX, CY - 40 * S, R * S, '#ffd77a', Math.min(.35, G.wonT * .2));
 }
@@ -1520,12 +1539,141 @@ function toggleMute() {
 }
 
 
+
+/* ---------------- Onboarding: a guided first round, then one just-in-time tip per new idea ---------------- */
+let INPUT = matchMedia('(pointer: coarse)').matches ? 'touch' : 'mouse';
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
+};
+let seenTips = new Set(store.get('cankama.tips', []));
+let coach = null; const coachQ = [];
+const TUT = { on: false, cmds: 0, walker: null, tile: null };
+const lotusPt = () => { const k = clamp(Math.min(W, H * 1.4) / 1100, .62, 1); return [SAFE.l + (W - SAFE.l - SAFE.r) / 2, SAFE.t + 18 + 40 * k]; };
+const gatePt = () => { const [x, y] = slotPos(0); return P(x, y, 26); };
+const tilePt = (c, r) => () => P(c * TS, r * TS);
+const TYPE_TIPS = {
+  upasika: '<b>Upāsikā</b> — a laywoman with a pearl glow one tile wide. A monk must never step into it.',
+  bhikkhuni: '<b>Bhikkhunī</b> — a nun whose glow reaches two tiles. Keep every monk well clear.',
+  standing: '<b>Standing meditator</b> — she stays put, and walkers turn when they meet her. Use her to shape their paths.',
+  sitting: '<b>Sitting meditator</b> — stays put, and may rest on the glowing incense squares where no one walks.',
+  thera: '<b>Thera</b> — an elder who paces back and forth at half speed. Anyone who passes beside him turns back.',
+  pilgrim: '<b>Pilgrim</b> — zig-zags as he walks, and alternates which way he turns.',
+};
+const howTo = () => INPUT === 'touch' ? 'Tap a tile, drag from it to choose a direction, then tap the tile again.' : 'Click a tile and drag to choose a direction.';
+
+function markSeen(id) { seenTips.add(id); store.set('cankama.tips', [...seenTips]); }
+// opts: block (pause arrivals), spot (spotlight), btn, skip, hand, auto (seconds), done(), after()
+function tip(id, text, anchor, opts = {}) {
+  if (seenTips.has(id) || (coach && coach.id === id) || coachQ.some(q => q.id === id)) return;
+  if (TUT.on && !id.startsWith('tut')) return;   // one lesson at a time: other tips wait until the tutorial ends
+  coachQ.push({ id, text, anchor, ...opts, t: 0 });
+  if (!coach) nextCoach();
+}
+function nextCoach() {
+  coach = coachQ.shift() || null;
+  const el = $('coach');
+  if (!coach) { el.classList.remove('show'); return; }
+  $('coachText').innerHTML = coach.text;
+  $('coachNext').style.display = coach.btn ? '' : 'none'; $('coachNext').textContent = coach.btn || '';
+  $('coachSkip').style.display = coach.skip ? '' : 'none';
+  el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+  positionCoach();
+}
+function closeCoach() { if (!coach) return; markSeen(coach.id); const c = coach; coach = null; if (c.after) c.after(); if (!coach) nextCoach(); }
+function clearCoach() { coach = null; coachQ.length = 0; $('coach').classList.remove('show'); }
+const holding = () => !!(coach && coach.block);
+function updateCoach(dt) {
+  if (G.phase === 'placing' && G.ready && G.line.length && !TUT.on) {
+    if (!store.get('cankama.tutorial', false)) tip('basics', `<b>Someone waits at the gate.</b> ${howTo()}`, gatePt, { block: true, done: () => !G.ready });
+    const t = G.line[0].type;
+    if (TYPE_TIPS[t]) tip('type:' + t, TYPE_TIPS[t], gatePt, { block: true, btn: 'Got it', done: () => !G.ready || !G.line[0] || G.line[0].type !== t });
+  }
+  if (!coach) return;
+  coach.t += dt;
+  if ((coach.done && coach.done()) || (coach.auto && coach.t > coach.auto)) closeCoach();
+  positionCoach();
+}
+function positionCoach() {
+  if (!coach) return;
+  const el = $('coach'), w = el.offsetWidth, h = el.offsetHeight;
+  const [ax, ay] = coach.anchor ? coach.anchor() : [W / 2, H * .3];
+  const x = clamp(ax - w / 2, SAFE.l + 10, W - SAFE.r - w - 10);
+  let y = ay - h - 40;
+  if (y < SAFE.t + 8 || coach.anchor === lotusPt) y = ay + 58;
+  y = clamp(y, SAFE.t + 8, H - SAFE.b - h - 8);
+  el.style.transform = `translate(${Math.round(x)}px,${Math.round(y)}px)`;
+}
+function startTutorial() {
+  clearCoach(); TUT.on = true; TUT.cmds = 0; TUT.walker = null; TUT.tile = null;
+  for (const [c, r, d] of [[-2, 0, 3], [2, 1, 3], [0, -1, 0], [-1, 2, 2]]) if (canTarget('bhikkhu', c, r)) { TUT.tile = { c, r, d }; break; }
+  const tt = TUT.tile;
+  tip('tut1', `<b>A monk waits at the gate.</b> ${howTo()}`, tt ? tilePt(tt.c, tt.r) : gatePt,
+    { block: true, spot: true, hand: true, skip: true, done: () => TUT.cmds >= 1, after: () =>
+  tip('tut2', '<b>Watch his path.</b> He walks straight, and turns right whenever something blocks him. Every time.', () => TUT.walker ? P(TUT.walker.x, TUT.walker.y, 30) : gatePt(),
+    { block: true, auto: 11, done: () => TUT.walker && TUT.walker.state === 'walk' && TUT.walker.dir !== TUT.walker.tdir && TUT.walker.pause === 0, after: () =>
+  tip('tut3', '<b>Calm steps earn merit.</b> A step only counts when no one walks right beside him.', lotusPt,
+    { block: true, spot: true, btn: 'Got it', auto: 12, after: () =>
+  tip('tut4', '<b>Direct the next monk.</b> Give him a path of his own.', gatePt,
+    { block: true, done: () => TUT.cmds >= 2, after: () =>
+  tip('tut5', '<b>Now the rhythm begins.</b> Someone reaches the gate every few seconds. Wait too long and they wander in on their own.', gatePt,
+    { btn: 'Got it', auto: 9, after: endTutorial }) }) }) }) });
+}
+function endTutorial() { TUT.on = false; store.set('cankama.tutorial', true); }
+function stageTips(idx) {
+  if (dividers.length) { const d = dividers[0]; tip('walls', '<b>Low walls</b> turn walkers, just like the terrace edge.', () => P((d.x1 + d.x2) / 2, (d.y1 + d.y2) / 2, 16), { auto: 7 }); }
+  if (ST.spirit) tip('spirit', 'Here practitioners become <b>spirit-clay</b>. Follow their glowing footprints and rings.', null, { auto: 7 });
+  if (ST.fadeStill) tip('fade', 'Still figures <b>melt into the snow</b>, and reappear when someone draws near.', null, { auto: 7 });
+}
+function drawCoachOverlay() {
+  if (!coach) return;
+  const a = coach.anchor ? coach.anchor() : null;
+  if (coach.spot && a) {
+    const r = coach.anchor === lotusPt ? 70 : 34 + 46 * S;
+    ctx.save(); ctx.fillStyle = 'rgba(12,8,20,.42)'; ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.arc(a[0], a[1], r, 0, TAU, true); ctx.fill('evenodd'); ctx.restore();
+  }
+  if (a) {
+    const ph = (T * .9) % 1;
+    ctx.save(); ctx.strokeStyle = `rgba(255,226,140,${.9 * (1 - ph)})`; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(a[0], a[1], 10 + ph * 26, 0, TAU); ctx.stroke(); ctx.restore();
+  }
+  if (coach.id === 'tut1' && TUT.tile) drawHandDemo();
+  if (coach.id === 'tut2' && TUT.walker && TUT.walker.state === 'walk') {
+    const w = TUT.walker; dotsAt(simRoute(w.type, w.c, w.r, w.pend != null ? w.pend : w.dir, 28, w.zig, w.turnPref).out, '#ffe08a', .95, 2.4, true);
+  }
+}
+function drawHandDemo() {
+  const { c, r, d } = TUT.tile, [tx, ty] = P(c * TS, r * TS), [ex, ey] = P((c + DIRS[d][0]) * TS, (r + DIRS[d][1]) * TS);
+  const cyc = (T % 3.2) / 3.2, touch = INPUT === 'touch';
+  let hx = tx, hy = ty, press = 0;
+  if (cyc < .22) press = Math.sin(cyc / .22 * Math.PI);
+  else if (cyc < .6) { const f = ease((cyc - .22) / .38); hx = lerp(tx, ex, f); hy = lerp(ty, ey, f); press = .7; }
+  else if (touch && cyc < .8) { const f = ease((cyc - .6) / .2); hx = lerp(ex, tx, f); hy = lerp(ey, ty, f); }
+  else if (touch) press = Math.sin((cyc - .8) / .2 * Math.PI);
+  else { hx = ex; hy = ey; }
+  ctx.save(); ctx.translate(CX, CY); ctx.scale(S, S * TILT);
+  roundRect(ctx, c * TS - TS / 2 + 2, r * TS - TS / 2 + 2, TS - 4, TS - 4, 8);
+  ctx.strokeStyle = `rgba(255,226,140,${.6 + .4 * Math.sin(T * 5)})`; ctx.lineWidth = 2.5 / S; ctx.stroke(); ctx.restore();
+  if (cyc > .22 && cyc < (touch ? .8 : 1)) { ctx.save(); ctx.strokeStyle = 'rgba(255,226,140,.9)'; ctx.lineWidth = 3; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(ex, ey); ctx.stroke(); ctx.restore(); }
+  if (press > 0) { ctx.save(); ctx.fillStyle = `rgba(255,240,200,${.45 * press})`; ctx.beginPath(); ctx.arc(hx, hy, 10 + 8 * press, 0, TAU); ctx.fill(); ctx.restore(); }
+  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 6;
+  if (touch) { ctx.font = `${Math.round(30 + 4 * (1 - press))}px system-ui, "Apple Color Emoji", "Segoe UI Emoji"`; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText('👆', hx - 9, hy + 2); }
+  else {
+    ctx.translate(hx, hy); ctx.scale(1.35 - .15 * press, 1.35 - .15 * press);
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, 17); ctx.lineTo(4.5, 13); ctx.lineTo(8, 20.5); ctx.lineTo(10.8, 19.3); ctx.lineTo(7.4, 12.2); ctx.lineTo(13, 12.2); ctx.closePath();
+    ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.shadowBlur = 0; ctx.strokeStyle = '#2a1d14'; ctx.lineWidth = 1.4; ctx.lineJoin = 'round'; ctx.stroke();
+  }
+  ctx.restore();
+}
+$('coachNext').addEventListener('click', () => { audioInit(); closeCoach(); });
+$('coachSkip').addEventListener('click', () => { audioInit(); ['tut1', 'tut2', 'tut3', 'tut4', 'tut5'].forEach(markSeen); endTutorial(); clearCoach(); });
+
 /* ---------------- Input ---------------- */
 function setMuteIcon() { }
 function evWorld(ev) { const r = cv.getBoundingClientRect(); return toWorld(ev.clientX - r.left, ev.clientY - r.top); }
 const snapDir = (dx, dy) => Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 0 : 2) : (dy > 0 ? 1 : 3);
 cv.addEventListener('pointerdown', ev => {
-  audioInit();
+  audioInit(); INPUT = ev.pointerType === 'mouse' ? 'mouse' : 'touch';
   const w = evWorld(ev);
   if (ev.pointerType !== 'mouse') {               // touch & pen: select → aim → confirm
     if (!G || G.phase !== 'placing' || G.waiting || !G.ready || !G.line.length) return;
@@ -1599,7 +1747,13 @@ function layout() {
 }
 window.addEventListener('resize', layout);
 STAGES.forEach((st, i) => { const o = document.createElement('option'); o.value = i; o.textContent = `${i} · ${st.pali} — ${st.place}`; $('stagePick').appendChild(o); });
-$('stagePick').addEventListener('change', ev => { audioInit(); loadStage(+ev.target.value); ev.target.blur(); });
+{ const o = document.createElement('option'); o.value = 'tutorial'; o.textContent = '↺ How to play — replay the tutorial'; $('stagePick').appendChild(o); }
+$('stagePick').addEventListener('change', ev => {
+  audioInit();
+  if (ev.target.value === 'tutorial') { store.set('cankama.tutorial', false); store.set('cankama.tips', []); seenTips = new Set(); loadStage(0); }
+  else loadStage(+ev.target.value);
+  ev.target.blur();
+});
 let lastT = performance.now();
 function frame(now) {
   const dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
