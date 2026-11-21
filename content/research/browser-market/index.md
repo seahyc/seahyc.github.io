@@ -1,7 +1,7 @@
 +++
 title = "Who Pays When the Browser Fights Back"
-slug = "browser-market"
-aliases = ["/research/browser-market/", "/learning/browser-market-2026/"]
+slug = "who-pays-when-the-browser-fights-back"
+aliases = ["/research/browser-market/", "/learning/browser-market/", "/learning/browser-market-2026/"]
 description = "A founder's Fieldbook on a viral post about scraping, what it does and does not prove about a stateful anti-bot browser company, and a narrow, falsifiable path to test one portal workflow."
 date = 2026-09-06
 layout = "research-swipe"

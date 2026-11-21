@@ -1,6 +1,6 @@
 +++
 title = "An Open Inbox for Agents"
-slug = "open-source-beeper-agents"
+slug = "an-open-inbox-for-agents"
 aliases = ["/research/open-source-beeper-agents/", "/learning/open-source-beeper-agents/"]
 description = "A founder's Fieldbook on whether a fully open-source Beeper for agents is a company, and why the safer bet is the trust layer underneath."
 date = 2026-09-02
