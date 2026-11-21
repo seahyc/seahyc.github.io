@@ -1,0 +1,29 @@
+[
+ {
+  "w": 390,
+  "h": 844,
+  "errors": [],
+  "cards": 16,
+  "imgs": 16,
+  "broken": [],
+  "hOverflow": false
+ },
+ {
+  "w": 737,
+  "h": 862,
+  "errors": [],
+  "cards": 16,
+  "imgs": 16,
+  "broken": [],
+  "hOverflow": false
+ },
+ {
+  "w": 1440,
+  "h": 1000,
+  "errors": [],
+  "cards": 16,
+  "imgs": 16,
+  "broken": [],
+  "hOverflow": false
+ }
+]

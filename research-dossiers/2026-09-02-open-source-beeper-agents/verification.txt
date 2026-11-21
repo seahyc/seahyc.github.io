@@ -1,0 +1,7 @@
+cards 13 · visuals on cards 12 · svg 12 · raster 0 (need ≥5)
+FAIL (1)
+ - watercolor/raster illustrations 0 < required 5 (ceil(13 cards / 3))
+390x844 {"cards":13,"imgsOk":true,"overflow":false,"clipped":false,"continuous":true} PASS
+737x862 {"cards":13,"imgsOk":true,"overflow":false,"clipped":false,"continuous":true} PASS
+1440x1000 {"cards":13,"imgsOk":true,"overflow":false,"clipped":false,"continuous":true} PASS
+2560x1440 {"cards":13,"imgsOk":true,"overflow":false,"clipped":false,"continuous":true} PASS

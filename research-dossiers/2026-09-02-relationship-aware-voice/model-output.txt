@@ -1,0 +1,11 @@
+binomial one-sided P(X>=k | p=0.5)  [pure arithmetic]
+  n=20 k=14 (70%) p=0.05766
+  n=100 k=70 (70%) p=0.00004
+SMB contribution model  [ASSUMPTIONS, not sourced except SGD3000 stated by one interviewee]
+  low: price=3000 cost/customer=1200 contribution=1800 customers to cover SGD6000/mo founder pay=4
+  base: price=3000 cost/customer=800 contribution=2200 customers to cover SGD6000/mo founder pay=3
+  high: price=3000 cost/customer=500 contribution=2500 customers to cover SGD6000/mo founder pay=3
+price multiple vs respond.io plans [FX assumption 1 SGD = 0.70-0.80 USD]
+  Starter $79/mo yearly billing: stated WTP SGD3000 = USD2100-2400 -> 26.6x-30.4x
+  Growth $159/mo yearly billing: stated WTP SGD3000 = USD2100-2400 -> 13.2x-15.1x
+  Advanced $279/mo yearly billing: stated WTP SGD3000 = USD2100-2400 -> 7.5x-8.6x

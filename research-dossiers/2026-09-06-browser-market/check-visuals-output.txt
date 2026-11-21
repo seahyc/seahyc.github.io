@@ -1,0 +1,2 @@
+cards 14 · visuals on cards 13 · svg 9 · raster 5 (need ≥5)
+PASS

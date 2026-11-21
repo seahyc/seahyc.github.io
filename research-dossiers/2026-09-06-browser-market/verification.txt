@@ -1,0 +1,4 @@
+hugo build to /tmp/bm-hugo-out: OK
+npm run test:fieldbook-reader:
+PASS 25 Fieldbooks across four sizes: 100 continuous-scroll, overflow, deep-link and reading checks
+PASS buyer-agent deep link, prose taps and fast diagonal touch scrolling
