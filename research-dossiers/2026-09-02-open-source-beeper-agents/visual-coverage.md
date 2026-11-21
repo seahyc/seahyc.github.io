@@ -1,5 +1,5 @@
 # Visual coverage
-cover.svg (thesis), what-exists, demand-signals (bar), competitor-stars (bar), bot-vs-user, contract, price-anchors, bear-case, stages, first-90, team-capital, gates. Card 12 appendix = table. Watercolor illustrations: 5 of 5 required (AI-generated via Codex image generation, background removed to true alpha, 20px transparent padding).
+cover.svg (thesis), what-exists, demand-signals (bar), competitor-stars (bar), bot-vs-user, contract, price-anchors, bear-case, stages, first-90, team-capital, gates. Card 12 appendix = table. Watercolor illustrations: 5 of 5 required (AI-generated via Codex built-in image generation with transparent_background=true, true alpha from the generator, no flood-fill; regenerated 21 Nov 2026 in the house style of agent-trust).
 
 
 ## Watercolor illustrations (editorial, not evidence)
@@ -11,4 +11,4 @@ cover.svg (thesis), what-exists, demand-signals (bar), competitor-stars (bar), b
 | 08 | stepping-stones.png | Earn each stage before the next | Illustrates staged de-risking |
 | 11 | go-stop-gate.png | Go and stop conditions set before building | Illustrates the gate decision |
 
-Brief: soft hand-painted watercolor, rough ink outlines, isolated subject on white; actual transparent alpha; no baked background. Captions state they are AI-generated illustrations. Reuse: generated for this page, no third-party source. Status: ready; phone-width live-card check not performed.
+Briefs: see image-prompts.md (hand-watercolor editorial cutout, rough childlike wobbly ink contours, sage/coral/ochre washes; actual transparent alpha; no baked background). Captions state they are generated watercolor metaphors, not evidence. Reuse: generated for this page, no third-party source. Status: ready; phone-width live-card check not performed.

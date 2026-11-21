@@ -14,7 +14,7 @@ main_class = "main-research-swipe"
 <div style="grid-column:1 / -1;width:100%;min-width:0;">
 <p style="font-size:max(17px,1rem);line-height:1.58;"><strong>A founder’s Fieldbook · positioning dated 2 September 2026, web grounding added 21 November 2026 · Seah Ying Cong</strong></p>
 <p style="font-size:max(17px,1rem);line-height:1.58;">I say “running late” differently to my wife, to my manager and to a recruiter. Every AI draft I have asked for says it one way, and I rewrite it before I send. That rewrite is the product I want to test.</p>
-<figure style="max-width:560px;margin:1rem auto;"><img src="/images/relationship-aware-voice/cover.png" alt="One note splits into three differently coloured and shaped message bubbles." style="width:100%;height:auto;background:transparent;"><figcaption>One intent, three voices. Hand-drawn watercolor-style metaphor, not a product screenshot.</figcaption></figure>
+<figure style="max-width:560px;margin:1rem auto;"><img src="/images/relationship-aware-voice/cover.png" alt="A person holds one small note, and three differently coloured and shaped message bubbles drift toward a loved one, a manager and a recruiter." style="width:100%;height:auto;background:transparent;"><figcaption>One intent, three voices. Generated watercolor metaphor, not a product screenshot or evidence.</figcaption></figure>
 <p style="font-size:max(17px,1rem);line-height:1.58;"><strong>How to read this.</strong> Almost everything about the product shape, copy and the test design is <em>my positioning</em>: a claim I am betting on, not a finding. I mark claims as <strong>Sourced</strong> (a public document I read), <strong>Interviews</strong> (my own two customer interviews, summarised in my notes, not independently checked), <strong>Positioning</strong> (my bet), <strong>Inference</strong> or <strong>Assumption</strong>. Nothing here has been built or measured.</p>
 <p style="font-size:max(17px,1rem);line-height:1.58;"><strong>My decision:</strong> a conditional yes to prototype only the writing layer, for one person, locally, without sending. Do not build bridges, an inbox or agent governance yet. Whether it is a venture, I do not know.</p>
 </div>
@@ -39,7 +39,7 @@ The first-session proof I am after is small: one draft for one familiar person t
 
 ### What the research does and does not say
 
-<figure><img src="/images/relationship-aware-voice/generic.png" alt="A stack of identical grey notes is crossed out while a pencil rewrites a warmer one." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>The rewrite tax. Watercolor-style metaphor; it implies no measured effect size.</figcaption></figure>
+<figure><img src="/images/relationship-aware-voice/generic.png" alt="A tired person at a desk rewrites a warmer note by pencil, beside a robot handing over a stack of identical grey notes and a basket of crumpled ones." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>The rewrite tax. Generated watercolor metaphor; it implies no measured effect size.</figcaption></figure>
 
 My motivation is a personal annoyance, which is not evidence. Here is what I found that bears on it.
 
@@ -109,7 +109,7 @@ The flow is deliberately small. I open a conversation and type the intent, not t
 
 ### The rules that shape what I may build
 
-<figure><img src="/images/relationship-aware-voice/local.png" alt="A laptop holds a small padlocked jar of message bubbles inside a fence, while a crossed-out cloud sits outside." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>Keep the archive on the device. Watercolor-style metaphor of a design boundary I propose, not a verified privacy guarantee.</figcaption></figure>
+<figure><img src="/images/relationship-aware-voice/local.png" alt="A laptop inside a small garden fence holds a padlocked jar of message bubbles, while a crossed-out cloud floats outside." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>Keep the archive on the device. Generated watercolor metaphor of a design boundary I propose, not a verified privacy guarantee.</figcaption></figure>
 
 **Sourced.** WhatsApp’s Terms of Service bar “bulk messaging, auto-messaging, auto-dialing, and the like” where impermissible, non-personal use without authorisation, and unauthorised or automated access, and say violations can lead to account suspension. [WhatsApp Terms of Service](https://www.whatsapp.com/legal/terms-of-service). I read no clause naming “unofficial apps” or “third-party clients” explicitly, and the Help Center page on unofficial apps was not checked; vendor blogs claim stronger bans, so I treat severity as uncertain. [Vendor overview](https://aiprofitlab.io/blog/en/2026-07-01-whatsapp-automation-rules/). Beeper’s own advice to use its API personally and sparingly is the safer primary source here. [Beeper Desktop API docs](https://developers.beeper.com/desktop-api/). My consequence: the personal product stays a human-in-the-loop drafter and never auto-sends.
 
@@ -123,7 +123,7 @@ The flow is deliberately small. I open a conversation and type the intent, not t
 
 ### WhatsApp-first service firms and a stage-aware sales desk
 
-<figure><img src="/images/relationship-aware-voice/shopfront.png" alt="A shopfront with a speech bubble at the top of a small staircase and a stick figure at the bottom step." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>A sale climbs stages. Watercolor-style metaphor; no stage data is shown.</figcaption></figure>
+<figure><img src="/images/relationship-aware-voice/shopfront.png" alt="A shopkeeper with an empty speech bubble stands at the top of a staircase beside a shopfront, while a customer holding a phone waits at the bottom step." style="max-width:560px;width:100%;height:auto;background:transparent;"><figcaption>A sale climbs stages. Generated watercolor metaphor; no stage data is shown.</figcaption></figure>
 
 **Interviews, and a correction I owe.** My notes record two interviews. The Moses interview concerns **Respond.io Enterprise**, not SleekFlow: he found it effectively stateless for his consultative-sales agent workflow. The explicit SleekFlow replacement signal comes from a separate interview with Amos and Zames of Repair.sg: disappearing chats and shared-inbox bugs, 150–200 leads a day, a 30–60 second reply that can improve closing, agents losing context when they switch queues, and a stated willingness to pay SGD 3k+ a month if an AI solution actually works. These are two interviews. They cannot establish how common any of this is, and I have not re-verified the statements.
 

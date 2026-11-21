@@ -1,0 +1,2 @@
+
+SUPERSEDED 21 Nov 2026: watercolor-src/*.svg and render-watercolor.mjs produced the earlier code-drawn PNGs. The four PNGs were regenerated with built-in imagegen (see image-prompts.md); these files are kept for history only.

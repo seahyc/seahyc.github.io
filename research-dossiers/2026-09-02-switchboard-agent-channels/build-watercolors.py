@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Procedural rough 'watercolor' cutouts with a real alpha channel.
+"""SUPERSEDED (21 Nov 2026): the PNGs this script drew were replaced by Codex built-in imagegen output; see image-prompts.md. Kept for history only.
+Procedural rough 'watercolor' cutouts with a real alpha channel.
 These are NOT generative-model paintings: wobbly ink lines + blurred translucent washes drawn with Pillow."""
 import random, math, sys
 from PIL import Image, ImageDraw, ImageFilter

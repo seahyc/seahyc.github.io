@@ -15,7 +15,7 @@ main_class = "main-research-swipe"
 <p style="font-size:max(17px,1rem);line-height:1.58;"><strong>A founder's Fieldbook · 6 September 2026, claims re-checked 21 November 2026 · Seah Ying Cong</strong></p>
 <p style="font-size:max(17px,1rem);line-height:1.58;">A popular indie founder spent weeks trying to replace a $99-a-month scraping service with his own AI-assisted code. It stayed unreliable over thousands of queries. He kept the subscription. I read that as the opening line of a company: whoever makes browsers that survive hostile websites should have a business.</p>
 <p style="font-size:max(17px,1rem);line-height:1.58;">After checking it, I think the post says something smaller and more useful. People pay for an operated service even when they can code. It does not say there is an empty market for a new stateful anti-bot browser.</p>
-<figure style="max-width:560px;margin:1rem auto;"><img src="/images/browser-market/cover-two-paths.png" alt="A person stands between a heap of tangled homemade gears and a tidy beehive, holding out a coin toward the hive." style="width:100%;height:auto;background:transparent;"><figcaption>Build it yourself, or pay someone who has maintained it. Watercolor-style plate drawn procedurally for this Fieldbook, an editorial metaphor and not evidence.</figcaption></figure>
+<figure style="max-width:560px;margin:1rem auto;"><img src="/images/browser-market/cover-two-paths.png" alt="A person stands between a heap of tangled homemade gears and a tidy beehive, holding out a coin toward the hive." style="width:100%;height:auto;background:transparent;"><figcaption>Build it yourself, or pay someone who has maintained it. Generated watercolor metaphor, not evidence of buyer behaviour.</figcaption></figure>
 <p style="font-size:max(17px,1rem);line-height:1.58;"><strong>My decision:</strong> do not build a generic anti-bot browser API. Test one narrower company: a connection to one customer-authorised portal workflow, sold by the accepted result. The evidence is thin. Everything beyond the first 90 days is a hypothesis with a stop rule.</p>
 </div>
 
@@ -25,7 +25,7 @@ main_class = "main-research-swipe"
 
 ### What the post supports, and what it leaves out
 
-<figure><img src="/images/browser-market/one-customer.png" alt="One customer holds a coin beside a jar of bees; behind them three faint dotted outlines of absent people." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>One buyer is visible; the crowd is a hypothesis. Procedurally drawn watercolor-style metaphor.</figcaption></figure>
+<figure><img src="/images/browser-market/one-customer.png" alt="One customer holds a coin beside a jar of bees; behind them three faint dotted outlines of absent people." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>One buyer is visible; the crowd is a hypothesis. Generated watercolor metaphor, not a customer count.</figcaption></figure>
 
 Levels says he spent weeks recreating ScrapingBee with AI help. Google search results for his Hotelist product are about 80% of his scraping. His replacement stayed unreliable over thousands of queries, so he will keep paying $99 a month. When someone suggested other providers he replied that he wanted to replace it, but is happy with ScrapingBee. [The post](https://x.com/levelsio/status/2095950432883368091), [the follow-up](https://x.com/levelsio/status/2095955322741387447)
 
@@ -109,7 +109,7 @@ The source thesis also ranks a communications runtime first for an "infrastructu
 
 ### The test is maintenance that compounds
 
-<figure><img src="/images/browser-market/edge-case-wall.png" alt="A person with a paintbrush patches a wall made of many differently coloured bricks, each brick an edge case." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Every portal is a different brick. Procedurally drawn watercolor-style metaphor.</figcaption></figure>
+<figure><img src="/images/browser-market/edge-case-wall.png" alt="A person with a paintbrush patches a wall made of many differently coloured bricks, each brick an edge case." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Every portal is a different brick. Generated watercolor metaphor, not a measured edge-case rate.</figcaption></figure>
 
 The source thesis names Supabase, Tailscale and Cloudflare as the shape wanted: ongoing operational responsibility for a recurring dependency. Their moats differ, so "for agents" or "one API" does not make a company durable. Code generation may also make setup and migration cheaper, so lasting value has to come from something that keeps accruing: customer-specific state, trust from long operation, or cost and reliability advantages.
 
@@ -149,7 +149,7 @@ Weeks 5-6, pay a lawyer to review the authorisation template and each portal's t
 
 ### Reach operators, earn trust with their own numbers
 
-<figure><img src="/images/browser-market/road-to-buyers.png" alt="Two people with a coin and a clipboard walk a winding road toward a building with a door; a signpost stands midway." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>A path to a buyer's door, one signpost at a time. Procedurally drawn watercolor-style metaphor.</figcaption></figure>
+<figure><img src="/images/browser-market/road-to-buyers.png" alt="Two people with a coin and a clipboard walk a winding road toward a building with a door; a signpost stands midway." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>A path to a buyer's door, one signpost at a time. Generated watercolor metaphor, not a sales funnel.</figcaption></figure>
 
 **Buyers (hypotheses).** Operations or finance teams that pull invoices, orders or statuses from several supplier portals, and agencies that do it for clients. Reach them through warm introductions, the public threads where this started, and vendor communities. Apify's Store is a later channel: under pay-per-event Apify keeps 20% and the developer receives the rest minus platform usage. [Apify docs](https://docs.apify.com/academy/actor-marketing-playbook/store-basics/how-actor-monetization-works) The commitment I ask for is a prepaid pilot, read access to the last 30 days of failures, and a named reviewer who accepts or rejects outputs. "Interesting" is not a commitment.
 
@@ -177,7 +177,7 @@ Weeks 5-6, pay a lawyer to review the authorisation template and each portal's t
 
 ### Set the failures before the evidence arrives
 
-<figure><img src="/images/browser-market/gates-ahead.png" alt="Three arched gates in a row with green, amber and red lamps, and a small person walking toward them." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Green, amber, red. Procedurally drawn watercolor-style metaphor.</figcaption></figure>
+<figure><img src="/images/browser-market/gates-ahead.png" alt="Three arched gates in a row with green, amber and red lamps, and a small person walking toward them." style="max-width:600px;width:100%;height:auto;background:transparent;"><figcaption>Green, amber, red. Generated watercolor metaphor for the proposed gates, not a result.</figcaption></figure>
 
 I stop, or change the vertical once, if any of these is true by day 90:
 
@@ -206,7 +206,7 @@ I go to Stage 2 only if none of these stop conditions fires and the Stage 1 pass
 | hiQ and Singapore law | Secondary summaries | Not legal advice; statute penalties not quoted |
 | TheirStack, Serper, Context.dev, Inngest, Monid, Nango, Composio, Supabase, Tailscale, Cloudflare | Not re-checked | Pointers from the source research only |
 
-**What is thin.** The only demand evidence is one founder and four replies. There are no buyer interviews, billing records or failure logs. Competitor evidence is marketing text. The wedge's market size, price and margin are unknown. The communications-runtime branch rested on notes I could not open. All staged numbers, budgets and gates are my assumptions. The watercolor-style plates were drawn by code, not hand-painted or image-model generated.
+**What is thin.** The only demand evidence is one founder and four replies. There are no buyer interviews, billing records or failure logs. Competitor evidence is marketing text. The wedge's market size, price and margin are unknown. The communications-runtime branch rested on notes I could not open. All staged numbers, budgets and gates are my assumptions. The watercolor-style plates are AI-generated editorial metaphors, not hand-painted and not evidence.
 
 **What would change my mind.** A buyer who already pays for the tools and can show a costly, recurring, unsolved failure would raise my confidence more than any amount of engagement on the original post. Three of them with the same workflow would justify Stage 1.
 

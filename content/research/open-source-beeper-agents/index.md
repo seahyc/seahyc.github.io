@@ -67,7 +67,7 @@ Unipile sells hosted messaging, email and calendar access per linked account, wh
 
 Most agent-channel projects let a human talk to a bot. The harder case lets an agent read and send as the user. Beeper's Desktop API docs recommend it for personal use only and warn that sending too many messages might get an account suspended by the networks ([Desktop API](https://developers.beeper.com/desktop-api/)). Its MCP page advises keeping the client's approval prompt on for the write tools, and read-only tokens already limit an agent to search and read ([MCP page](https://developers.beeper.com/desktop-api/mcp)).
 
-<figure><img src="/images/open-source-beeper-agents/agent-as-you.png" alt="A small robot holds a puppeteer's cross-bar with strings tied to a phone showing chat bubbles." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>An agent acting as the user pulls the strings of a real identity. AI-generated editorial illustration, not a measurement or product screenshot.</figcaption></figure>
+<figure><img src="/images/open-source-beeper-agents/agent-as-you.png" alt="A small robot holds a puppeteer's cross-bar with strings tied to a phone showing chat bubbles and to an identity badge." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>An agent acting as the user pulls the strings of a real identity. Generated watercolor metaphor, not a product screenshot or measurement.</figcaption></figure>
 
 **My hypothesis:** the unserved part is not reach, it is safe action as a person.
 
@@ -81,7 +81,7 @@ Most agent-channel projects let a human talk to a bot. The harder case lets an a
 
 The six steps are mine, drawn from the source note. The riskiest is step four: if two "Mei"s exist, a model must not choose. A local, encrypted, append-only store keeps raw payloads so a failed send can be replayed and audited.
 
-<figure><img src="/images/open-source-beeper-agents/two-meis.png" alt="A robot holds up a stop hand between two identical contact cards, each with a question mark." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Two contacts named Mei: the system must stop and ask, not guess. AI-generated editorial illustration, not a measurement or product screenshot.</figcaption></figure>
+<figure><img src="/images/open-source-beeper-agents/two-meis.png" alt="A robot on a forked path holds up a stop hand between two identical contact cards, each with a question mark." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Two contacts named Mei: the system must stop and ask, not guess. Generated watercolor metaphor for the ambiguity rule, not a tested behavior.</figcaption></figure>
 
 Open source matters here for trust, since this holds your communication graph. It does not by itself differentiate the product.
 
@@ -107,7 +107,7 @@ No customer has been asked about these prices. Treat the tiers as something to t
 
 The incumbent can add approval and recipient rules faster than I can build them. Bridges to WhatsApp, LinkedIn and Instagram live on unofficial protocols. And aggregated private messages carry security and compliance exposure I would own.
 
-<figure><img src="/images/open-source-beeper-agents/incumbent-giant.png" alt="A giant bear-faced robot strides past a tiny founder pulling a wagon of parts." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>The incumbent can ship approval rules faster than a newcomer can build them. AI-generated editorial illustration, not a measurement or product screenshot.</figcaption></figure>
+<figure><img src="/images/open-source-beeper-agents/incumbent-giant.png" alt="A giant bear-faced robot carrying a big stamp strides past a tiny founder pulling a wagon of parts." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>The incumbent can ship approval rules faster than a newcomer can build them. Generated watercolor metaphor, not a market-share measure.</figcaption></figure>
 
 If the only enthusiasm turns out to be for a nicer inbox, the answer is no.
 
@@ -121,7 +121,7 @@ If the only enthusiasm turns out to be for a nicer inbox, the answer is no.
 
 **Stage 0:** build no new bridges. Wrap the Desktop API and one direct adapter such as wacli behind read-only search. **Stage 1:** ten heavy users, two weeks local, measuring weekly searches, cross-network matches, identity collisions and auth failures. **Stage 2:** approval-bound sends for five users. **Stage 3:** a paid layer, only if the earlier gates pass.
 
-<figure><img src="/images/open-source-beeper-agents/stepping-stones.png" alt="A hiker stands on the second of four stepping stones across a stream toward a flag." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Each stage is earned before the next stone is stepped on. AI-generated editorial illustration, not a measurement or product screenshot.</figcaption></figure>
+<figure><img src="/images/open-source-beeper-agents/stepping-stones.png" alt="A hiker stands on the second of four stepping stones across a stream toward a flag on the far bank." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Each stage is earned before the next stone is stepped on. Generated watercolor metaphor for the proposed sequence, not a result.</figcaption></figure>
 
 Each stage de-risks the next: read-only proves value without risking a bad send; approval-bound sends prove safety before any hosted relay holds message content.
 
@@ -157,7 +157,7 @@ Legally, the exposure is account bans and platform-terms disputes from unofficia
 
 <figure><img style="background:transparent;max-width:440px;width:100%;height:auto;" src="/images/open-source-beeper-agents/gates.svg" alt="Go and stop conditions at day 90, a gate for sending, and a falsifier." width="360"><figcaption>Thresholds come from the source note; they are chosen gates, not benchmarks.</figcaption></figure>
 
-<figure><img src="/images/open-source-beeper-agents/go-stop-gate.png" alt="A small robot stands beside a railway-crossing signal with green and red lamps and a raised barrier." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Go and stop conditions are set before building. AI-generated editorial illustration, not a measurement or product screenshot.</figcaption></figure>
+<figure><img src="/images/open-source-beeper-agents/go-stop-gate.png" alt="A small robot, hand to chin, stands beside a railway-crossing signal with green and red lamps and a raised barrier." style="max-width:520px;width:100%;height:auto;background:transparent;"><figcaption>Go and stop conditions are set before building. Generated watercolor metaphor for chosen gates, not benchmarks.</figcaption></figure>
 
 Go if at least five users rely on it weekly, cross-network context changed a real decision, and users ask to keep it running. Stop if the only enthusiasm is for a nicer inbox or if Beeper's own MCP already does the job.
 

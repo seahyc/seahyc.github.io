@@ -29,3 +29,4 @@ static/images/browser-market/shelf-matrix.svg
 static/images/browser-market/stages.svg
 static/images/browser-market/three-states.svg
 static/images/browser-market/wedge-ranking.svg
+research-dossiers/2026-09-06-browser-market/image-prompts.md
