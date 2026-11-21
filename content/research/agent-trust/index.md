@@ -1,7 +1,7 @@
 +++
 title = "Trust When Agents Arrive"
 slug = "trust-when-agents-arrive"
-aliases = ["/research/agent-trust/", "/learning/agent-trust/"]
+aliases = ["/research/agent-trust/", "/learning/agent-trust/", "/learning/trust-when-agents-arrive/"]
 description = "A founder’s Fieldbook on signed agents, risk scores and the narrower opportunity to protect job seekers by verifying recruiter authority before contact."
 date = 2026-11-03
 layout = "research-swipe"

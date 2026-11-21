@@ -1,7 +1,7 @@
 +++
 title = "The Buyer's Agent"
 slug = "the-buyers-agent"
-aliases = ["/research/agentic-commerce/", "/learning/agentic-commerce/"]
+aliases = ["/research/agentic-commerce/", "/learning/agentic-commerce/", "/learning/the-buyers-agent/"]
 description = "A consumer-first research layer for shopping agents: choose by fit, evidence and total cost, then prove that buyers will fund the independence."
 date = 2026-11-03
 layout = "research-swipe"

@@ -1,7 +1,7 @@
 +++
 title = "Growing Metal: The Phytomining Opportunity"
 slug = "growing-metal-the-phytomining-opportunity"
-aliases = ["/research/phytomining/", "/learning/phytomining/"]
+aliases = ["/research/phytomining/", "/learning/phytomining/", "/learning/growing-metal-the-phytomining-opportunity/"]
 description = "A founder's case for producing nickel with plants - what field trials prove, where the economics break, and the smallest business worth testing."
 date = 2026-09-10
 layout = "research-swipe"

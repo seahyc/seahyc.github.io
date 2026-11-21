@@ -1,7 +1,7 @@
 +++
 title = "The Trucking Finance OS Opportunity"
 slug = "the-trucking-finance-os-opportunity"
-aliases = ["/research/flex-x-copywriter-opportunity/", "/learning/flex-x-copywriter-opportunity/"]
+aliases = ["/research/flex-x-copywriter-opportunity/", "/learning/flex-x-copywriter-opportunity/", "/learning/the-trucking-finance-os-opportunity/"]
 description = "An operator-first fieldbook on freight receivables, AI collections, factoring, and the narrow wedge hiding inside a trucking neobank idea."
 date = 2026-08-28
 layout = "research-swipe"

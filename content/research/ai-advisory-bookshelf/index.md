@@ -1,7 +1,7 @@
 +++
 title = "A Bookshelf That Argues Back"
 slug = "a-bookshelf-that-argues-back"
-aliases = ["/research/ai-advisory-bookshelf/", "/learning/ai-advisory-bookshelf/"]
+aliases = ["/research/ai-advisory-bookshelf/", "/learning/ai-advisory-bookshelf/", "/learning/a-bookshelf-that-argues-back/"]
 description = "A cited advisory bookshelf inside your existing AI sounds useful. The harder question is whether it deserves a company—or a small, carefully bounded side project."
 date = 2026-11-03
 layout = "research-swipe"

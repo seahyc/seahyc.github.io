@@ -1,7 +1,7 @@
 +++
 title = "Clean, Limitless Energy: Superhot Geothermal"
 slug = "clean-limitless-energy-superhot-geothermal"
-aliases = ["/research/superhot-rock-geothermal/", "/learning/superhot-rock-geothermal/"]
+aliases = ["/research/superhot-rock-geothermal/", "/learning/superhot-rock-geothermal/", "/learning/clean-limitless-energy-superhot-geothermal/"]
 description = "A founder's case for turning the planet's deep heat into clean, always-on electricity - and the proof required before it deserves scale."
 date = 2026-09-09
 layout = "research-swipe"

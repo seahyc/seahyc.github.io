@@ -1,7 +1,7 @@
 +++
 title = "A Switchboard for Agents"
 slug = "a-switchboard-for-agents"
-aliases = ["/research/switchboard-agent-channels/", "/learning/switchboard-agent-channels/"]
+aliases = ["/research/switchboard-agent-channels/", "/learning/switchboard-agent-channels/", "/learning/a-switchboard-for-agents/"]
 description = "A founder's Fieldbook on whether Switchboard should let customers' agents run Instagram creator outreach: one named buyer, a crowded transport layer, a hard platform constraint, and a capped pilot with kill criteria."
 date = 2026-09-02
 layout = "research-swipe"

@@ -1,7 +1,7 @@
 +++
 title = "The Time Between Molecule and Medicine"
 slug = "the-time-between-molecule-and-medicine"
-aliases = ["/research/clinical-trial-compression/", "/learning/clinical-trial-compression/"]
+aliases = ["/research/clinical-trial-compression/", "/learning/clinical-trial-compression/", "/learning/the-time-between-molecule-and-medicine/"]
 description = "A founder’s case for compressing clinical-trial startup: critical paths, patient access, regulatory reality, service versus software, and the economics that must work for both buyer and supplier."
 date = 2026-11-03
 layout = "research-swipe"

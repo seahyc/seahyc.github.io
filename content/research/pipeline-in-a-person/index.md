@@ -1,7 +1,7 @@
 +++
 title = "Pipeline in a Person"
 slug = "pipeline-in-a-person"
-aliases = ["/research/pipeline-in-a-person/"]
+aliases = ["/research/pipeline-in-a-person/", "/learning/pipeline-in-a-person/"]
 description = "Can one technical founder build a valuable therapeutic asset with AI and outsourced laboratories? The real opportunity, the evidence gaps, and a staged path to proof."
 date = 2026-10-30
 layout = "research-swipe"

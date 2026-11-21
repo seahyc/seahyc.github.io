@@ -1,7 +1,7 @@
 +++
 title = "Never Sound Like AI to Someone Who Knows You"
 slug = "never-sound-like-ai-to-someone-who-knows-you"
-aliases = ["/research/relationship-aware-voice/", "/learning/relationship-aware-voice/"]
+aliases = ["/research/relationship-aware-voice/", "/learning/relationship-aware-voice/", "/learning/never-sound-like-ai-to-someone-who-knows-you/"]
 description = "A founder’s Fieldbook on a relationship-aware message composer: what is sourced, what is my positioning, the cheapest decisive test, and the staged path from an open-source tool to a WhatsApp sales desk."
 date = 2026-09-02
 layout = "research-swipe"

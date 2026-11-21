@@ -1,7 +1,7 @@
 +++
 title = "Leak-Proof AI Cold Plates"
 slug = "leak-proof-ai-cold-plates"
-aliases = ["/research/leakproof-ai-cold-plates/", "/learning/leakproof-ai-cold-plates/"]
+aliases = ["/research/leakproof-ai-cold-plates/", "/learning/leakproof-ai-cold-plates/", "/learning/leak-proof-ai-cold-plates/"]
 description = "A founder's fieldbook on the quiet hardware that keeps dense AI servers alive—and the qualification wedge before a factory."
 date = 2026-09-12
 layout = "research-swipe"

@@ -1,7 +1,7 @@
 +++
 title = "The Part That Comes With Proof"
 slug = "the-part-that-comes-with-proof"
-aliases = ["/research/allied-drone-components/", "/learning/allied-drone-components/"]
+aliases = ["/research/allied-drone-components/", "/learning/allied-drone-components/", "/learning/the-part-that-comes-with-proof/"]
 description = "A founder’s Fieldbook on traceable allied drone components: the conditional ESC wedge, counter-drone buyers, qualification economics and the case against building."
 date = 2026-11-03
 layout = "research-swipe"

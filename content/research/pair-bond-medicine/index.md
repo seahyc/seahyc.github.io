@@ -1,7 +1,7 @@
 +++
 title = "Can We Build Better Bonds?"
 slug = "can-we-build-better-bonds"
-aliases = ["/research/pair-bond-medicine/", "/learning/pair-bond-medicine/"]
+aliases = ["/research/pair-bond-medicine/", "/learning/pair-bond-medicine/", "/learning/can-we-build-better-bonds/"]
 description = "Oxytocin, MDMA and the relationship-care company: what the science supports, what the billion-dollar deals buy, and an executable path from a bounded service to evidence."
 date = 2026-11-03
 layout = "research-swipe"

@@ -18,7 +18,7 @@ def title_slug(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
 
 
-def frontmatter(path: Path) -> tuple[str, str, list[str], str]:
+def frontmatter(path: Path) -> tuple[str, str, list[str], str, str]:
     text = path.read_text()
     delimiter = "+++" if text.startswith("+++\n") else "---"
     match = re.match(rf"^{re.escape(delimiter)}\n(.*?)\n{re.escape(delimiter)}", text, re.S)
@@ -42,7 +42,7 @@ def frontmatter(path: Path) -> tuple[str, str, list[str], str]:
     inline_aliases = re.search(r"^aliases\s*=\s*\[(.*?)\]\s*$", block, re.M)
     if inline_aliases:
         aliases = re.findall(r'["\']([^"\']+)["\']', inline_aliases.group(1))
-    return scalar("title"), scalar("slug"), aliases, scalar("visibility", "public")
+    return scalar("title"), scalar("slug"), aliases, scalar("visibility", "public"), scalar("url")
 
 
 def output(route: str) -> Path:
@@ -54,7 +54,7 @@ for source_section, public_section in SECTIONS.items():
     for path in sorted((ROOT / "content" / source_section).rglob("*.md")):
         if path.name == "_index.md":
             continue
-        title, slug, aliases, visibility = frontmatter(path)
+        title, slug, aliases, visibility, explicit_url = frontmatter(path)
         expected = title_slug(title)
         if slug and slug != expected:
             errors.append(f"{path.relative_to(ROOT)}: slug {slug!r}, expected {expected!r}")
@@ -67,6 +67,11 @@ for source_section, public_section in SECTIONS.items():
 
         relative_parent = Path(source_leaf).parent.as_posix()
         canonical_parts = [public_section]
+        if source_section == "research" and not explicit_url:
+            canonical_parts.append("fieldbooks")
+            previous = f"/learning/{expected}/"
+            if previous not in aliases:
+                errors.append(f"{path.relative_to(ROOT)}: missing previous canonical alias {previous}")
         if relative_parent != ".":
             canonical_parts.append(relative_parent)
         canonical_parts.append(expected)

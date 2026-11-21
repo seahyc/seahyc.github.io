@@ -1,7 +1,7 @@
 +++
 title = "The Table That Floats: Precision Motion for Advanced Packaging"
 slug = "the-table-that-floats-precision-motion-for-advanced-packaging"
-aliases = ["/research/aerostatic-stages/", "/learning/aerostatic-stages/"]
+aliases = ["/research/aerostatic-stages/", "/learning/aerostatic-stages/", "/learning/the-table-that-floats-precision-motion-for-advanced-packaging/"]
 description = "A founder's case for a narrow, qualification-led aerostatic motion wedge in packaging and metrology—and why sub-2nm lithography is the wrong first market."
 date = 2026-09-12
 layout = "research-swipe"

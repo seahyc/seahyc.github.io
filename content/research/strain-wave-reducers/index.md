@@ -1,7 +1,7 @@
 +++
 title = "The Joint That Has to Survive"
 slug = "the-joint-that-has-to-survive"
-aliases = ["/research/strain-wave-reducers/", "/learning/strain-wave-reducers/"]
+aliases = ["/research/strain-wave-reducers/", "/learning/strain-wave-reducers/", "/learning/the-joint-that-has-to-survive/"]
 description = "A founder's fieldbook for building a traceable second source for precision strain-wave reducers."
 date = 2026-09-12
 layout = "research-swipe"

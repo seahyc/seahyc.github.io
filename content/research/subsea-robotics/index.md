@@ -1,7 +1,7 @@
 +++
 title = "Eyes Beneath the Shipping Lanes"
 slug = "eyes-beneath-the-shipping-lanes"
-aliases = ["/research/subsea-robotics/", "/learning/subsea-robotics/"]
+aliases = ["/research/subsea-robotics/", "/learning/subsea-robotics/", "/learning/eyes-beneath-the-shipping-lanes/"]
 description = "A Singapore founder’s case for repeat subsea inspection: local autonomy, incumbent competition, vessel economics and the proof required before building a fleet."
 date = 2026-11-03
 layout = "research-swipe"

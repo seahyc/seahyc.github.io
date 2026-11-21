@@ -1,7 +1,7 @@
 +++
 title = "The Broker Behind the Promise"
 slug = "the-broker-behind-the-promise"
-aliases = ["/research/insurance-ai-rollup/", "/learning/insurance-ai-rollup/"]
+aliases = ["/research/insurance-ai-rollup/", "/learning/insurance-ai-rollup/", "/learning/the-broker-behind-the-promise/"]
 description = "A founder’s case for an AI-enabled Asian commercial insurance brokerage: claims service, acquisition cash flows, regional scale and the route from a Singapore anchor to a larger institution."
 date = 2026-11-03
 layout = "research-swipe"

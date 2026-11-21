@@ -1,6 +1,7 @@
 ---
 title: "Spotter / Sweat fitness app research"
 slug: "spotter-sweat-fitness-app-research"
+url: "/learning/spotter-sweat-fitness-app-research/"
 aliases:
   - "/research/spotter-sweat/"
   - "/learning/spotter-sweat/"

@@ -17,4 +17,4 @@ title = 'Seah Ying Cong'
 [permalinks]
   posts = '/writing/:slug/'
   projects = '/making/:slug/'
-  research = '/learning/:slug/'
+  research = '/learning/fieldbooks/:slug/'

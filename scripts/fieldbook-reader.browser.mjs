@@ -28,7 +28,7 @@ try {
   for (const [width, height] of [[390, 844], [737, 862], [1440, 1000], [2560, 1440]]) {
     const page = await browser.newPage({ viewport: { width, height } });
     for (const report of reports) {
-      await page.goto(`${baseUrl}/learning/${report}/`, { waitUntil: 'networkidle' });
+      await page.goto(`${baseUrl}/learning/fieldbooks/${report}/`, { waitUntil: 'networkidle' });
       await page.evaluate(() => Promise.all([...document.images].map(image => image.decode().catch(() => {}))));
       const state = await page.evaluate(() => {
         const sections = [...document.querySelectorAll('.story-slide')];
@@ -46,7 +46,7 @@ try {
       assert.ok(state.continuous && !state.swiper, `${label}: native document reader`);
       assert.ok(!state.overflow && !state.clipped, `${label}: content must not overflow or clip`);
       if (width > 900) assert.ok(state.prose.every(p => p.width <= 681 && p.size >= 19), `${label}: readable prose measure and size`);
-      await page.goto(`${baseUrl}/learning/${report}/#${state.longest}`, { waitUntil: 'networkidle' });
+      await page.goto(`${baseUrl}/learning/fieldbooks/${report}/#${state.longest}`, { waitUntil: 'networkidle' });
       await page.evaluate(() => Promise.all([...document.images].map(image => image.decode().catch(() => {}))));
       const top = await page.locator(`#${state.longest}`).evaluate(node => node.getBoundingClientRect().top);
       assert.ok(Math.abs(top) < 80, `${label}: direct section link`);
@@ -65,7 +65,7 @@ try {
   console.log(`PASS ${reports.length} Fieldbooks across four sizes: ${checks} continuous-scroll, overflow, deep-link and reading checks`);
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
   const page = await context.newPage();
-  await page.goto(`${baseUrl}/learning/the-buyers-agent/#card-22-evidence-and-stop-rules`, { waitUntil: 'networkidle' });
+  await page.goto(`${baseUrl}/learning/fieldbooks/the-buyers-agent/#card-22-evidence-and-stop-rules`, { waitUntil: 'networkidle' });
   const hash = await page.evaluate(() => location.hash);
   await page.locator('#card-22-evidence-and-stop-rules h2').tap();
   assert.equal(await page.evaluate(() => location.hash), hash, 'prose tap must not navigate');
